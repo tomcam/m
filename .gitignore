@@ -5,6 +5,7 @@ m
 *.bak
 *.sav
 foo.*
+*.swp
 
 # Binaries for programs and plugins
 *.exe
