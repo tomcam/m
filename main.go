@@ -1,7 +1,7 @@
 package main
 
 import (
-  "github.com/tomcam/pkg/mdext/tom"
+  "github.com/tomcam/m/pkg/mdext/tom"
 	"bytes"
 	"errors"
 	"fmt"
