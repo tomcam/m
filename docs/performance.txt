@@ -1,0 +1,2 @@
+
+fileToBytes() could probably be sped up because it reads the whole file into memory
