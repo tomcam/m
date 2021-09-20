@@ -11,17 +11,30 @@ import (
 	"github.com/tomcam/m/pkg/mdext"
 	"github.com/yuin/goldmark/extension"
 	"io"
+  "io/ioutil"
+  "os"
 )
 
+// fileToBytes
+func fileToBytes(filename string) []byte {
+  bytes, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return []byte{}
+	}
+  return bytes
+}
+
 func main() {
+  filename := os.Args[1]
+  fmt.Printf("Filename: %#v\n", filename)
 	markdown := goldmark.New(
 		goldmark.WithExtensions(
 			mdext.New(mdext.WithTable()),
 			extension.Table,
 		),
 	)
-	source := `000
-Title: goldmark-meta
+	source := `+++
+Title: Front matter
 Summary: Add YAML metadata to the document
 Tags:
     - markdown
@@ -29,15 +42,14 @@ Tags:
 +++
 
 `
-	/*
-	   Title: goldmark-meta
-	   Summary: Add YAML metadata to the document
-	   Tags:
-	       - markdown
-	       - goldmark
-	*/
-
 	var buf bytes.Buffer
+  s := fileToBytes(filename)
+	if err := markdown.Convert(s, &buf); err != nil {
+		panic(err)
+	}
+	fmt.Print(buf.String())
+  os.Exit(0)
+
 	if err := markdown.Convert([]byte(source), &buf); err != nil {
 		panic(err)
 	}
