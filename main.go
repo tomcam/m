@@ -2,13 +2,13 @@ package main
 
 import (
 
-  "github.com/tomcam/m/pkg/mdext"
-	"github.com/tomcam/m/goldmark-y"
+	//"github.com/tomcam/m/goldmark-y"
 	"bytes"
 	"errors"
 	"fmt"
 	"github.com/yuin/goldmark"
 	//"github.com/yuin/goldmark-meta"
+	"github.com/tomcam/m/pkg/mdext"
 	"github.com/yuin/goldmark/extension"
 	"io"
 )
@@ -20,20 +20,22 @@ func main() {
 			extension.Table,
 		),
 	)
-	source := `---
-Title="goldmark-meta"
-Summary="Add TOML metadata to the document"
-
----
-
-`
-/*
+	source := `000
 Title: goldmark-meta
 Summary: Add YAML metadata to the document
 Tags:
     - markdown
     - goldmark
-*/
++++
+
+`
+	/*
+	   Title: goldmark-meta
+	   Summary: Add YAML metadata to the document
+	   Tags:
+	       - markdown
+	       - goldmark
+	*/
 
 	var buf bytes.Buffer
 	if err := markdown.Convert([]byte(source), &buf); err != nil {
@@ -53,8 +55,3 @@ func run(args []string, stdout io.Writer) error {
 	}
 	return nil
 }
-
-
-
-
-
