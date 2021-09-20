@@ -3,6 +3,7 @@ package main
 import (
 
   "github.com/tomcam/m/pkg/mdext"
+	"github.com/tomcam/m/goldmark-y"
 	"bytes"
 	"errors"
 	"fmt"
