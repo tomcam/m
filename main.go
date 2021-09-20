@@ -1,34 +1,38 @@
 package main
 
 import (
-  "github.com/tomcam/m/pkg/mdext/tom"
+
+  "github.com/tomcam/m/pkg/mdext"
 	"bytes"
 	"errors"
 	"fmt"
 	"github.com/yuin/goldmark"
-	"github.com/yuin/goldmark-meta"
+	//"github.com/yuin/goldmark-meta"
 	"github.com/yuin/goldmark/extension"
 	"io"
 )
 
-
 func main() {
 	markdown := goldmark.New(
 		goldmark.WithExtensions(
-			meta.New(meta.WithTable()),
+			mdext.New(mdext.WithTable()),
 			extension.Table,
 		),
 	)
 	source := `---
+Title="goldmark-meta"
+Summary="Add TOML metadata to the document"
+
+---
+
+`
+/*
 Title: goldmark-meta
 Summary: Add YAML metadata to the document
 Tags:
     - markdown
     - goldmark
----
-
-# Hello goldmark-meta
-`
+*/
 
 	var buf bytes.Buffer
 	if err := markdown.Convert([]byte(source), &buf); err != nil {
