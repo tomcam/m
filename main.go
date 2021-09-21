@@ -2,27 +2,16 @@ package main
 
 import (
 
-	//"github.com/tomcam/m/goldmark-y"
 	"bytes"
 	"errors"
 	"fmt"
 	"github.com/yuin/goldmark"
-	//"github.com/yuin/goldmark-meta"
 	"github.com/tomcam/m/pkg/mdext"
+	"github.com/tomcam/m/pkg/util"
 	"github.com/yuin/goldmark/extension"
 	"io"
-  "io/ioutil"
   "os"
 )
-
-// fileToBytes
-func fileToBytes(filename string) []byte {
-  bytes, err := ioutil.ReadFile(filename)
-	if err != nil {
-		return []byte{}
-	}
-  return bytes
-}
 
 func main() {
   filename := os.Args[1]
@@ -43,7 +32,7 @@ Tags:
 
 `
 	var buf bytes.Buffer
-  s := fileToBytes(filename)
+  s := util.FileToBytes(filename)
 	if err := markdown.Convert(s, &buf); err != nil {
 		panic(err)
 	}
