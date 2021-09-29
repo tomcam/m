@@ -1,21 +1,20 @@
 package main
 
 import (
-
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/yuin/goldmark"
 	"github.com/tomcam/m/pkg/mdext"
 	"github.com/tomcam/m/pkg/util"
+	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
 	"io"
-  "os"
+	"os"
 )
 
 func main() {
-  filename := os.Args[1]
-  fmt.Printf("Filename: %#v\n", filename)
+	filename := os.Args[1]
+	fmt.Printf("Filename: %#v\n", filename)
 	markdown := goldmark.New(
 		goldmark.WithExtensions(
 			mdext.New(mdext.WithTable()),
@@ -32,12 +31,12 @@ Tags:
 
 `
 	var buf bytes.Buffer
-  s := util.FileToBytes(filename)
+	s := util.FileToBytes(filename)
 	if err := markdown.Convert(s, &buf); err != nil {
 		panic(err)
 	}
 	fmt.Print(buf.String())
-  os.Exit(0)
+	os.Exit(0)
 
 	if err := markdown.Convert([]byte(source), &buf); err != nil {
 		panic(err)
