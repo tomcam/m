@@ -13,6 +13,7 @@ foo.*
 *.dll
 *.so
 *.dylib
+cmd/mb/mb
 
 # Test binary, built with `go test -c`
 *.test
