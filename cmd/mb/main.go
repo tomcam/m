@@ -50,7 +50,6 @@ func newGoldmark() goldmark.Markdown {
 	}
 
 	parserOpts := []parser.Option{parser.WithAttribute(),parser.WithAutoHeadingID()}
-	//parserOpts = append(parserOpts, parser.WithAutoHeadingID())
 
 	renderOpts := []renderer.Option{
     // WithUnsafe is required for HTML templates to work properly
@@ -97,23 +96,7 @@ Tags:
 `
 */
 
-	var buf bytes.Buffer
-	//s := util.FileToBytes(filename)
-  /*
-	if err := markdown.Convert(s, &buf); err != nil {
-		panic(err)
-	}
-  */
-	//fmt.Print(buf.String())
   fmt.Println(string(mdFileToHTML(filename)))
-	os.Exit(0)
-
-  /*
-	if err := markdown.Convert([]byte(source), &buf); err != nil {
-		panic(err)
-	}
-  */
-	fmt.Print(buf.String())
 }
 
 
