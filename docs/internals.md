@@ -8,6 +8,8 @@ on the command line
 * mb run starts a web server in the current directory 
 or in the specified directory if a directory name is supplied 
 on the command line
+* `/cmd/mb` CLI app to compile projects in bulk
+* `/cmd/web` Web app to create pages interactively
 
 ## Creating a project
 
