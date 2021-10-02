@@ -1,5 +1,6 @@
 echo "Temporary backup solution until I resolve GitHub auth issues"
 sudo cp -R ~/code/m /Users/tom/Library/Mobile\ Documents/com~apple~CloudDocs/go
+echo "/Users/tom/Library/Mobile\ Documents/com~apple~CloudDocs/go/m"
 ls -lat /Users/tom/Library/Mobile\ Documents/com~apple~CloudDocs/go/m
 
 
