@@ -8,28 +8,28 @@ import (
 	"github.com/tomcam/m/pkg/mdext"
 	"github.com/tomcam/m/pkg/util"
 	"github.com/yuin/goldmark"
-  "github.com/yuin/goldmark/parser"
+	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/renderer"
-  //highlighting "github.com/yuin/goldmark-highlighting"
+	//highlighting "github.com/yuin/goldmark-highlighting"
 	"github.com/yuin/goldmark/extension"
-  "github.com/yuin/goldmark/renderer/html"
-  "github.com/yuin/goldmark/text"
+	"github.com/yuin/goldmark/renderer/html"
+	"github.com/yuin/goldmark/text"
 	"io"
 	"os"
 )
 
 // mdFileToHTML converts the markdown file in filename to HTML.
 // It may include optional front matter.
-func mdFileToHTML(filename string) []byte{
+func mdFileToHTML(filename string) []byte {
 	s := util.FileToBytes(filename)
-  ctx := parser.NewContext()
+	ctx := parser.NewContext()
 	p := newParser().Parser()
-  node := p.Parse(text.NewReader(s), parser.WithContext(ctx))
-  buf := new(bytes.Buffer)
-  if err := newParser().Renderer().Render(buf, s, node); err != nil {
-    // TC: update error handling
-    // a.QuitError(errs.ErrCode("0920", err.Error()))
-    panic("Parse error")
+	node := p.Parse(text.NewReader(s), parser.WithContext(ctx))
+	buf := new(bytes.Buffer)
+	if err := newParser().Renderer().Render(buf, s, node); err != nil {
+		// TC: update error handling
+		// a.QuitError(errs.ErrCode("0920", err.Error()))
+		panic("Parse error")
 		return nil
 	}
 	return buf.Bytes()
@@ -37,32 +37,32 @@ func mdFileToHTML(filename string) []byte{
 
 func newParser() goldmark.Markdown {
 	exts := []goldmark.Extender{
-    mdext.New(mdext.WithTable()),extension.Table,
+		mdext.New(mdext.WithTable()), extension.Table,
 		extension.GFM,
 		extension.DefinitionList,
 		extension.Footnote,
-    // TC: Add highlighting options
-    /*
-		highlighting.NewHighlighting(
-			highlighting.WithStyle(a.Site.MarkdownOptions.HighlightStyle),
-			highlighting.WithFormatOptions()),
-    */
+		// TC: Add highlighting options
+		/*
+			highlighting.NewHighlighting(
+				highlighting.WithStyle(a.Site.MarkdownOptions.HighlightStyle),
+				highlighting.WithFormatOptions()),
+		*/
 
 	}
 
-	parserOpts := []parser.Option{parser.WithAttribute(),parser.WithAutoHeadingID()}
+	parserOpts := []parser.Option{parser.WithAttribute(), parser.WithAutoHeadingID()}
 
 	renderOpts := []renderer.Option{
-    // WithUnsafe is required for HTML templates to work properly
+		// WithUnsafe is required for HTML templates to work properly
 		html.WithUnsafe(),
 		html.WithXHTML(),
 	}
-  // TC: Add as option?
-  /*
-	if a.Site.MarkdownOptions.hardWraps {
-		renderOpts = append(renderOpts, html.WithHardWraps())
-	}
-  */
+	// TC: Add as option?
+	/*
+		if a.Site.MarkdownOptions.hardWraps {
+			renderOpts = append(renderOpts, html.WithHardWraps())
+		}
+	*/
 
 	return goldmark.New(
 		goldmark.WithExtensions(exts...),
@@ -71,38 +71,34 @@ func newParser() goldmark.Markdown {
 	)
 }
 
-
-
 func main() {
-	filename := os.Args[1]
-	fmt.Printf("Filename: %#v\n", filename)
-  a := app.NewApp(filename)
-  fmt.Println(string(mdFileToHTML(filename)))
-
-  fmt.Printf("Project path: %s\n", a.Site.Path)
-  /*
-	markdown := goldmark.New(
-		goldmark.WithExtensions(
-			mdext.New(mdext.WithTable()),
-			extension.Table,
-		),
-	)
-  */
-/*
-source := `+++
-Title: Front matter
-Summary: Add YAML metadata to the document
-Tags:
-    - markdown
-    - goldmark
-+++
-
-`
-*/
+	filename := "."
+	command := "build"
+	switch len(os.Args) {
+	case 4: // e.g. ./mb new site foo
+		command = os.Args[1] + os.Args[2]
+		filename = os.Args[3]
+	case 3: // e.g. ./mb new foo 
+		command = os.Args[1]
+		filename = os.Args[2]
+	case 2: // e.g. ./mb new
+		command = os.Args[1]
+	case 1:
+	default: // program name only
+		// Same as build
+	}
+  fmt.Printf("\tCommand: %s\n", command)
+	fmt.Printf("Args: %v\nArg count: %v\nCommand: %s\nFilename: %s\n",
+		os.Args, len(os.Args), command, filename)
+	switch command {
+	case "build":
+		fmt.Println(string(mdFileToHTML(filename)))
+	case "new", "newsite":
+		a := app.NewApp(filename)
+		fmt.Printf("\tProject path: %s\n", a.Site.Path)
+	}
 
 }
-
-
 
 // run() is used for testing instead of main(). See:
 // https://pace.dev/blog/2020/02/12/why-you-shouldnt-use-func-main-in-golang-by-mat-ryer.html

@@ -1,7 +1,9 @@
 package app
 
 import (
-	// "fmt"
+  //"github.com/tomcam/m/pkg/util"
+
+	"fmt"
   /*
 	"github.com/spf13/viper"
 	"github.com/spf13/cobra"
@@ -22,28 +24,48 @@ type App struct {
 
 // NewApp allocates, and initializes to default
 // values, an App struct (which contains the runtime
-// environment for a Metabuzz process).
+// environment for a Metabuzz process). Everything
+// necessary to create a new project must be set
+// by the time App.updateConfig() is called.
+// 
 // path is the location for the project.
-//func (app *App) NewApp(path string) *App {
+// 
 func NewApp(path string) *App {
-  a := App{
-    //app.init(path)
-    //init(path)
+  app := App{}
+
+  // path is the location for the project.
+  // If not specified, use the current directory.
+  if path != "" {
+    app.Site.Path = path
+  } else {
+    app.Site.Path = currPath()
   }
-  a.init(path)
-  return &a
+
+  // If there are any configuration files,
+  // environment variables, etc. with info
+  // that overrides what was just done,
+  // readt them in.
+  app.updateConfig()
+
+  fmt.Printf("\tNewApp(): checking for project at %s\n", app.Site.Path)
+  if isProject(app.Site.Path) {
+    // TODO: Fix error handling
+    fmt.Printf("There's already a project at %v\n", app.Site.Path)
+  }
+  // Now generate the files
+  app.Site.New()
+  return &app
 }
 
 
-// init determines where configuration file (and other
-// forms of configuration info) can be found, then reads in
-// all that info. If there's no config file found, generates
-// sensible defaults.
-// path is the location for the project.
-// If "", use the current directory
-func (app *App) init(path string) {
-  if path != "" {
-    app.Site.Path = path
-  }
+// updateConfig() determines where configuration file (and other
+// forms of configuration info, such as 
+// environment variables) can be found, then reads in
+// all that info. It overrides defaults established
+// in NewApp(). It isn't necessary. That us, NewApp()
+// will have initialized the App data structure sufficiently
+// to create a new project in the absence of any
+// overriding config information.
+func (app *App) updateConfig() {
 }
 

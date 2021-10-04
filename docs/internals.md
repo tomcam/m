@@ -26,19 +26,19 @@ one website.
 
 ## Startup
 
-Metabuzz assumes the tree of files that make up a
+
+* 
+
+
+## Project structure
+
+# TC: CONFUSING.
+* Metabuzz assumes the tree of files that make up a
 project are not in the root directory, but in the
 /docs directory. If your site is named example.com
 and it lives in a directory named `example`,
 Metabuzz looks in `example/docs` for the site
 file, source files, and so on.
-
-
-## Project structure
-
-* Metabuzz generates HTML files from one or more 
-Markdown files found in the `/docs` directory 
-(by default).  
 * Metabuzz first looks for an `/.mb` subirectory
 under the `/docs` directory. Without that subdirectory
 Metabuzz won't generate a website.

@@ -9,12 +9,12 @@ var (
 	// Directory configuration for a project--a new site.
 	SitePaths = [][]string{
 		{PublishPath},
-		{GlobalConfigurationPath, CommonPath},
-		{GlobalConfigurationPath, HeadTagsPath},
-		{GlobalConfigurationPath, SCodePath},
-		{GlobalConfigurationPath, ScriptClosePath},
-		{GlobalConfigurationPath, ScriptOpenPath},
-		{GlobalConfigurationPath, ThemePath},
+		{CfgDir, CommonPath},
+		{CfgDir, HeadTagsPath},
+		{CfgDir, SCodePath},
+		{CfgDir, ScriptClosePath},
+		{CfgDir, ScriptOpenPath},
+		{CfgDir, ThemePath},
 	}
 	// Markdown file extensions
   // They don't in lexical order because it's possible
@@ -111,7 +111,8 @@ Welcome to %s
 	// Name of the directory that holds items used by projects, such
 	// as themes and shortcodes.
 	// TODO: Change this when I settle on a product name
-	GlobalConfigurationPath = ".mb"
+  // TC: Formerly GlobalConfigurationDirName.
+	CfgDir = ".mb"
 
 	// Default file extension used by configuration files.
   // See https://yaml.org/faq.html 
