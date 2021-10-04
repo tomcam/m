@@ -4,6 +4,7 @@
 
 ## Priority 2: Desired but not required for the next release
 
+* Create a test case for each error code
 * Make `/docs directory` configurable
 * Write tests for slice pkg
 * Support for TOML front matter. See pkg/mdedxt/tomltc.go.sav and 

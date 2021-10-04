@@ -1,6 +1,7 @@
+package errs
 import (
 	"fmt"
-	"github.com/tomcam/mb/pkg/defaults"
+	"github.com/tomcam/m/pkg/default"
 )
 
 // defaults.ErrorCodePrefix is a short string (currently "mbz") used
@@ -107,8 +108,8 @@ func (e *ErrMsg) Error() string {
 	return msg.Error()
 }
 
-// New() allocates a map entry for errMsgs.
-func New(key string, previous string, extra ...string) error {
+// new() allocates a map entry for errMsgs.
+func new(key string, previous string, extra ...string) error {
 	return &ErrMsg{key, previous, extra}
 }
 
@@ -124,6 +125,8 @@ func New(key string, previous string, extra ...string) error {
 // parameter so its contents are included, like this:
 //
 // Sample usages:
+//
+//   return ErrCode("PREVIOUS", err.Error())
 //
 //   return ErrCode("0401", err.Error())
 //
@@ -145,9 +148,9 @@ func New(key string, previous string, extra ...string) error {
 func ErrCode(key string, previous string, extra ...string) error {
 	var e error
 	if len(extra) > 0 {
-		e = New(key, previous, extra[0])
+		e = new(key, previous, extra[0])
 	} else {
-		e = New(key, previous)
+		e = new(key, previous)
 	}
 	return e
 }

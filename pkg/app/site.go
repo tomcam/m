@@ -1,9 +1,9 @@
 package app
 
 import (
-	"fmt"
+	//"fmt"
 	"github.com/tomcam/m/pkg/default"
-	//"github.com/tomcam/m/pkg/errs"
+	"github.com/tomcam/m/pkg/errs"
 	//"os"
 	//"path/filepath"
 )
@@ -26,16 +26,14 @@ type Site struct {
 }
 
 
-func (s *Site) New() {
-  fmt.Printf("\tGenerate site %s\n", s.Path)
+func (s *Site) New() error {
   // Create minimal directory structure: Publish directory
 	// .site directory, .themes, etc.
-  /*
-	if err = createDirStructure(&defaults.SiteDirs); err != nil {
+  if err := createDirStructure(&defaults.SitePaths); err != nil {
+		//return errs.ErrCode("PREVIOUS", err.Error())
 		return errs.ErrCode("PREVIOUS", err.Error())
 	}
-  */
-	_ = createDirStructure(&defaults.SitePaths)
+  return nil
 }
 
 

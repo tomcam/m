@@ -95,6 +95,7 @@ func main() {
 		fmt.Println(string(mdFileToHTML(filename)))
 	case "new", "newsite":
 		a := app.NewApp(filename)
+    a.Site.New()
 		fmt.Printf("\tProject path: %s\n", a.Site.Path)
 	}
 

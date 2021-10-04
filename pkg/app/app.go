@@ -3,7 +3,6 @@ package app
 import (
   //"github.com/tomcam/m/pkg/util"
 
-	"fmt"
   /*
 	"github.com/spf13/viper"
 	"github.com/spf13/cobra"
@@ -47,13 +46,6 @@ func NewApp(path string) *App {
   // readt them in.
   app.updateConfig()
 
-  fmt.Printf("\tNewApp(): checking for project at %s\n", app.Site.Path)
-  if isProject(app.Site.Path) {
-    // TODO: Fix error handling
-    fmt.Printf("There's already a project at %v\n", app.Site.Path)
-  }
-  // Now generate the files
-  app.Site.New()
   return &app
 }
 
