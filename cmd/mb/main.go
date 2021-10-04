@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"github.com/tomcam/m/pkg/app"
 	"github.com/tomcam/m/pkg/mdext"
 	"github.com/tomcam/m/pkg/util"
 	"github.com/yuin/goldmark"
@@ -22,10 +23,10 @@ import (
 func mdFileToHTML(filename string) []byte{
 	s := util.FileToBytes(filename)
   ctx := parser.NewContext()
-	p := newGoldmark().Parser()
+	p := newParser().Parser()
   node := p.Parse(text.NewReader(s), parser.WithContext(ctx))
   buf := new(bytes.Buffer)
-  if err := newGoldmark().Renderer().Render(buf, s, node); err != nil {
+  if err := newParser().Renderer().Render(buf, s, node); err != nil {
     // TC: update error handling
     // a.QuitError(errs.ErrCode("0920", err.Error()))
     panic("Parse error")
@@ -34,7 +35,7 @@ func mdFileToHTML(filename string) []byte{
 	return buf.Bytes()
 }
 
-func newGoldmark() goldmark.Markdown {
+func newParser() goldmark.Markdown {
 	exts := []goldmark.Extender{
     mdext.New(mdext.WithTable()),extension.Table,
 		extension.GFM,
@@ -72,10 +73,13 @@ func newGoldmark() goldmark.Markdown {
 
 
 
-
 func main() {
 	filename := os.Args[1]
 	fmt.Printf("Filename: %#v\n", filename)
+  a := app.NewApp(filename)
+  fmt.Println(string(mdFileToHTML(filename)))
+
+  fmt.Printf("Project path: %s\n", a.Site.Path)
   /*
 	markdown := goldmark.New(
 		goldmark.WithExtensions(
@@ -96,7 +100,6 @@ Tags:
 `
 */
 
-  fmt.Println(string(mdFileToHTML(filename)))
 }
 
 

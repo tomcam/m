@@ -1,30 +1,31 @@
 package defaults
 
-import "github.com/tomcam/mb/pkg/slices"
+import "github.com/tomcam/m/pkg/util"
 
 var (
 	Version = ProductName + " version " +
-		"0.2.0"
+		"0.3.0"
 
 	// Directory configuration for a project--a new site.
-	SiteDirs = [][]string{
-		{PublishDir},
-		{GlobalConfigurationDirName, CommonDir},
-		{GlobalConfigurationDirName, HeadTagsDir},
-		{GlobalConfigurationDirName, SCodeDir},
-		{GlobalConfigurationDirName, ScriptCloseDir},
-		{GlobalConfigurationDirName, ScriptOpenDir},
-		{GlobalConfigurationDirName, SiteConfigDir},
-		{GlobalConfigurationDirName, ThemeDir},
+	SitePaths = [][]string{
+		{PublishPath},
+		{GlobalConfigurationPath, CommonPath},
+		{GlobalConfigurationPath, HeadTagsPath},
+		{GlobalConfigurationPath, SCodePath},
+		{GlobalConfigurationPath, ScriptClosePath},
+		{GlobalConfigurationPath, ScriptOpenPath},
+		{GlobalConfigurationPath, ThemePath},
 	}
 	// Markdown file extensions
-	MarkdownExtensions = slices.NewSearchInfo([]string{
+  // They don't in lexical order because it's possible
+  // more will be added via config file at runtime
+	MarkdownExtensions = util.NewSearchInfo([]string{
 		".Rmd",
+		".markdown",
 		".md",
 		".mdown",
 		".mdtext",
 		".mdtxt",
-		".markdown",
 		".mdwn",
 		".mkd",
 		".mkdn",
@@ -34,17 +35,19 @@ var (
 	// directory that should NOT be copied to the publish directory.
 	// The contents of a theme directory mix both things you want copied,
 	// like CSS files, and things you don't, like TOML or Markdown files.
-	ExcludedAssetExtensions = slices.NewSearchInfo([]string{
+	ExcludedAssetExtensions = util.NewSearchInfo([]string{
+		".bak",
 		".html",
 		".toml",
-		".bak",
+		".yaml",
+		".yml",
 	})
 )
 
 const (
 	// Name of the subdirectory that holds shared text.
 	// Excluded from publishing.
-	CommonDir = "common"
+	CommonPath = "common"
 
 	// Tiny starter file for index.md
 	IndexMd = `
@@ -55,22 +58,22 @@ Welcome to %s
 
 	// Name of subdirectory within the publish directory for CSS, theme files.
 	// for that theme.
-	DefaultAssetDir = "assets"
+	DefaultAssetPath = "assets"
+
+	// Name of the subdirectory containing files that get copied
+	// into the header of each HTML file rendered by the site
+	// Excluded from publishing.
+	HeadTagsPath = "headtags"
 
 	// Name of the subdirectory the rendered files get rendered
 	// to. It can't be changed because it's used to determine
 	// whether a site is contained within its parent directory.
 	// Excluded from publishing.
-	PublishDir = ".pub"
-
-	// Name of the subdirectory containing files that get copied
-	// into the header of each HTML file rendered by the site
-	// Excluded from publishing.
-	HeadTagsDir = "headtags"
+	PublishPath = ".pub"
 
 	// Name of subdirectory containing shortcode files
 	// Excluded from publishing.
-	SCodeDir = "scodes"
+	SCodePath = "scodes"
 
   // Location of directory containing Javascript 
   // that goes at the end of the HTML file, near
@@ -78,39 +81,41 @@ Welcome to %s
   // The files MUST supply <script> tags.
   // It is possible that somehting other
   // than Javascript will be used. 
-  ScriptCloseDir = "scriptclose" 
+  ScriptClosePath = "scriptclose" 
 
   // Location of directory containing Javascript 
   // that goes at the begining of the HTML file, near
   // the opening <body> tag.
   // The files MUST <script> tags.
-  ScriptOpenDir = "scriptopen"
+  ScriptOpenPath = "scriptopen"
 
 	// Name of subdirectory within the theme that holds help & sample files
 	// for that theme.
-	ThemeHelpSubdirname = ".help"
+	ThemeHelpPath = ".help"
 
 	// Name of subdirectory under the publish directory for style sheet assets
 	// (Currently not well thought out nor in use, though assets directory is
 	// being used)
-	DefaultPublishCssSubdirname = "css"
+	DefaultPublishCssPath = "css"
 
 	// Name of subdirectory under the publish directory for image assets
 	// (Currently not well thought out nor in use, though assets directory is
 	// being used)
-	DefaultPublishImgSubdirname = "img"
+	DefaultPublishImgPath = "img"
 
-	// Name of theme used to create other themes, or theme to be
-	// used if for some reason no others are present
+  // Use this theme if none is specified, and also
+  // as the theme used to generate new themes if
+  // not otherwise specified.
 	DefaultThemeName = "wide"
 
 	// Name of the directory that holds items used by projects, such
 	// as themes and shortcodes.
 	// TODO: Change this when I settle on a product name
-	GlobalConfigurationDirName = ".mb"
+	GlobalConfigurationPath = ".mb"
 
 	// Default file extension used by configuration files.
-	ConfigFileDefaultExt = "toml"
+  // See https://yaml.org/faq.html 
+	ConfigFileDefaultExt = "yaml"
 
 	// A configuration file passed to the command line.
 	ConfigFilename = ProductName + "." + ConfigFileDefaultExt
@@ -132,10 +137,10 @@ Welcome to %s
 	// from being made to the originals, and makes it much easier to
 	// make theme changes, especially if you're a noob or just want to
 	// type less.
-	ThemeDir = ".themes"
+	ThemePath = ".themes"
 
 	// Configuration file found in the current site source directory
-	SourceDirConfigFilename = ProductName + "." + ConfigFileDefaultExt
+	SourcePathConfigFilename = ProductName + "." + ConfigFileDefaultExt
 
 	// Actual colloquial name for this product
 	// but used in directories & other
@@ -153,7 +158,6 @@ Welcome to %s
 	// or command line options.
 	// A short version of the product name
 	// used as a prefix for environment variables.
-	// TODO: Change this when I settle on a product name
 	ProductEnvPrefix = "MBZ_"
 	// Examples:
 	// PRODUCT_ENV_PREFIX+"DEFAULT_THEME"
@@ -168,10 +172,6 @@ Welcome to %s
 
 	// Objects that must be visible to the project, but not the public
 	ProjectFilePermissions = 0700
-
-	// Name of the subdirectory in the project where the site info is held.
-	// That includes the site.toml file and also the publish directory.
-	SiteConfigDir = "site"
 
 	// Name of the file that holds site configuration information
 	SiteConfigFilename = "site" + "." + ConfigFileDefaultExt
