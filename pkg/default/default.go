@@ -17,8 +17,8 @@ var (
 		{CfgDir, ThemePath},
 	}
 	// Markdown file extensions
-  // They don't in lexical order because it's possible
-  // more will be added via config file at runtime
+	// They don't in lexical order because it's possible
+	// more will be added via config file at runtime
 	MarkdownExtensions = util.NewSearchInfo([]string{
 		".Rmd",
 		".markdown",
@@ -75,19 +75,19 @@ Welcome to %s
 	// Excluded from publishing.
 	SCodePath = "scodes"
 
-  // Location of directory containing Javascript 
-  // that goes at the end of the HTML file, near
-  // the closing <body> tag.
-  // The files MUST supply <script> tags.
-  // It is possible that somehting other
-  // than Javascript will be used. 
-  ScriptClosePath = "scriptclose" 
+	// Location of directory containing Javascript
+	// that goes at the end of the HTML file, near
+	// the closing <body> tag.
+	// The files MUST supply <script> tags.
+	// It is possible that somehting other
+	// than Javascript will be used.
+	ScriptClosePath = "scriptclose"
 
-  // Location of directory containing Javascript 
-  // that goes at the begining of the HTML file, near
-  // the opening <body> tag.
-  // The files MUST <script> tags.
-  ScriptOpenPath = "scriptopen"
+	// Location of directory containing Javascript
+	// that goes at the begining of the HTML file, near
+	// the opening <body> tag.
+	// The files MUST <script> tags.
+	ScriptOpenPath = "scriptopen"
 
 	// Name of subdirectory within the theme that holds help & sample files
 	// for that theme.
@@ -103,19 +103,19 @@ Welcome to %s
 	// being used)
 	DefaultPublishImgPath = "img"
 
-  // Use this theme if none is specified, and also
-  // as the theme used to generate new themes if
-  // not otherwise specified.
+	// Use this theme if none is specified, and also
+	// as the theme used to generate new themes if
+	// not otherwise specified.
 	DefaultThemeName = "wide"
 
 	// Name of the directory that holds items used by projects, such
 	// as themes and shortcodes.
 	// TODO: Change this when I settle on a product name
-  // TC: Formerly GlobalConfigurationDirName.
+	// TC: Formerly GlobalConfigurationDirName.
 	CfgDir = ".mb"
 
 	// Default file extension used by configuration files.
-  // See https://yaml.org/faq.html 
+	// See https://yaml.org/faq.html
 	ConfigFileDefaultExt = "yaml"
 
 	// A configuration file passed to the command line.
@@ -128,9 +128,9 @@ Welcome to %s
 	// The local configuration file name without the path.
 	LocalConfigFilename = ProductName + "." + ConfigFileDefaultExt
 
-  // Name of file containing .JSON database of text used for
-  // search purposes.
-  SearchJSONFilename = ProductName + "-" + "search" + ".json"
+	// Name of file containing .JSON database of text used for
+	// search purposes.
+	SearchJSONFilename = ProductName + "-" + "search" + ".json"
 
 	// By default, the published site gets its theme from a local copy
 	// within the site directory. It then copies from that copy to

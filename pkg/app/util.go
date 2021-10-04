@@ -1,8 +1,9 @@
 package app
+
 import (
-  "github.com/tomcam/m/pkg/default"
+	"github.com/tomcam/m/pkg/default"
 	"os"
-  "path/filepath"
+	"path/filepath"
 )
 
 // createDirStructuure() creates the specified site structure
@@ -30,8 +31,6 @@ func createDirStructure(dirs *[][]string) (err error) {
 	}
 	return nil
 }
-
-
 
 // currPath) returns the current directory name.
 func currPath() string {
@@ -81,11 +80,9 @@ func isCfgPath(path string) bool {
 	return dirExists(cfgPath(path))
 }
 
-// cfgPath() returns the expected pathname where 
+// cfgPath() returns the expected pathname where
 // the site file lives. Example: "/Users/tom/html/foo/.mb"
 // formerly SitePath
 func cfgPath(path string) string {
-	return filepath.Join(path, defaults.CfgDir, )
+	return filepath.Join(path, defaults.CfgDir)
 }
-
-

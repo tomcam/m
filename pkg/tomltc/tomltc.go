@@ -1,7 +1,7 @@
 // package mdext is a extension for the goldmark(http://github.com/yuin/goldmark).
 // The tom extension parses TOML metadata blocks and store metadata to a
 // parser.Context.
-// It is copied slavishly from http://github.com/yuin/goldmark-meta 
+// It is copied slavishly from http://github.com/yuin/goldmark-meta
 package tomltc
 
 import (
@@ -16,7 +16,7 @@ import (
 	"github.com/yuin/goldmark/util"
 
 	//"gopkg.in/yaml.v2"
-  "github.com/BurntSushi/toml"
+	"github.com/BurntSushi/toml"
 )
 
 // MapItem is an item in a MapSlice.
@@ -45,8 +45,8 @@ func Get(pc parser.Context) map[string]interface{} {
 	if v == nil {
 		return nil
 	}
-  // TC: 
-  fmt.Printf("Get(): v.(*tomldata) is %#v\n", v.(*tomldata))
+	// TC:
+	fmt.Printf("Get(): v.(*tomldata) is %#v\n", v.(*tomldata))
 	d := v.(*tomldata)
 	return d.Map
 }
@@ -54,17 +54,17 @@ func Get(pc parser.Context) map[string]interface{} {
 // TryGet tries to get a TOML metadata.
 // If there are TOML parsing errors, then nil and error are returned
 func TryGet(pc parser.Context) (map[string]interface{}, error) {
-  fmt.Printf("TryGet contextKey: [%v]\n", contextKey)
+	fmt.Printf("TryGet contextKey: [%v]\n", contextKey)
 	dtmp := pc.Get(contextKey)
 	if dtmp == nil {
-    //fmt.Printf("TryGet(): %#v\n", dtmp);
+		//fmt.Printf("TryGet(): %#v\n", dtmp);
 		return nil, nil
 	}
 	d := dtmp.(*tomldata)
 	if d.Error != nil {
 		return nil, d.Error
 	}
-  //fmt.Printf("TryGet(): %#v\n", d.Map);
+	//fmt.Printf("TryGet(): %#v\n", d.Map);
 	return d.Map, nil
 }
 
@@ -76,8 +76,8 @@ func GetItems(pc parser.Context) MapSlice {
 		return nil
 	}
 	d := v.(*tomldata)
-  // TC:
-  //fmt.Printf("GetItems(): %#v\n", d.Items);
+	// TC:
+	//fmt.Printf("GetItems(): %#v\n", d.Items);
 	return d.Items
 }
 
@@ -85,7 +85,7 @@ func GetItems(pc parser.Context) MapSlice {
 // TryGetItems preserves defined key order.
 // If there are TOML parsing errors, then nil and error are returned.
 func TryGetItems(pc parser.Context) (MapSlice, error) {
-  fmt.Printf("TryGetItems()")
+	fmt.Printf("TryGetItems()")
 	dtmp := pc.Get(contextKey)
 	if dtmp == nil {
 		return nil, nil
@@ -94,7 +94,7 @@ func TryGetItems(pc parser.Context) (MapSlice, error) {
 	if d.Error != nil {
 		return nil, d.Error
 	}
-  fmt.Printf("\t%#v\n", d.Items);
+	fmt.Printf("\t%#v\n", d.Items)
 	return d.Items, nil
 }
 
@@ -137,8 +137,8 @@ func (b *metaParser) Open(parent gast.Node, reader text.Reader, pc parser.Contex
 func (b *metaParser) Continue(node gast.Node, reader text.Reader, pc parser.Context) parser.State {
 	line, segment := reader.PeekLine()
 	if isSeparator(line) && !util.IsBlank(line) {
-    // TC: I think this is where at least 1 line
-    // of the metadata was found
+		// TC: I think this is where at least 1 line
+		// of the metadata was found
 		reader.Advance(segment.Len())
 		return parser.Close
 	}
@@ -156,10 +156,10 @@ func (b *metaParser) Close(node gast.Node, reader text.Reader, pc parser.Context
 	d := &tomldata{}
 	d.Node = node
 	meta := map[string]interface{}{}
-  // meta := make(map[string]interface{})
-  fmt.Printf("Close(): about to unmarshal\n\t%v\n", string(buf.Bytes()))
+	// meta := make(map[string]interface{})
+	fmt.Printf("Close(): about to unmarshal\n\t%v\n", string(buf.Bytes()))
 	if err := toml.Unmarshal(buf.Bytes(), &meta); err != nil {
-    fmt.Printf("\t error unmarshalling\n%v\n", string(buf.Bytes()))
+		fmt.Printf("\t error unmarshalling\n%v\n", string(buf.Bytes()))
 		d.Error = err
 	} else {
 		d.Map = meta
@@ -193,29 +193,29 @@ type astTransformer struct {
 var defaultASTTransformer = &astTransformer{}
 
 func (a *astTransformer) Transform(node *gast.Document, reader text.Reader, pc parser.Context) {
-  fmt.Println("Transform() -- START")
-  fmt.Println("\tpc.Get()")
+	fmt.Println("Transform() -- START")
+	fmt.Println("\tpc.Get()")
 	dtmp := pc.Get(contextKey)
 	if dtmp == nil {
 		return
 	}
 	d := dtmp.(*tomldata)
-  // xxx 
+	// xxx
 	if d.Error != nil {
-    fmt.Println("\tError in tmp")
+		fmt.Println("\tError in tmp")
 		msg := gast.NewString([]byte(fmt.Sprintf("<!-- %s -->", d.Error)))
 		msg.SetCode(true)
 		d.Node.AppendChild(d.Node, msg)
 		return
 	}
 
-  fmt.Println("\tpc.GetItems()")
+	fmt.Println("\tpc.GetItems()")
 	meta := GetItems(pc)
 	if meta == nil {
 		return
 	}
 	table := east.NewTable()
-  fmt.Println("\ttable: %#v", table)
+	fmt.Println("\ttable: %#v", table)
 	alignments := []east.Alignment{}
 	for range meta {
 		alignments = append(alignments, east.AlignNone)
@@ -236,8 +236,8 @@ func (a *astTransformer) Transform(node *gast.Document, reader text.Reader, pc p
 	}
 	table.AppendChild(table, row)
 	node.InsertBefore(node, node.FirstChild(), table)
-  fmt.Println("\tcomplete table: %#v", table)
-  fmt.Println("Transform() -- END")
+	fmt.Println("\tcomplete table: %#v", table)
+	fmt.Println("Transform() -- END")
 }
 
 // Option is a functional option type for this extension.
@@ -280,6 +280,3 @@ func (e *meta) Extend(m goldmark.Markdown) {
 		)
 	}
 }
-
-
-

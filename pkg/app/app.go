@@ -1,24 +1,24 @@
 package app
 
 import (
-  //"github.com/tomcam/m/pkg/util"
-
-  /*
-	"github.com/spf13/viper"
+	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/tomcam/mb/pkg/errs"
-	"github.com/yuin/goldmark"
-	"path/filepath"
-  */
-)
+	"github.com/tomcam/m/pkg/default"
+	//"github.com/tomcam/m/pkg/util"
+	/*
+		"github.com/spf13/viper"
+		"github.com/tomcam/mb/pkg/errs"
+		"github.com/yuin/goldmark"
+		"path/filepath"
+	*/)
 
 // App contains all runtime options required to convert a markdown
 // file or project to an HTML file or site.
 // Compound data structure for config example at
 // https://gist.github.com/alexedwards/5cd712192b4831058b21
 type App struct {
-
-  Site Site
+	Site Site
+	Cmd  *cobra.Command
 }
 
 // NewApp allocates, and initializes to default
@@ -26,32 +26,37 @@ type App struct {
 // environment for a Metabuzz process). Everything
 // necessary to create a new project must be set
 // by the time App.updateConfig() is called.
-// 
+//
 // path is the location for the project.
-// 
+//
 func NewApp(path string) *App {
-  app := App{}
+	app := App{
+		Cmd: &cobra.Command{
+			Use:   defaults.ProductShortName,
+			Short: "Create static sites",
+			Long:  `Headless CMS to create static sites`,
+		},
+	}
 
-  // path is the location for the project.
-  // If not specified, use the current directory.
-  if path != "" {
-    app.Site.Path = path
-  } else {
-    app.Site.Path = currPath()
-  }
+	// path is the location for the project.
+	// If not specified, use the current directory.
+	if path != "" {
+		app.Site.Path = path
+	} else {
+		app.Site.Path = currPath()
+	}
 
-  // If there are any configuration files,
-  // environment variables, etc. with info
-  // that overrides what was just done,
-  // readt them in.
-  app.updateConfig()
+	// If there are any configuration files,
+	// environment variables, etc. with info
+	// that overrides what was just done,
+	// readt them in.
+	app.updateConfig()
 
-  return &app
+	return &app
 }
 
-
 // updateConfig() determines where configuration file (and other
-// forms of configuration info, such as 
+// forms of configuration info, such as
 // environment variables) can be found, then reads in
 // all that info. It overrides defaults established
 // in NewApp(). It isn't necessary. That us, NewApp()
@@ -61,3 +66,16 @@ func NewApp(path string) *App {
 func (app *App) updateConfig() {
 }
 
+func (app *App) build() error {
+	fmt.Println("FAKE BUILD")
+	return nil
+}
+func (app *App) NewSite() error {
+	// Create minimal directory structure: Publish directory
+	// .site directory, .themes, etc.
+	if err := createDirStructure(&defaults.SitePaths); err != nil {
+		//return errs.ErrCode("PREVIOUS", err.Error())
+		return ErrCode("PREVIOUS", err.Error())
+	}
+	return nil
+}

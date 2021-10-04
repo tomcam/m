@@ -1,13 +1,15 @@
-package errs
+package app
+
 import (
 	"fmt"
 	"github.com/tomcam/m/pkg/default"
+	"os"
 )
 
 // defaults.ErrorCodePrefix is a short string (currently "mbz") used
 // to make it easier to search a Metabuz error code on the web.
 
-//	SECTIONS 
+//	SECTIONS
 //
 //	0100	- Error reading file
 //	0200	- Error creating file
@@ -33,7 +35,7 @@ var errMsgs = map[string]string{
 	"PREVIOUS": " ",
 
 	// 0100	- Error reading file
-	"0101": "Error reading front matter",           // filename
+	"0101": "Error reading front matter", // filename
 	// 0200	- Error creating file
 	// 0250 - Error closing file
 	// 0300	- Error deleting file
@@ -62,21 +64,21 @@ type ErrMsg struct {
 	Extra    []string
 }
 
-// Error() looks up e.Key, which is an error code number 
-// expressed as a string (for example, "1001") 
+// Error() looks up e.Key, which is an error code number
+// expressed as a string (for example, "1001")
 // and returns its associated map entry, which is an explanatory
 // text message for that error code.
 // But there's likely much more happening:
 // -  If e.Key is "PREVIOUS" it suggests that an error message
 //    that didn't get displayed probably
-//    should be displayed, and its contents 
+//    should be displayed, and its contents
 //    in e.previous are returned.
 // -  If e.Extra has something, say, a filename, it should be
 //    used to customize the error message.
-// -  If the e.Key isn't recognized, it displays an 
+// -  If the e.Key isn't recognized, it displays an
 //    "error code untracked" error message as a reminder to me
 //    that I screwed up.
-// Why is the key a number formatted as a string? 
+// Why is the key a number formatted as a string?
 // Because it gets appended to "mbz" in an error message,
 // and I plan for Metabuzz to be so popular that people would be
 // looking up error codes using search engines, e.g. mbz1001. And it's a
@@ -153,4 +155,31 @@ func ErrCode(key string, previous string, extra ...string) error {
 		e = new(key, previous)
 	}
 	return e
+}
+
+// QuitError() displays the error passed to it and exits
+// to the operating system, returning a 1 (any nonzero
+// return means an error occurred).
+// Normally functions that can generate a runtime error
+// do so by returning an error. But sometimes there's a
+// constraint, for example, fulfilling an interface method
+// that doesn't support this practice.
+func (a *App) QuitError(e error) {
+	/*
+		if a.Page.filePath != "" {
+			fmt.Printf("%s ", a.Page.filePath)
+		}
+	*/
+	displayError(e)
+	if e == nil {
+		os.Exit(0)
+	} else {
+		os.Exit(1)
+	}
+}
+
+// displayError() shows the specified error message
+// without exiting to the OS.
+func displayError(e error) {
+	fmt.Println(e.Error())
 }

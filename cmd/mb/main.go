@@ -78,7 +78,7 @@ func main() {
 	case 4: // e.g. ./mb new site foo
 		command = os.Args[1] + os.Args[2]
 		filename = os.Args[3]
-	case 3: // e.g. ./mb new foo 
+	case 3: // e.g. ./mb new foo
 		command = os.Args[1]
 		filename = os.Args[2]
 	case 2: // e.g. ./mb new
@@ -87,7 +87,7 @@ func main() {
 	default: // program name only
 		// Same as build
 	}
-  fmt.Printf("\tCommand: %s\n", command)
+	fmt.Printf("\tCommand: %s\n", command)
 	fmt.Printf("Args: %v\nArg count: %v\nCommand: %s\nFilename: %s\n",
 		os.Args, len(os.Args), command, filename)
 	switch command {
@@ -95,7 +95,7 @@ func main() {
 		fmt.Println(string(mdFileToHTML(filename)))
 	case "new", "newsite":
 		a := app.NewApp(filename)
-    a.Site.New()
+		a.NewSite()
 		fmt.Printf("\tProject path: %s\n", a.Site.Path)
 	}
 

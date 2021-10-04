@@ -13,35 +13,31 @@ type app struct {
 }
 
 func main() {
-  port := flag.String("port", "12345", "Port to run on")
-  flag.Parse()
+	port := flag.String("port", "12345", "Port to run on")
+	flag.Parse()
 
-  infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
-  errLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	errLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
-  app := &app{
-    errLog: errLog,
-    infoLog: infoLog,
-  }
+	app := &app{
+		errLog:  errLog,
+		infoLog: infoLog,
+	}
 
-  mux := http.NewServeMux()
-  mux.HandleFunc("/", app.root)
-  mux.HandleFunc("/new", app.newPage)
-  
-  //fs := http.FileServer(http.Dir("./ui/html/"))
-  //mux.Handle("/static/", http.StripPrefix("/static", fs))
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", app.root)
+	mux.HandleFunc("/new", app.newPage)
 
-  site := &http.Server{
-    Addr: ":" + *port,
-    ErrorLog: errLog,
-    Handler: mux,
-  }
+	//fs := http.FileServer(http.Dir("./ui/html/"))
+	//mux.Handle("/static/", http.StripPrefix("/static", fs))
 
-  infoLog.Printf("Running on port %s. Press Ctrl+C to stop", *port)
-  err := site.ListenAndServe()
-  errLog.Fatal(err)
+	site := &http.Server{
+		Addr:     ":" + *port,
+		ErrorLog: errLog,
+		Handler:  mux,
+	}
+
+	infoLog.Printf("Running on port %s. Press Ctrl+C to stop", *port)
+	err := site.ListenAndServe()
+	errLog.Fatal(err)
 }
-
-
-
-

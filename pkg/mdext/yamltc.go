@@ -94,7 +94,7 @@ func NewParser() parser.BlockParser {
 func isSeparator(line []byte) bool {
 	line = util.TrimRightSpace(util.TrimLeftSpace(line))
 	for i := 0; i < len(line); i++ {
-    // TC:
+		// TC:
 		//if line[i] != '-' {
 		if line[i] != '+' {
 			return false
@@ -104,7 +104,7 @@ func isSeparator(line []byte) bool {
 }
 
 func (b *metaParser) Trigger() []byte {
-  // TC:
+	// TC:
 	//return []byte{'-'}
 	return []byte{'+'}
 }

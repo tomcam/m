@@ -1,6 +1,7 @@
 package util
+
 import (
-  "io/ioutil"
+	"io/ioutil"
 )
 
 // fileToBytes converts a source file to a byte slice.
@@ -8,11 +9,9 @@ import (
 // opened it just returns an empty slice. No error
 // is generated.
 func FileToBytes(filename string) []byte {
-  bytes, err := ioutil.ReadFile(filename)
+	bytes, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return []byte{}
 	}
-  return bytes
+	return bytes
 }
-
-
