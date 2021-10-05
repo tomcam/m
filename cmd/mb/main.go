@@ -18,20 +18,49 @@ import (
 	"os"
 )
 
+
+func mdToHTML(source []byte) []byte {
+  // Get a parser object.  
+  ctx := parser.NewContext()
+	p := newParser().Parser()
+	node := p.Parse(text.NewReader(source), parser.WithContext(ctx))
+  // Create variable-sized buffer for parsed output.
+	buf := new(bytes.Buffer)
+  // Convert the Markdown file to HTML.
+	if err := newParser().Renderer().Render(buf, source, node); err != nil {
+		// TC: update error handling
+		// a.QuitError(errs.ErrCode("0920", err.Error()))
+		panic("Parse error")
+    // TODO: Hmmm... this should probably return an error
+		return nil
+	}
+  // Return the HTML.
+  fmt.Println("mdToHTML: \n" + string(buf.Bytes()))
+	return buf.Bytes()
+}
+
 // mdFileToHTML converts the markdown file in filename to HTML.
 // It may include optional front matter.
 func mdFileToHTML(filename string) []byte {
+  // Read file into a byte slice.
 	s := util.FileToBytes(filename)
+  return mdToHTML(s)
+
+  // Get a parser object.
 	ctx := parser.NewContext()
 	p := newParser().Parser()
 	node := p.Parse(text.NewReader(s), parser.WithContext(ctx))
+  // Create variable-sized buffer for parsed output.
 	buf := new(bytes.Buffer)
+  // Convert the Markdown file to HTML.
 	if err := newParser().Renderer().Render(buf, s, node); err != nil {
 		// TC: update error handling
 		// a.QuitError(errs.ErrCode("0920", err.Error()))
 		panic("Parse error")
+    // TODO: Hmmm... this should probably return an error
 		return nil
 	}
+  // Return the HTML.
 	return buf.Bytes()
 }
 
