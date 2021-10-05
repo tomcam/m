@@ -1,7 +1,25 @@
-echo "Temporary backup solution until I resolve GitHub auth issues"
-sudo cp -R ~/code/m /Users/tom/Library/Mobile\ Documents/com~apple~CloudDocs/go
-echo "/Users/tom/Library/Mobile\ Documents/com~apple~CloudDocs/go/m"
-ls -lat /Users/tom/Library/Mobile\ Documents/com~apple~CloudDocs/go/m
-
+# /Volumes/sandisk1/m
+VOLUME="/Volumes/sandisk1"
+SOURCE="/Users/tom/code/m"
+# DEST="${VOLUME}${SOURCE}"
+DEST="${VOLUME}"
+echo "Backing up to ${VOLUME}"
+if mount | grep "on $VOLUME" ; then
+  echo "Backing up ${SOURCE} to  ${DEST}"
+  echo "Attempting to create dir ${DEST}"
+  mkdir -p $DEST
+  echo "About to:"
+  echo "cp -v -R ${SOURCE} ${DEST}"
+  # -R means copy directories & subdirectories
+  # -v means verbose output
+  cp -v -R ${SOURCE} ${DEST}
+  echo "Copied to ${DEST}"
+  ls -lat ${DEST}
+  exit 0
+else
+    echo "Backup directory ${DIR} not available. Is the disk or flash drive mounted?"
+    exit 1
+fi
+exit 0
 
 
