@@ -1,9 +1,11 @@
 # To do
 
 ## Priority 1: Showstoppers--required for the next release
-
+* Make these changes when returning to the standard mb directory
+  - Fix hardcoded paths in the files `gf`, `bu`
 ## Priority 2: Desired but not required for the next release
 
+* Ensure Dedent is working properly. The generated source always has a newline appended. Does Dedent account for that, or should it?
 * Create a test case for each error code
 * Make `/docs directory` configurable
 * Change QuitError to take only the error number for clarity
