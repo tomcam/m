@@ -9,9 +9,9 @@ import (
 	"github.com/tomcam/m/pkg/mdext"
 	"github.com/tomcam/m/pkg/util"
 	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/renderer"
-	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/renderer/html"
 	"github.com/yuin/goldmark/text"
 	//"io"
@@ -68,11 +68,11 @@ func newParser() goldmark.Markdown {
 	exts := []goldmark.Extender{
 		//mdext.New(mdext.WithTable()), extension.Table,
 
-    // YAML support
+		// YAML support
 		mdext.New(),
 
-    // Support GitHub tables
-    extension.Table,
+		// Support GitHub tables
+		extension.Table,
 		extension.GFM,
 		extension.DefinitionList,
 		extension.Footnote,
@@ -105,5 +105,3 @@ func newParser() goldmark.Markdown {
 		goldmark.WithRendererOptions(renderOpts...),
 	)
 }
-
-

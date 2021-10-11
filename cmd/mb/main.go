@@ -33,8 +33,8 @@ func main() {
 		a.HTML = MdFileToHTML(filename)
 		fmt.Println(string(a.HTML))
 	case "new", "newsite":
-			a.NewSite()
-		  fmt.Printf("\tProject path: %s\n", a.Site.Path)
+		a.NewSite()
+		fmt.Printf("\tProject path: %s\n", a.Site.Path)
 	}
 
 }
