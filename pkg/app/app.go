@@ -4,14 +4,7 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/tomcam/m/pkg/default"
-	//"github.com/tomcam/m/pkg/util"
-	/*
-		"github.com/spf13/viper"
-		"github.com/tomcam/mb/pkg/errs"
-		"github.com/yuin/goldmark"
-		"path/filepath"
-	*/)
-
+)
 // App contains all runtime options required to convert a markdown
 // file or project to an HTML file or site.
 // Compound data structure for config example at
@@ -19,6 +12,9 @@ import (
 type App struct {
 	Site Site
 	Cmd  *cobra.Command
+
+  // Contents of HTML file after being converted from Markdown
+  HTML []byte
 }
 
 // NewApp allocates, and initializes to default
@@ -31,6 +27,7 @@ type App struct {
 //
 func NewApp(path string) *App {
 	app := App{
+    HTML: nil,
 		Cmd: &cobra.Command{
 			Use:   defaults.ProductShortName,
 			Short: "Create static sites",
@@ -48,7 +45,7 @@ func NewApp(path string) *App {
 
 	// If there are any configuration files,
 	// environment variables, etc. with info
-	// that overrides what was just done,
+	// that overrides what was just initialized,
 	// readt them in.
 	app.updateConfig()
 
@@ -79,3 +76,8 @@ func (app *App) NewSite() error {
 	}
 	return nil
 }
+
+
+
+
+

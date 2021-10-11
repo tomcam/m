@@ -15,8 +15,9 @@ func TestConversion(t *testing.T) {
     // to Markdown
 		want  string
 	}{
+    // Generate an h1.
     // Ensure front matter isn't included in output 
-    // Also ensure an ID is added to the header.
+    // Ensure an ID is added to the header.
 		{`
 		   +++
        Stuff: here
@@ -31,7 +32,9 @@ func TestConversion(t *testing.T) {
 		`, "<p>hello, world.</p>\n"},
 
     // Ensure whitespace in input is consistent
-    // with previous test.
+    // with previous test even though leading
+    // and trailing whitespace differ between
+    // the two test cases.
 		{`
        hello, world.
 
@@ -44,7 +47,10 @@ func TestConversion(t *testing.T) {
       // Dedent() removes semantically unnecessary
       // whitespace from output so it can be reliably
       // compared to the expected output.
+
+      // Convert an example fragment of Markdown source to HTML.
       got := string(mdToHTML([]byte(texts.Dedent(tt.mdSrc))))
+      // Compare input to expected output
 			if diff := cmp.Diff(tt.want, got); diff != "" {
 				t.Errorf(" mismatch (-want +got):\n%s", diff)
 			}

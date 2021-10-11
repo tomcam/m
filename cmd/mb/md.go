@@ -3,7 +3,7 @@ package main
 import (
 	"bytes"
 	//"errors"
-	"fmt"
+	//"fmt"
 	//highlighting "github.com/yuin/goldmark-highlighting"
 	//"github.com/tomcam/m/pkg/app"
 	"github.com/tomcam/m/pkg/mdext"
@@ -18,6 +18,8 @@ import (
 	//"os"
 )
 
+// mdToHTML converts a Markdown source file in a byte
+// slice to HTML.
 func mdToHTML(source []byte) []byte {
 	// Get a parser object.
 	ctx := parser.NewContext()
@@ -34,13 +36,12 @@ func mdToHTML(source []byte) []byte {
 		return nil
 	}
 	// Return the HTML.
-	fmt.Println("mdToHTML: \n" + string(buf.Bytes()))
 	return buf.Bytes()
 }
 
 // mdFileToHTML converts the markdown file in filename to HTML.
 // It may include optional front matter.
-func mdFileToHTML(filename string) []byte {
+func MdFileToHTML(filename string) []byte {
 	// Read file into a byte slice.
 	s := util.FileToBytes(filename)
 	return mdToHTML(s)

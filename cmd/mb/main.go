@@ -30,7 +30,8 @@ func main() {
 		os.Args, len(os.Args), command, filename)
 	switch command {
 	case "build":
-		fmt.Println(string(mdFileToHTML(filename)))
+		a.HTML = MdFileToHTML(filename)
+		fmt.Println(string(a.HTML))
 	case "new", "newsite":
 			a.NewSite()
 		  fmt.Printf("\tProject path: %s\n", a.Site.Path)

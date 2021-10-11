@@ -3,6 +3,8 @@
 ## Priority 1: Showstoppers--required for the next release
 * Make these changes when returning to the standard mb directory
   - Fix hardcoded paths in the files `gf`, `bu`
+* Ensure mdToHTML and mdFileToHTML return errors and use application error handling
+
 ## Priority 2: Desired but not required for the next release
 
 * Ensure Dedent is working properly. The generated source always has a newline appended. Does Dedent account for that, or should it?
@@ -14,6 +16,14 @@
 [Reddit RFP for TOML](https://www.reddit.com/r/golang/comments/pthh4p/paying_gig_for_foss_project_extending_the/)
 * Ability to handle links with `.md` files instead of `.html`,
 e.g. instead of
+
+### Code smell
+
+Here are some potential problems in the code.
+
+* `md_test.go` assumes automatic header ID generation is on by default. 
+Probably need to move to a more complicated test harness that dealw
+with different settings for output
 
 `[To do](todo.html)`
 
