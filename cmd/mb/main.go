@@ -1,9 +1,10 @@
-package main
+package mb
 
 import (
 	"errors"
 	"fmt"
 	"github.com/tomcam/m/pkg/app"
+	"github.com/tomcam/m/pkg/mark"
 	"io"
 	"os"
 )
@@ -30,7 +31,7 @@ func main() {
 		os.Args, len(os.Args), command, filename)
 	switch command {
 	case "build":
-		a.HTML = MdFileToHTML(filename)
+		a.HTML = mark.MdFileToHTML(filename)
 		fmt.Println(string(a.HTML))
 	case "new", "newsite":
 		a.NewSite()

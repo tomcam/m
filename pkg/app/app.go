@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/tomcam/m/pkg/default"
+	"github.com/yuin/goldmark"
 )
 
 // App contains all runtime options required to convert a markdown
@@ -13,6 +14,8 @@ import (
 type App struct {
 	Site Site
 	Cmd  *cobra.Command
+
+	Parser goldmark.Markdown
 
 	// Contents of HTML file after being converted from Markdown
 	HTML []byte
@@ -35,6 +38,11 @@ func NewApp(path string) *App {
 			Long:  `Headless CMS to create static sites`,
 		},
 	}
+	app.Parser = goldmark.New()
+	//app.Parser = mark.GetParser().Parser()
+	//app.parser = mark.GetParser().Parser()
+	//app.parser = markdown.GetParser().Parser()
+	//app.parser = markdown.GetParser().Parser()
 
 	// path is the location for the project.
 	// If not specified, use the current directory.
