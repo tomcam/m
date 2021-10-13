@@ -26,8 +26,13 @@ one website.
 
 ## Startup
 
+* app.NewDefaultApp() allocates the App object 
+* App.Cmd.Execute() gets commands from the command line
+using Cobra Command (https://github.com/spf13/cobra), 
+but also configuration information from config files in
+the user's documents directory, config files in the
+project directory, and the environment
 
-* 
 
 
 ## Project structure

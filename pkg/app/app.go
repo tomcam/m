@@ -1,7 +1,8 @@
 package app
 
 import (
-	"fmt"
+	//"fmt"
+	"errors"
 	"github.com/spf13/cobra"
 	"github.com/tomcam/m/pkg/default"
 	"github.com/yuin/goldmark"
@@ -13,7 +14,9 @@ import (
 // https://gist.github.com/alexedwards/5cd712192b4831058b21
 type App struct {
 	Site Site
-	Cmd  *cobra.Command
+
+	// Cobra Command Processes command lin options
+	Cmd *cobra.Command
 
 	Parser goldmark.Markdown
 
@@ -29,28 +32,23 @@ type App struct {
 //
 // path is the location for the project.
 //
-func NewApp(path string) *App {
+func NewApp() *App {
 	app := App{
-		HTML: nil,
+		HTML:   nil,
+		Parser: goldmark.New(),
 		Cmd: &cobra.Command{
 			Use:   defaults.ProductShortName,
 			Short: "Create static sites",
 			Long:  `Headless CMS to create static sites`,
 		},
 	}
-	app.Parser = goldmark.New()
-	//app.Parser = mark.GetParser().Parser()
-	//app.parser = mark.GetParser().Parser()
-	//app.parser = markdown.GetParser().Parser()
-	//app.parser = markdown.GetParser().Parser()
+	//app.Parser = goldmark.New()
 
-	// path is the location for the project.
-	// If not specified, use the current directory.
-	if path != "" {
-		app.Site.Path = path
-	} else {
-		app.Site.Path = currPath()
-	}
+	// TODO: STOP HARDCODING THIS
+	app.Site.Path = currPath()
+
+	// Process command line
+	app.addCommands()
 
 	// If there are any configuration files,
 	// environment variables, etc. with info
@@ -72,10 +70,6 @@ func NewApp(path string) *App {
 func (app *App) updateConfig() {
 }
 
-func (app *App) build() error {
-	fmt.Println("FAKE BUILD")
-	return nil
-}
 func (app *App) NewSite() error {
 	// Create minimal directory structure: Publish directory
 	// .site directory, .themes, etc.
@@ -84,4 +78,14 @@ func (app *App) NewSite() error {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	return nil
+}
+
+// loadConfigs() looks for the many possible sources of
+// configuration info (environment, local files, user
+// document directory files, etc.)
+// Call it after command line has been processed because
+// the command line is our final, highest priority place
+// to look for config info.
+func (app *App) loadConfigs() {
+	app.QuitError(errors.New("cli parsed"))
 }
