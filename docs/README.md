@@ -18,4 +18,9 @@ Plans for upcoming releases. No promises.
 
 * `gf` formats everyting in the project if run from root
 
+[Documentation conventions](conventions.html)
+
+How to keep consistent in organizing and displaying documents.
+
+
 

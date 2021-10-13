@@ -1,8 +1,6 @@
 package app
 
 import (
-	//"fmt"
-	"errors"
 	"github.com/spf13/cobra"
 	"github.com/tomcam/m/pkg/default"
 	"github.com/yuin/goldmark"
@@ -70,7 +68,7 @@ func NewApp() *App {
 func (app *App) updateConfig() {
 }
 
-func (app *App) NewSite() error {
+func (app *App) NewSite(name string) error {
 	// Create minimal directory structure: Publish directory
 	// .site directory, .themes, etc.
 	if err := createDirStructure(&defaults.SitePaths); err != nil {
@@ -86,6 +84,7 @@ func (app *App) NewSite() error {
 // Call it after command line has been processed because
 // the command line is our final, highest priority place
 // to look for config info.
+// Based on old initConfigs()
+// https://github.com/tomcam/mb/blob/master/pkg/app/application.go#L57
 func (app *App) loadConfigs() {
-	app.QuitError(errors.New("cli parsed"))
 }

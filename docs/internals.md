@@ -48,3 +48,98 @@ file, source files, and so on.
 under the `/docs` directory. Without that subdirectory
 Metabuzz won't generate a website.
 
+## Adding to the CLI
+
+### Adding a compound command like new site
+
+
+Add this to  var( declaration under func (app *App) addCommands(). 
+Note that cmdBuildNewMsg is just a string variable declared
+in cmdmsgs.go, described later.
+
+```
+    /*****************************************************
+      TOP LEVEL COMMAND: new
+     *****************************************************/
+    cmdNew = &cobra.Command{
+      Use:   "new",
+      Short: "new commands: new site|theme",
+      Long: cmdBuildNewMsg, 
+    }
+ 
+		/*****************************************************
+		    Subcommand: new site
+		*****************************************************/
+
+		cmdNewSite = &cobra.Command{
+			Use:   "site {sitename}",
+			Short: "new site mycoolsite",
+			Long: `new site {sitename}
+      Where {sitename} is a valid directory name. For example, if your site is called basiclaptop.com, you would do this:
+      mb new site basiclaptop
+`,
+			Run: func(cmd *cobra.Command, args []string) {
+				// If there are arguments after build, then
+				// just convert these files one at at time.
+				if len(args) > 0 {
+					a.Site.Name = args[0]
+				} else {
+					// Them more likely case: it's build all by
+					// itself, so go through the whole directory
+					// tree and build as a complete site.
+					a.Site.Name = promptString("Name of site to create?")
+				}
+				err := a.NewSite(a.Site.Name)
+				if err != nil {
+					a.QuitError(err)
+				} else {
+					fmt.Println("Created site ", a.Site.Name)
+				}
+			},
+		}
+```
+
+At the end of the `(a *App) addCommands()` functions add these under the comment shown:
+
+```
+  /*****************************************************
+    END TOP LEVEL COMMANDS BEFORE THE ABOVE )                    
+   *****************************************************/    
+                                                          
+  app.Cmd.AddCommand(cmdNew)                           
+  cmdNew.AddCommand(cmdNewSite)                              
+```
+
+### Add the variable `cmdBuildNewMsg` to `cmdmsgs.go`
+
+The text for `cmdBuildNewMsg` is long.If it were shorter
+it could be inline with the rest of the code, but long
+messages get declared as variables in `cmdmsgs.go`. If
+it were the only variable in `cmdmsgs.go` the while
+file would look as show below, but of course the
+file actually contains many variables separated by commas.
+
+```
+package app
+
+var (
+	cmdBuildNewMsg = `
+site: Use new site to start a new project. Use new theme to 
+create theme based on an existing one. 
+      Typical usage of new site:
+      : Create the project named mysite in its own directory.
+      : (Generates a tiny file named index.md)
+      mb new site mysite
+      : Make that the current directory. 
+      cd mysite
+      : Optional step: Write your Markdown here!
+      : Find all .md files and convert to HTML
+      : Copy them into the publish directory named .pub
+      mb build
+      : Load the site's home page into a browser.
+      : Windows users, omit the open
+      open .pub/index.html
+`
+)
+```
+

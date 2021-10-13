@@ -12,6 +12,9 @@ import (
 // its directory location, title, publish directory,
 // branding information, etc.
 type Site struct {
+	// Name of the whole project (and its directory)
+	Name string
+
 	// Home directory for the project. All other
 	// paths, such as location of publish directory,
 	// graphics & javascript assets, etc., are based on
