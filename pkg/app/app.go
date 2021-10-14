@@ -11,7 +11,7 @@ import (
 // Compound data structure for config example at
 // https://gist.github.com/alexedwards/5cd712192b4831058b21
 type App struct {
-	Site Site
+	site Site
 
 	// Cobra Command Processes command lin options
 	Cmd *cobra.Command
@@ -40,10 +40,12 @@ func NewApp() *App {
 			Long:  `Headless CMS to create static sites`,
 		},
 	}
-	//app.Parser = goldmark.New()
 
-	// TODO: STOP HARDCODING THIS
-	app.Site.Path = currPath()
+  // Obtain current directory location.
+  // Probably the build path, though a different
+  // one can be specified after build on the
+  // command line.
+	app.site.path = currPath()
 
 	// Process command line
 	app.addCommands()

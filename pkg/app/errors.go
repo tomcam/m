@@ -47,9 +47,12 @@ var errMsgs = map[string]string{
 	"0801": "",
 	// 0900	- Problem generating something
 	// 0950 - Something's already there
+
 	// 1000	- Something's missing that should be there
 	"1001": "Missing front matter and markdown", // filename
+
 	// 1100 - Problem changing to a directory
+  "1101": "Unable to", // chdir to baddirname
 	// 1200 - Syntax error!
 }
 

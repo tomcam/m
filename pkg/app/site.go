@@ -13,7 +13,7 @@ import (
 // branding information, etc.
 type Site struct {
 	// Name of the whole project (and its directory)
-	Name string
+	name string
 
 	// Home directory for the project. All other
 	// paths, such as location of publish directory,
@@ -25,5 +25,5 @@ type Site struct {
 	// If you just run:
 	//   mb new site
 	// It's initialized to the name of the current directory.
-	Path string
+	path string
 }

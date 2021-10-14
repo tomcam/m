@@ -23,7 +23,7 @@ func (app *App) addCommands() {
 		cmdNew = &cobra.Command{
 			Use:   "new",
 			Short: "new commands: new site|theme",
-			Long:  cmdBuildNewMsg,
+			Long:  cmdNewMsg,
 		}
 
 		/*****************************************************
@@ -41,18 +41,18 @@ func (app *App) addCommands() {
 				// If there are arguments after build, then
 				// just convert these files one at at time.
 				if len(args) > 0 {
-					app.Site.Name = args[0]
+					app.site.name = args[0]
 				} else {
 					// Them more likely case: it's build all by
 					// itself, so go through the whole directory
 					// tree and build as a complete site.
-					app.Site.Name = promptString("Name of site to create?")
+					app.site.name = promptString("Name of site to create?")
 				}
-				err := app.NewSite(app.Site.Name)
+				err := app.NewSite(app.site.name)
 				if err != nil {
 					app.QuitError(err)
 				} else {
-					fmt.Println("Created site ", app.Site.Name)
+					fmt.Println("Created site ", app.site.name)
 				}
 			},
 		}
@@ -66,8 +66,12 @@ func (app *App) addCommands() {
 			Short: "build: Generates the site HTML and copies to publish directory",
 			Long:  cmdBuildLongMsg,
 			Run: func(cmd *cobra.Command, args []string) {
-				fmt.Println("Runnning app.build()")
-				err := app.build()
+				var err error
+				if len(args) > 0 {
+					err = app.build(args[0])
+				} else {
+					err = app.build("")
+				}
 				if err != nil {
 					app.QuitError(err)
 				}
