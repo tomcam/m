@@ -52,7 +52,7 @@ var errMsgs = map[string]string{
 	"1001": "Missing front matter and markdown", // filename
 
 	// 1100 - Problem changing to a directory
-  "1101": "Unable to", // chdir to baddirname
+	"1101": "Unable to", // chdir to baddirname
 	// 1200 - Syntax error!
 }
 

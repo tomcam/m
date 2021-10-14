@@ -95,7 +95,7 @@ func isCfgPath(path string) bool {
 // the site file lives. Example: "/Users/tom/html/foo/.mb"
 // formerly SitePath
 func cfgPath(path string) string {
-	return filepath.Join(path, defaults.CfgDir)
+	return filepath.Join(path, defaults.CfgPath)
 }
 
 // promptString() displays a prompt, then awaits for keyboard

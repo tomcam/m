@@ -41,10 +41,10 @@ func NewApp() *App {
 		},
 	}
 
-  // Obtain current directory location.
-  // Probably the build path, though a different
-  // one can be specified after build on the
-  // command line.
+	// Obtain current directory location.
+	// Probably the build path, though a different
+	// one can be specified after build on the
+	// command line.
 	app.site.path = currPath()
 
 	// Process command line

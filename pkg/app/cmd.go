@@ -1,3 +1,7 @@
+// ADD THIS
+// Directory this site uses to copy themes from. If the -d option was
+// set, use the global factory themes directory. Otherwise, use local copy
+
 package app
 
 import (
