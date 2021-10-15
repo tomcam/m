@@ -33,9 +33,10 @@ type Flags struct {
 	// Global verbose mode
 	Verbose bool
 
-  // Display debug info
-  Info bool
+	// Display debug info
+	Info bool
 }
+
 // NewApp allocates, and initializes to default
 // values, an App struct (which contains the runtime
 // environment for a Metabuzz process). Everything

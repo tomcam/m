@@ -14,8 +14,11 @@ import (
 
 var (
 
-	// Declare command-line subcommand to build a project
+	// Declare command to build a project
 	cmdBuild = flag.NewFlagSet("build", flag.ExitOnError)
+
+	// Declare command to build a hardcoded test site
+	cmdKitchenSink = flag.NewFlagSet("kitchen", flag.ExitOnError)
 
 	// Declare command-line subcommand to display config info
 	//cmdInfo = flag.NewFlagSet("info", flag.ExitOnError)
@@ -73,7 +76,7 @@ func (app *App) addCommands() {
 		}
 
 		/*****************************************************
-		    Subcommand: new theme 
+		    Subcommand: new theme
 		*****************************************************/
 
 		cmdNewTheme = &cobra.Command{
@@ -84,7 +87,7 @@ func (app *App) addCommands() {
       mb new site autumn-leaves 
 `,
 			Run: func(cmd *cobra.Command, args []string) {
-        var themeName string
+				var themeName string
 				if len(args) > 0 {
 					themeName = args[0]
 				} else {
@@ -93,7 +96,7 @@ func (app *App) addCommands() {
 					// tree and build as a complete site.
 					themeName = promptString("Name of theme to create?")
 				}
-        app.Note("Create the theme %v\n", themeName)
+				app.Note("Create the theme %v\n", themeName)
 			},
 		}
 
@@ -117,7 +120,31 @@ func (app *App) addCommands() {
 				}
 			},
 		}
+
+		/*****************************************************
+		  TOP LEVEL COMMAND: kitchen
+		 *****************************************************/
+
+		cmdKitchenSink = &cobra.Command{
+			Use:   "kitchen",
+			Short: "generates a test site",
+			Long:  "creates a test site called ./kitchensink",
+			Run: func(cmd *cobra.Command, args []string) {
+				var err error
+				if len(args) > 0 {
+			    err = app.kitchenSink(args[0])
+				} else {
+          err = app.kitchenSink("")
+				}
+				if err != nil {
+					app.QuitError(err)
+				}
+			},
+		}
 	)
+
+
+
 	/*****************************************************
 	  END TOP LEVEL COMMANDS BEFORE THE ABOVE )
 	 *****************************************************/
@@ -127,10 +154,9 @@ func (app *App) addCommands() {
 	cmdNew.AddCommand(cmdNewTheme)
 
 	app.Cmd.AddCommand(cmdBuild)
+	app.Cmd.AddCommand(cmdKitchenSink)
 
-
-
-  // Handle global flags such as Info 
+	// Handle global flags such as Info
 	app.Cmd.PersistentFlags().BoolVarP(&app.flags.Info, "info", "i", false, "show debug info")
 
 	// After Cobra command has done its thing,
@@ -138,5 +164,3 @@ func (app *App) addCommands() {
 	// environment, etc.
 	cobra.OnInitialize(app.loadConfigs)
 }
-
-

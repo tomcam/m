@@ -10,6 +10,13 @@ import (
 	"strings"
 )
 
+// cfgPath() returns the expected pathname where
+// the site file lives. Example: "/Users/tom/html/foo/.mb"
+// formerly SitePath
+func cfgPath(path string) string {
+	return filepath.Join(path, defaults.CfgPath)
+}
+
 // createDirStructure() creates the specified site structure
 // in the current directory.
 // TODO: pass in the current directory to save a little time?
@@ -112,13 +119,6 @@ func isCfgPath(path string) bool {
 	return dirExists(cfgPath(path))
 }
 
-// cfgPath() returns the expected pathname where
-// the site file lives. Example: "/Users/tom/html/foo/.mb"
-// formerly SitePath
-func cfgPath(path string) string {
-	return filepath.Join(path, defaults.CfgPath)
-}
-
 // promptString() displays a prompt, then awaits for keyboard
 // input and returns it on completion.
 // See also inputString(), promptYes()
@@ -150,3 +150,48 @@ func promptYes(prompt string) bool {
 	answer := promptString(prompt)
 	return strings.HasPrefix(strings.ToLower(answer), "y")
 }
+
+// relDirFile() takes a base directory,
+// for example, /users/tom/mysite, and a filename, for
+// example, /users/tom/mysite/articles/announce.md,
+// and returns the relative directory, which would be
+// the directory named /articles in this case.
+func relDirFile(baseDir, filename string) string {
+	// Begin at the end of the base directory
+	// xxx
+	start := len(baseDir)
+	// Extract the target directory from the
+	// input filename
+	l := len(filepath.Dir(filename))
+	// End at the beginning of the filename
+	stop := l - start
+	// TODO: Playing with fire?
+	if stop < 0 {
+		stop = start
+	}
+	return string(filename[start : start+stop])
+}
+
+// replaceExtension() is passed a filename and returns a filename
+// with the specified extension.
+func replaceExtension(filename string, newExtension string) string {
+	return strings.TrimSuffix(filename, filepath.Ext(filename)) + "." + newExtension
+
+}
+
+// WriteTextFile creates a file called filename without checking to see if it
+// exists, then writes contents to it.
+func writeTextFile(filename, contents string) error {
+	var out *os.File
+	var err error
+	if out, err = os.Create(filename); err != nil {
+    // TODO: Renumber error code?
+		return ErrCode("0204", "Problem creating file %v: %v\n", filename, err.Error())
+	}
+	if _, err = out.WriteString(contents); err != nil {
+    // TODO: Renumber error code?
+		return ErrCode("0903", "Problem writing to file %v: %v\n", filename, err.Error())
+	}
+	return nil
+}
+

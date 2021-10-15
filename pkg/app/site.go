@@ -6,30 +6,6 @@ import (
 	"path/filepath"
 )
 
-// Allocates a Site object, leaving everything clean & empty
-func (site *Site) New() (*Site, error) {
-	s := Site{}
-	return &s, nil
-}
-
-func (site *Site) NewSite() error {
-	if site.path != "" {
-		// Change to the specified directory.
-		if err := os.Chdir(site.path); err != nil {
-			//app.QuitError(ErrCode("1101", err.Error(), pathname))
-			return ErrCode("0902", err.Error())
-		}
-	}
-
-	// Create minimal directory structure: Publish directory
-	// .site directory, .themes, etc.
-	if err := createDirStructure(&defaults.SitePaths); err != nil {
-		//return errs.ErrCode("PREVIOUS", err.Error())
-		return ErrCode("PREVIOUS", err.Error())
-	}
-	return nil
-}
-
 // Site contains configuration specific to each site, such as
 // its directory location, title, publish directory,
 // branding information, etc.
@@ -218,6 +194,7 @@ type MdOptions uint8
 type dirInfo struct {
 	mdOptions MdOptions
 }
+
 type social struct {
 	DeviantArt string
 	Facebook   string
@@ -311,4 +288,28 @@ func (a *App) setMdOption(dir string, mdOption MdOptions) {
 // IsOptionSet returns true if the opt bit is set.
 func (m MdOptions) IsOptionSet(opt MdOptions) bool {
 	return m&opt != 0
+}
+
+// Allocates a Site object, leaving everything clean & empty
+func (site *Site) New() (*Site, error) {
+	s := Site{}
+	return &s, nil
+}
+
+func (site *Site) NewSite() error {
+	if site.path != "" {
+		// Change to the specified directory.
+		if err := os.Chdir(site.path); err != nil {
+			//app.QuitError(ErrCode("1101", err.Error(), pathname))
+			return ErrCode("0902", err.Error())
+		}
+	}
+
+	// Create minimal directory structure: Publish directory
+	// .site directory, .themes, etc.
+	if err := createDirStructure(&defaults.SitePaths); err != nil {
+		//return errs.ErrCode("PREVIOUS", err.Error())
+		return ErrCode("PREVIOUS", err.Error())
+	}
+	return nil
 }

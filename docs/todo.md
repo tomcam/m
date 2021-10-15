@@ -7,9 +7,10 @@
 * Look for occurrences of App.Note(), which is only meant for prerelease usage
 
 ## Priority 2: Desired but not required for the next release
-
+* Consider creating NewSite(filename) and rolling up site.New() into it
 * Ensure Dedent is working properly. The generated source always has a newline appended. Does Dedent account for that, or should it?
 * Move util.go to pkg/util
+* In util.go, see if I need all the cfgPath code
 * Create a test case for each error code
 * Ensure each error code is documented
 * Make `/docs` directory configurable

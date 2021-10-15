@@ -41,6 +41,7 @@ func (app *App) build(pathname string) error {
 	}
 
 	// Create an empty publish dir
+	// TODO: I think buildPublishPath() obsoletes this
 	if err := os.MkdirAll(app.site.publishPath, defaults.PublicFilePermissions); err != nil {
 		app.Note("Unable to create path %v", app.site.publishPath)
 		//return ErrCode("0403", app.site.publishPath,"" )
@@ -51,6 +52,9 @@ func (app *App) build(pathname string) error {
 	if _, err = app.getProjectTree(app.site.path); err != nil {
 		return ErrCode("0913", app.site.path)
 	}
+
+ // Build the target directory true
+  app.buildPublishDirs()
 
 	// Loop through the list of permitted directories for this site.
 	for dir := range app.site.dirs {
@@ -66,14 +70,14 @@ func (app *App) build(pathname string) error {
 			return ErrCode("0703", dir)
 		}
 
-		// Go through all the Markdown files and convert.
+ 		// Go through all the Markdown files and convert.
 		// Start search index JSON file with opening '['
 		// TODO: Add this back
 		//app.DelimitIndexJSON(a.Site.SearchJSONFilePath, true)
 		commaNeeded := false
 		for _, file := range files {
 			if !file.IsDir() && isMarkdownFile(file.Name()) {
-        app.site.fileCount++
+				app.site.fileCount++
 				// It's a Markdown file, not a dir or anything else.
 				if commaNeeded {
 
@@ -88,6 +92,7 @@ func (app *App) build(pathname string) error {
 				commaNeeded = true
 			}
 		}
+
 		// Close search index JSON file with ']'
 		// TODO: Add this back
 		// DelimitIndexJSON(a.Site.SearchJSONFilePath, false)
@@ -101,9 +106,9 @@ func (app *App) build(pathname string) error {
 	}
 
 	app.Note("Project tree:\n%v", app.site.dirs)
-  if app.flags.Info {
-    app.info()
-  }
+	if app.flags.Info {
+		app.info()
+	}
 	// Return with success code.
 	return nil
 }
