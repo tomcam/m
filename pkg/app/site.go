@@ -8,11 +8,11 @@ import (
 
 // Allocates a Site object, leaving everything clean & empty
 func (site *Site) New() (*Site, error) {
-  s := Site{}
+	s := Site{}
 	return &s, nil
 }
 
-func (site *Site) NewSite()(error) {
+func (site *Site) NewSite() error {
 	if site.path != "" {
 		// Change to the specified directory.
 		if err := os.Chdir(site.path); err != nil {
@@ -27,7 +27,7 @@ func (site *Site) NewSite()(error) {
 		//return errs.ErrCode("PREVIOUS", err.Error())
 		return ErrCode("PREVIOUS", err.Error())
 	}
-  return nil
+	return nil
 }
 
 // Site contains configuration specific to each site, such as
@@ -40,7 +40,7 @@ type Site struct {
 	// path of that directory, based on the app path,
 	// the current theme, etc.
 	// See also its subdirectories, CSSDir and ImageDir
-	// Was assetDir 
+	// Was assetDir
 	assetPath string
 
 	// Make it easy if you just have 1 author.
@@ -53,7 +53,7 @@ type Site struct {
 	// from its actual root. For example, GitHub Pages prefers
 	// the blog to start in /docs instead of root, but
 	// a URL would omit it.
-	// Was BaseDir 
+	// Was BaseDir
 	BasePath string
 
 	// Site's branding, any string, that user specifies in site.toml.
@@ -84,6 +84,9 @@ type Site struct {
 	// List of file extensions to exclude. For example. [ ".css" ".go" ".php" ]
 	ExcludeExtensions []string
 
+  // Number of markdown files processed
+	fileCount   uint
+
 	// Google Analytics tracking ID specified in site.toml
 	Ganalytics string
 
@@ -95,7 +98,7 @@ type Site struct {
 	headTagsPath string
 
 	// Subdirectory under the AssetDir where image files go
-	// Was imageDir 
+	// Was imageDir
 	imagePath string
 
 	// for HTML header, as in "en" or "fr"
@@ -129,7 +132,7 @@ type Site struct {
 	path string
 
 	// Directory for finished site--rendered HTML & asset output
-	// Was publishDir 
+	// Was publishDir
 	publishPath string
 
 	// Full path of shortcode dir for this project. It's computed
@@ -255,7 +258,60 @@ func (site *Site) setPaths(home string) {
 	// root directory of the project.
 	site.path = home
 
+  cfgPath := filepath.Join(site.path, defaults.CfgPath)
+
 	// Build up the fully qualified pathname of the site file.
-	site.siteFilePath = filepath.Join(site.path, defaults.CfgPath,
+	site.siteFilePath = filepath.Join(cfgPath,
 		defaults.SiteConfigFilename)
+
+	// Build up the fully qualified pathname of the publish 
+  // directory.
+	site.publishPath = filepath.Join(cfgPath,
+		defaults.PublishPath)
+
+  // Create a new, empty map to hold the
+  // source directory tree.
+  site.dirs = make(map[string]dirInfo)
 }
+
+// TODO: Document
+const (
+	// Known to be a directory with at least 1 Markdown file
+	MarkdownDir MdOptions = 1 << iota
+
+	// Known to be a filename with a Markdown extension
+	MarkdownFile
+
+	// Directory. Don't know yet if it contains Markdown files.
+	NormalDir
+
+	// File. Don't know if it's a markdown file.
+	NormalFile
+
+	// Set if directory has a file named "index.md", forced to lowercase
+	HasIndexMd
+
+	// Set if directory has a file named "README.md", case sensitive
+	HasReadmeMd
+)
+
+// TODO: Document
+func (a *App) addMdOption(dir string, mdOption MdOptions) {
+	d := a.site.dirs[dir]
+	d.mdOptions |= mdOption
+	a.site.dirs[dir] = d
+}
+
+// TODO: Document
+func (a *App) setMdOption(dir string, mdOption MdOptions) {
+	d := a.site.dirs[dir]
+	d.mdOptions = mdOption
+	a.site.dirs[dir] = d
+}
+
+// IsOptionSet returns true if the opt bit is set.
+func (m MdOptions) IsOptionSet(opt MdOptions) bool {
+	return m&opt != 0
+}
+
+

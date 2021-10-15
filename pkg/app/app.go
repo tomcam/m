@@ -16,6 +16,9 @@ type App struct {
 	// Cobra Command Processes command lin options
 	Cmd *cobra.Command
 
+	// Global options such as Verbose
+	flags Flags
+
 	Parser goldmark.Markdown
 
 	// Contents of HTML file after being converted from Markdown
@@ -50,10 +53,10 @@ func NewApp() *App {
 	// read them in.
 	app.updateConfig()
 
-  var err error
-  if app.site, err = app.site.New(); err != nil {
-    app.QuitError(ErrCode("PREVIOUS", err.Error()))
-  }
+	var err error
+	if app.site, err = app.site.New(); err != nil {
+		app.QuitError(ErrCode("PREVIOUS", err.Error()))
+	}
 	return &app
 }
 
@@ -67,8 +70,6 @@ func NewApp() *App {
 // overriding config information.
 func (app *App) updateConfig() {
 }
-
-
 
 // loadConfigs() looks for the many possible sources of
 // configuration info (environment, local files, user

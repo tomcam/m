@@ -9,6 +9,7 @@
 ## Priority 2: Desired but not required for the next release
 
 * Ensure Dedent is working properly. The generated source always has a newline appended. Does Dedent account for that, or should it?
+* Move util.go to pkg/util
 * Create a test case for each error code
 * Ensure each error code is documented
 * Make `/docs` directory configurable

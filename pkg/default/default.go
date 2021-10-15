@@ -18,8 +18,8 @@ var (
 	}
 	// Markdown file extensions
 	// They don't in lexical order because they
-  // get sorted. That's because it's possible
-	// more will be added via config file on startup. 
+	// get sorted. That's because it's possible
+	// more will be added via config file on startup.
 	MarkdownExtensions = util.NewSearchInfo([]string{
 		".Rmd",
 		".markdown",
@@ -134,8 +134,8 @@ Welcome to %s
 	SearchJSONFilename = ProductName + "-" + "search" + ".json"
 
 	// By default, the published site gets its theme from a local copy
-	// within the site directory--this directory. 
-  // It then copies from that copy to
+	// within the site directory--this directory.
+	// It then copies from that copy to
 	// generate pages in the Publish directory. Helps prevent unintended changes
 	// from being made to the originals, and makes it much easier to
 	// make theme changes, especially if you're a noob or just want to

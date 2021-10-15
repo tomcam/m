@@ -7,13 +7,11 @@ import (
 // App.Verbose() displays a message followed
 // by a newline to stdout
 // if the verbose flag was used. Formats it like Fprintf.
-/*
 func (a *App) Verbose(format string, ss ...interface{}) {
-	if a.Flags.Verbose {
+	if a.flags.Verbose {
 		fmt.Println(a.fmtMsg(format, ss...))
 	}
 }
-*/
 
 // App.Note() displays a message followed by a newline
 // to stdout, preceded by the text "NOTE: "

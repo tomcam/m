@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/tomcam/m/pkg/default"
+	"github.com/tomcam/m/pkg/util"
 	"os"
 	"path/filepath"
 	"strings"
@@ -11,7 +12,7 @@ import (
 
 // createDirStructure() creates the specified site structure
 // in the current directory.
-// TODO: pass in the current directory to save a little time? 
+// TODO: pass in the current directory to save a little time?
 func createDirStructure(dirs *[][]string) (err error) {
 	// Obtain current directory in a portable way.
 	basedir, err := os.Getwd()
@@ -63,12 +64,31 @@ func fileExists(filename string) bool {
 	return !info.IsDir()
 }
 
+// hasExtension() returns true if the string ends in the specified extension
+// (case insensitive). Need to supply the period too:
+// if hasExtension(filename, ".aside") {
+func hasExtension(filename, extension string) bool {
+	return filepath.Ext(filename) == extension
+}
+
+// hasExtensionFrom() Returns true if the fully qualified filename
+// ends in any of the extensions listed in extensions.
+func hasExtensionFrom(path string, extensions *util.SearchInfo) bool {
+	return extensions.Contains(filepath.Ext(path))
+}
+
 // inputString() gets a string from the keyboard and returns it
 // See also promptString()
 func inputString() string {
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 	return scanner.Text()
+}
+
+// isMarkdownFile() returns true of the specified filename has one of
+// the extensions used for Markdown files.
+func isMarkdownFile(filename string) bool {
+	return hasExtensionFrom(filename, defaults.MarkdownExtensions)
 }
 
 // isProject() looks at the structure of the specified directory

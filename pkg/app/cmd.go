@@ -53,13 +53,13 @@ func (app *App) addCommands() {
 					app.site.name = promptString("Name of site to create?")
 				}
 
-        // Allocate a Site object
-        var err error
+				// Allocate a Site object
+				var err error
 				app.site, err = app.site.New()
 				if err != nil {
 					app.QuitError(err)
 				}
-        // Initialize the Site object
+				// Initialize the Site object
 				err = app.site.NewSite()
 				if err != nil {
 					app.QuitError(err)
@@ -102,4 +102,14 @@ func (app *App) addCommands() {
 	// load configuration from config files,
 	// environment, etc.
 	cobra.OnInitialize(app.loadConfigs)
+}
+
+type Flags struct {
+	// DontCopy means don't copy theme directory to the site directory.
+	// Use the global theme set (which means if you change it, it
+	// will affect all new sites created using that theme)
+	DontCopy bool
+
+	// Global verbose mode
+	Verbose bool
 }
