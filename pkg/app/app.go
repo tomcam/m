@@ -11,7 +11,7 @@ import (
 // Compound data structure for config example at
 // https://gist.github.com/alexedwards/5cd712192b4831058b21
 type App struct {
-	site Site
+	site *Site
 
 	// Cobra Command Processes command lin options
 	Cmd *cobra.Command
@@ -41,21 +41,19 @@ func NewApp() *App {
 		},
 	}
 
-	// Obtain current directory location.
-	// Probably the build path, though a different
-	// one can be specified after build on the
-	// command line.
-	app.site.path = currPath()
-
 	// Process command line
 	app.addCommands()
 
 	// If there are any configuration files,
 	// environment variables, etc. with info
 	// that overrides what was just initialized,
-	// readt them in.
+	// read them in.
 	app.updateConfig()
 
+  var err error
+  if app.site, err = app.site.New(); err != nil {
+    app.QuitError(ErrCode("PREVIOUS", err.Error()))
+  }
 	return &app
 }
 
@@ -70,15 +68,7 @@ func NewApp() *App {
 func (app *App) updateConfig() {
 }
 
-func (app *App) NewSite(name string) error {
-	// Create minimal directory structure: Publish directory
-	// .site directory, .themes, etc.
-	if err := createDirStructure(&defaults.SitePaths); err != nil {
-		//return errs.ErrCode("PREVIOUS", err.Error())
-		return ErrCode("PREVIOUS", err.Error())
-	}
-	return nil
-}
+
 
 // loadConfigs() looks for the many possible sources of
 // configuration info (environment, local files, user

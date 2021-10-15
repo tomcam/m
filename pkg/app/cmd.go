@@ -52,7 +52,15 @@ func (app *App) addCommands() {
 					// tree and build as a complete site.
 					app.site.name = promptString("Name of site to create?")
 				}
-				err := app.NewSite(app.site.name)
+
+        // Allocate a Site object
+        var err error
+				app.site, err = app.site.New()
+				if err != nil {
+					app.QuitError(err)
+				}
+        // Initialize the Site object
+				err = app.site.NewSite()
 				if err != nil {
 					app.QuitError(err)
 				} else {

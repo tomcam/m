@@ -1,11 +1,34 @@
 package app
 
 import (
-  "github.com/tomcam/m/pkg/default"
-//"github.com/tomcam/m/pkg/app"
-//"os"
-  "path/filepath"
+	"github.com/tomcam/m/pkg/default"
+	"os"
+	"path/filepath"
 )
+
+// Allocates a Site object, leaving everything clean & empty
+func (site *Site) New() (*Site, error) {
+  s := Site{}
+	return &s, nil
+}
+
+func (site *Site) NewSite()(error) {
+	if site.path != "" {
+		// Change to the specified directory.
+		if err := os.Chdir(site.path); err != nil {
+			//app.QuitError(ErrCode("1101", err.Error(), pathname))
+			return ErrCode("0902", err.Error())
+		}
+	}
+
+	// Create minimal directory structure: Publish directory
+	// .site directory, .themes, etc.
+	if err := createDirStructure(&defaults.SitePaths); err != nil {
+		//return errs.ErrCode("PREVIOUS", err.Error())
+		return ErrCode("PREVIOUS", err.Error())
+	}
+  return nil
+}
 
 // Site contains configuration specific to each site, such as
 // its directory location, title, publish directory,
@@ -17,7 +40,8 @@ type Site struct {
 	// path of that directory, based on the app path,
 	// the current theme, etc.
 	// See also its subdirectories, CSSDir and ImageDir
-	assetDir string
+	// Was assetDir 
+	assetPath string
 
 	// Make it easy if you just have 1 author.
 	Author author
@@ -29,7 +53,8 @@ type Site struct {
 	// from its actual root. For example, GitHub Pages prefers
 	// the blog to start in /docs instead of root, but
 	// a URL would omit it.
-	BaseDir string
+	// Was BaseDir 
+	BasePath string
 
 	// Site's branding, any string, that user specifies in site.toml.
 	// So, for example, if the Name is 'my-project' this might be
@@ -43,7 +68,8 @@ type Site struct {
 	Company company
 
 	// Subdirectory under the AssetDir where CSS files go
-	cssDir string
+	// Was cssDir string
+	cssPath string
 
 	// List of all directories in the site
 	dirs map[string]dirInfo
@@ -69,7 +95,8 @@ type Site struct {
 	headTagsPath string
 
 	// Subdirectory under the AssetDir where image files go
-	imageDir string
+	// Was imageDir 
+	imagePath string
 
 	// for HTML header, as in "en" or "fr"
 	Language string
@@ -102,7 +129,8 @@ type Site struct {
 	path string
 
 	// Directory for finished site--rendered HTML & asset output
-	publishDir string
+	// Was publishDir 
+	publishPath string
 
 	// Full path of shortcode dir for this project. It's computed
 	// at runtime using SCodeDir, also in this struct.
@@ -222,16 +250,12 @@ type WebPage struct {
 // This is based on App.SiteDefaults() in the previous
 // version of Metabuzz.
 func (site *Site) setPaths(home string) {
-  // This is the fully qualified path of the current
-  // directory, which is also guaranteed to be the
-  // root directory of the project.
+	// This is the fully qualified path of the current
+	// directory, which is also guaranteed to be the
+	// root directory of the project.
 	site.path = home
 
-  // Build up the fully qualified pathname of the site file.
-  site.siteFilePath = filepath.Join(site.path, defaults.CfgPath,
+	// Build up the fully qualified pathname of the site file.
+	site.siteFilePath = filepath.Join(site.path, defaults.CfgPath,
 		defaults.SiteConfigFilename)
 }
-
-
-
-

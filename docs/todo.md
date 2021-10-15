@@ -10,8 +10,9 @@
 
 * Ensure Dedent is working properly. The generated source always has a newline appended. Does Dedent account for that, or should it?
 * Create a test case for each error code
-* Make `/docs directory` configurable
-* Change QuitError to take only the error number for clarity
+* Ensure each error code is documented
+* Make `/docs` directory configurable
+* Supplement QuitError to take only the error number for clarity
 * Write tests for slice pkg
 * Support for TOML front matter. See pkg/mdedxt/tomltc.go.sav and 
 [Reddit RFP for TOML](https://www.reddit.com/r/golang/comments/pthh4p/paying_gig_for_foss_project_extending_the/)

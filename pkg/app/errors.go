@@ -39,13 +39,19 @@ var errMsgs = map[string]string{
 	// 0200	- Error creating file
 	// 0250 - Error closing file
 	// 0300	- Error deleting file
+  "0302": "Unable to delete publish directory",
 	// 0400	- Error creating directory
+
+  "0403": "Unable to create publish directory",
 	// 0500	- Error determining directory name
 	// 0600 - Error deleting directory
 	// 0700	- Error reading directory
 	// 0800	- Can't determine the name of something
 	"0801": "",
+
 	// 0900	- Problem generating something
+  "0901": "Unable to allocate Site object",
+
 	// 0950 - Something's already there
 
 	// 1000	- Something's missing that should be there

@@ -4,11 +4,11 @@ import "github.com/tomcam/m/pkg/util"
 
 var (
 	Version = ProductName + " version " +
-		"0.3.0"
+		"0.4.0"
 
 	// Directory configuration for a project--a new site.
 	SitePaths = [][]string{
-		{PublishPath},
+		{CfgPath, PublishPath},
 		{CfgPath, CommonPath},
 		{CfgPath, HeadTagsPath},
 		{CfgPath, SCodePath},
@@ -17,8 +17,9 @@ var (
 		{CfgPath, ThemePath},
 	}
 	// Markdown file extensions
-	// They don't in lexical order because it's possible
-	// more will be added via config file at runtime
+	// They don't in lexical order because they
+  // get sorted. That's because it's possible
+	// more will be added via config file on startup. 
 	MarkdownExtensions = util.NewSearchInfo([]string{
 		".Rmd",
 		".markdown",
@@ -69,7 +70,7 @@ Welcome to %s
 	// to. It can't be changed because it's used to determine
 	// whether a site is contained within its parent directory.
 	// Excluded from publishing.
-	PublishPath = ".pub"
+	PublishPath = "pub"
 
 	// Name of subdirectory containing shortcode files
 	// Excluded from publishing.
@@ -133,12 +134,13 @@ Welcome to %s
 	SearchJSONFilename = ProductName + "-" + "search" + ".json"
 
 	// By default, the published site gets its theme from a local copy
-	// within the site directory. It then copies from that copy to
+	// within the site directory--this directory. 
+  // It then copies from that copy to
 	// generate pages in the Publish directory. Helps prevent unintended changes
 	// from being made to the originals, and makes it much easier to
 	// make theme changes, especially if you're a noob or just want to
 	// type less.
-	ThemePath = ".themes"
+	ThemePath = "themes"
 
 	// Configuration file found in the current site source directory
 	SourcePathConfigFilename = ProductName + "." + ConfigFileDefaultExt
@@ -148,8 +150,7 @@ Welcome to %s
 	// purposes, like storing config files.
 	// Make it in lowercase. One word,
 	// like docset or metabuzz.
-	// TODO: If this changes update GLOBAL_CONFIG_DIRNAME
-	// TODO: Change this when I settle on a product name, and also change PRODUCT_SHORT_NAME
+	// If this changes update CfgPath
 	ProductName = "metabuzz"
 
 	// Abbreviation, used for name command line program.
@@ -160,9 +161,6 @@ Welcome to %s
 	// A short version of the product name
 	// used as a prefix for environment variables.
 	ProductEnvPrefix = "MBZ_"
-	// Examples:
-	// PRODUCT_ENV_PREFIX+"DEFAULT_THEME"
-	// PRODUCT_ENV_PREFIX+"SC_DIR"
 
 	// The permissions given to output files, and also to
 	// configuration files.

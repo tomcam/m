@@ -9,8 +9,9 @@ import (
 	"strings"
 )
 
-// createDirStructuure() creates the specified site structure
+// createDirStructure() creates the specified site structure
 // in the current directory.
+// TODO: pass in the current directory to save a little time? 
 func createDirStructure(dirs *[][]string) (err error) {
 	// Obtain current directory in a portable way.
 	basedir, err := os.Getwd()
