@@ -11,13 +11,15 @@ import (
 // Compound data structure for config example at
 // https://gist.github.com/alexedwards/5cd712192b4831058b21
 type App struct {
-	site *Site
+	site Site
 
 	// Cobra Command Processes command lin options
 	Cmd *cobra.Command
 
 	// Global options such as Verbose
 	flags Flags
+
+  page Page
 
 	Parser goldmark.Markdown
 
@@ -47,7 +49,8 @@ type Flags struct {
 //
 func NewApp() *App {
 	app := App{
-		HTML:   nil,
+    page: Page{},
+    site: Site{},
 		Parser: goldmark.New(),
 		Cmd: &cobra.Command{
 			Use:   defaults.ProductShortName,
@@ -64,11 +67,13 @@ func NewApp() *App {
 	// that overrides what was just initialized,
 	// read them in.
 	app.updateConfig()
+  /*
 
 	var err error
 	if app.site, err = app.site.New(); err != nil {
 		app.QuitError(ErrCode("PREVIOUS", err.Error()))
 	}
+  */
 	return &app
 }
 

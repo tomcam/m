@@ -22,11 +22,7 @@ func (app *App) build(pathname string) error {
 
 	// Changed directory successfully so
 	// pass it to initialize the site and update internally.
-	app.Note("app.site.defaults(%v)", pathname)
 	app.site.defaults(pathname)
-
-	app.Note("app.build(%s)", app.site.path)
-	//app.Note("site.siteFilePath: %s", app.site.siteFilePath)
 
 	// Create minimal directory structure: Publish directory,
 	// site directory, .themes, etc.
@@ -35,25 +31,18 @@ func (app *App) build(pathname string) error {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 
-	// Delete any existing publish dir
-	if err := os.RemoveAll(app.site.publishPath); err != nil {
-		return ErrCode("0302", app.site.publishPath)
-	}
-
-	// Create an empty publish dir
-	// TODO: I think buildPublishPath() obsoletes this
-	if err := os.MkdirAll(app.site.publishPath, defaults.PublicFilePermissions); err != nil {
-		app.Note("Unable to create path %v", app.site.publishPath)
-		//return ErrCode("0403", app.site.publishPath,"" )
-		return ErrCode("PREVIOUS", err.Error())
-	}
-
 	// Get a list of all files & directories in the site.
 	if _, err = app.getProjectTree(app.site.path); err != nil {
 		return ErrCode("0913", app.site.path)
 	}
 
- // Build the target directory true
+ 	// Delete any existing publish dir
+	if err := os.RemoveAll(app.site.publishPath); err != nil {
+		return ErrCode("0302", app.site.publishPath)
+	}
+
+  // Build the target publish dir so there should be
+  // no trouble copying files over
   app.buildPublishDirs()
 
 	// Loop through the list of permitted directories for this site.
@@ -105,7 +94,6 @@ func (app *App) build(pathname string) error {
 		fmt.Println("file")
 	}
 
-	app.Note("Project tree:\n%v", app.site.dirs)
 	if app.flags.Info {
 		app.info()
 	}

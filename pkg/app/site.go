@@ -291,10 +291,12 @@ func (m MdOptions) IsOptionSet(opt MdOptions) bool {
 }
 
 // Allocates a Site object, leaving everything clean & empty
+/*
 func (site *Site) New() (*Site, error) {
 	s := Site{}
 	return &s, nil
 }
+*/
 
 func (site *Site) NewSite() error {
 	if site.path != "" {

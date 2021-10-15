@@ -61,10 +61,6 @@ func (app *App) addCommands() {
 
 				// Allocate a Site object
 				var err error
-				app.site, err = app.site.New()
-				if err != nil {
-					app.QuitError(err)
-				}
 				// Initialize the Site object
 				err = app.site.NewSite()
 				if err != nil {
@@ -96,7 +92,7 @@ func (app *App) addCommands() {
 					// tree and build as a complete site.
 					themeName = promptString("Name of theme to create?")
 				}
-				app.Note("Create the theme %v\n", themeName)
+        app.Note("TODO: WRITE CODE TO Create the theme %v\n", themeName)
 			},
 		}
 
@@ -141,7 +137,16 @@ func (app *App) addCommands() {
 				}
 			},
 		}
+
+		/*****************************************************
+		  END TOP LEVEL COMMANDS HERE BEFORE THIS )
+		 *****************************************************/
+
 	)
+
+		/*****************************************************
+		  END TOP LEVEL COMMANDS HERE BEFORE THE PREVIOUS )
+		 *****************************************************/
 
 
 

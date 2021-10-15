@@ -1,6 +1,7 @@
 # To do
 
 ## Priority 1: Showstoppers--required for the next release
+* Seqrch for "TODO:" in source
 * Make these changes when returning to the standard mb directory
   - Fix hardcoded paths in the files `gf`, `bu`
 * Ensure mdToHTML and mdFileToHTML return errors and use application error handling
