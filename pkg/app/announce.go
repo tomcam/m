@@ -2,7 +2,39 @@ package app
 
 import (
 	"fmt"
+  "strings"
+	"github.com/rodaine/table"
 )
+
+// info() displays debug information about the app and site.
+func (app *App) info() {
+	table.DefaultHeaderFormatter = func(format string, vals ...interface{}) string {
+		return strings.ToUpper(fmt.Sprintf(format, vals...))
+	}
+
+	tbl := table.New("Site Directories", "")
+  tbl.AddRow("Project directory", app.site.path)
+  tbl.AddRow("Project name", app.site.name)
+  tbl.AddRow("Asset path", app.site.assetPath)
+  tbl.AddRow("Common path", app.site.commonPath)
+  tbl.AddRow("CSS path", app.site.cssPath)
+  tbl.AddRow("Head tags path", app.site.headTagsPath)
+  tbl.AddRow("Image path", app.site.imagePath)
+  tbl.AddRow("Publish path", app.site.publishPath)
+  tbl.AddRow("Themes path", app.site.themesPath)
+  /*
+  tbl.AddRow("", app.site.)
+  tbl.AddRow("", app.site.)
+  tbl.AddRow("", app.site.)
+  tbl.AddRow("", app.site.)
+	for _, widget := range Widgets {
+		tbl.AddRow(widget.ID, widget.Name, widget.Cost)
+	}
+  */
+
+	tbl.Print()
+
+}
 
 // App.Verbose() displays a message followed
 // by a newline to stdout

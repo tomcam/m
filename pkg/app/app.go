@@ -24,7 +24,18 @@ type App struct {
 	// Contents of HTML file after being converted from Markdown
 	HTML []byte
 }
+type Flags struct {
+	// DontCopy means don't copy theme directory to the site directory.
+	// Use the global theme set (which means if you change it, it
+	// will affect all new sites created using that theme)
+	DontCopy bool
 
+	// Global verbose mode
+	Verbose bool
+
+  // Display debug info
+  Info bool
+}
 // NewApp allocates, and initializes to default
 // values, an App struct (which contains the runtime
 // environment for a Metabuzz process). Everything

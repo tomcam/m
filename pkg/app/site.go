@@ -84,8 +84,8 @@ type Site struct {
 	// List of file extensions to exclude. For example. [ ".css" ".go" ".php" ]
 	ExcludeExtensions []string
 
-  // Number of markdown files processed
-	fileCount   uint
+	// Number of markdown files processed
+	fileCount uint
 
 	// Google Analytics tracking ID specified in site.toml
 	Ganalytics string
@@ -141,7 +141,6 @@ type Site struct {
 
 	// Full path of file containing JSON version of site text
 	// to be indexed
-	// xxx
 	searchJSONFilePath string
 
 	// Full path to site config file
@@ -258,20 +257,20 @@ func (site *Site) setPaths(home string) {
 	// root directory of the project.
 	site.path = home
 
-  cfgPath := filepath.Join(site.path, defaults.CfgPath)
+	cfgPath := filepath.Join(site.path, defaults.CfgPath)
 
 	// Build up the fully qualified pathname of the site file.
 	site.siteFilePath = filepath.Join(cfgPath,
 		defaults.SiteConfigFilename)
 
-	// Build up the fully qualified pathname of the publish 
-  // directory.
+	// Build up the fully qualified pathname of the publish
+	// directory.
 	site.publishPath = filepath.Join(cfgPath,
 		defaults.PublishPath)
 
-  // Create a new, empty map to hold the
-  // source directory tree.
-  site.dirs = make(map[string]dirInfo)
+	// Create a new, empty map to hold the
+	// source directory tree.
+	site.dirs = make(map[string]dirInfo)
 }
 
 // TODO: Document
@@ -313,5 +312,3 @@ func (a *App) setMdOption(dir string, mdOption MdOptions) {
 func (m MdOptions) IsOptionSet(opt MdOptions) bool {
 	return m&opt != 0
 }
-
-

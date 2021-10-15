@@ -16,6 +16,9 @@ var (
 
 	// Declare command-line subcommand to build a project
 	cmdBuild = flag.NewFlagSet("build", flag.ExitOnError)
+
+	// Declare command-line subcommand to display config info
+	//cmdInfo = flag.NewFlagSet("info", flag.ExitOnError)
 )
 
 func (app *App) addCommands() {
@@ -70,12 +73,37 @@ func (app *App) addCommands() {
 		}
 
 		/*****************************************************
+		    Subcommand: new theme 
+		*****************************************************/
+
+		cmdNewTheme = &cobra.Command{
+			Use:   "theme {themename}",
+			Short: "new theme mytheme",
+			Long: `new theme {themename}
+      Where {themename} is a valid directory name. For example, if your site is called Autumn Leaves, you would do this:
+      mb new site autumn-leaves 
+`,
+			Run: func(cmd *cobra.Command, args []string) {
+        var themeName string
+				if len(args) > 0 {
+					themeName = args[0]
+				} else {
+					// Them more likely case: it's build all by
+					// itself, so go through the whole directory
+					// tree and build as a complete site.
+					themeName = promptString("Name of theme to create?")
+				}
+        app.Note("Create the theme %v\n", themeName)
+			},
+		}
+
+		/*****************************************************
 		  TOP LEVEL COMMAND: build
 		 *****************************************************/
 
 		cmdBuild = &cobra.Command{
 			Use:   "build",
-			Short: "build: Generates the site HTML and copies to publish directory",
+			Short: "generates the  and copies to publish directory",
 			Long:  cmdBuildLongMsg,
 			Run: func(cmd *cobra.Command, args []string) {
 				var err error
@@ -96,20 +124,19 @@ func (app *App) addCommands() {
 
 	app.Cmd.AddCommand(cmdNew)
 	cmdNew.AddCommand(cmdNewSite)
+	cmdNew.AddCommand(cmdNewTheme)
 
 	app.Cmd.AddCommand(cmdBuild)
+
+
+
+  // Handle global flags such as Info 
+	app.Cmd.PersistentFlags().BoolVarP(&app.flags.Info, "info", "i", false, "show debug info")
+
 	// After Cobra command has done its thing,
 	// load configuration from config files,
 	// environment, etc.
 	cobra.OnInitialize(app.loadConfigs)
 }
 
-type Flags struct {
-	// DontCopy means don't copy theme directory to the site directory.
-	// Use the global theme set (which means if you change it, it
-	// will affect all new sites created using that theme)
-	DontCopy bool
 
-	// Global verbose mode
-	Verbose bool
-}
