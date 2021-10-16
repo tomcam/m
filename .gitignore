@@ -1,6 +1,9 @@
 # Name of the executable
 m
 
+# Often end up with sample config directories in project root
+.mb
+
 # Editor backup files
 *.bak
 *.sav
