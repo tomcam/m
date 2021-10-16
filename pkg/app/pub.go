@@ -2,7 +2,8 @@ package app
 
 import (
 	"github.com/tomcam/m/pkg/default"
-	"github.com/tomcam/m/pkg/mark"
+	"github.com/tomcam/m/pkg/util"
+	//"github.com/tomcam/m/pkg/mark"
 	"os"
 	"path/filepath"
 )
@@ -21,13 +22,22 @@ func (app *App) publishFile(filename string) error {
 
 	var err error
   // Convert Markdown file to a byte slice of HTML
-	body := mark.MdFileToHTML(filename)
+	body := app.MdFileToHTML(filename)
 
 	if err = os.WriteFile(target, body, defaults.PublicFilePermissions); err != nil {
 		// TODO: Improve error handling
 		return err
 	}
 	return nil
+}
+
+// mdFileToHTML converts the markdown file in filename to HTML.
+// It may include optional front matter.
+func (app *App) MdFileToHTML(filename string) []byte {
+	// Read file into a byte slice.
+	s := util.FileToBytes(filename)
+	// Convert to HTML
+	return app.mdToHTML(s)
 }
 
 // buildPublishDirs() creates a mirror of the source

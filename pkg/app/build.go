@@ -3,10 +3,36 @@ package app
 import (
 	"fmt"
 	"github.com/tomcam/m/pkg/default"
+ 	"github.com/tomcam/m/pkg/mdext"
+ "github.com/yuin/goldmark/text"
+	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/parser"
+	"github.com/yuin/goldmark/renderer"
+	"github.com/yuin/goldmark/extension"
+	"github.com/yuin/goldmark/renderer/html"
+	"bytes"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 )
+// mdToHTML converts a Markdown source file in a byte
+// slice to HTML.
+func (app *App) mdToHTML(source []byte) []byte {
+	node := app.parser.Parser().Parse(text.NewReader(source), parser.WithContext(app.parserCtx))
+	// Create variable-sized buffer for parsed output.
+  var buf bytes.Buffer
+	// Convert the Markdown file to HTML.
+	if err := app.parser.Renderer().Render(&buf, source, node); err != nil {
+    // TODO: update error handling
+		// a.QuitError(errs.ErrCode("0920", err.Error()))
+		panic("Parse error")
+		// TODO: Hmmm... this should probably return an error
+		return nil
+	}
+	// Return the HTML.
+	return buf.Bytes()
+}
+
 
 func (app *App) build(pathname string) error {
 	if pathname != "" {
@@ -100,3 +126,49 @@ func (app *App) build(pathname string) error {
 	// Return with success code.
 	return nil
 }
+
+// TODO: Move this to mark package or eliinate mark
+func parserWithOptions() goldmark.Markdown {
+	exts := []goldmark.Extender{
+		//mdext.New(mdext.WithTable()), extension.Table,
+
+		// YAML support
+		mdext.New(),
+
+		// Support GitHub tables
+		extension.Table,
+		extension.GFM,
+		extension.DefinitionList,
+		extension.Footnote,
+		// TC: Add highlighting options
+		/*
+			highlighting.NewHighlighting(
+				highlighting.WithStyle(a.Site.MarkdownOptions.HighlightStyle),
+				highlighting.WithFormatOptions()),
+		*/
+
+	}
+
+	parserOpts := []parser.Option{parser.WithAttribute(), parser.WithAutoHeadingID()}
+
+	renderOpts := []renderer.Option{
+		// WithUnsafe is required for HTML templates to work properly
+		html.WithUnsafe(),
+		html.WithXHTML(),
+	}
+	// TC: Add as option?
+	/*
+		if a.Site.MarkdownOptions.hardWraps {
+			renderOpts = append(renderOpts, html.WithHardWraps())
+		}
+	*/
+
+	return goldmark.New(
+		goldmark.WithExtensions(exts...),
+		goldmark.WithParserOptions(parserOpts...),
+		goldmark.WithRendererOptions(renderOpts...),
+	)
+}
+
+
+

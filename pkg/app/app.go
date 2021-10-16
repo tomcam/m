@@ -4,6 +4,9 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/tomcam/m/pkg/default"
 	"github.com/yuin/goldmark"
+  //"sync"
+  //"context"
+	"github.com/yuin/goldmark/parser"
 )
 
 // App contains all runtime options required to convert a markdown
@@ -21,7 +24,8 @@ type App struct {
 
   page Page
 
-	Parser goldmark.Markdown
+	parser goldmark.Markdown
+  parserCtx parser.Context
 
 	// Contents of HTML file after being converted from Markdown
 	HTML []byte
@@ -51,7 +55,9 @@ func NewApp() *App {
 	app := App{
     page: Page{},
     site: Site{},
-		Parser: goldmark.New(),
+		parser: goldmark.New(),
+    //parser: parserWithOptions(),
+    parserCtx: parser.NewContext(),
 		Cmd: &cobra.Command{
 			Use:   defaults.ProductShortName,
 			Short: "Create static sites",
@@ -67,14 +73,7 @@ func NewApp() *App {
 	// that overrides what was just initialized,
 	// read them in.
 	app.updateConfig()
-  /*
-
-	var err error
-	if app.site, err = app.site.New(); err != nil {
-		app.QuitError(ErrCode("PREVIOUS", err.Error()))
-	}
-  */
-	return &app
+ 	return &app
 }
 
 // updateConfig() determines where configuration file (and other
