@@ -17,11 +17,13 @@ func cfgBool(option string) bool {
 	return viper.GetBool(option)
 }
 
-// siteFilePath() returns the expected pathname where
-// the site file lives. Example: "/Users/tom/html/foo/.mb"
-// formerly SitePath
-func siteFilePath(path string) string {
-	return filepath.Join(path, defaults.CfgPath)
+// curDir() returns the current directory name.
+func currDir() string {
+	if path, err := os.Getwd(); err != nil {
+		return "unknown directory"
+	} else {
+		return path
+	}
 }
 
 // cfgString() obtains a value set from a config file, environment
@@ -202,6 +204,13 @@ func relDirFile(baseDir, filename string) string {
 func replaceExtension(filename string, newExtension string) string {
 	return strings.TrimSuffix(filename, filepath.Ext(filename)) + "." + newExtension
 
+}
+
+// siteFilePath() returns the expected pathname where
+// the site file lives. Example: "/Users/tom/html/foo/.mb"
+// formerly SitePath
+func siteFilePath(path string) string {
+	return filepath.Join(path, defaults.CfgPath)
 }
 
 // WriteTextFile creates a file called filename without checking to see if it

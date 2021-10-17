@@ -290,28 +290,37 @@ func (m MdOptions) IsOptionSet(opt MdOptions) bool {
 	return m&opt != 0
 }
 
-// Allocates a Site object, leaving everything clean & empty
-/*
-func (site *Site) New() (*Site, error) {
-	s := Site{}
-	return &s, nil
-}
-*/
-
-func (site *Site) NewSite() error {
-	if site.path != "" {
-		// Change to the specified directory.
-		if err := os.Chdir(site.path); err != nil {
-			//app.QuitError(ErrCode("1101", err.Error(), pathname))
-			return ErrCode("0902", err.Error())
-		}
+// site.createSite() generates an empty site at
+// the location specified in pathname.
+// If none is specified, assume that project is to
+// be created in the current directory.
+func (app *App) createSite(pathname string) error {
+  var err error
+	if pathname == "" || pathname == "." {
+		// None was specified. Assume current directory.
+		pathname = currDir()
+	}
+	// Exit if there's already a project at specified location.
+	if isProject(pathname) {
+		return ErrCode("0951", pathname)
 	}
 
+	err = os.MkdirAll(pathname, defaults.ProjectFilePermissions)
+	if err != nil {
+		return ErrCode("401", pathname)
+	}
+	// Change to the specified directory.
+	//if err := os.Chdir(app.site.path); err != nil {
+	if err := os.Chdir(pathname); err != nil {
+		return ErrCode("0902", pathname)
+	}
+	app.site.path = currDir()
 	// Create minimal directory structure: Publish directory
 	// .site directory, .themes, etc.
 	if err := createDirStructure(&defaults.SitePaths); err != nil {
-		//return errs.ErrCode("PREVIOUS", err.Error())
 		return ErrCode("PREVIOUS", err.Error())
 	}
+	app.site.name = filepath.Base(app.site.path)
+	// xxx
 	return nil
 }

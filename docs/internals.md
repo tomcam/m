@@ -51,19 +51,19 @@ function of any package (see https://github.com/spf13/cobra/blob/master/user_gui
 app.RootCmd.PersistentFlags().StringVar(&app.cfgFile, "config", "", "config file (default is $HOME/.mb.yaml)")
 ```
 
-
+## Different way of looking at execution flow
 * `cobra.OnInitialize(app.initConfig)`
-* `App.initConfig()`
+* `App.initConfig()` # Same as init() in Cobra
 * App.Execute() 
 * `app.RootCmd.Execute()` is the code that 
 actually gets command line arguments and flags, then executes whatever
 code they call. 
-* Before that it calls `app.initCobra()` 
+* Before that `app.RootCmd.Execute()` calls `app.initCobra()` 
 *	At the end of `App.initCobra()`,  `cobra.OnInitialize(app.initConfig)` 
 gets called. The argument to cobra.OnInitialize() is optional, 
 but Metabuzz calls `App.initConfig()`.
 * `App.initConfig()` is where Viper starts looking for configuration files.
-After it runs `app.RootCmd.Execute()` runs.
+After it runs `app.RootCmd.Execute()` finally runs.
 * `app.RootCmd.Execute()`, actually does the command line parsing. First it calls initCobra(), which is explained just after this. It also uses Viper to obtain configuration information from config files in
 the user's documents directory, config files in the
 project directory, and the environment.

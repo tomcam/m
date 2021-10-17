@@ -126,15 +126,15 @@ func writeSiteFromArray(sitename string, site []description) error {
 // a path to that filename, and the markdown
 // text itself.
 func (a *App) kitchenSink(sitename string) error {
-	a.site.name = sitename
-	err := a.site.NewSite()
+	err := a.createSite(sitename)
 	if err != nil {
-		a.QuitError(err)
+		//a.QuitError(err)
+		return err
 	}
 
 	// Create directory structure for test site
 	if err := createDirStructure(&testDirs); err != nil {
-		return err
+		return ErrCode("PREVIOUS", err.Error())
 	}
 
 	// Build the site from the array of data structures

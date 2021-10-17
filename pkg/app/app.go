@@ -71,6 +71,10 @@ func NewApp() *App {
 		RootCmd:   cobra.Command{},
 	}
 
+	// TODO: Awkward. Not sure if this belongs
+	// here.
+	app.site.defaults(app.site.name)
+
 	// If there are any configuration files,
 	// environment variables, etc. with info
 	// that overrides what was just initialized,
@@ -100,8 +104,8 @@ func (app *App) Execute() {
 }
 
 func (app *App) initCobra() {
+	app.Verbose("initCobra()")
 	app.addCommands()
-	app.Note("initCobra()")
 	// RootCmd represents the base command when called without any subcommands
 	//var RootCmd = &cobra.Command{
 
