@@ -1,11 +1,15 @@
 package app
 
 import (
+	//"flag"
+	//"fmt"
+	//"github.com/tomcam/m/pkg/default"
 	"github.com/spf13/cobra"
-	"github.com/tomcam/m/pkg/default"
+	"github.com/spf13/viper"
 	"github.com/yuin/goldmark"
-  //"sync"
-  //"context"
+	"os"
+	//"sync"
+	//"context"
 	"github.com/yuin/goldmark/parser"
 )
 
@@ -17,15 +21,18 @@ type App struct {
 	site Site
 
 	// Cobra Command Processes command lin options
-	Cmd *cobra.Command
+	//Cmd *cobra.Command
+	RootCmd cobra.Command
+	// For viper
+	cfgFile string
 
 	// Global options such as Verbose
 	flags Flags
 
-  page Page
+	page Page
 
-	parser goldmark.Markdown
-  parserCtx parser.Context
+	parser    goldmark.Markdown
+	parserCtx parser.Context
 
 	// Contents of HTML file after being converted from Markdown
 	HTML []byte
@@ -41,6 +48,9 @@ type Flags struct {
 
 	// Display debug info
 	Info bool
+
+	QTest bool
+	RTest bool
 }
 
 // NewApp allocates, and initializes to default
@@ -53,38 +63,20 @@ type Flags struct {
 //
 func NewApp() *App {
 	app := App{
-    page: Page{},
-    site: Site{},
+		page:   Page{},
+		site:   Site{},
 		parser: goldmark.New(),
-    //parser: parserWithOptions(),
-    parserCtx: parser.NewContext(),
-		Cmd: &cobra.Command{
-			Use:   defaults.ProductShortName,
-			Short: "Create static sites",
-			Long:  `Headless CMS to create static sites`,
-		},
+		//parser: parserWithOptions(),
+		parserCtx: parser.NewContext(),
+		RootCmd:   cobra.Command{},
 	}
-
-	// Process command line
-	app.addCommands()
 
 	// If there are any configuration files,
 	// environment variables, etc. with info
 	// that overrides what was just initialized,
 	// read them in.
-	app.updateConfig()
- 	return &app
-}
-
-// updateConfig() determines where configuration file (and other
-// forms of configuration info, such as
-// environment variables) can be found, then reads in
-// all that info. It overrides defaults established
-// in NewApp(). It isn't necessary. That us, NewApp()
-// will have initialized the App data structure sufficiently
-// to create a new project in the absence of any
-// overriding config information.
-func (app *App) updateConfig() {
+	//app.updateConfig()
+	return &app
 }
 
 // loadConfigs() looks for the many possible sources of
@@ -96,4 +88,57 @@ func (app *App) updateConfig() {
 // Based on old initConfigs()
 // https://github.com/tomcam/mb/blob/master/pkg/app/application.go#L57
 func (app *App) loadConfigs() {
+	app.Note("loadConfigs()")
+}
+
+// Execute adds all child commands to the root command and sets flags appropriately.
+// This is called by main.main(). It only needs to happen once to the RootCmd.
+func (app *App) Execute() {
+	app.Verbose("app.Execute()")
+	app.initCobra()
+	cobra.CheckErr(app.RootCmd.Execute())
+}
+
+func (app *App) initCobra() {
+	app.addCommands()
+	app.Note("initCobra()")
+	// RootCmd represents the base command when called without any subcommands
+	//var RootCmd = &cobra.Command{
+
+	// Here you will define your flags and configuration settings.
+	// Cobra supports persistent flags, which, if defined here,
+	// will be global for your application.
+	app.addFlags()
+
+	cobra.OnInitialize(app.initConfig)
+
+}
+
+// initConfig reads in config file and ENV variables if set.
+func (app *App) initConfig() {
+	app.Note("initConfig()")
+	if app.cfgFile != "" {
+		// Use config file from the flag.
+		viper.SetConfigFile(app.cfgFile)
+	} else {
+		// Find home directory.
+		home, err := os.UserHomeDir()
+		cobra.CheckErr(err)
+
+		// Search config in home directory with name ".mb" (without extension).
+		viper.AddConfigPath(home)
+		viper.SetConfigType("yaml")
+		viper.SetConfigName(".mb")
+	}
+
+	viper.AutomaticEnv() // read in environment variables that match
+
+	// If a config file is found, read it in.
+	if err := viper.ReadInConfig(); err == nil {
+		app.Note("Using config file:", viper.ConfigFileUsed())
+	}
+}
+
+func (app *App) qTest() {
+	app.Note("qTest()")
 }

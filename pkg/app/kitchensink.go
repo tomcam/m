@@ -42,9 +42,9 @@ Location of this file: {{ path }}
 ![100x100 SVG box](box-100x100.svg)
 `},
 
-	{"index.md",
-	"one",
-	embedded{filename: "", contents: ""},
+		{"index.md",
+			"one",
+			embedded{filename: "", contents: ""},
 			`
 +++
 theme: marlow
@@ -53,12 +53,12 @@ theme: marlow
 This page is 1 level deep.
 The time is {{ ftime }}
 `,
-  },
+		},
 
-	{"pagetype.md",
-	"one",
-	embedded{filename: "", contents: ""},
-    `
+		{"pagetype.md",
+			"one",
+			embedded{filename: "", contents: ""},
+			`
 +++
 pagetype: home
 +++
@@ -66,11 +66,11 @@ pagetype: home
 This uses the pagetype named {{ .FrontMatter.PageType }}
 The time is {{ ftime }}
 `,
-  },
+		},
 
-  {"index.md",
-	"two/three",
-	embedded{filename: "box-100x100.svg", contents: svgFile},
+		{"index.md",
+			"two/three",
+			embedded{filename: "box-100x100.svg", contents: svgFile},
 			`
 # Page 2
 This page is 2 levels deep.
@@ -82,7 +82,7 @@ Go [home 2](\/index.html)
 Go [home 3](/)
 Go [home 4](/./index.html)
 `},
-}
+	}
 
 	/* Directory structure for the test site */
 	testDirs = [][]string{
@@ -126,7 +126,7 @@ func writeSiteFromArray(sitename string, site []description) error {
 // a path to that filename, and the markdown
 // text itself.
 func (a *App) kitchenSink(sitename string) error {
-  a.site.name = sitename
+	a.site.name = sitename
 	err := a.site.NewSite()
 	if err != nil {
 		a.QuitError(err)

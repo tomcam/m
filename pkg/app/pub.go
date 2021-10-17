@@ -21,7 +21,7 @@ func (app *App) publishFile(filename string) error {
 	target = filepath.Join(app.site.publishPath, rel, filepath.Base(target))
 
 	var err error
-  // Convert Markdown file to a byte slice of HTML
+	// Convert Markdown file to a byte slice of HTML
 	body := app.MdFileToHTML(filename)
 
 	if err = os.WriteFile(target, body, defaults.PublicFilePermissions); err != nil {
@@ -43,14 +43,14 @@ func (app *App) MdFileToHTML(filename string) []byte {
 // buildPublishDirs() creates a mirror of the source
 // directory in the publish directory.
 func (app *App) buildPublishDirs() error {
-	for dir, _ := range app.site.dirs {
+	for dir := range app.site.dirs {
 		// Get the relative path.
 		rel := relDirFile(app.site.path, filepath.Join(dir, "a"))
 		// Join it with the publish directory.
 		full := filepath.Join(app.site.publishPath, rel)
 		if err := os.MkdirAll(full, defaults.PublicFilePermissions); err != nil {
 			app.Verbose("buildPublishDirs(): Unable to create path %v", full)
-      // TODO: Check error handling here
+			// TODO: Check error handling here
 			//return ErrCode("0403", app.site.publishPath,"" )
 			return ErrCode("PREVIOUS", err.Error())
 		}

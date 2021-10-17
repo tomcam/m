@@ -26,18 +26,54 @@ one website.
 
 ## Startup
 
-* app.NewDefaultApp() allocates the App object 
-* App.Cmd.Execute() gets commands from the command line
-using Cobra Command (https://github.com/spf13/cobra), 
-but also configuration information from config files in
+* Some cobra stuff:
+  - https://stackoverflow.com/questions/43847791/why-is-cobra-not-reading-my-configuration-file
+
+Here's what happens in `main.main`:
+
+```
+func main() {
+	app := app.NewApp()
+	app.Execute()
+}
+```
+* In the `main` function, NewApp() allocates the App object, then calls its
+`App.Execute()` method.
+* To summarize, `App.Execute()`, obtains commands
+and flags from the command line, obtains other configuration from 
+variables files and the environment, and then calls code based on the results.
+
+In more detail:
+* `app.initCobra()` is used the same way they use  the `init`
+function of any package (see https://github.com/spf13/cobra/blob/master/user_guide.md). It's used to create flags, like this:
+
+```
+app.RootCmd.PersistentFlags().StringVar(&app.cfgFile, "config", "", "config file (default is $HOME/.mb.yaml)")
+```
+
+
+* `cobra.OnInitialize(app.initConfig)`
+* `App.initConfig()`
+* App.Execute() 
+* `app.RootCmd.Execute()` is the code that 
+actually gets command line arguments and flags, then executes whatever
+code they call. 
+* Before that it calls `app.initCobra()` 
+*	At the end of `App.initCobra()`,  `cobra.OnInitialize(app.initConfig)` 
+gets called. The argument to cobra.OnInitialize() is optional, 
+but Metabuzz calls `App.initConfig()`.
+* `App.initConfig()` is where Viper starts looking for configuration files.
+After it runs `app.RootCmd.Execute()` runs.
+* `app.RootCmd.Execute()`, actually does the command line parsing. First it calls initCobra(), which is explained just after this. It also uses Viper to obtain configuration information from config files in
 the user's documents directory, config files in the
-project directory, and the environment
+project directory, and the environment.
+* App.Execute() returns its value to cobra.CheckErr(), which probably
+does something useful but I don't know what that is
 
 
 
 ## Project structure
 
-# TC: CONFUSING.
 * Metabuzz assumes the tree of files that make up a
 project are not in the root directory, but in the
 /docs directory. If your site is named example.com
@@ -46,7 +82,9 @@ Metabuzz looks in `example/docs` for the site
 file, source files, and so on.
 * Metabuzz first looks for an `/.mb` subirectory
 under the `/docs` directory. Without that subdirectory
-Metabuzz won't generate a website.
+Metabuzz won't generate a website. Otherwise Metabuzz would create an .mb directory and all its subdirectories if you accidentally ran `mb build`
+in a directory that wasn't supposed to be your website.
+
 
 ## Adding to the CLI
 

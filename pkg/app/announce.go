@@ -15,6 +15,7 @@ func (app *App) info() {
 	tbl := table.New("Site Directories", "")
 	tbl.AddRow("Project directory", app.site.path)
 	tbl.AddRow("Project name", app.site.name)
+	tbl.AddRow("Config file", app.cfgFile)
 	tbl.AddRow("Asset path", app.site.assetPath)
 	tbl.AddRow("Common path", app.site.commonPath)
 	tbl.AddRow("CSS path", app.site.cssPath)
@@ -23,13 +24,13 @@ func (app *App) info() {
 	tbl.AddRow("Publish path", app.site.publishPath)
 	tbl.AddRow("Themes path", app.site.themesPath)
 	/*
-	  tbl.AddRow("", app.site.)
-	  tbl.AddRow("", app.site.)
-	  tbl.AddRow("", app.site.)
-	  tbl.AddRow("", app.site.)
-		for _, widget := range Widgets {
-			tbl.AddRow(widget.ID, widget.Name, widget.Cost)
-		}
+		  tbl.AddRow("", app.site.)
+		  tbl.AddRow("", app.site.)
+		  tbl.AddRow("", app.site.)
+		  tbl.AddRow("", app.site.)
+			for _, widget := range Widgets {
+				tbl.AddRow(widget.ID, widget.Name, widget.Cost)
+			}
 	*/
 
 	tbl.Print()

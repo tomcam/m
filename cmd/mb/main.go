@@ -5,8 +5,6 @@ import (
 )
 
 func main() {
-	a := app.NewApp()
-	if err := a.Cmd.Execute(); err != nil {
-		a.QuitError(err)
-	}
+	app := app.NewApp()
+	app.Execute()
 }

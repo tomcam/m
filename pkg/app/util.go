@@ -3,6 +3,7 @@ package app
 import (
 	"bufio"
 	"fmt"
+	"github.com/spf13/viper"
 	"github.com/tomcam/m/pkg/default"
 	"github.com/tomcam/m/pkg/util"
 	"os"
@@ -10,11 +11,23 @@ import (
 	"strings"
 )
 
-// cfgPath() returns the expected pathname where
+// cfgBool() obtains a value set from a config file, environment
+// variable, whatever. Simple abstraction over viper
+func cfgBool(option string) bool {
+	return viper.GetBool(option)
+}
+
+// siteFilePath() returns the expected pathname where
 // the site file lives. Example: "/Users/tom/html/foo/.mb"
 // formerly SitePath
-func cfgPath(path string) string {
+func siteFilePath(path string) string {
 	return filepath.Join(path, defaults.CfgPath)
+}
+
+// cfgString() obtains a value set from a config file, environment
+// variable, whatever. Simple abstraction over viper
+func cfgString(option string) string {
+	return viper.GetString(option)
 }
 
 // createDirStructure() creates the specified site structure
@@ -84,6 +97,18 @@ func hasExtensionFrom(path string, extensions *util.SearchInfo) bool {
 	return extensions.Contains(filepath.Ext(path))
 }
 
+// homeDir() returns the user's home directory, or just "." for
+// the current directory if it can't be determined through system
+// calls.
+func homeDir() string {
+	var home string
+	var err error
+	if home, err = os.UserHomeDir(); err != nil {
+		return "."
+	}
+	return home
+}
+
 // inputString() gets a string from the keyboard and returns it
 // See also promptString()
 func inputString() string {
@@ -108,15 +133,15 @@ func isProject(path string) bool {
 	}
 
 	// The directory exists. Does it contain a site directory?
-	return isCfgPath(path)
+	return isSiteFilePath(path)
 
 }
 
-// isCfgPath() looks for the special name used for the subdirectory
+// isSiteFilePath() (formerly isCfgPath()) looks for the special name used for the subdirectory
 // used to hold site config file & info
 // formerly isSitePath
-func isCfgPath(path string) bool {
-	return dirExists(cfgPath(path))
+func isSiteFilePath(path string) bool {
+	return dirExists(siteFilePath(path))
 }
 
 // promptString() displays a prompt, then awaits for keyboard
@@ -185,13 +210,12 @@ func writeTextFile(filename, contents string) error {
 	var out *os.File
 	var err error
 	if out, err = os.Create(filename); err != nil {
-    // TODO: Renumber error code?
+		// TODO: Renumber error code?
 		return ErrCode("0204", "Problem creating file %v: %v\n", filename, err.Error())
 	}
 	if _, err = out.WriteString(contents); err != nil {
-    // TODO: Renumber error code?
+		// TODO: Renumber error code?
 		return ErrCode("0903", "Problem writing to file %v: %v\n", filename, err.Error())
 	}
 	return nil
 }
-

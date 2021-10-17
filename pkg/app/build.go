@@ -1,29 +1,30 @@
 package app
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/tomcam/m/pkg/default"
- 	"github.com/tomcam/m/pkg/mdext"
- "github.com/yuin/goldmark/text"
+	"github.com/tomcam/m/pkg/mdext"
 	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/renderer"
-	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/renderer/html"
-	"bytes"
+	"github.com/yuin/goldmark/text"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 )
+
 // mdToHTML converts a Markdown source file in a byte
 // slice to HTML.
 func (app *App) mdToHTML(source []byte) []byte {
 	node := app.parser.Parser().Parse(text.NewReader(source), parser.WithContext(app.parserCtx))
 	// Create variable-sized buffer for parsed output.
-  var buf bytes.Buffer
+	var buf bytes.Buffer
 	// Convert the Markdown file to HTML.
 	if err := app.parser.Renderer().Render(&buf, source, node); err != nil {
-    // TODO: update error handling
+		// TODO: update error handling
 		// a.QuitError(errs.ErrCode("0920", err.Error()))
 		panic("Parse error")
 		// TODO: Hmmm... this should probably return an error
@@ -33,11 +34,11 @@ func (app *App) mdToHTML(source []byte) []byte {
 	return buf.Bytes()
 }
 
-
 func (app *App) build(pathname string) error {
+	var err error
 	if pathname != "" {
 		// Change to the specified directory.
-		if err := os.Chdir(pathname); err != nil {
+		if err = os.Chdir(pathname); err != nil {
 			return ErrCode("0901", err.Error())
 		}
 	}
@@ -46,13 +47,15 @@ func (app *App) build(pathname string) error {
 	// Can't use relative paths internally.
 	pathname = currPath()
 
+	if !isProject(pathname) {
+		return ErrCode("1002", "")
+	}
 	// Changed directory successfully so
 	// pass it to initialize the site and update internally.
 	app.site.defaults(pathname)
 
 	// Create minimal directory structure: Publish directory,
 	// site directory, .themes, etc.
-	var err error
 	if err = createDirStructure(&defaults.SitePaths); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
@@ -62,14 +65,14 @@ func (app *App) build(pathname string) error {
 		return ErrCode("0913", app.site.path)
 	}
 
- 	// Delete any existing publish dir
+	// Delete any existing publish dir
 	if err := os.RemoveAll(app.site.publishPath); err != nil {
 		return ErrCode("0302", app.site.publishPath)
 	}
 
-  // Build the target publish dir so there should be
-  // no trouble copying files over
-  app.buildPublishDirs()
+	// Build the target publish dir so there should be
+	// no trouble copying files over
+	app.buildPublishDirs()
 
 	// Loop through the list of permitted directories for this site.
 	for dir := range app.site.dirs {
@@ -85,7 +88,7 @@ func (app *App) build(pathname string) error {
 			return ErrCode("0703", dir)
 		}
 
- 		// Go through all the Markdown files and convert.
+		// Go through all the Markdown files and convert.
 		// Start search index JSON file with opening '['
 		// TODO: Add this back
 		//app.DelimitIndexJSON(a.Site.SearchJSONFilePath, true)
@@ -169,6 +172,3 @@ func parserWithOptions() goldmark.Markdown {
 		goldmark.WithRendererOptions(renderOpts...),
 	)
 }
-
-
-

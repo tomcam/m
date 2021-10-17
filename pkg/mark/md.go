@@ -18,8 +18,6 @@ import (
 	//"os"
 )
 
-
-
 func parserWithOptions() goldmark.Markdown {
 	exts := []goldmark.Extender{
 		//mdext.New(mdext.WithTable()), extension.Table,
@@ -61,6 +59,3 @@ func parserWithOptions() goldmark.Markdown {
 		goldmark.WithRendererOptions(renderOpts...),
 	)
 }
-
-
-
