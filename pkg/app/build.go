@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/tomcam/m/pkg/default"
-	"github.com/tomcam/m/pkg/mdext"
+	//"github.com/tomcam/m/pkg/mdext"
 	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark-meta"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/renderer"
 	"github.com/yuin/goldmark/renderer/html"
-	"github.com/yuin/goldmark/text"
+	//"github.com/yuin/goldmark/text"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -19,18 +20,27 @@ import (
 // mdToHTML converts a Markdown source file in a byte
 // slice to HTML.
 func (app *App) mdToHTML(source []byte) []byte {
-	node := app.parser.Parser().Parse(text.NewReader(source), parser.WithContext(app.parserCtx))
-	// Create variable-sized buffer for parsed output.
+	//markdown := goldmark.New(
+	app.parser = goldmark.New(
+		goldmark.WithExtensions(
+      meta.Meta,
+		),
+		goldmark.WithRendererOptions(
+			renderer.WithNodeRenderers(
+			//util.Prioritized(extension.NewTableHTMLRenderer(), 500),
+			),
+		),
+	)
+
 	var buf bytes.Buffer
-	// Convert the Markdown file to HTML.
-	if err := app.parser.Renderer().Render(&buf, source, node); err != nil {
-		// TODO: update error handling
-		// a.QuitError(errs.ErrCode("0920", err.Error()))
-		panic("Parse error")
-		// TODO: Hmmm... this should probably return an error
-		return nil
+	//if err := app.parser.Convert([]byte(source), &buf); err != nil {
+	if err := app.parser.Convert(source, &buf, parser.WithContext(app.parserCtx)); err != nil {
+		// TODO: Handle error property
+		panic(err)
 	}
-	// Return the HTML.
+	app.page.frontMatter = meta.Get(app.parserCtx)
+	//app.Note("Front matter: %v", app.page.frontMatter)
+	//app.Note("Title: %v", app.page.frontMatter["Title"])
 	return buf.Bytes()
 }
 
@@ -136,8 +146,9 @@ func parserWithOptions() goldmark.Markdown {
 		//mdext.New(mdext.WithTable()), extension.Table,
 
 		// YAML support
-		mdext.New(),
-
+		//mdext.New(),
+		//meta.New(),
+		meta.Meta,
 		// Support GitHub tables
 		extension.Table,
 		extension.GFM,

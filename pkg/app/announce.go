@@ -6,7 +6,15 @@ import (
 	"strings"
 )
 
-// info() displays debug information about the app and site.
+
+// frontMatter() displays the raw contents of the front matter
+func (app *App) ShowFrontMatter() {
+  fmt.Println("FRONT MATTER")
+  fmt.Printf("%#v\n", app.page.frontMatter) 
+}
+
+
+// ShowInfo() displays debug information about the app and site.
 func (app *App) ShowInfo() {
 	table.DefaultHeaderFormatter = func(format string, vals ...interface{}) string {
 		return strings.ToUpper(fmt.Sprintf(format, vals...))

@@ -9,6 +9,7 @@ import (
 	"github.com/tomcam/m/pkg/mdext"
 	//"github.com/tomcam/m/pkg/util"
 	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark-meta"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/renderer"

@@ -10,6 +10,10 @@ func main() {
 	if app.Flags.Info || app.Flags.InfoVerbose {
 		app.ShowInfo()
 	}
+	if app.Flags.InfoFrontMatter {
+		app.ShowFrontMatter()
+	}
+
 
 	app.Execute()
 }

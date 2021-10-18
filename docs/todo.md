@@ -1,14 +1,12 @@
 # To do
 
 10/17/2021
-* Bug: info() displays nothing
-* Bind flags & other values to viper
-* Document order of execution on startup in regards to Cobra and Viper
-* Add a blogal Debug flag so I can run App.info() at the end.
-* Add a global Verbose flag and document that
 * Or if I get too tired maybe just get whole page construction going with default values, which wojuld mean
   - Adding back YAML support
   - Wiring up the YAML data to internals
+  - Adding theme support
+* Bind flags & other values to viper
+* Document order of execution on startup in regards to Cobra and Viper
 
 ## Priority 1: Showstoppers--required for the next release
 * Seqrch for "TODO:" in source
@@ -18,6 +16,7 @@
 * Look for occurrences of App.Note(), which is only meant for prerelease usage
 
 ## Priority 2: Desired but not required for the next release
+* Make most or all goldmark extensions and parsers optional
 * Consider creating NewSite(filename) and rolling up site.New() into it
 * Ensure Dedent is working properly. The generated source always has a newline appended. Does Dedent account for that, or should it?
 * Introduce idea of drafts so you don't publish something by accident

@@ -16,6 +16,7 @@ require (
 	github.com/ugorji/go/codec v0.0.0-20181204163529-d75b2dcb6bc8 // indirect
 	github.com/xordataexchange/crypt v0.0.3-0.20170626215501-b2862e3d0a77 // indirect
 	github.com/yuin/goldmark v1.4.1
+	github.com/yuin/goldmark-meta v1.0.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0
 //github.com/yuin/goldmark-meta v1.0.0 // indirect
 //github.com/tomcam/m/pkg/goldmark-y v1.0.0 // indirect

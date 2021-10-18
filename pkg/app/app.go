@@ -56,10 +56,9 @@ type Flags struct {
 	// Display debug info
 	InfoVerbose bool
 
-	QTest bool
-	RTest bool
+  // Display front matter
+  InfoFrontMatter	bool
 }
-
 
 // NewApp allocates, and initializes to default
 // values, an App struct (which contains the runtime
@@ -73,7 +72,7 @@ func NewApp() *App {
 	app := App{
 		page:   Page{},
 		site:   Site{},
-		parser: goldmark.New(),
+		//parser: goldmark.Markdown,
 		//parser: parserWithOptions(),
 		parserCtx: parser.NewContext(),
 		RootCmd:   cobra.Command{},
