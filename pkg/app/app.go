@@ -56,8 +56,8 @@ type Flags struct {
 	// Display debug info
 	InfoVerbose bool
 
-  // Display front matter
-  InfoFrontMatter	bool
+	// Display front matter
+	InfoFrontMatter bool
 }
 
 // NewApp allocates, and initializes to default
@@ -70,8 +70,8 @@ type Flags struct {
 //
 func NewApp() *App {
 	app := App{
-		page:   Page{},
-		site:   Site{},
+		page: Page{},
+		site: Site{},
 		//parser: goldmark.Markdown,
 		//parser: parserWithOptions(),
 		parserCtx: parser.NewContext(),

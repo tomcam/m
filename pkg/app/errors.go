@@ -52,6 +52,7 @@ var errMsgs = map[string]string{
 	// 0900	- Problem generating something
 	"0901": "Unable to allocate Site object",
 	"0902": "Error creating new site file",
+	"0920": "Error generating Markdown",
 
 	// 0950 - Something's already there
 	"0951": "Site already exists at", // sitename

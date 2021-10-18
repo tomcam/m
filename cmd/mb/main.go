@@ -14,6 +14,5 @@ func main() {
 		app.ShowFrontMatter()
 	}
 
-
 	app.Execute()
 }

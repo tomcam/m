@@ -21,8 +21,11 @@ func (app *App) publishFile(filename string) error {
 	target = filepath.Join(app.site.publishPath, rel, filepath.Base(target))
 
 	var err error
+  var body []byte
 	// Convert Markdown file to a byte slice of HTML
-	body := app.MdFileToHTML(filename)
+	if body, err = app.MdFileToHTML(filename); err != nil {
+    return err
+  }
 
 	if err = os.WriteFile(target, body, defaults.PublicFilePermissions); err != nil {
 		// TODO: Improve error handling
@@ -33,7 +36,7 @@ func (app *App) publishFile(filename string) error {
 
 // mdFileToHTML converts the markdown file in filename to HTML.
 // It may include optional front matter.
-func (app *App) MdFileToHTML(filename string) []byte {
+func (app *App) MdFileToHTML(filename string) ([]byte, error) {
 	// Read file into a byte slice.
 	s := util.FileToBytes(filename)
 	// Convert to HTML

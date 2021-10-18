@@ -19,11 +19,12 @@ import (
 
 // mdToHTML converts a Markdown source file in a byte
 // slice to HTML.
-func (app *App) mdToHTML(source []byte) []byte {
+func (app *App) mdToHTML(source []byte) ([]byte, error) {
 	//markdown := goldmark.New(
 	app.parser = goldmark.New(
 		goldmark.WithExtensions(
-      meta.Meta,
+			// Extension: YAML front matter support
+			meta.Meta,
 		),
 		goldmark.WithRendererOptions(
 			renderer.WithNodeRenderers(
@@ -33,15 +34,12 @@ func (app *App) mdToHTML(source []byte) []byte {
 	)
 
 	var buf bytes.Buffer
-	//if err := app.parser.Convert([]byte(source), &buf); err != nil {
 	if err := app.parser.Convert(source, &buf, parser.WithContext(app.parserCtx)); err != nil {
-		// TODO: Handle error property
-		panic(err)
+		// TODO: Handle error properly
+		return buf.Bytes(), ErrCode("0920", err.Error())
 	}
 	app.page.frontMatter = meta.Get(app.parserCtx)
-	//app.Note("Front matter: %v", app.page.frontMatter)
-	//app.Note("Title: %v", app.page.frontMatter["Title"])
-	return buf.Bytes()
+	return buf.Bytes(), nil
 }
 
 func (app *App) build(pathname string) error {
@@ -84,7 +82,7 @@ func (app *App) build(pathname string) error {
 	// no trouble copying files over
 	app.buildPublishDirs()
 
-	// Loop throuIh the list of permitted directories for this site.
+	// Loop through the list of permitted directories for this site.
 	for dir := range app.site.dirs {
 		// Change to each directory
 		if err := os.Chdir(dir); err != nil {

@@ -6,13 +6,11 @@ import (
 	"strings"
 )
 
-
 // frontMatter() displays the raw contents of the front matter
 func (app *App) ShowFrontMatter() {
-  fmt.Println("FRONT MATTER")
-  fmt.Printf("%#v\n", app.page.frontMatter) 
+	fmt.Println("FRONT MATTER")
+	fmt.Printf("%#v\n", app.page.frontMatter)
 }
-
 
 // ShowInfo() displays debug information about the app and site.
 func (app *App) ShowInfo() {
@@ -32,18 +30,7 @@ func (app *App) ShowInfo() {
 	tbl.AddRow("Image path", app.site.imagePath)
 	tbl.AddRow("Publish path", app.site.publishPath)
 	tbl.AddRow("Themes path", app.site.themesPath)
-	/*
-		  tbl.AddRow("", app.site.)
-		  tbl.AddRow("", app.site.)
-		  tbl.AddRow("", app.site.)
-		  tbl.AddRow("", app.site.)
-			for _, widget := range Widgets {
-				tbl.AddRow(widget.ID, widget.Name, widget.Cost)
-			}
-	*/
-
 	tbl.Print()
-
 }
 
 // App.Verbose() displays a message followed
