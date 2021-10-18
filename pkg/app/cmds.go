@@ -9,19 +9,6 @@ func (app *App) addCommands() {
 		pathname string
 		err      error
 		/*****************************************************
-		TOP LEVEL COMMAND: info
-		*****************************************************/
-
-		cmdInfo = &cobra.Command{
-			Use:   "info",
-			Short: "short about info",
-			Long:  `long about info`,
-			Run: func(cmd *cobra.Command, args []string) {
-				app.info()
-			},
-		}
-
-		/*****************************************************
 		TOP LEVEL COMMAND: build
 		*****************************************************/
 
@@ -98,6 +85,9 @@ func (app *App) addCommands() {
 					app.QuitError(err)
 				} else {
 					app.Note("Created site %v at %v", app.site.name, app.site.path)
+					if app.Flags.Info == true {
+						app.ShowInfo()
+					}
 				}
 			},
 		}
@@ -113,15 +103,15 @@ func (app *App) addCommands() {
 	*****************************************************/
 
 	/*****************************************************
-	  GLOBAL FLAGS
+	  GLOBAL FLAGS COULD BE CREATED HERE
 		*****************************************************/
-	app.RootCmd.PersistentFlags().BoolVarP(&app.flags.QTest, "q", "q", false, "something q")
-	app.RootCmd.PersistentFlags().BoolVarP(&app.flags.RTest, "r", "r", false, "something r")
+
+	// Example:
+	// app.RootCmd.PersistentFlags().BoolVarP(&app.Flags.Verbose, "verbose", "v", false, "verbose output")
 
 	/*****************************************************
 	  AddCommand()
 		*****************************************************/
-	app.RootCmd.AddCommand(cmdInfo)
 	app.RootCmd.AddCommand(cmdNew)
 	cmdNew.AddCommand(cmdNewSite)
 	app.RootCmd.AddCommand(cmdBuild)

@@ -8,7 +8,7 @@ var (
 
 	// Directory configuration for a project--a new site.
 	SitePaths = [][]string{
-		{CfgPath, PublishPath},
+		{CfgPath, DefaultPublishPath},
 		{CfgPath, CommonPath},
 		{CfgPath, HeadTagsPath},
 		{CfgPath, SCodePath},
@@ -70,7 +70,7 @@ Welcome to %s
 	// to. It can't be changed because it's used to determine
 	// whether a site is contained within its parent directory.
 	// Excluded from publishing.
-	PublishPath = "pub"
+	DefaultPublishPath = "pub"
 
 	// Name of subdirectory containing shortcode files
 	// Excluded from publishing.

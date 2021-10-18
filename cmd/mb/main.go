@@ -6,5 +6,10 @@ import (
 
 func main() {
 	app := app.NewApp()
+	app.Note("main: call info() after app.NewApp()")
+	if app.Flags.Info || app.Flags.InfoVerbose {
+		app.ShowInfo()
+	}
+
 	app.Execute()
 }

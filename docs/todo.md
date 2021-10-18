@@ -2,6 +2,7 @@
 
 10/17/2021
 * Bug: info() displays nothing
+* Bind flags & other values to viper
 * Document order of execution on startup in regards to Cobra and Viper
 * Add a blogal Debug flag so I can run App.info() at the end.
 * Add a global Verbose flag and document that

@@ -2,15 +2,16 @@ package app
 
 import (
 	"github.com/tomcam/m/pkg/default"
+	"os"
 	"path/filepath"
 	//"github.com/spf13/cobra"
 )
 
 func (app *App) addFlags() {
 	app.RootCmd.PersistentFlags().StringVar(&app.cfgFile, "config", "", "config file (default is "+filepath.Join(homeDir(), "."+defaults.ProductName+".yaml)"))
+	app.RootCmd.PersistentFlags().BoolVarP(&app.Flags.Verbose, "verbose", "v", false, "verbose output")
+	app.RootCmd.PersistentFlags().BoolVarP(&app.Flags.Info, "info", "i", false, "Show info after "+os.Args[0]+" runs")
+	app.RootCmd.PersistentFlags().BoolVarP(&app.Flags.InfoVerbose, "info-verbose", "b", false, "Show info after "+os.Args[0]+" runs with full path information")
 
-	// Local flags which will only run when this command
-	// is called directly, e.g.:
-	app.RootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 }

@@ -7,15 +7,16 @@ import (
 )
 
 // info() displays debug information about the app and site.
-func (app *App) info() {
+func (app *App) ShowInfo() {
 	table.DefaultHeaderFormatter = func(format string, vals ...interface{}) string {
 		return strings.ToUpper(fmt.Sprintf(format, vals...))
 	}
 
 	tbl := table.New("Site Directories", "")
-	tbl.AddRow("Project directory", app.site.path)
 	tbl.AddRow("Project name", app.site.name)
-	tbl.AddRow("Config file", app.cfgFile)
+	tbl.AddRow("Project directory", app.site.path)
+	tbl.AddRow("Config file directory", app.cfgPath)
+	tbl.AddRow("Site file", app.site.siteFilePath)
 	tbl.AddRow("Asset path", app.site.assetPath)
 	tbl.AddRow("Common path", app.site.commonPath)
 	tbl.AddRow("CSS path", app.site.cssPath)
@@ -41,7 +42,7 @@ func (app *App) info() {
 // by a newline to stdout
 // if the verbose flag was used. Formats it like Fprintf.
 func (a *App) Verbose(format string, ss ...interface{}) {
-	if a.flags.Verbose {
+	if a.Flags.Verbose {
 		fmt.Println(a.fmtMsg(format, ss...))
 	}
 }

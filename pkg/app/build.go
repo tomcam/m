@@ -52,7 +52,7 @@ func (app *App) build(pathname string) error {
 	}
 	// Changed directory successfully so
 	// pass it to initialize the site and update internally.
-	app.site.defaults(pathname)
+	app.setSiteDefaults(pathname)
 
 	// Create minimal directory structure: Publish directory,
 	// site directory, .themes, etc.
@@ -74,7 +74,7 @@ func (app *App) build(pathname string) error {
 	// no trouble copying files over
 	app.buildPublishDirs()
 
-	// Loop through the list of permitted directories for this site.
+	// Loop throuIh the list of permitted directories for this site.
 	for dir := range app.site.dirs {
 		// Change to each directory
 		if err := os.Chdir(dir); err != nil {
@@ -123,8 +123,8 @@ func (app *App) build(pathname string) error {
 		fmt.Println("file")
 	}
 
-	if app.flags.Info {
-		app.info()
+	if app.Flags.Info {
+		app.ShowInfo()
 	}
 	// Return with success code.
 	return nil

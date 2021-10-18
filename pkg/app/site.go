@@ -145,11 +145,6 @@ type Site struct {
 	List interface{}
 }
 
-// defaults() intializes the Site object
-func (site *Site) defaults(home string) {
-	site.setPaths(home)
-}
-
 type company struct {
 	// Company name, like "Metabuzz" or "Example Inc."
 	Name string
@@ -218,38 +213,6 @@ type WebPage struct {
 	html []byte
 }
 
-// setPaths computes values for location of site
-// theme files, publish directory, etc.
-// Most of them are relative to the site directory.
-// It must be called after command line flags, env
-// variables, and other application configuration has been done.
-// home is the fully qualified directory name
-// the project lives in.
-// By now it is the current directory.
-// This is based on App.SiteDefaults() in the previous
-// version of Metabuzz.
-func (site *Site) setPaths(home string) {
-	// This is the fully qualified path of the current
-	// directory, which is also guaranteed to be the
-	// root directory of the project.
-	site.path = home
-
-	cfgPath := filepath.Join(site.path, defaults.CfgPath)
-
-	// Build up the fully qualified pathname of the site file.
-	site.siteFilePath = filepath.Join(cfgPath,
-		defaults.SiteConfigFilename)
-
-	// Build up the fully qualified pathname of the publish
-	// directory.
-	site.publishPath = filepath.Join(cfgPath,
-		defaults.PublishPath)
-
-	// Create a new, empty map to hold the
-	// source directory tree.
-	site.dirs = make(map[string]dirInfo)
-}
-
 // TODO: Document
 const (
 	// Known to be a directory with at least 1 Markdown file
@@ -290,12 +253,12 @@ func (m MdOptions) IsOptionSet(opt MdOptions) bool {
 	return m&opt != 0
 }
 
-// site.createSite() generates an empty site at
+// createSite() generates an empty site at
 // the location specified in pathname.
 // If none is specified, assume that project is to
 // be created in the current directory.
 func (app *App) createSite(pathname string) error {
-  var err error
+	var err error
 	if pathname == "" || pathname == "." {
 		// None was specified. Assume current directory.
 		pathname = currDir()
@@ -305,6 +268,7 @@ func (app *App) createSite(pathname string) error {
 		return ErrCode("0951", pathname)
 	}
 
+	// Create a project at the specified path
 	err = os.MkdirAll(pathname, defaults.ProjectFilePermissions)
 	if err != nil {
 		return ErrCode("401", pathname)
@@ -321,6 +285,10 @@ func (app *App) createSite(pathname string) error {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	app.site.name = filepath.Base(app.site.path)
+	// Based on the current diredtory (app.site.path),
+	// establish site defaults such as CSS path,
+	// output file location, etc.
+	app.setSiteDefaults(app.site.path)
 	// xxx
 	return nil
 }
