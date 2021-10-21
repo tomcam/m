@@ -1,0 +1,11 @@
+
+article{float:right;}
+
+article{margin-right:var(--right-margin);}
+article{margin-left:0;}
+
+/* With sidebar to left no padding is needed  */
+article{padding-left:0;}
+
+/* Not loving this solution. */
+article { padding-right:var(--sidebar-width);}

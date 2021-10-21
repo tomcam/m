@@ -1,0 +1,26 @@
+Branding = ""
+Version = "0.7.0"
+Description = ""
+RootStylesheets = ["reset.css", "fonts.css", "bind.css"]
+Stylesheets = ["sizes.css", "theme-light.css", "textual.css"]
+PathName = ""
+
+[Header]
+  HTML = ""
+  File = "header.md"
+
+[Nav]
+  HTML = ""
+  File = "nav.md"
+
+[Article]
+  HTML = ""
+  File = ""
+
+[Footer]
+  HTML = ""
+  File = "footer.md"
+
+[Sidebar]
+  HTML = ""
+  File = "sidebar.md"

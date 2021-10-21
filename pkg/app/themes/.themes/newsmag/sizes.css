@@ -1,0 +1,176 @@
+:root 
+{
+
+  /* ******************************
+   *  Header dimensions           *
+   * ******************************/
+
+  /* Adjusts header height and keeps it vertically centered */
+  --header-height:3rem;
+
+  /* Size of the main text in the header. */
+  --branding-height:3rem;
+
+  /* Same as header {margin-top:}  */
+  --header-margin-top:0;
+
+  /* Same as header {margin-bottom:}  */
+  --header-margin-bottom:3rem;
+
+   /* Same as header {padding-top:}  */
+  --header-padding-top:3rem;
+
+  /* Same as header {padding-bottom} */
+  --header-padding-bottom:3.5rem;
+
+  /* NOTE: MTF doesn't use padding-left for header.
+   * It uses --text-start instead */
+
+
+  /* ******************************
+   *  Navbar dimensions           *
+   * ******************************/
+
+  /* Adjusts navbar height and keeps it vertically centered */
+  --nav-height:5rem;
+
+  /* Same as nav {margin-top} */
+  --nav-margin-top:0em;
+
+  /* Same as nav {margin-bottom} */
+  --nav-margin-bottom:0em;
+
+
+  /* ******************************
+   *  Article dimensions          *
+   * ******************************/
+
+  /* Same as article {margin-top:}  */
+  --article-margin-top:0rem;
+
+  /* Same as article {margin-bottom:}  */
+  --article-margin-bottom:3rem;
+
+   /* Same as article {padding-top:}  */
+  --article-padding-top:3rem;
+
+  /* Same as article {padding-bottom} */
+  --article-padding-bottom:3.5rem;
+
+  /* Same as article > p {font-size}, p {padding}, p {margin} */
+  --p-font-size:1.5rem;
+  --p-padding-top:0em;
+  --p-padding-bottom:0em;
+  --p-margin-top:1em;
+  --p-margin-bottom:0em;
+
+  /* Same as article > h1 {font-size}, h1 {padding}, h1 {margin} */
+  --h1-font-size:2.5rem;
+  --h1-padding-top:0em;
+  --h1-padding-bottom:0em;
+  --h1-margin-top:0em;
+  --h1-margin-bottom:0em;
+
+  /* Same as article > h2 {font-size}, h2 {padding}, h2 {margin} */
+  --h2-font-size:2rem;
+  --h2-padding-top:0em;
+  --h2-padding-bottom:0em;
+  --h2-margin-top:1.5em;
+  --h2-margin-bottom:0em;
+
+  /* Same as article > h3 {font-size}, h3 {padding}, h3 {margin} */
+  --h3-font-size:2rem;
+  --h3-padding-top:1em;
+  --h3-padding-bottom:0em;
+  --h3-margin-top:0em;
+  --h3-margin-bottom:0em;
+
+  /* Same as article > h4 {font-size}, h5 {padding}, h5 {margin} */
+  --h4-font-size:1rem;
+  --h4-padding-top:.75em;
+  --h4-padding-bottom:0em;
+  --h4-margin-top:0em;
+  --h4-margin-bottom:0em;
+
+  /* Same as article > h5 {font-size}, h5 {padding}, h5 {margin} */
+  --h5-font-size:1.5rem;
+  --h5-padding-top:0em;
+  --h5-padding-bottom:0em;
+  --h5-margin-top:0em;
+  --h5-margin-bottom:0em;
+
+  /* Same as article > h6 {font-size}, h6 {padding}, h6 {margin} */
+  --h6-font-size:.7rem;
+  --h6-padding-top:0em;
+  --h6-padding-bottom:0em;
+  --h6-margin-top:0em;
+  --h6-margin-bottom:0em;
+
+
+  /* ******************************
+   *  Sidebar dimensions          *
+   * ******************************/
+
+  --sidebar-padding-top:4rem;
+  --sidebar-padding-left:3em;
+  --sidebar-padding-right:1em;
+
+
+  /* ******************************
+   *  Footer dimensions           *
+   * ******************************/
+
+  /* Adjusts footer height and keeps it vertically centered */
+  --footer-height:6rem;
+
+  /* Size of the main text in the header. */
+  --footer-branding-height:3rem;
+
+  /* Same as footer {margin-top:}  */
+  --footer-margin-top:0;
+
+  /* Same as footer {margin-bottom:}  */
+  --footer-margin-bottom:0;
+
+   /* Same as footer {padding-top:}  */
+  --footer-padding-top:3rem;
+
+  /* Same as footer {padding-bottom} */
+  --footer-padding-bottom:3.5rem;
+
+
+  /* ******************************
+   *  Make theme wide style       *
+   * ******************************/
+
+  /* --article-column-width is width of article plus sidebar */
+  --article-column-width:80%;
+
+  --article-text-width: 75%;
+
+  /* --alt-article-column-width is width of article WITHOUT sidebar 
+   * Added to --sidebar-width it should always sum up to
+   * --article-column-width */
+  --alt-article-column-width:65%; /* Unused in wide themes */
+
+  /* --sidebar-width must be the same as
+   * --article-column-width MINUS --alt-article-column-width
+   */
+  --sidebar-width:20%;    
+  --left-margin:0%;
+  --right-margin:0%;
+  --header-footer-width:100%; 
+/*
+ * --------------------------------------------------
+ * --text-start and --article-pad-text-end are
+ * an attempt to keep this framework indepedent
+ * of text direction. Not sure how successful yet.
+ * --------------------------------------------------
+ */
+
+  --text-start: 20%;
+  --article-pad-text-end:0%;
+
+}
+
+ 

@@ -1,0 +1,14 @@
+:root
+{
+  --text-start:3%;
+}
+article{float:right;}
+
+/* This is the header and footer width minus sidebar width */
+article {width:var(--alt-article-column-width);}
+/* With sidebar to left no article margin is needed  */
+article{margin-left:0;margin-right:12.5%;}
+/* Which means the sidebar needs that margin. */
+aside{margin-left:var(--left-margin);padding-right:2em;padding-left:2.5%;}
+
+

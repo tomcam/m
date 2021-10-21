@@ -1,0 +1,9 @@
+/* RESPONSIVE SIZING */
+@media (max-width: 1024px) {
+html{font-size:16px;}
+header,article {width:100%;margin:0;padding-right:1em;padding-left:1em;}
+nav,aside,footer {display:none}
+/* Add breathing space to left edge for bullets */
+ol,ul {padding-inline-start:.5em;padding-left:.5em;}
+}
+

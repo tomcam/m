@@ -24,13 +24,16 @@ func (app *App) ShowInfo() {
 	tbl.AddRow("Config file directory", app.cfgPath)
 	tbl.AddRow("Site file", app.site.siteFilePath)
 	tbl.AddRow("Asset path", app.site.assetPath)
-	tbl.AddRow("Common path", app.site.commonPath)
 	tbl.AddRow("CSS path", app.site.cssPath)
-	tbl.AddRow("Head tags path", app.site.headTagsPath)
 	tbl.AddRow("Image path", app.site.imagePath)
+	tbl.AddRow("Common path", app.site.commonPath)
+	tbl.AddRow("Head tags path", app.site.headTagsPath)
 	tbl.AddRow("Publish path", app.site.publishPath)
 	tbl.AddRow("Themes path", app.site.themesPath)
+	tbl.AddRow("APPLICATION DATA", "")
+	tbl.AddRow("User application data", app.applicationDataPath)
 	tbl.Print()
+	//tbl = table.New("Application Directories", "")
 }
 
 // App.Verbose() displays a message followed

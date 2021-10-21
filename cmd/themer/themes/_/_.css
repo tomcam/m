@@ -1,0 +1,175 @@
+html {font-size:12px;}
+/* System fonts always look best so it's a good default */
+html,body,p {font-family:var(--informal),sans-serif;}
+/* OTOH Courier is a lousy code font by default */
+code,pre{font-family:var(--code),monospace;}
+
+/* ****************************/
+/*  HEADER BRANDING AND LINKS */
+/* ****************************/
+
+/* Display images in header without a line break after */
+header > img {display:inline;}
+
+/*
+ * --------------------------------------------------
+ * Simplest case: Branded name, nothing else
+ * Doesn't act like a list item.
+ * --------------------------------------------------
+ */
+header > p {font-size:var(--branding-height);display:inline;} 
+ 
+/*
+ * --------------------------------------------------
+ * If you have more than one item, 
+ * use an unordered list to create a horizontal
+ * menu.
+ * --------------------------------------------------
+ */
+header > ul {line-height:var(--header-height);}
+header > ul {margin-left:0;list-style-type:none;display:inline;}
+header > ul > li{display:inline;} 
+/*
+ * --------------------------------------------------
+ * Distinguish hover/active links for accessibilty 
+ * --------------------------------------------------
+ */
+header > ul > li > a,
+header > ul > li > a:link,
+header > ul > li > a:visited
+	{text-decoration:none;}
+header > ul > li > a:hover,
+header > ul > li > a:active
+	{text-decoration:underline;}
+
+/*
+ * --------------------------------------------------
+ * First item in list can have distinct branding 
+ * --------------------------------------------------
+ */
+header > ul > li:first-child > a {font-size:var(--branding-height);}
+
+
+/* ******************************/
+/*  NAVBAR                      */
+/* ******************************/
+
+/* Display images in the navbar without a line break after */
+nav > img {display:inline;}
+
+/*
+ * --------------------------------------------------
+ * Simplest case: a single item. Don't even need to
+ * make it a bullet.
+ * --------------------------------------------------
+ */
+nav > p {var(--nav-height);}
+nav > p > a {font-style:normal;}
+
+/*
+ * --------------------------------------------------
+ * Distinguish hover/active links for accessibilty 
+ * --------------------------------------------------
+ */
+nav > p > a,
+nav > p > a:link,
+nav > p > a:visited {display:inline;text-decoration:none;;} 
+/* For accessibility purposes show visual distinction when hovering or active */
+nav > p > a:hover,
+nav > p > a:active {text-decoration:underline;} 
+
+/*
+ * --------------------------------------------------
+ * More likely case: a horizontal row of menu items.
+ * Use an unordered list--in other words, just
+ * a bullet list. 
+ * --------------------------------------------------
+ */
+nav > ul > li {list-style-type:none;} 
+nav > ul > li > a,
+nav > ul > li > a:link,
+nav > ul > li > a:visited {display:inline;text-decoration:none;;} 
+/* For accessibility purposes show visual distinction when hovering or active */
+nav > ul > li > a:hover,
+nav > ul > li > a:active {text-decoration:underline;} 
+
+
+/* ******************************/
+/*  ARTICLE-MAIN PORTION OF TEXT*/
+/* ******************************/
+
+/*
+ * --------------------------------------------------
+ * Links in unordered list require more specific CSS
+ * --------------------------------------------------
+ */
+article > ul a,
+article > ul a:link,
+article > ul a:visited {color:var(--a);text-decoration:underline;} 
+/* For accessibility purposes show visual distinction when hovering or active */
+article > ul a:hover,
+article > ul a:active {text-decoration:none;} 
+
+
+/*
+ * --------------------------------------------------
+ * Code listings
+ * --------------------------------------------------
+ */
+article > p > code, article > code, article > pre, article > pre > code {
+		font-family:var(--code);
+		font-size:1em;
+		overflow:auto;
+		}
+
+/*
+ * --------------------------------------------------
+ * Distinguish hover/active links for accessibilty 
+ * --------------------------------------------------
+ */
+article > p > a,
+article > p > a:link,
+article > p >  a:visited
+	{font-family:var(--informal);text-decoration:underline;}
+article > p >  a:hover,
+article > p >  a:active
+	{text-decoration:none;}
+
+
+/* ******************************/
+/*  SIDEBAR (ASIDE TAG)         */
+/* ******************************/
+
+aside {height:100vh;}
+
+/*
+ * --------------------------------------------------
+ * Distinguish hover/active links for accessibilty 
+ * --------------------------------------------------
+ */
+aside > ul > li > a,
+aside > ul > li > a:link,
+aside > ul > li > a:visited 
+  {text-decoration:none;} 
+aside > ul > li > a:hover,
+aside > ul > li > a:active 
+  {text-decoration:underline;} 
+
+
+/* ******************************/
+/*  FOOTER                      */
+/* ******************************/
+
+/*
+ * --------------------------------------------------
+ * Distinguish hover/active links for accessibilty 
+ * --------------------------------------------------
+ */
+footer > table > tbody > tr > td > a:link,
+footer > table > tbody > tr > td > a:visited
+	{text-decoration:none;}
+footer > table > tbody > tr > td > a:hover,
+footer > table > tbody > tr > td > a:active
+	{text-decoration:underline;}
+
+

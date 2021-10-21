@@ -1,0 +1,104 @@
+/* IMPORTANT: Downloadable fonts should be imported above this rule  */
+:root 
+{
+
+	/* **********************************************************/
+	/* COLOR DECLARATIONS USED BY ALL METABUZZ FRAMEWORK THEMES */
+	/* **********************************************************/
+
+	/*
+	 * Most but not all colors used by a theme appear
+	 * in this CSS file as CSS variables, so that you
+	 * can make big changes to your theme by doing 
+	 * nothing more than altering these values.
+	 * 
+	 * Text colors use fg, meaning foreground, and
+	 * background colors use fg. Sometimes they're
+	 * used to color non-text objects, which is why
+	 * they aren't called -text or -background.
+	 *
+	 */
+
+    /* Default foreground (text) and background colors  */
+    --fg: #212121;
+    --bg: white;
+    /* Default link colors */
+    --a:#3a86ff/*#644EE7*/;
+    --a-visited: var(--a);
+    --a-hover: var(--a);
+    --a-active: var(--a);
+
+    
+    /* Secondary foreground (text) and background colors for accents. */
+article > blockquote + h3 + h4 {color:var(--fg);}
+
+/* Colors in all levels of lists, including links */
+article a,
+article a:link,
+article a:visited,
+article ol a,
+article ol a:link,
+article ol a:visited,
+article ul a,
+article ul a:link,
+article ul a:visited
+  {color:var(--fg);text-decoration:none;border-bottom:.125em solid var(--a);}
+
+/* Hover and button hold states for all links. */
+article a:hover,
+article a:active,
+article ol a:hover
+article ol a:active,
+article ul a:hover,
+article ul a:active
+  {text-decoration:none;border-bottom:none;}
+
+article > blockquote > p {color:var(--trim-fg);}
+/*
+ * --------------------------------------------------
+ * Images: light drop shadow 
+ * --------------------------------------------------
+ */
+article > img, article > p > img {
+  box-shadow: rgb(128,128,128) 1px 1px 3px 0px;
+}
+
+
+/* ******************************/
+/*  SIDEBAR COLORS AND BORDERS  */
+/* ******************************/
+
+aside > h2 {color:var(--a);/*#4488FF*/;background-color:var(--article-bg);}
+aside > h4 {color:var(--a);margin-bottom:.5em;font-weight:bold;}
+aside a:link,
+aside a:visited
+  {color:var(--fg);text-decoration:none;/*border-bottom:.0625em dotted var(--a);*/}
+
+
+
+/* ******************************/
+/*  FOOTER COLORS AND BORDERS   */
+/* ******************************/
+
+footer {border-top:1px solid var(--trim-fg);}
+footer > table > thead > tr > th {color:var(--footer-fg);background-color:var(--footer-bg);}
+/* Color of links in main rows (body) of table */
+footer > table > tbody > tr > td > a:link,
+footer > table > tbody > tr > td > a:visited
+	{color:var(--header-fg);}
+footer > table > tbody > tr > td > a:hover,
+footer > table > tbody > tr > td > a:active
+	{color:var(--header-fg);}
+footer > ul > li > a,
+footer > ul > li > a:link,
+footer > ul > li > a:visited
+	{color:var(--trim-fg);}
+
+/*
+ * --------------------------------------------------
+ * Special feature: First item in list has its own 
+ * color
+ * --------------------------------------------------
+ */
+footer > ul > li:first-child > a {color:var(--trim-fg);}
+

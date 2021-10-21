@@ -1,0 +1,25 @@
+Branding = ""
+Description = ""
+RootStylesheets = ["reset.css", "fonts.css", "bind.css"]
+Stylesheets = ["sizes.css", "theme-light.css", "adam.css"]
+PathName = ""
+
+[Nav]
+  HTML = ""
+  File = ""
+
+[Header]
+  HTML = ""
+  File = ""
+
+[Article]
+  HTML = ""
+  File = ""
+
+[Footer]
+  HTML = ""
+  File = "footer.md"
+
+[Sidebar]
+  HTML = ""
+  File = "sidebar.md"

@@ -210,7 +210,27 @@ func replaceExtension(filename string, newExtension string) string {
 // the site file lives. Example: "/Users/tom/html/foo/.mb"
 // formerly SitePath
 func siteFilePath(path string) string {
-	return filepath.Join(path, defaults.CfgPath)
+	return filepath.Join(path, defaults.CfgDir)
+}
+
+// userConfigPath() returns the location used to store
+// application data for this user. For example, this is
+// includes the subdirectory where themes get copied when
+// when Metabuzz is installed. To distinghuish it from
+// other products in the same directory, append the
+// short name of the product with a dot in front of
+// it, e.g. ".mb"
+// See:
+// https://pkg.go.dev/os#UserConfigDir
+func userConfigPath() string {
+	// Try to get the official path for application config.
+	var path string
+	var err error
+	if path, err = os.UserConfigDir(); err != nil {
+		// On failure, just return the user's home directory.
+		path = homeDir()
+	}
+	return filepath.Join(path, defaults.CfgDir)
 }
 
 // WriteTextFile creates a file called filename without checking to see if it

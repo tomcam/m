@@ -1,0 +1,27 @@
+:root 
+{
+
+  /* Usually you want the header and the footer to
+   * match. This makes them the same width.
+   */
+  --header-footer-width:100%;
+
+  /* Sort of specialized. You can use this to
+   * ensure that the header, nav, article, and footer
+   * all start text at the same position so
+   * they line up properly. Don't have to assign
+   * it to all of them.*/
+  --text-start: 10%;
+
+	/* Adjusts header height and keeps it vertically centered */
+	--header-height:8rem;
+
+	/* Size of the main text in the header. */
+	--branding-height:4rem;
+
+	/* Adjusts navbar height and keeps it vertically centered */
+	--nav-height:5rem;
+
+}
+
+ 

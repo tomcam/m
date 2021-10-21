@@ -132,8 +132,10 @@ type Site struct {
 	// Name (not path) of Theme used by this site unless overridden in front matter.
 	DefaultTheme string
 
-	// Directory this site uses to copy themes from. If the -d option was
-	// set, use the global factory themes directory. Otherwise, use local copy
+	// Directory this site uses to copy themes from (when the site was
+	// created, these in turn were copied from the location specified
+	// in Application.themesPath, also known as the global theme
+	// directory).
 	themesPath string
 
 	// All the rendered pages on the site, plus meta information.
@@ -258,6 +260,7 @@ func (m MdOptions) IsOptionSet(opt MdOptions) bool {
 // If none is specified, assume that project is to
 // be created in the current directory.
 func (app *App) createSite(pathname string) error {
+  app.Note("\tcreateSite(%v)\n", pathname)
 	var err error
 	if pathname == "" || pathname == "." {
 		// None was specified. Assume current directory.
@@ -268,6 +271,7 @@ func (app *App) createSite(pathname string) error {
 		return ErrCode("0951", pathname)
 	}
 
+  app.setPaths(pathname)
 	// Create a project at the specified path
 	err = os.MkdirAll(pathname, defaults.ProjectFilePermissions)
 	if err != nil {
@@ -288,7 +292,7 @@ func (app *App) createSite(pathname string) error {
 	// Based on the current diredtory (app.site.path),
 	// establish site defaults such as CSS path,
 	// output file location, etc.
-	app.setSiteDefaults(app.site.path)
+	//app.setSiteDefaults(app.site.path)
 	// xxx
 	return nil
 }

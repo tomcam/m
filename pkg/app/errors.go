@@ -59,7 +59,7 @@ var errMsgs = map[string]string{
 
 	// 1000	- Something's missing that should be there
 	"1001": "Missing front matter and markdown", // filename
-	"1002": "This isn't a project directory",
+  "1002": "This isn't a project directory:", // directoryname
 	"1013": "Please specify a site name",
 
 	// 1100 - Problem changing to a directory

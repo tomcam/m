@@ -44,22 +44,23 @@ func (app *App) mdToHTML(source []byte) ([]byte, error) {
 
 func (app *App) build(pathname string) error {
 	var err error
+  app.Note("\tbuild(%v)\n", pathname)
 	if pathname != "" {
 		// Change to the specified directory.
 		if err = os.Chdir(pathname); err != nil {
 			return ErrCode("0901", err.Error())
 		}
+	} else {
+		// Determine current fully qualified directory location.
+		// Can't use relative paths internally.
+		pathname = currPath()
 	}
-
-	// Determine current fully qualified directory location.
-	// Can't use relative paths internally.
-	pathname = currPath()
 
 	if !isProject(pathname) {
-		return ErrCode("1002", "")
+		return ErrCode("1002", pathname)
 	}
-	// Changed directory successfully so
-	// pass it to initialize the site and update internally.
+	// Changed directory successfully.
+	// Use current directory to build all config paths.
 	app.setSiteDefaults(pathname)
 
 	// Create minimal directory structure: Publish directory,
@@ -131,9 +132,7 @@ func (app *App) build(pathname string) error {
 		fmt.Println("file")
 	}
 
-	if app.Flags.Info {
-		app.ShowInfo()
-	}
+	app.loadTheme()
 	// Return with success code.
 	return nil
 }

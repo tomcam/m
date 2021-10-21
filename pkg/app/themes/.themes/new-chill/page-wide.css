@@ -1,0 +1,18 @@
+/* page-wide.css -- For pages that stretch across the screen */
+:root
+{
+  /* The following should add up to 100%:
+   * --center-column-width
+	 * --sidebar-width
+   * --left-margin
+   * --right-margin
+   */
+
+  --center-column-width:80%;
+	--sidebar-width:20%;    
+  --left-margin:0%;
+  --right-margin:0%;
+  --header-footer-width:100%;
+
+}
+

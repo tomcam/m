@@ -21,11 +21,11 @@ func (app *App) publishFile(filename string) error {
 	target = filepath.Join(app.site.publishPath, rel, filepath.Base(target))
 
 	var err error
-  var body []byte
+	var body []byte
 	// Convert Markdown file to a byte slice of HTML
 	if body, err = app.MdFileToHTML(filename); err != nil {
-    return err
-  }
+		return err
+	}
 
 	if err = os.WriteFile(target, body, defaults.PublicFilePermissions); err != nil {
 		// TODO: Improve error handling

@@ -8,13 +8,13 @@ var (
 
 	// Directory configuration for a project--a new site.
 	SitePaths = [][]string{
-		{CfgPath, DefaultPublishPath},
-		{CfgPath, CommonPath},
-		{CfgPath, HeadTagsPath},
-		{CfgPath, SCodePath},
-		{CfgPath, ScriptClosePath},
-		{CfgPath, ScriptOpenPath},
-		{CfgPath, ThemePath},
+		{CfgDir, DefaultPublishPath},
+		{CfgDir, CommonPath},
+		{CfgDir, HeadTagsPath},
+		{CfgDir, SCodePath},
+		{CfgDir, ScriptClosePath},
+		{CfgDir, ScriptOpenPath},
+		{CfgDir, ThemesDir},
 	}
 	// Markdown file extensions
 	// They don't in lexical order because they
@@ -113,7 +113,7 @@ Welcome to %s
 	// as themes and shortcodes.
 	// TODO: Change this when I settle on a product name
 	// TC: Formerly GlobalConfigurationDirName.
-	CfgPath = ".mb"
+	CfgDir = ".mb"
 
 	// Default file extension used by configuration files.
 	// See https://yaml.org/faq.html
@@ -140,7 +140,7 @@ Welcome to %s
 	// from being made to the originals, and makes it much easier to
 	// make theme changes, especially if you're a noob or just want to
 	// type less.
-	ThemePath = "themes"
+	ThemesDir = "themes"
 
 	// Configuration file found in the current site source directory
 	SourcePathConfigFilename = ProductName + "." + ConfigFileDefaultExt
@@ -150,7 +150,7 @@ Welcome to %s
 	// purposes, like storing config files.
 	// Make it in lowercase. One word,
 	// like docset or metabuzz.
-	// If this changes update CfgPath
+	// If this changes update CfgDir
 	ProductName = "metabuzz"
 
 	// Abbreviation, used for name command line program.

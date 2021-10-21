@@ -1,10 +1,16 @@
 # To do
 
 10/17/2021
-* Or if I get too tired maybe just get whole page construction going with default values, which wojuld mean
-  - Adding back YAML support
+* Bug: `mb new site foo` calls setSiteDefaults() twice
+* Bug: `mb new site /Users/tom/code/deleteme` calles setSiteDefaults() twice, the 
+first time for the current directory and the second time for the target directory
+* Bug: Run `mb -i` that is without build. The data structures don't get default initialization
+* Themes
   - Wiring up the YAML data to internals
   - Adding theme support
+    - Create a theme directory
+    - convert 1 theme to yaml and put it in the directory
+    - copy it to the publish directory
 * Bind flags & other values to viper
 * Document order of execution on startup in regards to Cobra and Viper
 

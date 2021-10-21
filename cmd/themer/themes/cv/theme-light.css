@@ -1,0 +1,89 @@
+/* IMPORTANT: Downloadable fonts should be imported above this rule  */
+:root 
+{
+
+	/* ****************/
+	/* COLORS         */
+	/* ****************/
+	/*
+	 * Most but not all colors used by a theme appear
+	 * in this CSS file as CSS variables, so that you
+	 * can make big changes to your theme by doing 
+	 * nothing more than altering these values.
+	 * 
+	 * Text colors use fg, meaning foreground, and
+	 * background colors use fg. Sometimes they're
+	 * used to color non-text objects, which is why
+	 * they aren't called -text or -background.
+	 *
+	 */
+
+    /* Default foreground (text) and background colors  */
+    --fg:black;
+    --bg:white;
+    /* Default link colors */
+    --a: blue;
+    --a-link: var(--a);
+    --a-visited: var(--a);
+    --a-hover: var(--a);
+    --a-active: var(--a);
+
+    
+    /* Primary foreground (text) and background colors in header */
+    --header-fg:var(--fg);
+    --header-bg:var(--bg);
+    /* Link colors specific to header */
+    --a-header: var(--header-fg); 
+    --a-header-link:  var(--header-fg);
+    --a-header-visited:  var(--header-fg);
+    --a-header-hover: var(--header-fg); 
+    --a-header-active:  var(--header-fg);
+
+
+    /* Primary foreground (text) and background colors in navbar */
+    --nav-fg: var(--bg);
+    --nav-bg: whitesmoke; /* var(--fg);  */
+    /* Link colors specific to navbar */
+    --a-nav: var(--fg); 
+    --a-nav-link: var(--fg);
+    --a-nav-visited: var(--fg);
+    --a-nav-hover: var(--fg); 
+    --a-nav-active: var(--fg);
+
+
+    /* Default foreground (text) and background colors in article */
+    --article-fg: var(--fg);
+    --article-bg: var(--bg);
+    /* Link colors specific to article */
+    --a-article: var(--a); 
+    --a-article-link: var(--a);
+    --a-article-visited: var(--a);
+    --a-article-hover: var(--a); 
+    --a-article-active: var(--a);
+
+        
+    /* Default foreground (text) and background colors in aside */
+    --sidebar-fg: var(--fg);
+    --sidebar-bg: var(--bg);
+    /* Link colors specific to sidebar */
+    --a-sidebar: var(--fg); 
+    --a-sidebar-link: var(--fg);
+    --a-sidebar-visited: var(--a);
+    --a-sidebar-hover: var(--a); 
+    --a-sidebar-active: var(--a);
+
+
+    /* Primary foreground (text) and background colors in footer */
+    --footer-fg: var(--fg);
+    --footer-bg: var(--bg);
+    /* Link colors specific to footer */
+    --a-footer: var(--a);
+    --a-footer-link: var(--a);
+    --a-footer-visited: var(--a);
+    --a-footer-hover: var(--a); 
+    --a-footer-active: var(--a);
+}
+
+
+
+

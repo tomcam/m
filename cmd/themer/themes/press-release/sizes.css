@@ -1,0 +1,100 @@
+:root 
+{
+
+  /* ******************************
+   *  Header dimensions           *
+   * ******************************/
+
+	/* adjusts header height and keeps it vertically centered */
+	--header-height:3rem;
+
+	/* size of the main text in the header. */
+	--branding-height:2rem;
+
+  /* same as header {margin- } */
+  --header-margin-top:4em;
+  --header-margin-bottom:0em;
+
+
+  /* ******************************
+   *  Article dimensions          *
+   * ******************************/
+
+  /* same as article {margin- } */
+  --article-margin-top:4em;
+  --article-margin-bottom:2em;
+
+  /* same as article {padding- } */
+  --article-padding-top:0em;
+  --article-padding-bottom:0em;
+
+
+  /* ******************************
+   *  Navbar dimensions           *
+   * ******************************/
+
+	/* Adjusts navbar height and keeps it vertically centered */
+	--nav-height:5rem;
+
+  /* same as nav {margin- } */
+  --nav-margin-top:4em;
+  --nav-margin-bottom:0em;
+
+
+  /* ******************************
+   *  Sidebar dimensions          *
+   * ******************************/
+
+  --sidebar-padding-top:4rem;
+  --sidebar-padding-left:3em;
+  --sidebar-padding-right:1em;
+
+  /* ******************************
+   *  Footer dimensions           *
+   * ******************************/
+
+	/* Adjusts footer height and keeps it vertically centered */
+	--footer-height:6rem;
+
+	/* Size of the main text in the header. */
+	--footer-branding-height:3rem;
+
+  /* Same as footer {margin-top:}  */
+  --footer-margin-top:3rem;
+
+  /* Same as footer {margin-bottom:}  */
+  --footer-margin-bottom:3rem;
+
+   /* Same as footer {padding-top:}  */
+  --footer-padding-top:3rem;
+
+  /* Same as footer {padding-bottom} */
+  --footer-padding-bottom:3.5rem;
+
+  /* Same as footer {padding-left} */
+  --footer-padding-left:0;
+
+  /* Same as footer {padding-right} */
+  --footer-padding-right:1rem;
+
+   /* Same as footer {width} */
+  --footer-width:100%;
+
+  /* ******************************
+   *  Make theme pillar style     *
+   * ******************************/
+
+  --article-column-width:65%;
+  --alt-article-column-width:55%;
+	--sidebar-width:20%;    
+  /* --left-margin computed as 65% 
+   * (there's no sidebar) minus 
+   * half of the remaining 35% */
+  --left-margin: 17.5%; 
+  --right-margin:10%;
+  --header-footer-width:85%;
+  --text-start:5%; 
+
+}
+
+ 

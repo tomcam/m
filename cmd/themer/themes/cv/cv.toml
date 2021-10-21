@@ -1,0 +1,7 @@
+Branding = "_"
+Description = "The ur-theme, complete but stripped-down starting point"
+RootStylesheets = ["reset.css", "fonts.css", "layout.css"]
+Stylesheets = ["sizes.css", "theme-light.css", "cv.css"]
+PathName = ""
+
+

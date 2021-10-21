@@ -1,0 +1,59 @@
+html,body,nav,header,article,footer{float:left;clear:both;overflow:auto;}
+html,body,nav,header,article,aside,footer{color:var(--fg);background-color:var(--bg);}
+aside{float:left;}
+
+
+header {color:var(--header-fg);background-color:var(--header-bg);overflow:hidden;}
+header {margin-top:var(--header-margin-top);padding-bottom:var(--header-margin-bottom);}
+header {padding-top:var(--header-padding-top);padding-bottom:var(--header-padding-bottom);}
+header {padding-left:var(--text-start);padding-right:var(--header-padding-right);}
+/* Prevent word wrap. Looks bad on smaller screens. */
+header {white-space:nowrap;}
+header {width:var(--header-footer-width);}
+/* Blank space on each side of client area */
+header {margin-right:var(--right-margin);margin-left:var(--left-margin);}
+
+
+nav {color:var(--nav-fg);background-color:var(--nav-bg);overflow:hidden;}
+nav {margin-top:var(--nav-margin-top);padding-bottom:var(--nav-margin-bottom);}
+nav {padding-left:var(--text-start);}
+/* Prevent word wrap. Looks bad on smaller screens. */
+nav {white-space:nowrap;}
+nav {width:var(--header-footer-width);}
+nav {margin-right:var(--right-margin);margin-left:var(--left-margin);}
+
+article {color:var(--article-fg);background-color:var(--article-bg);}
+article {width:var(--article-column-width);}                       
+article {margin-top:var(--article-margin-top);padding-bottom:var(--article-margin-bottom);}
+article {padding-left:var(--left-margin);}
+article {padding-top:var(--article-padding-top);padding-bottom:var(--article-padding-bottom);}
+article {margin-left:var(--text-start);}
+h1{font-size:var(--h1-font-size);padding-top:var(--h1-padding-top);padding-bottom:var(--h1-padding-bottom);margin-top:var(--h1-margin-top);margin-bottom:var(--h1-margin-bottom);}
+h2{font-size:var(--h2-font-size);padding-top:var(--h2-padding-top);padding-bottom:var(--h2-padding-bottom);margin-top:var(--h2-margin-top);margin-bottom:var(--h2-margin-bottom);}
+h3{font-size:var(--h3-font-size);padding-top:var(--h3-padding-top);padding-bottom:var(--h3-padding-bottom);margin-top:var(--h3-margin-top);margin-bottom:var(--h3-margin-bottom);}
+h4{font-size:var(--h4-font-size);padding-top:var(--h4-padding-top);padding-bottom:var(--h4-padding-bottom);margin-top:var(--h4-margin-top);margin-bottom:var(--h4-margin-bottom);}
+h5{font-size:var(--h6-font-size);padding-top:var(--h5-padding-top);padding-bottom:var(--h5-padding-bottom);margin-top:var(--h5-margin-top);margin-bottom:var(--h5-margin-bottom);}
+h6{font-size:var(--h6-font-size);padding-top:var(--h6-padding-top);padding-bottom:var(--h6-padding-bottom);margin-top:var(--h6-margin-top);margin-bottom:var(--h6-margin-bottom);}
+
+
+
+aside {color:var(--sidebar-fg);background-color:var(--sidebar-bg);} 
+aside {width:var(--sidebar-width);}                            
+
+
+footer {color:var(--footer-fg);background-color:var(--footer-bg);} 
+footer {margin-top:var(--footer-margin-top);margin-bottom:var(--footer-margin-bottom);}
+footer {padding-top:var(--footer-padding-top);padding-bottom:var(--footer-padding-bottom);padding-left:var(--text-start);padding-right:var(--footer-padding-right);}
+footer {clear:both;}    
+footer {width:var(--footer-width);} 
+footer {margin-top:var(--footer-margin-top);margin-bottom:var(--footer-margin-bottom);margin-right:var(--right-margin);margin-left:var(--left-margin);}
+
+
+/* Indent lists */
+li {margin-left:1em;}
+li li {margin-left:1em;}
+li li li {margin-left:1em;}
+li li li li {margin-left:1em;}
+li li li li li {margin-left:1em;}
+li li li li li li {margin-left:1em;}
+

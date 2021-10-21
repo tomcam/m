@@ -1,0 +1,8 @@
+article{float:right;}
+
+article{margin-right:15%;}
+article{padding-left:0;margin-left:0;}
+article{width:var(--alt-article-column-width);}
+
+aside{margin-left:var(--left-margin);}
+aside{padding-left:0;}

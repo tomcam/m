@@ -19,7 +19,10 @@ import (
 // Compound data structure for config example at
 // https://gist.github.com/alexedwards/5cd712192b4831058b21
 type App struct {
-	site Site
+
+	// Location (on startup) of user application data directory
+	applicationDataPath string
+	site                Site
 
 	// Cobra Command Processes command lin options
 	//Cmd *cobra.Command
@@ -39,9 +42,13 @@ type App struct {
 	parser    goldmark.Markdown
 	parserCtx parser.Context
 
-	QTest bool
-	RTest bool
-}
+	// This is the global themes path. It's the source directory
+	// containing the themes as they came from the factory.
+	// It's where the site's themes come from when a new site
+	// is created.
+	themesPath string
+} // type Application
+
 type Flags struct {
 	// DontCopy means don't copy theme directory to the site directory.
 	// Use the global theme set (which means if you change it, it
@@ -66,21 +73,19 @@ type Flags struct {
 // necessary to create a new project must be set
 // by the time App.updateConfig() is called.
 //
-// path is the location for the project.
-//
 func NewApp() *App {
 	app := App{
 		page: Page{},
 		site: Site{},
 		//parser: goldmark.Markdown,
 		//parser: parserWithOptions(),
-		parserCtx: parser.NewContext(),
-		RootCmd:   cobra.Command{},
+		parserCtx:           parser.NewContext(),
+		RootCmd:             cobra.Command{},
+		applicationDataPath: userConfigPath(),
+		themesPath:          filepath.Join(userConfigPath(), defaults.ThemesDir),
 	}
-
-	// TODO: Awkward. Not sure if this belongs
-	// here.
-	app.setSiteDefaults(app.site.name)
+	//app.setSiteDefaults(path)
+	// TODO: Get values from viper here I think.
 	// If there are any configuration files,
 	// environment variables, etc. with info
 	// that overrides what was just initialized,
@@ -150,17 +155,17 @@ func (app *App) initConfig() {
 	}
 }
 
-func (app *App) qTest() {
-	app.Note("qTest()")
-}
-
 // setSiteDefaults() intializes the Site object
 // It's on app instead of app.site so I can use
 // read global flags and use debugging features
-// like App.Note()
+// like App.Note(). home is the project directory
+// or, if left as "", is set to the current directory
 func (app *App) setSiteDefaults(home string) {
-	app.Verbose("\tApp.setSiteDefaults(%v)", home)
-	app.Verbose("\tCalling Site.setPaths(%v)", home)
+
+	if home == "" {
+		home = currDir()
+	}
+	app.Verbose("\tsetSiteDefaults(%v)\n", home)
 	app.setPaths(home)
 }
 
@@ -175,16 +180,16 @@ func (app *App) setSiteDefaults(home string) {
 // This is based on App.SiteDefaults() in the previous
 // version of Metabuzz.
 func (app *App) setPaths(home string) {
-	app.Note("\tSite.setPaths(%v)", home)
 	// This is the fully qualified path of the current
 	// directory, which is also guaranteed to be the
 	// root directory of the project.
+	app.Verbose("\tsetPaths(%v)\n", home)
 	app.site.path = home
 
 	// Compute location of base directory used for all
 	// config info, which includes directories for
 	// CSS files, graphic assets, HTML partials, etc.
-	app.cfgPath = filepath.Join(app.site.path, defaults.CfgPath)
+	app.cfgPath = filepath.Join(app.site.path, defaults.CfgDir)
 
 	// Compute full pathname of the site file.
 	app.site.siteFilePath = filepath.Join(app.cfgPath,
@@ -198,26 +203,26 @@ func (app *App) setPaths(home string) {
 	app.site.assetPath = filepath.Join(app.cfgPath,
 		defaults.DefaultAssetPath)
 
+	// Compute the directory location for CSS files
+	app.site.cssPath = filepath.Join(app.site.assetPath,
+		defaults.DefaultPublishCssPath)
+
+	// Compute the directory location for image files
+	app.site.imagePath = filepath.Join(app.site.assetPath,
+		defaults.DefaultPublishImgPath)
+
 	// Compute the directory location for common files
 	app.site.commonPath = filepath.Join(app.cfgPath,
 		defaults.CommonPath)
-
-	// Compute the directory location for CSS files
-	app.site.cssPath = filepath.Join(app.cfgPath,
-		defaults.DefaultPublishCssPath)
 
 	// Compute the directory location for tags
 	// that live in the HTML <head>
 	app.site.headTagsPath = filepath.Join(app.cfgPath,
 		defaults.HeadTagsPath)
 
-	// Compute the directory location for image files
-	app.site.imagePath = filepath.Join(app.cfgPath,
-		defaults.DefaultPublishImgPath)
-
 	// Compute the directory location for theme files
 	app.site.themesPath = filepath.Join(app.cfgPath,
-		defaults.ThemePath)
+		defaults.ThemesDir)
 
 	// Create a new, empty map to hold the
 	// source directory tree.

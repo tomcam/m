@@ -1,0 +1,424 @@
+:root{
+  /* Color of border that appears after all item text
+     (on right column) */
+  --timeline-bottom-border-color:gray;
+  /* Padding at bottom of the timeline. 
+     Item background color preserved */
+  --timeline-gap-bottom:2rem;
+  /* How much you want the vertical line 
+   * at top of timeline to stick up 
+   * through the symbol. */
+  --timeline-gap-top:-.5rem;
+
+
+  /* Text color of the (optional) item subtitle, 
+     say for month or time */
+  --timeline-item-subtitle-color:dimgray; 
+
+  /* Background color of right "column" (item title/description) */
+  --timeline-item-background-color: whitesmoke;
+
+  /* Text color of the item body/description */
+  --timeline-item-description-color:blue;
+
+  /* Pads the whole right side of the timeline,
+     including its border */
+  --timeline-item-right-gap:4em;
+
+  /* Text color of the main item title */
+  --timeline-item-title-color: black;
+
+  /* Text-size of the item title on the right */
+  --timeline-item-title-size:1.5em;
+
+  /* Interior color of the dot-symbol thing */
+  --timeline-symbol-background-color:blue;
+
+  /* Border color of the dot-symbol thing 
+   * Not convinced this works */
+  --timeline-symbol-border-color:blue;
+
+  /* Thickness of outer ring on timeline dot */
+  --timeline-symbol-border-thickness: 0;
+
+  /* Diameter of dot/symbol thing on timeline  */
+  --timeline-symbol-diameter:1em;
+
+  /* 50% makes the dot round. Lower to make it square. */
+  --timeline-symbol-radius:50%;
+
+  /* Horizontal tweak to symbol position. 
+     Distance from item title */
+  --timeline-symbol-x-alignment:-3.1rem;
+
+  /* Color of the actual vertical line itself */
+  --timeline-color:black;
+  /* X Position of the vertical line. 
+   * Increasing moves it to the left
+   * of the symbol. Decreasing moves it
+   * to the rigiht. */
+  --timeline-throughline-position:2.55em;
+
+
+  /* Color of text used on the right side of the colum,
+     presumably the year */
+  --timeline-year-color:gray;
+
+  /* All text in the timeline is based on this size */
+  --timeline-font-size: 1em;
+
+  /* Text-size of the (optional) item subtitle 
+     on the right, normally used for a month or time */
+  --timeline-item-subtitle-size: .75em;
+
+  /* Thickness of vertical timeline */
+  --timeline-thickness: .1em;
+
+  /* Line height of text on right of timeline */
+  --timeline-height:1.4em;
+
+  /* Width of the cell on the right of the timeline
+     that contains descriptive text */
+  --timeline-max-width: 50%;
+  --title-font-size:2.4em;
+  --title-letter-spacing: 1.5px;
+
+  /* Position of the year (left side) column */
+  --timeline-year-pull-left: -15rem;
+
+  /* Width of the left "column" (year side) */
+  --timeline-year-width:8rem;
+}
+
+h1{ font-size:2.5em;margin-top:2rem; }
+h2{ font-size:2em;margin-top:1.5rem; }
+h3{ font-size:1.5em;margin-top:1.5rem; }
+h4{ font-size:.9em;margin-top:1rem;}
+h5{ font-size:.8em; }
+h6{ font-size:0.9em; }
+
+table > thead > tr > th  {margin-top:4rem;}
+blockquote {font-style:italic;margin: 2rem 2rem 2rem 2rem;}
+
+/* ****************************/
+/*  HEADER BRANDING AND LINKS */
+/* ****************************/
+
+/*
+ * --------------------------------------------------
+ * Simplest case: Branded name, nothing else
+ * Doesn't act like a link.
+ * --------------------------------------------------
+ */
+header > p {font-size:var(--branding-height);font-weight:900;display:inline;} 
+
+ 
+/*
+ * --------------------------------------------------
+ * If you have more than one item, use an unordered list. 
+ * These styles show the first item with branding applied,
+ * any number of links following, still slightly
+ * larger than body text, and a last link that
+ * looks like a button.
+ * --------------------------------------------------
+ */
+header > ul {line-height:var(--header-height);}
+header > ul {margin-left:0;padding-left:0;list-style-type:none;display:inline;}
+header > ul > li{display:inline;padding-right:1.5rem;font-size:1.25rem;} 
+header > ul > li > a,
+header > ul > li > a:link,
+header > ul > li > a:visited
+	{font-weight:400;text-decoration:none;}
+header > ul > li > a:hover,
+header > ul > li > a:active
+	{text-decoration:underline;}
+
+/*
+ * --------------------------------------------------
+ * Special feature: First item in list has biggest
+ * branding
+ * --------------------------------------------------
+ */
+header > ul > li:first-child > a {font-size:var(--branding-height);font-weight:900;padding-right:1rem;}
+
+/*
+ * --------------------------------------------------
+ * Special feature: Last item in list is styled like 
+ * a button. Just leave omit text after the
+ * bullet character (asterisk) in your Markdown 
+ * if you don't want the effect. (Or just remove
+ * these lines of CSS.)
+ * --------------------------------------------------
+ */
+/* Make the last item look and act like a button */
+header > ul > li:last-child > a {border: 2px solid var(--header-fg);border-radius:.25rem;padding: .25rem;padding: .5rem .75rem;text-decoration: none;text-transform: uppercase;font-weight:bold;}
+
+header > ul > li:last-child > a:hover {cursor: pointer;}
+
+/* ******************************/
+/*  NAVBAR                      */
+/* ******************************/
+
+nav > p > a {font-size:1.25em;margin-right:1em;font-weight:700;}
+nav > p {margin-top:0;line-height:var(--nav-height);}
+nav > img {display:inline;}
+nav > p > a {font-style:normal;}
+
+nav > ul > li {list-style-type:none;} 
+nav > ul > li > a,
+nav > ul > li > a:link,
+nav > ul > li > a:visited {display:inline;text-decoration:none;;} 
+/* For accessibility purposes show visual distinction when hovering or active */
+nav > ul > li > a:hover,
+nav > ul > li > a:active {text-decoration:underline;} 
+
+nav > p > a,
+nav > p > a:link,
+nav > p > a:visited {display:inline;text-decoration:none;;} 
+/* For accessibility purposes show visual distinction when hovering or active */
+nav > p > a:hover,
+nav > p > a:active {text-decoration:underline;} 
+
+
+
+
+
+/* ******************************/
+/*  ARTICLE-MAIN PORTION OF TEXT*/
+/* ******************************/
+
+/*
+ * --------------------------------------------------
+ * Special feature: Timeline formed via a ul list 
+ *
+ Example usage:
+ * #### 2001
+  ## Item title
+  ### March 31
+  Descriptive text.
+ 
+* #### 2002
+  ## Item title
+  ### April 2
+  More descriptive text
+
+ * Suggestions for modifications 
+    To change all text sizes while keeping their proportions,
+    adjust  --timeline-font-size
+
+    To change item text (on right side)
+    line height proportionally adjust --timeline-height
+  
+    To change the symbol from round to square set this to 0:
+    --timeline-symbol-radius
+
+ * --------------------------------------------------
+ */
+
+
+/* Format for these headers inside the ul */
+article > ul li > h2 {
+  color:var(--timeline-item-title-color);
+  font-size:var(--timeline-item-title-size);
+}
+
+article > ul li > h3 {
+  color:var(--timeline-item-subtitle-color);
+  font-size:var(--timeline-item-subtitle-size);
+  margin-top:.5rem;
+  margin-bottom:0rem;
+}
+
+/* Body text of the item; can be as long as neeeded */
+article > ul li > p {
+  color:var(--timeline-item-description-color);
+}
+
+article > ul {
+  /* Vertical timeline itself */
+  border-left: var(--timeline-thickness) solid var(--timeline-color);
+  background: var(--timeline-item-background-color); 
+  margin: 0  0 0 var(--timeline-year-width); 
+  position:relative;
+  line-height: var(--timeline-height);
+  font-size: var(--timeline-font-size);
+  padding-left:var(--timeline-throughline-position);
+  padding-right:var(--timeline-item-right-gap);
+  padding-top:var(--timeline-gap-top);
+  padding-bottom:var(--timeline-gap-bottom); 
+  list-style:none;
+  text-align:left;
+  max-width: var(--timeline-max-width); 
+}
+
+article > ul li {
+  position:relative;
+}
+
+
+/* Format text for year (left column) */
+article > ul li > h4 {
+  position:absolute;
+  left:var(--timeline-year-pull-left);
+  top:-1em;
+  color:var(--timeline-year-color);
+  text-align:right;
+  min-width:var(--timeline-year-width);
+}
+
+article > ul li:after {
+  /* dot/symbol thing outline */
+  box-shadow: 0 0 0 var(--timeline-symbol-border-thickness) var(--timeline-symbol-border-color);
+  /* Center dot/symbol thing on timeline */
+  left:var(--timeline-symbol-x-alignment);
+
+  /* Color inside dot/symbol thing */
+  background: var(--timeline-symbol-background-color); 
+  border-radius:var(--timeline-symbol-radius);
+  height:var(--timeline-symbol-diameter);
+  width:var(--timeline-symbol-diameter);
+  content: "";
+
+  /* Gap above the top of the timeline dot/symbol thing */
+  top:.25rem;
+  }
+
+article > ul li:last-of-type {
+    padding-bottom:0;
+    margin-bottom:0;
+    border:none;
+}
+ 
+article > ul li:before, li:after {
+    position:absolute;
+    display:block;
+    top:0;
+}
+
+
+
+
+article > h1,article > h2 {font-weight:900;}
+article > h1 {font-size:4rem;margin-top:0;margin-bottom:3rem;}
+article > h2 {margin-top:4rem;}
+article > h4 {font-weight:normal;font-size:1em;margin-bottom:1rem; } /* Byline */
+article > h4 > strong {font-weight:bold;} /* Byline */
+
+article > p, 
+  article > ol, 
+  article > dd, 
+  article > dl,
+  article > hr {
+		font-size:1.5rem;
+		line-height:2.25rem;
+		margin-top:1.5em;
+    padding-right:var(--right-end);
+}
+
+article > p > strong {font-family:var(--informal);font-weight:700;}
+/* Override font rule for code */
+article > p > code, article > code, article > pre, article > pre > code {
+		font-family:var(--code);
+		font-size:1em;
+		overflow:auto;
+    margin-bottom:1em;
+    line-height:1.5em;
+
+		}
+article > pre { padding-left: 1em;line-height:1.5em;}
+article > p > a,
+article > p > a:link,
+article > p >  a:visited
+	{font-family:var(--informal);text-decoration:underline;}
+article > p >  a:hover,
+article > p >  a:active
+	{text-decoration:none;}
+
+article > img, article > p > img {
+  width:100%;
+  box-shadow: rgb(128,128,128) 1px 1px 3px 0px;
+  display:block;
+}
+
+
+article > table {width:var(--full-page);margin-top:2rem;margin-bottom:3rem;}
+article > table > td,th {padding:1rem;}
+article > table > tbody > tr > td {padding:1rem;}
+
+/* ******************************/
+/*  SIDEBAR (ASIDE TAG)         */
+/* ******************************/
+
+aside {height:100vh;}
+
+aside, aside > p, aside > h2, aside > h3, aside > h4 {margin-left:0;padding-left:1rem;padding-right:1rem;} 
+aside > p {margin-bottom:1rem;font-size:.8rem;}
+aside > h2 {margin:0;padding:1rem;;font-size:1.75rem;font-weight:bold;white-space:nowrap;}
+aside > h3 {font-size:1em;font-weight:bold;margin-bottom:1rem;}
+aside > h5 {text-align:center;font-weight:bold;margin-left:0;padding-left:0;margin-top:2rem;margin-bottom:1rem;}
+aside > h6  {font-weight:normal;font-style:italic;}
+
+/*
+ * --------------------------------------------------
+ * Special feature: Unordered list in the sidebar
+ * appears as up to 3 separate outline levels. Just
+ * indent bullets 2 spaces for each level.
+ * --------------------------------------------------
+ */
+aside {margin-left:4rem;}
+aside ul, aside > ul li, aside > ul > li li, aside > ul > li li li
+{
+  font-weight:300;
+  list-style:none;
+  margin-left:0;
+  padding-left:0;
+}
+aside > ul > li > a,
+aside > ul > li > a:link,
+aside > ul > li > a:visited,
+aside > ul > li li > a,
+aside > ul > li li > a:link,
+aside > ul > li li > a:visited,
+aside > ul > li li > a,
+aside > ul > li li li > a:link,
+aside > ul > li li li > a:visited
+{
+  text-decoration-style:dotted;
+  line-height:1.75em;
+}
+
+
+/* List order goes up to 3 levels visually but they don't show by
+ * indentation--they have been flatted horizontally to maximize space
+ * on the sidebar. Show top level as bold. Level 2 is non-bold. 
+ * Level 3 shows with a right-pointing triangle. */
+aside > ul li {font-weight:bold;}
+/* Nothing needs be done for level 2. This is for level 3: */
+aside > ul > li > ul > li > ul > li:before  {
+	content: '▸';
+	margin-right:.5em;
+
+}  
+
+
+/* ******************************/
+/*  FOOTER                      */
+/* ******************************/
+
+/* FOOTER */
+footer {border-top: 1px solid var(--trim-fg);padding-bottom:1rem;} 
+footer > h2 {text-align:center;}
+footer > table {font-size:calc(80%);}
+/* Give table columns to get some breathing room */
+footer > table > thead > tr > th {padding-right:2rem;} 
+footer > table > thead > tr > th {padding-top:1em;padding-right:2em;padding-bottom:1em;}
+footer > table > tbody > tr > td {padding-right:3em;}
+
+footer > table > tbody > tr > td > a:link,
+footer > table > tbody > tr > td > a:visited
+	{text-decoration:none;}
+footer > table > tbody > tr > td > a:hover,
+footer > table > tbody > tr > td > a:active
+	{text-decoration:underline;}
+
+

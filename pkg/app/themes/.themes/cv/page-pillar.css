@@ -1,0 +1,28 @@
+:root 
+{
+  /* Pillar style leaves empty space at sides of theme 
+
+  --article-column-width:65%;
+	--sidebar-width:15%;    
+  --left-margin:10%; 
+  --right-margin:10%;
+  --header-footer-width:80%;
+  --text-start: 5%; */
+
+  /* The following should add up to 100%:
+   * --article-column-width
+	 * --sidebar-width
+   * --left-margin
+   * --right-margin
+   */
+
+  /* Second Pillar example with wider sidebar 
+  --article-column-width:60%;
+	--sidebar-width:20%;    
+  --left-margin:5%; 
+  --right-margin:15%;
+  --header-footer-width:80%;
+  --text-start: 5%;
+   */
+}
+

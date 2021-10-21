@@ -81,5 +81,5 @@ func (a *App) excludeDirs() []string {
 		defaults.HeadTagsPath,
 		defaults.HeadTagsPath,
 		defaults.SCodePath,
-		defaults.ThemePath)
+		defaults.ThemesDir)
 }
