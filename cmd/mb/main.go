@@ -6,6 +6,7 @@ import (
 )
 
 func main() {
+  // I may need to move NewApp invidivually to createNewSite, etc.
 	//app := app.NewApp(pathname)
 	app := app.NewApp()
 	app.Execute()
