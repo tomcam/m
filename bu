@@ -1,4 +1,9 @@
 # /Volumes/sandisk1/m
+# To resgtore:
+# mkdir ~/Users/tom/code/m
+# cd ~/Users/tom/code/m
+# cp -Rf /Volumes/sandisk1/m/.git .
+
 VOLUME="/Volumes/sandisk1"
 SOURCE="/Users/tom/code/m"
 # DEST="${VOLUME}${SOURCE}"
