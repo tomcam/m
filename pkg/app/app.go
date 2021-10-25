@@ -46,7 +46,8 @@ type App struct {
 	// containing the themes as they came from the factory.
 	// It's where the site's themes come from when a new site
 	// is created.
-	themesPath string
+	// TODO: renamed from themesPath
+	factoryThemesPath string
 } // type Application
 
 type Flags struct {
@@ -82,9 +83,9 @@ func NewApp() *App {
 		parserCtx:           parser.NewContext(),
 		RootCmd:             cobra.Command{},
 		applicationDataPath: userConfigPath(),
-		themesPath:          filepath.Join(userConfigPath(), defaults.ThemesDir),
+		factoryThemesPath:   filepath.Join(userConfigPath(), defaults.ThemesDir),
 	}
-	//app.setSiteDefaults(path)
+	app.setSiteDefaults("")
 	// TODO: Get values from viper here I think.
 	// If there are any configuration files,
 	// environment variables, etc. with info
@@ -109,6 +110,7 @@ func (app *App) loadConfigs() {
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the RootCmd.
 func (app *App) Execute() {
+	app = NewApp()
 	app.Verbose("app.Execute()")
 	app.initCobra()
 	cobra.CheckErr(app.RootCmd.Execute())
@@ -161,7 +163,8 @@ func (app *App) initConfig() {
 // like App.Note(). home is the project directory
 // or, if left as "", is set to the current directory
 func (app *App) setSiteDefaults(home string) {
-
+	// By now you should already be in the directory
+	// specified by home
 	if home == "" {
 		home = currDir()
 	}
@@ -185,7 +188,7 @@ func (app *App) setPaths(home string) {
 	// root directory of the project.
 	app.Verbose("\tsetPaths(%v)\n", home)
 	app.site.path = home
-
+	app.site.name = filepath.Base(app.site.path)
 	// Compute location of base directory used for all
 	// config info, which includes directories for
 	// CSS files, graphic assets, HTML partials, etc.
@@ -215,13 +218,20 @@ func (app *App) setPaths(home string) {
 	app.site.commonPath = filepath.Join(app.cfgPath,
 		defaults.CommonPath)
 
+	// Compute the directory location for factory
+	// themes for this project.
+	// The entire /themes directory gets copied here.
+	// Don't want that name configurable.
+	// Therefore cfgPath is enough.
+	app.site.factoryThemesPath = app.cfgPath
+
 	// Compute the directory location for tags
 	// that live in the HTML <head>
 	app.site.headTagsPath = filepath.Join(app.cfgPath,
 		defaults.HeadTagsPath)
 
 	// Compute the directory location for theme files
-	app.site.themesPath = filepath.Join(app.cfgPath,
+	app.factoryThemesPath = filepath.Join(app.cfgPath,
 		defaults.ThemesDir)
 
 	// Create a new, empty map to hold the

@@ -2,6 +2,8 @@ package app
 
 import (
 	"github.com/tomcam/m/pkg/default"
+	"gopkg.in/yaml.v3"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 )
@@ -132,11 +134,8 @@ type Site struct {
 	// Name (not path) of Theme used by this site unless overridden in front matter.
 	DefaultTheme string
 
-	// Directory this site uses to copy themes from (when the site was
-	// created, these in turn were copied from the location specified
-	// in Application.themesPath, also known as the global theme
-	// directory).
-	themesPath string
+	// TODO: Changed from themesPath
+	factoryThemesPath string
 
 	// All the rendered pages on the site, plus meta information.
 	// Index by the fully qualified path name of the source .md file.
@@ -260,7 +259,7 @@ func (m MdOptions) IsOptionSet(opt MdOptions) bool {
 // If none is specified, assume that project is to
 // be created in the current directory.
 func (app *App) createSite(pathname string) error {
-  app.Note("\tcreateSite(%v)\n", pathname)
+	app.Note("\tcreateSite(%v)\n", pathname)
 	var err error
 	if pathname == "" || pathname == "." {
 		// None was specified. Assume current directory.
@@ -271,17 +270,16 @@ func (app *App) createSite(pathname string) error {
 		return ErrCode("0951", pathname)
 	}
 
-  app.setPaths(pathname)
 	// Create a project at the specified path
 	err = os.MkdirAll(pathname, defaults.ProjectFilePermissions)
 	if err != nil {
 		return ErrCode("401", pathname)
 	}
 	// Change to the specified directory.
-	//if err := os.Chdir(app.site.path); err != nil {
 	if err := os.Chdir(pathname); err != nil {
-		return ErrCode("0902", pathname)
+		return ErrCode("1103", pathname)
 	}
+	app.setSiteDefaults(pathname)
 	app.site.path = currDir()
 	// Create minimal directory structure: Publish directory
 	// .site directory, .themes, etc.
@@ -292,7 +290,61 @@ func (app *App) createSite(pathname string) error {
 	// Based on the current diredtory (app.site.path),
 	// establish site defaults such as CSS path,
 	// output file location, etc.
-	//app.setSiteDefaults(app.site.path)
 	// xxx
+	// Get factory themes and copy to project. They will then
+	// be copied on demand to the publish directory as needed.
+	// This makes it easy to find themes and modify theme.
+	if err := app.copyFactoryThemes(); err != nil {
+		return ErrCode("PREVIOUS", err.Error())
+	}
+
+  // TODO: Populate
+  app.Note("Writing out site to site file %v:\nSite\n%v\n", app.site.siteFilePath, app.site)
+  if err := writeYamlFile(app.site.siteFilePath, app.site); err !=nil {
+		return ErrCode("PREVIOUS", err.Error())
+	}
+
+
+	return nil
+}
+
+// writeSiteConfig() writes the contents of App.Site
+// to .site/site.
+// and creates or replaces a TOML file in the
+// project's site subdirectory.
+// Assumes you're in the project directory.
+func (app *App) writeSiteConfig() error {
+	return writeYamlFile(app.site.siteFilePath, app.site)
+}
+
+func (app *App) writeYamlFile(filename string) error {
+	app.Note("\twriteYamlFile(%v)", filename)
+	return nil
+}
+
+// TODO: Move to util file
+// writeYamlFile() creates a YAML file based on the filename and
+// data structure passed in.
+func writeYamlFile(filename string, target interface{}) error {
+  theYaml, err := yaml.Marshal(&target)
+  if err != nil {
+    return ErrCode("PREVIOUS", err.Error())
+  }
+  // TODO: TRY TO REUSE ERROR CODES
+  return ioutil.WriteFile(filename, theYaml, 0)
+  return nil
+	f, err := os.Create(filename)
+	if err != nil {
+		// TODO: Check & document error codes
+		return ErrCode("0210", err.Error(), filename)
+	}
+	//if err = toml.NewEncoder(f).Encode(target); err != nil {
+	// TODO: Check & document error codes
+	//return errs.ErrCode("0908", err.Error())
+	//}
+	if err := f.Close(); err != nil {
+		// TODO: Check & document error codes
+		return ErrCode("0252", filename)
+	}
 	return nil
 }

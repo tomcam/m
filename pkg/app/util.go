@@ -143,6 +143,7 @@ func isProject(path string) bool {
 // used to hold site config file & info
 // formerly isSitePath
 func isSiteFilePath(path string) bool {
+	fmt.Printf("isSiteFile(%v)\n", path)
 	return dirExists(siteFilePath(path))
 }
 

@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"github.com/rodaine/table"
+	"os"
 	"strings"
 )
 
@@ -13,7 +14,18 @@ func (app *App) ShowFrontMatter() {
 }
 
 // ShowInfo() displays debug information about the app and site.
-func (app *App) ShowInfo() {
+func (app *App) ShowInfo(pathname string) error {
+	app.Note("ShowInfo(%v)", pathname)
+	// Change to the specified directory.
+	if pathname == "" {
+		pathname = currDir()
+	}
+	app.Note("\tShowInfo() attempting changing to dir %v", pathname)
+	if err := os.Chdir(pathname); err != nil {
+		app.Note("\tShowInfo() error changing to %v", pathname)
+		return ErrCode("1102", pathname)
+	}
+
 	table.DefaultHeaderFormatter = func(format string, vals ...interface{}) string {
 		return strings.ToUpper(fmt.Sprintf(format, vals...))
 	}
@@ -29,11 +41,12 @@ func (app *App) ShowInfo() {
 	tbl.AddRow("Common path", app.site.commonPath)
 	tbl.AddRow("Head tags path", app.site.headTagsPath)
 	tbl.AddRow("Publish path", app.site.publishPath)
-	tbl.AddRow("Themes path", app.site.themesPath)
+	tbl.AddRow("Factory themes path", app.site.factoryThemesPath)
 	tbl.AddRow("APPLICATION DATA", "")
 	tbl.AddRow("User application data", app.applicationDataPath)
 	tbl.Print()
 	//tbl = table.New("Application Directories", "")
+	return nil
 }
 
 // App.Verbose() displays a message followed

@@ -1,5 +1,9 @@
 # To do
 
+10/24/2021
+* isProject isn't working
+* I think if there's a dir starting with "." in the factory themes directory
+a runtime error occurs. Fix that but also add a test for it.
 10/17/2021
 * Bug: `mb new site foo` calls setSiteDefaults() twice
 * Bug: `mb new site /Users/tom/code/deleteme` calles setSiteDefaults() twice, the 

@@ -42,26 +42,33 @@ func (app *App) mdToHTML(source []byte) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (app *App) build(pathname string) error {
+// build() is wht it's all about!
+// It converts the project to HTML files.
+// pathname isn't known to be good. It's
+// for situation such as mb build ~/foo
+// when you happen to be in
+// directory ~/something/else/bar
+func (app *App) build(path string) error {
 	var err error
-  app.Note("\tbuild(%v)\n", pathname)
-	if pathname != "" {
+	app.Note("\tbuild(%v)\n", path)
+	if path != "" {
 		// Change to the specified directory.
-		if err = os.Chdir(pathname); err != nil {
+		if err = os.Chdir(path); err != nil {
 			return ErrCode("0901", err.Error())
 		}
+		app.site.path = path
 	} else {
 		// Determine current fully qualified directory location.
 		// Can't use relative paths internally.
-		pathname = currPath()
+		app.site.path = currPath()
 	}
 
-	if !isProject(pathname) {
-		return ErrCode("1002", pathname)
+	if !isProject(app.site.path) {
+		return ErrCode("1002", path)
 	}
 	// Changed directory successfully.
 	// Use current directory to build all config paths.
-	app.setSiteDefaults(pathname)
+	app.setSiteDefaults(app.site.path)
 
 	// Create minimal directory structure: Publish directory,
 	// site directory, .themes, etc.

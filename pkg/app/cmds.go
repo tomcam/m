@@ -2,16 +2,38 @@ package app
 
 import (
 	"github.com/spf13/cobra"
-  //"os"
+	//"os"
 )
 
 func (app *App) addCommands() {
-  // Initialize paths to current directory in case this
-  // is something like a `mb -i` and nothing else
-  app.setSiteDefaults("")
+	// Initialize paths to current directory in case this
+	// is something like a `mb -i` and nothing else
+	app.setSiteDefaults("")
 	var (
 		pathname string
 		err      error
+
+		/*****************************************************
+		TOP LEVEL COMMAND: info
+		*****************************************************/
+
+		cmdInfo = &cobra.Command{
+			Use:   "info",
+			Short: "Get information about this project",
+			Long:  "Get information about this project",
+			Run: func(cmd *cobra.Command, args []string) {
+				pathname = ""
+				if len(args) > 0 {
+					pathname = args[0]
+				}
+				err = app.ShowInfo(pathname)
+				if err != nil {
+					// TODO: Use pathname in error message
+					app.QuitError(ErrCode("PREVIOUS", pathname))
+				}
+			},
+		}
+
 		/*****************************************************
 		TOP LEVEL COMMAND: build
 		*****************************************************/
@@ -91,7 +113,7 @@ func (app *App) addCommands() {
 				} else {
 					app.Note("Created site %v at %v", app.site.name, app.site.path)
 					if app.Flags.Info == true {
-						app.ShowInfo()
+						app.ShowInfo(pathname)
 					}
 				}
 			},
@@ -119,6 +141,7 @@ func (app *App) addCommands() {
 		*****************************************************/
 	app.RootCmd.AddCommand(cmdNew)
 	cmdNew.AddCommand(cmdNewSite)
+	app.RootCmd.AddCommand(cmdInfo)
 	app.RootCmd.AddCommand(cmdBuild)
 }
 
@@ -131,5 +154,5 @@ func (app *App) addCommands() {
 // to create a new project in the absence of any
 // overriding config information.
 func (app *App) updateConfig() {
-	app.Note("updateConfig()")
+	app.Note("\nupdateConfig()")
 }
