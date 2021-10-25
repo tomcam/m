@@ -128,7 +128,7 @@ func (app *App) kitchenSink(sitename string) error {
 	var err error
 	err = app.createSite(sitename)
 	if err != nil {
-    // TODO: Improve error handling
+		// TODO: Improve error handling
 		//a.QuitError(err)
 		return err
 	}

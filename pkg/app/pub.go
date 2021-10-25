@@ -4,6 +4,7 @@ import (
 	"github.com/tomcam/m/pkg/default"
 	"github.com/tomcam/m/pkg/util"
 	//"github.com/tomcam/m/pkg/mark"
+	//"json"
 	"os"
 	"path/filepath"
 )
@@ -23,10 +24,11 @@ func (app *App) publishFile(filename string) error {
 	var err error
 	var body []byte
 	// Convert Markdown file to a byte slice of HTML
+	// Return with YAML front matter in app.page.frontMatter
 	if body, err = app.MdFileToHTML(filename); err != nil {
 		return err
 	}
-
+	app.loadTheme()
 	if err = os.WriteFile(target, body, defaults.PublicFilePermissions); err != nil {
 		// TODO: Improve error handling
 		return err

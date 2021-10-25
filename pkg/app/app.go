@@ -75,7 +75,7 @@ type Flags struct {
 //
 func NewApp() *App {
 	app := App{
-    //deleteme: make([]byte)
+		//deleteme: make([]byte)
 		page: Page{},
 		site: Site{},
 		//parser: goldmark.Markdown,
@@ -208,12 +208,18 @@ func (app *App) setPaths() {
 	app.site.commonPath = filepath.Join(app.cfgPath,
 		defaults.CommonPath)
 
-	// Compute the directory location for factory
-	// themes for this project.
+	// Compute the directory location for the
+	// complete set of factory themes.
 	// The entire /themes directory gets copied here.
 	// Don't want that name configurable.
 	// Therefore cfgPath is enough.
 	app.site.factoryThemesPath = app.cfgPath
+
+	// Compute the directory location of themes
+	// that get copied over selectively for a
+	// particular site.
+	app.site.siteThemesPath = filepath.Join(app.site.publishPath,
+		defaults.SiteThemesDir)
 
 	// Compute the directory location for tags
 	// that live in the HTML <head>

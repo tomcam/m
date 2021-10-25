@@ -35,10 +35,13 @@ func (app *App) mdToHTML(source []byte) ([]byte, error) {
 
 	var buf bytes.Buffer
 	if err := app.parser.Convert(source, &buf, parser.WithContext(app.parserCtx)); err != nil {
-		// TODO: Handle error properly
+		// TODO: Handle error properly & and document error code
 		return buf.Bytes(), ErrCode("0920", err.Error())
 	}
-	app.page.frontMatter = meta.Get(app.parserCtx)
+	// Obtain the parsed YAML file as a raw
+	// interface
+	app.page.frontMatterRaw = meta.Get(app.parserCtx)
+	//app.page.Data = meta.Get(app.parserCtx)
 	return buf.Bytes(), nil
 }
 
@@ -84,13 +87,13 @@ func (app *App) build(path string) error {
 	for dir := range app.site.dirs {
 		// Change to each directory
 		if err := os.Chdir(dir); err != nil {
-			// TODO: Document this error code
+		  // TODO: Handle error properly & and document error code
 			return ErrCode("1101", dir)
 		}
 		// Get the files in just this directory
 		files, err := ioutil.ReadDir(".")
 		if err != nil {
-			// TODO: Document this error code
+      // TODO: Handle error properly & and document error code
 			return ErrCode("0703", dir)
 		}
 
@@ -123,12 +126,11 @@ func (app *App) build(path string) error {
 
 	}
 	if app.site.fileCount != 1 {
-	  app.Print("%v files", app.site.fileCount)
+		app.Print("%v files", app.site.fileCount)
 	} else {
-	  app.Print("1 file")
+		app.Print("1 file")
 	}
 
-	app.loadTheme()
 	// Return with success code.
 	return nil
 }

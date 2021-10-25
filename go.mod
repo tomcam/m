@@ -10,6 +10,7 @@ require (
 	github.com/cpuguy83/go-md2man v1.0.10 // indirect
 	github.com/google/go-cmp v0.5.5
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
+	github.com/plus3it/gorecurcopy v0.0.1 // indirect
 	github.com/rodaine/table v1.0.1 // indirect
 	github.com/spf13/cobra v1.2.1
 	github.com/spf13/viper v1.8.1

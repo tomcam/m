@@ -3,9 +3,12 @@ package app
 import (
 	"bufio"
 	"fmt"
+	"github.com/plus3it/gorecurcopy"
 	"github.com/spf13/viper"
 	"github.com/tomcam/m/pkg/default"
 	"github.com/tomcam/m/pkg/util"
+	"io"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -15,6 +18,47 @@ import (
 // variable, whatever. Simple abstraction over viper
 func cfgBool(option string) bool {
 	return viper.GetBool(option)
+}
+
+// Copy() does just that. It copies a single file named source to
+// the file named in dest.
+func Copy(src, dest string) error {
+	sourceFileStat, err := os.Stat(src)
+	if err != nil {
+		// TODO: document error code and add to errors.go
+		return ErrCode("0112", src)
+	}
+
+	if !sourceFileStat.Mode().IsRegular() {
+		// TODO: document error code and add to errors.go
+		return ErrCode("0113", src)
+	}
+	source, err := os.Open(src)
+	if err != nil {
+		// TODO: document error code and add to errors.go
+		return ErrCode("0114", src)
+	}
+	destination, err := os.Create(dest)
+	if err != nil {
+		// TODO: document error code and add to errors.go
+		return ErrCode("0209", dest)
+	}
+	defer destination.Close()
+	_, err = io.Copy(destination, source)
+	if err != nil {
+		// TODO: document error code and add to errors.go
+		return ErrCode("0251", dest)
+	}
+	// Success
+	return nil
+}
+
+func CopySymLink(source, dest string) error {
+	link, err := os.Readlink(source)
+	if err != nil {
+		return err
+	}
+	return os.Symlink(link, dest)
 }
 
 // curDir() returns the current directory name.
@@ -31,6 +75,69 @@ func currDir() string {
 // variable, whatever. Simple abstraction over viper
 func cfgString(option string) string {
 	return viper.GetString(option)
+}
+
+// copyDirOnly() copies a directory nonrecursively.
+// Doesn't other directories
+// Thanks to https://github.com/plus3it/gorecurcopy/blob/master/gorecurcopy.go
+func copyDirOnly(source, dest string) error {
+	err := os.MkdirAll(dest, defaults.PublicFilePermissions)
+	if err != nil {
+		return ErrCode("0410", err.Error(), dest)
+	}
+	entries, err := ioutil.ReadDir(source)
+	if err != nil {
+		// TODO: document error code and add to errors.go
+		return ErrCode("0708", err.Error(), source)
+	}
+	for _, entry := range entries {
+		sourcePath := filepath.Join(source, entry.Name())
+		destPath := filepath.Join(dest, entry.Name())
+		fileInfo, err := os.Stat(sourcePath)
+		if err != nil {
+			// TODO: document error code and add to errors.go
+			return ErrCode("0129", err.Error(), sourcePath)
+		}
+		switch fileInfo.Mode() & os.ModeType {
+		case os.ModeDir:
+			// Do nothing. What's the syntax for that?
+		case os.ModeSymlink:
+			if err := CopySymLink(sourcePath, destPath); err != nil {
+				// TODO: document error code and add to errors.go
+				return ErrCode("0130", err.Error(), sourcePath)
+			}
+		default:
+			if err := Copy(sourcePath, destPath); err != nil {
+				// TODO: document error code and add to errors.go
+				return ErrCode("0214", err.Error(), sourcePath)
+			}
+		}
+	}
+	return nil
+}
+
+// copyDirAll() does a recursive copy of the directory and its subdirectories
+func copyDirAll(source, dest string) error {
+	if source == "" {
+		// TODO: document error code and add to errors.go
+		return ErrCode("0704", source)
+	}
+	if dest == "" {
+		// TODO: document error code and add to errors.go
+		return ErrCode("0705", dest)
+	}
+
+	if dest == source {
+		// TODO: document error code and add to errors.go
+		return ErrCode("0707", "from '"+source+"' to '"+dest+"'")
+	}
+
+	err := gorecurcopy.CopyDirectory(source, dest)
+	if err != nil {
+		// TODO: document error code and add to errors.go
+		return ErrCode("0406", "from '"+source+"' to '"+dest+"'", "")
+	}
+	return nil
 }
 
 // createDirStructure() creates the specified site structure
@@ -125,7 +232,7 @@ func isProject(path string) bool {
 	if !dirExists(path) {
 		return false
 	}
-  // The above code could just be replaced with this I guess.
+	// The above code could just be replaced with this I guess.
 	return isSiteFilePath(path)
 
 }
@@ -134,8 +241,8 @@ func isProject(path string) bool {
 // used to hold site config file & info
 // formerly isSitePath
 func isSiteFilePath(path string) bool {
-  siteFile := filepath.Join(path,defaults.CfgDir, defaults.SiteConfigFilename)
-  return fileExists(siteFile)
+	siteFile := filepath.Join(path, defaults.CfgDir, defaults.SiteConfigFilename)
+	return fileExists(siteFile)
 }
 
 // promptString() displays a prompt, then awaits for keyboard

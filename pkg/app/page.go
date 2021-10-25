@@ -4,7 +4,20 @@ package app
 // being processed.
 type Page struct {
 	// TODO: Load in front matter as a real struct
-	frontMatter map[string]interface{}
-	// Currently loaded theme
-	//Theme Theme
+	frontMatterRaw map[string]interface{}
+}
+
+type FrontMatter struct {
+	// Theme specified by user
+	Theme string `json:"name"`
+
+	// Generates a Description metatag on output
+	Description string `json:"description"`
+
+	// Generates a Title tag on output
+	Title string `json:"title"`
+
+	// Determine whether aside is on the
+	// right, left, or none
+	Sidebar string `json:"sidebar"`
 }

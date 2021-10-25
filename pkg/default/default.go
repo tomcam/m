@@ -142,6 +142,11 @@ Welcome to %s
 	// type less.
 	ThemesDir = "themes"
 
+	// These are the themes named in the front matter
+	// get copied from the global factory themes directory
+	// to this particular site.
+	SiteThemesDir = "themes"
+
 	// Configuration file found in the current site source directory
 	SourcePathConfigFilename = ProductName + "." + ConfigFileDefaultExt
 

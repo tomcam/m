@@ -134,8 +134,14 @@ type Site struct {
 	// Name (not path) of Theme used by this site unless overridden in front matter.
 	DefaultTheme string
 
-	// TODO: Changed from themesPath
+	// Location of complete set of themes included
+	// with product release. A subset of these
+	// gets copied to the siteThemesPath directory.
 	factoryThemesPath string
+
+	// Location of theme files copied over for this
+	// particular site from facotoryThemesPath.
+	siteThemesPath string
 
 	// All the rendered pages on the site, plus meta information.
 	// Index by the fully qualified path name of the source .md file.

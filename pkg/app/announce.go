@@ -10,7 +10,7 @@ import (
 // frontMatter() displays the raw contents of the front matter
 func (app *App) ShowFrontMatter() {
 	fmt.Println("FRONT MATTER")
-	fmt.Printf("%#v\n", app.page.frontMatter)
+	fmt.Printf("%#v\n", app.page.frontMatterRaw)
 }
 
 // ShowInfo() displays debug information about the app and site.
@@ -37,6 +37,8 @@ func (app *App) ShowInfo(pathname string) error {
 	tbl.AddRow("Head tags path", app.site.headTagsPath)
 	tbl.AddRow("Publish path", app.site.publishPath)
 	tbl.AddRow("Factory themes path", app.site.factoryThemesPath)
+	tbl.AddRow("Site themes path", app.site.siteThemesPath)
+	tbl.AddRow("", "")
 	tbl.AddRow("APPLICATION DATA", "")
 	tbl.AddRow("User application data", app.applicationDataPath)
 	tbl.Print()

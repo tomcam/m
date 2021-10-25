@@ -1,14 +1,16 @@
 package app
 
 import (
+	"fmt"
+	//"encoding/json"
 	"embed"
-	//"fmt"
 	"github.com/tomcam/m/pkg/default"
-	"io/fs"
 	"io"
+	"io/fs"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 // The following embeds all files and subdirectories
@@ -35,7 +37,7 @@ func (app *App) copyFactoryThemes() error {
 	var target string
 	fs.WalkDir(factoryThemeFiles, ".", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
-			// TODO: Improve error handling
+      // TODO: Handle error properly & and document error code
 			return err
 		}
 		// path is the relative path of the file, for example,
@@ -49,7 +51,7 @@ func (app *App) copyFactoryThemes() error {
 			target = filepath.Join(app.cfgPath, path)
 			err := os.MkdirAll(target, defaults.PublicFilePermissions)
 			if err != nil {
-				// TODO: Improve error handling
+        // TODO: Handle error properly & and document error code
 				app.Note("\tos.MkdirAll() error: %v", err.Error())
 				return err
 			}
@@ -59,22 +61,22 @@ func (app *App) copyFactoryThemes() error {
 		target = filepath.Join(app.site.factoryThemesPath, path)
 		f, err := factoryThemeFiles.Open(path)
 		if err != nil {
-			// TODO: Improve error handling
+      // TODO: Handle error properly & and document error code
 			app.Note("\tFS.Open(%v) error: %v", path, err.Error())
 			return err
 		}
 		b, err := io.ReadAll(f)
 		if err != nil {
-			// TODO: Improve error handling
+      // TODO: Handle error properly & and document error code
 			app.Note("\tio.ReadAll(%v) error: %v", f, err.Error())
 			return err
 		}
-    err = ioutil.WriteFile(target, b,defaults.ProjectFilePermissions)
-    if err != nil {
-			// TODO: Improve error handling
+		err = ioutil.WriteFile(target, b, defaults.ProjectFilePermissions)
+		if err != nil {
+      // TODO: Handle error properly & and document error code
 			app.Note("\tio.WriteFile(%v) error: %v", f, err.Error())
 			return err
-    }
+		}
 		return nil
 	})
 	return nil
@@ -86,10 +88,70 @@ func (app *App) copyFactoryThemes() error {
 // - Look for theme named in front matter
 // - If no theme is named in front matter,
 //   look for one named in the site file
+// - If no theme is specified, use the default theme
 // TODO: Create docs for the Metabuzz file
 // - If no theme is named in the site file,
 //   look for one named in the Metabuzz file
 // - If no theme is named in the Metabuzz file,
 //   use the default theme named in defaults.DefaultThemeName
 func (app *App) loadTheme() {
+	// Theme designation could something like:
+	//  debut
+	//  debut/gallery
+	//  debut/gallery/item
+
+	fullTheme := ""
+  // See if anything's in the front matter
+  // regarding the theme.
+  // TODO: Start accounting for theme in other
+  // places, like config files
+	if app.page.frontMatterRaw["theme"] == nil {
+		fullTheme = ""
+	} else {
+		fullTheme = fmt.Sprint(app.page.frontMatterRaw["theme"])
+	}
+
+  // If no theme specified, use the default theme.
+	if fullTheme == "" {
+		fullTheme = defaults.DefaultThemeName
+	}
+
+  // If it's something like debut/gallery, loop
+  // around and load from root to branch.
+  // That way styles are overridden the way
+  // CSS expects.
+	themeDirs := strings.Split(fullTheme, "/")
+	theme := ""
+
+  // Get directory from which themes will be copied
+  source := filepath.Join(app.site.factoryThemesPath,
+    defaults.ThemesDir)
+  dest := app.site.siteThemesPath
+	for level := 0; level < len(themeDirs); level++ {
+		if level == 0 {
+      // Build the deepest directory necessary, e.g.
+      // .mb/pub/themes/debut/gallery
+			err := os.MkdirAll(filepath.Join(app.site.siteThemesPath, fullTheme), defaults.PublicFilePermissions)
+			if err != nil {
+        // TODO: Handle error properly & and document error code
+				app.Note("\tos.MkdirAll() error: %v", err.Error())
+				return
+			}
+		}
+    theme = themeDirs[level]
+    // Get the next level of directory and append 
+    // to the previous directory
+		source = filepath.Join(source, theme)
+		dest = filepath.Join(dest, theme)
+		if err := copyDirAll(source, dest); err != nil {
+			//return ErrCode("0401", source)
+			//app.QuitError("0401", source)
+			// msg := fmt.Errorf("Error attempting to create project file %s: %v", projectFile, err.Error()).Error()
+			app.QuitError(err)
+		}
+	}
+}
+
+func (app *App) cfgStr() string {
+	return ""
 }

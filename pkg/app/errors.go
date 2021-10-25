@@ -44,6 +44,7 @@ var errMsgs = map[string]string{
 	// 0400	- Error creating directory
 	"0401": "Unable to create project directory", // filename
 	"0403": "Unable to create publish directory",
+	"0406": "Unable to copy site directory",
 
 	// 0500	- Error determining directory name
 	// 0600 - Error deleting directory
@@ -54,6 +55,7 @@ var errMsgs = map[string]string{
 	// 0900	- Problem generating something
 	"0901": "Unable to allocate Site object",
 	"0902": "Error creating new site file",
+	"0915": "Error copying theme to site", // filename
 	"0920": "Error generating Markdown",
 
 	// 0950 - Something's already there
@@ -151,6 +153,12 @@ func new(key string, previous string, extra ...string) error {
 //   return ErrCode("0401", err.Error())
 //
 //   return ErrCode("0401", err.Error(), filename)
+//
+//   Example (a very good example) from util.go
+//	 if err != nil {
+//     return ErrCode("0406", "from '"+source+"' to '"+dest+"'", "")
+//   }
+
 //
 //   err = copyDirAll(App.themesPath, App.Site.themesPath)
 //   if err != nil {

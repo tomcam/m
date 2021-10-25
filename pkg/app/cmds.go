@@ -12,8 +12,8 @@ func (app *App) addCommands() {
 		pathname string
 		err      error
 
-	// Declare command to build a hardcoded test site
-	//cmdKitchenSink = flag.NewFlagSet("kitchen", flag.ExitOnError)
+		// Declare command to build a hardcoded test site
+		//cmdKitchenSink = flag.NewFlagSet("kitchen", flag.ExitOnError)
 
 		/*****************************************************
 		  TOP LEVEL COMMAND: kitchen
@@ -26,9 +26,9 @@ func (app *App) addCommands() {
 			Run: func(cmd *cobra.Command, args []string) {
 				var err error
 				if len(args) > 0 {
-			    err = app.kitchenSink(args[0])
+					err = app.kitchenSink(args[0])
 				} else {
-          err = app.kitchenSink("")
+					err = app.kitchenSink("")
 				}
 				if err != nil {
 					app.QuitError(err)

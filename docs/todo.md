@@ -1,6 +1,12 @@
 # To do
 
+10/25/2021
+* Work on marshalling front matter to a FrontMatter struct
+* mb new foo does something, and it shouldn't
+
 10/24/2021
+* ./mb kitchen foo no longer creates a sample site. If I improve
+the error handling I'll know what's happening
 * My io.ReadAll() usage might be revisited for performance reasons. https://haisum.github.io/2017/09/11/golang-ioutil-readall/
 * isproject and and friends don't work correctly *
 * ./mb info food where food doesnt' exist isn't handling the error well
