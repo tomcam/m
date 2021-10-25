@@ -2,9 +2,11 @@ package app
 
 import (
 	"embed"
-	"fmt"
+	//"fmt"
 	"github.com/tomcam/m/pkg/default"
 	"io/fs"
+	"io"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 )
@@ -45,7 +47,6 @@ func (app *App) copyFactoryThemes() error {
 			// Todo: compute this using config info
 			//target = filepath.Join(app.site.path, path)
 			target = filepath.Join(app.cfgPath, path)
-			app.Note("\tCreating %s <dir> at %s. themesPath: %v", d.Name(), target, app.site.factoryThemesPath)
 			err := os.MkdirAll(target, defaults.PublicFilePermissions)
 			if err != nil {
 				// TODO: Improve error handling
@@ -54,19 +55,26 @@ func (app *App) copyFactoryThemes() error {
 			}
 			return nil
 		}
+		//app.Note("\t\t%v", path)
 		target = filepath.Join(app.site.factoryThemesPath, path)
-		//stat, err := os.Stat(path)
-		stat, err := os.Stat(target)
+		f, err := factoryThemeFiles.Open(path)
 		if err != nil {
-			app.Note("os.Stat error: %v", err.Error())
+			// TODO: Improve error handling
+			app.Note("\tFS.Open(%v) error: %v", path, err.Error())
 			return err
 		}
-		if !stat.Mode().IsRegular() {
-			// TODO: Proper error handling
-			return fmt.Errorf("%s can't be copied (error: %v)", path, stat)
+		b, err := io.ReadAll(f)
+		if err != nil {
+			// TODO: Improve error handling
+			app.Note("\tio.ReadAll(%v) error: %v", f, err.Error())
+			return err
 		}
-		app.Note("Copying %s to %s", path, target)
-		//cp(stat, path)
+    err = ioutil.WriteFile(target, b,defaults.ProjectFilePermissions)
+    if err != nil {
+			// TODO: Improve error handling
+			app.Note("\tio.WriteFile(%v) error: %v", f, err.Error())
+			return err
+    }
 		return nil
 	})
 	return nil

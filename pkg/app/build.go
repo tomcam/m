@@ -50,11 +50,11 @@ func (app *App) mdToHTML(source []byte) ([]byte, error) {
 // directory ~/something/else/bar
 func (app *App) build(path string) error {
 	var err error
-  // Change to specified directory.
-  // Update app.site.path and build all related directories
-  if err := app.setWorkingDir(path); err != nil {
-    return err
-  }
+	// Change to specified directory.
+	// Update app.site.path and build all related directories
+	if err := app.setWorkingDir(path); err != nil {
+		return err
+	}
 
 	if !isProject(app.site.path) {
 		return ErrCode("1002", path)

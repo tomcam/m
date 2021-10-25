@@ -15,11 +15,11 @@ func (app *App) ShowFrontMatter() {
 
 // ShowInfo() displays debug information about the app and site.
 func (app *App) ShowInfo(pathname string) error {
-  // Change to specified directory.
-  // Update app.site.path and build all related directories
-   if err := app.setWorkingDir(pathname); err != nil {
-    return ErrCode("PREVIOUS", err.Error())
-  }
+	// Change to specified directory.
+	// Update app.site.path and build all related directories
+	if err := app.setWorkingDir(pathname); err != nil {
+		return ErrCode("PREVIOUS", err.Error())
+	}
 
 	table.DefaultHeaderFormatter = func(format string, vals ...interface{}) string {
 		return strings.ToUpper(fmt.Sprintf(format, vals...))

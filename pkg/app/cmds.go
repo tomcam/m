@@ -108,11 +108,10 @@ func (app *App) addCommands() {
 				err := app.createSite(pathname)
 				if err != nil {
 					app.QuitError(err)
-				} else {
-					app.Note("Created site %v at %v", app.site.name, app.site.path)
-					if app.Flags.Info == true {
-						app.ShowInfo(pathname)
-					}
+				}
+				app.Note("Created site %v", app.site.path)
+				if app.Flags.Info == true {
+					app.ShowInfo(pathname)
 				}
 			},
 		}

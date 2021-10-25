@@ -19,7 +19,6 @@ import (
 // Compound data structure for config example at
 // https://gist.github.com/alexedwards/5cd712192b4831058b21
 type App struct {
-
 	// Location (on startup) of user application data directory
 	applicationDataPath string
 	site                Site
@@ -76,6 +75,7 @@ type Flags struct {
 //
 func NewApp() *App {
 	app := App{
+    //deleteme: make([]byte)
 		page: Page{},
 		site: Site{},
 		//parser: goldmark.Markdown,
@@ -133,7 +133,6 @@ func (app *App) initCobra() {
 
 // initConfig reads in config file and ENV variables if set.
 func (app *App) initConfig() {
-	//app.Note("initConfig()")
 	if app.cfgPath != "" {
 		// Use config file from the flag.
 		// XXX
@@ -160,7 +159,7 @@ func (app *App) initConfig() {
 // setSiteDefaults() intializes the Site object
 // It's on app instead of app.site so I can use
 // global flags and debugging features
-// like App.Note(). 
+// like App.Note().
 // Must be in the working directory at app.site.path.
 //func (app *App) setSiteDefaults(home string) {
 func (app *App) setSiteDefaults() {
@@ -179,7 +178,6 @@ func (app *App) setSiteDefaults() {
 // This is based on App.SiteDefaults() in the previous
 // version of Metabuzz.
 func (app *App) setPaths() {
-  app.Note("\tsetPaths(%v)", app.site.path)
 	app.site.name = filepath.Base(app.site.path)
 	// Compute location of base directory used for all
 	// config info, which includes directories for
@@ -232,16 +230,16 @@ func (app *App) setPaths() {
 
 } // setPaths()
 
-// setWorkingDir() changes to the specified 
+// setWorkingDir() changes to the specified
 // directory and sets app.site.path accordingly.
 func (app *App) setWorkingDir(dir string) error {
-  if dir == "." || dir == "" {
-  } else {
-    if err := os.Chdir(dir); err != nil {
-      return ErrCode("PREVIOUS", dir)
-    }
-  }
-  app.site.path = currDir()
-  app.setSiteDefaults()
-  return nil
+	if dir == "." || dir == "" {
+	} else {
+		if err := os.Chdir(dir); err != nil {
+			return ErrCode("PREVIOUS", dir)
+		}
+	}
+	app.site.path = currDir()
+	app.setSiteDefaults()
+	return nil
 }

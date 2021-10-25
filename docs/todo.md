@@ -1,9 +1,8 @@
 # To do
 
 10/24/2021
+* My io.ReadAll() usage might be revisited for performance reasons. https://haisum.github.io/2017/09/11/golang-ioutil-readall/
 * ./mb info food where food doesnt' exist isn't handling the error well
-* ./mb info works but ./mb info foo yields foo as a relative dir
-* site config is being written not to foo/.mb/site.yaml but foo/foo/.mb/site.yaml
 * Also target files aren't being written to foo/.mb/themes but foo/foo/.mb/themes even though the themes directory is being corectly written to foo/.mb/themes
 * isProject isn't working
 * I think if there's a dir starting with "." in the factory themes directory

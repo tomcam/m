@@ -257,43 +257,30 @@ func (m MdOptions) IsOptionSet(opt MdOptions) bool {
 // createSite() generates an empty site at
 // the directory specified in app.site.path
 func (app *App) createSite(pathname string) error {
-	app.Verbose("\tcreateSite(%v)\n", pathname)
 	var err error
 	// Create a project at the specified path
 	err = os.MkdirAll(pathname, defaults.ProjectFilePermissions)
 	if err != nil {
 		return ErrCode("0401", pathname)
 	}
- // Update app.site.path and build all related directories
-  if err := app.setWorkingDir(pathname); err != nil {
-    return err
-  }
+	// Update app.site.path and build all related directories
+	if err := app.setWorkingDir(pathname); err != nil {
+		return err
+	}
 
-  // Change to specified directory.
-  pathname = app.site.path
+	// Change to specified directory.
+	pathname = app.site.path
 
 	// Exit if there's already a project at specified location.
 	if isProject(pathname) {
 		return ErrCode("0951", pathname)
 	}
 
-	// Change to the specified directory.
-	//if err := os.Chdir(pathname); err != nil {
-	//	return ErrCode("1103", pathname)
-	//}
-	//app.site.path = currDir()
-	//app.setSiteDefaults(app.site.path)
-  app.Note("\tcreateSite(%v)", app.site.path)
 	// Create minimal directory structure: Publish directory
 	// .site directory, .themes, etc.
 	if err := createDirStructure(&defaults.SitePaths); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
-	//app.site.name = filepath.Base(app.site.path)
-	// Based on the current diredtory (app.site.path),
-	// establish site defaults such as CSS path,
-	// output file location, etc.
-	// xxx
 	// Get factory themes and copy to project. They will then
 	// be copied on demand to the publish directory as needed.
 	// This makes it easy to find themes and modify theme.
@@ -301,14 +288,11 @@ func (app *App) createSite(pathname string) error {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 
-  // TODO: Populate
-  app.Note("Writing out site to site file %v:\nSite\n%v\n", app.site.siteFilePath, app.site)
-  if err := app.writeSiteConfig(); err !=nil {
-    app.Note("Error writing site file %v", app.site.siteFilePath)
+	// TODO: Populate
+	if err := app.writeSiteConfig(); err != nil {
+		app.Note("Error writing site file %v", app.site.siteFilePath)
 		return ErrCode("PREVIOUS", err.Error())
 	}
-
-
 	return nil
 }
 
@@ -321,30 +305,14 @@ func (app *App) writeSiteConfig() error {
 	return writeYamlFile(app.site.siteFilePath, app.site)
 }
 
-
 // TODO: Move to util file
 // writeYamlFile() creates a YAML file based on the filename and
 // data structure passed in.
 func writeYamlFile(filename string, target interface{}) error {
-  theYaml, err := yaml.Marshal(&target)
-  if err != nil {
-    return ErrCode("PREVIOUS", err.Error())
-  }
-  // TODO: TRY TO REUSE ERROR CODES
-  return ioutil.WriteFile(filename, theYaml, defaults.ProjectFilePermissions)
-  return nil
-	f, err := os.Create(filename)
+	theYaml, err := yaml.Marshal(&target)
 	if err != nil {
-		// TODO: Check & document error codes
-		return ErrCode("0210", err.Error(), filename)
+		return ErrCode("PREVIOUS", err.Error())
 	}
-	//if err = toml.NewEncoder(f).Encode(target); err != nil {
-	// TODO: Check & document error codes
-	//return errs.ErrCode("0908", err.Error())
-	//}
-	if err := f.Close(); err != nil {
-		// TODO: Check & document error codes
-		return ErrCode("0252", filename)
-	}
-	return nil
+	// TODO: TRY TO REUSE ERROR CODES
+	return ioutil.WriteFile(filename, theYaml, defaults.ProjectFilePermissions)
 }
