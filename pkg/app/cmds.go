@@ -8,7 +8,6 @@ import (
 func (app *App) addCommands() {
 	// Initialize paths to current directory in case this
 	// is something like a `mb -i` and nothing else
-	app.setSiteDefaults("")
 	var (
 		pathname string
 		err      error
@@ -106,7 +105,6 @@ func (app *App) addCommands() {
 				if pathname == "" || pathname == "." {
 					pathname = currDir()
 				}
-				app.setSiteDefaults(pathname)
 				err := app.createSite(pathname)
 				if err != nil {
 					app.QuitError(err)

@@ -40,9 +40,11 @@ var errMsgs = map[string]string{
 	// 0250 - Error closing file
 	// 0300	- Error deleting file
 	"0302": "Unable to delete publish directory",
-	// 0400	- Error creating directory
 
+	// 0400	- Error creating directory
+	"0401": "Unable to create project directory", // filename
 	"0403": "Unable to create publish directory",
+
 	// 0500	- Error determining directory name
 	// 0600 - Error deleting directory
 	// 0700	- Error reading directory

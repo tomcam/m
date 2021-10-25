@@ -50,25 +50,15 @@ func (app *App) mdToHTML(source []byte) ([]byte, error) {
 // directory ~/something/else/bar
 func (app *App) build(path string) error {
 	var err error
-	app.Note("\tbuild(%v)\n", path)
-	if path != "" {
-		// Change to the specified directory.
-		if err = os.Chdir(path); err != nil {
-			return ErrCode("0901", err.Error())
-		}
-		app.site.path = path
-	} else {
-		// Determine current fully qualified directory location.
-		// Can't use relative paths internally.
-		app.site.path = currPath()
-	}
+  // Change to specified directory.
+  // Update app.site.path and build all related directories
+  if err := app.setWorkingDir(path); err != nil {
+    return err
+  }
 
 	if !isProject(app.site.path) {
 		return ErrCode("1002", path)
 	}
-	// Changed directory successfully.
-	// Use current directory to build all config paths.
-	app.setSiteDefaults(app.site.path)
 
 	// Create minimal directory structure: Publish directory,
 	// site directory, .themes, etc.

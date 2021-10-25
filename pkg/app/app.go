@@ -85,7 +85,7 @@ func NewApp() *App {
 		applicationDataPath: userConfigPath(),
 		factoryThemesPath:   filepath.Join(userConfigPath(), defaults.ThemesDir),
 	}
-	app.setSiteDefaults("")
+	//app.setSiteDefaults()
 	// TODO: Get values from viper here I think.
 	// If there are any configuration files,
 	// environment variables, etc. with info
@@ -133,7 +133,7 @@ func (app *App) initCobra() {
 
 // initConfig reads in config file and ENV variables if set.
 func (app *App) initConfig() {
-	app.Note("initConfig()")
+	//app.Note("initConfig()")
 	if app.cfgPath != "" {
 		// Use config file from the flag.
 		// XXX
@@ -159,17 +159,13 @@ func (app *App) initConfig() {
 
 // setSiteDefaults() intializes the Site object
 // It's on app instead of app.site so I can use
-// read global flags and use debugging features
-// like App.Note(). home is the project directory
-// or, if left as "", is set to the current directory
-func (app *App) setSiteDefaults(home string) {
-	// By now you should already be in the directory
-	// specified by home
-	if home == "" {
-		home = currDir()
-	}
-	app.Verbose("\tsetSiteDefaults(%v)\n", home)
-	app.setPaths(home)
+// global flags and debugging features
+// like App.Note(). 
+// Must be in the working directory at app.site.path.
+//func (app *App) setSiteDefaults(home string) {
+func (app *App) setSiteDefaults() {
+	app.Verbose("\tsetSiteDefaults()")
+	app.setPaths()
 }
 
 // setPaths computes values for location of site
@@ -179,15 +175,11 @@ func (app *App) setSiteDefaults(home string) {
 // variables, and other application configuration has been done.
 // home is the fully qualified directory name
 // the project lives in.
-// By now it is the current directory.
+// Must be in the working directory at app.site.path.
 // This is based on App.SiteDefaults() in the previous
 // version of Metabuzz.
-func (app *App) setPaths(home string) {
-	// This is the fully qualified path of the current
-	// directory, which is also guaranteed to be the
-	// root directory of the project.
-	app.Verbose("\tsetPaths(%v)\n", home)
-	app.site.path = home
+func (app *App) setPaths() {
+  app.Note("\tsetPaths(%v)", app.site.path)
 	app.site.name = filepath.Base(app.site.path)
 	// Compute location of base directory used for all
 	// config info, which includes directories for
@@ -239,3 +231,17 @@ func (app *App) setPaths(home string) {
 	app.site.dirs = make(map[string]dirInfo)
 
 } // setPaths()
+
+// setWorkingDir() changes to the specified 
+// directory and sets app.site.path accordingly.
+func (app *App) setWorkingDir(dir string) error {
+  if dir == "." || dir == "" {
+  } else {
+    if err := os.Chdir(dir); err != nil {
+      return ErrCode("PREVIOUS", dir)
+    }
+  }
+  app.site.path = currDir()
+  app.setSiteDefaults()
+  return nil
+}

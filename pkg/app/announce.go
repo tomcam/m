@@ -3,7 +3,7 @@ package app
 import (
 	"fmt"
 	"github.com/rodaine/table"
-	"os"
+	//"os"
 	"strings"
 )
 
@@ -15,16 +15,11 @@ func (app *App) ShowFrontMatter() {
 
 // ShowInfo() displays debug information about the app and site.
 func (app *App) ShowInfo(pathname string) error {
-	app.Note("ShowInfo(%v)", pathname)
-	// Change to the specified directory.
-	if pathname == "" {
-		pathname = currDir()
-	}
-	app.Note("\tShowInfo() attempting changing to dir %v", pathname)
-	if err := os.Chdir(pathname); err != nil {
-		app.Note("\tShowInfo() error changing to %v", pathname)
-		return ErrCode("1102", pathname)
-	}
+  // Change to specified directory.
+  // Update app.site.path and build all related directories
+   if err := app.setWorkingDir(pathname); err != nil {
+    return ErrCode("PREVIOUS", err.Error())
+  }
 
 	table.DefaultHeaderFormatter = func(format string, vals ...interface{}) string {
 		return strings.ToUpper(fmt.Sprintf(format, vals...))

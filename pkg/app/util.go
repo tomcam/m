@@ -19,6 +19,7 @@ func cfgBool(option string) bool {
 
 // curDir() returns the current directory name.
 func currDir() string {
+	//if path, err := os.Executable(); err != nil {
 	if path, err := os.Getwd(); err != nil {
 		return "unknown directory"
 	} else {
@@ -57,15 +58,6 @@ func createDirStructure(dirs *[][]string) (err error) {
 		}
 	}
 	return nil
-}
-
-// currPath) returns the current directory name.
-func currPath() string {
-	if path, err := os.Getwd(); err != nil {
-		return "unknown directory"
-	} else {
-		return path
-	}
 }
 
 // dirExists() returns true if the name passed to it is a directory.
