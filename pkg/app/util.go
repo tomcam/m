@@ -125,8 +125,7 @@ func isProject(path string) bool {
 	if !dirExists(path) {
 		return false
 	}
-
-	// The directory exists. Does it contain a site directory?
+  // The above code could just be replaced with this I guess.
 	return isSiteFilePath(path)
 
 }
@@ -135,8 +134,8 @@ func isProject(path string) bool {
 // used to hold site config file & info
 // formerly isSitePath
 func isSiteFilePath(path string) bool {
-	fmt.Printf("isSiteFile(%v)\n", path)
-	return dirExists(siteFilePath(path))
+  siteFile := filepath.Join(path,defaults.CfgDir, defaults.SiteConfigFilename)
+  return fileExists(siteFile)
 }
 
 // promptString() displays a prompt, then awaits for keyboard

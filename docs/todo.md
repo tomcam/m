@@ -2,6 +2,7 @@
 
 10/24/2021
 * My io.ReadAll() usage might be revisited for performance reasons. https://haisum.github.io/2017/09/11/golang-ioutil-readall/
+* isproject and and friends don't work correctly *
 * ./mb info food where food doesnt' exist isn't handling the error well
 * Also target files aren't being written to foo/.mb/themes but foo/foo/.mb/themes even though the themes directory is being corectly written to foo/.mb/themes
 * isProject isn't working

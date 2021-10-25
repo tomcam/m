@@ -12,6 +12,30 @@ func (app *App) addCommands() {
 		pathname string
 		err      error
 
+	// Declare command to build a hardcoded test site
+	//cmdKitchenSink = flag.NewFlagSet("kitchen", flag.ExitOnError)
+
+		/*****************************************************
+		  TOP LEVEL COMMAND: kitchen
+		 *****************************************************/
+
+		cmdKitchenSink = &cobra.Command{
+			Use:   "kitchen",
+			Short: "generates a test site",
+			Long:  "creates a test site called ./kitchensink",
+			Run: func(cmd *cobra.Command, args []string) {
+				var err error
+				if len(args) > 0 {
+			    err = app.kitchenSink(args[0])
+				} else {
+          err = app.kitchenSink("")
+				}
+				if err != nil {
+					app.QuitError(err)
+				}
+			},
+		}
+
 		/*****************************************************
 		TOP LEVEL COMMAND: info
 		*****************************************************/
@@ -137,6 +161,7 @@ func (app *App) addCommands() {
 	  AddCommand()
 		*****************************************************/
 	app.RootCmd.AddCommand(cmdNew)
+	app.RootCmd.AddCommand(cmdKitchenSink)
 	cmdNew.AddCommand(cmdNewSite)
 	app.RootCmd.AddCommand(cmdInfo)
 	app.RootCmd.AddCommand(cmdBuild)

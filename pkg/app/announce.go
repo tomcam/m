@@ -61,6 +61,13 @@ func (a *App) Note(format string, ss ...interface{}) {
 	fmt.Println("NOTE: " + a.fmtMsg(format, ss...))
 }
 
+// App.Print() displays a message followed by a newline
+// to stdout.
+// Formats it like Fprintf.
+func (a *App) Print(format string, ss ...interface{}) {
+	fmt.Println(a.fmtMsg(format, ss...))
+}
+
 // App.Warning() displays a message followed by a newline
 // to stdout, preceded by the text "Warning: "
 // Overrides the verbose flag. Formats it like Fprintf.

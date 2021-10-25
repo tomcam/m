@@ -2,7 +2,7 @@ package app
 
 import (
 	"bytes"
-	"fmt"
+	//"fmt"
 	"github.com/tomcam/m/pkg/default"
 	//"github.com/tomcam/m/pkg/mdext"
 	"github.com/yuin/goldmark"
@@ -122,11 +122,10 @@ func (app *App) build(path string) error {
 		// DelimitIndexJSON(a.Site.SearchJSONFilePath, false)
 
 	}
-	fmt.Printf("%v ", app.site.fileCount)
 	if app.site.fileCount != 1 {
-		fmt.Println("files")
+	  app.Print("%v files", app.site.fileCount)
 	} else {
-		fmt.Println("file")
+	  app.Print("1 file")
 	}
 
 	app.loadTheme()

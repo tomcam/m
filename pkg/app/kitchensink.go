@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"path/filepath"
 )
 
@@ -125,10 +124,18 @@ func writeSiteFromArray(sitename string, site []description) error {
 // array of structures containing a filename,
 // a path to that filename, and the markdown
 // text itself.
-func (a *App) kitchenSink(sitename string) error {
-	err := a.createSite(sitename)
+func (app *App) kitchenSink(sitename string) error {
+	var err error
+	err = app.createSite(sitename)
 	if err != nil {
+    // TODO: Improve error handling
 		//a.QuitError(err)
+		return err
+	}
+
+	// Change to specified directory.
+	// Update app.site.path and build all related directories
+	if err := app.setWorkingDir(sitename); err != nil {
 		return err
 	}
 
@@ -142,7 +149,7 @@ func (a *App) kitchenSink(sitename string) error {
 		return err
 	}
 
-	fmt.Println("Created site ", a.site.name)
+	app.Print("Created site %v", app.site.path)
 	return nil
 
 }
