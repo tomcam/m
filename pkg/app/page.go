@@ -5,6 +5,7 @@ package app
 type Page struct {
 	// TODO: Load in front matter as a real struct
 	frontMatterRaw map[string]interface{}
+	theme          Theme
 }
 
 type FrontMatter struct {

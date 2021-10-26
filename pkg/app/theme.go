@@ -160,11 +160,15 @@ func (app *App) loadTheme() {
 			//return ErrCode("0401", source)
 			//app.QuitError("0401", source)
 			// msg := fmt.Errorf("Error attempting to create project file %s: %v", projectFile, err.Error()).Error()
+			// TODO: Handle error properly & and document error code
 			app.QuitError(err)
 		}
 		// Theme directory is known. Use it to load the .yaml file
 		// for this theme.
-		app.loadThemeConfig(dest)
+		if err := app.loadThemeConfig(dest); err != nil {
+			// TODO: Handle error properly & and document error code
+			app.QuitError(err)
+    }
 	}
 }
 
@@ -183,22 +187,22 @@ func (app *App) loadThemeConfig(path string) error {
 	// base of the filename. Then add the rest to the
 	// filename, which is the theme name + ".yaml"
 	filename := filepath.Join(path, filepath.Base(path)+"."+defaults.ConfigFileDefaultExt)
-	app.Note("\tloadThemeConfig(%v)", filename)
-  b, err := ioutil.ReadFile(filename)
+  //app.Note("\tloadThemeConfig(%v)", filename)
+	b, err := ioutil.ReadFile(filename)
 	if err != nil {
+		// TODO: Handle error properly & and document error code
 		return err
 	}
 
-  app.Note("\traw contents:\n%v", string(b))
-	var t Theme
-	err = yaml.Unmarshal(b, &t)
+    
+	err = yaml.Unmarshal(b, &app.page.theme)
 	if err != nil {
+		// TODO: Handle error properly & and document error code
 		return err
 	}
-  app.Note("\tloadThemeConfig() result:\n\t%#v", t)
 
-  return nil
-	
+	return nil
+
 }
 
 func (app *App) cfgStr() string {
