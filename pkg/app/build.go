@@ -87,13 +87,13 @@ func (app *App) build(path string) error {
 	for dir := range app.site.dirs {
 		// Change to each directory
 		if err := os.Chdir(dir); err != nil {
-		  // TODO: Handle error properly & and document error code
+			// TODO: Handle error properly & and document error code
 			return ErrCode("1101", dir)
 		}
 		// Get the files in just this directory
 		files, err := ioutil.ReadDir(".")
 		if err != nil {
-      // TODO: Handle error properly & and document error code
+			// TODO: Handle error properly & and document error code
 			return ErrCode("0703", dir)
 		}
 

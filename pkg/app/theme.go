@@ -5,6 +5,7 @@ import (
 	//"encoding/json"
 	"embed"
 	"github.com/tomcam/m/pkg/default"
+	"gopkg.in/yaml.v3"
 	"io"
 	"io/fs"
 	"io/ioutil"
@@ -12,6 +13,12 @@ import (
 	"path/filepath"
 	"strings"
 )
+
+type Theme struct {
+	Branding    string   `yaml:"Branding"`
+	Description string   `yaml:"Description"`
+	Stylesheets []string `yaml:"Stylesheets"`
+}
 
 // The following embeds all files and subdirectories
 // from the themes subdirectory of this package into
@@ -34,46 +41,52 @@ var factoryThemeFiles embed.FS
 // In turn, when the site is published only the themes
 // it needs will be copied over.
 func (app *App) copyFactoryThemes() error {
+	// TODO: Can this whole thing be replaced with a copyDirAll()?
+	// Is there a perf benefit either way?
 	var target string
 	fs.WalkDir(factoryThemeFiles, ".", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
-      // TODO: Handle error properly & and document error code
+			// TODO: Handle error properly & and document error code
 			return err
 		}
+		// Handle subdirectory.
 		// path is the relative path of the file, for example,
 		// it might be /en/products or something like that
 		if d.IsDir() {
 			if path == "." {
 				return nil
 			}
-			// Todo: compute this using config info
-			//target = filepath.Join(app.site.path, path)
+			// Get name of destination directory.
 			target = filepath.Join(app.cfgPath, path)
+			// Create the destination directory.
 			err := os.MkdirAll(target, defaults.PublicFilePermissions)
 			if err != nil {
-        // TODO: Handle error properly & and document error code
+				// TODO: Handle error properly & and document error code
 				app.Note("\tos.MkdirAll() error: %v", err.Error())
 				return err
 			}
 			return nil
 		}
 		//app.Note("\t\t%v", path)
+		// Handle individual file
 		target = filepath.Join(app.site.factoryThemesPath, path)
 		f, err := factoryThemeFiles.Open(path)
 		if err != nil {
-      // TODO: Handle error properly & and document error code
+			// TODO: Handle error properly & and document error code
 			app.Note("\tFS.Open(%v) error: %v", path, err.Error())
 			return err
 		}
+		// Read the file into a byte array.
 		b, err := io.ReadAll(f)
 		if err != nil {
-      // TODO: Handle error properly & and document error code
+			// TODO: Handle error properly & and document error code
 			app.Note("\tio.ReadAll(%v) error: %v", f, err.Error())
 			return err
 		}
+		// Copy the recently read file to its destination
 		err = ioutil.WriteFile(target, b, defaults.ProjectFilePermissions)
 		if err != nil {
-      // TODO: Handle error properly & and document error code
+			// TODO: Handle error properly & and document error code
 			app.Note("\tio.WriteFile(%v) error: %v", f, err.Error())
 			return err
 		}
@@ -101,46 +114,46 @@ func (app *App) loadTheme() {
 	//  debut/gallery/item
 
 	fullTheme := ""
-  // See if anything's in the front matter
-  // regarding the theme.
-  // TODO: Start accounting for theme in other
-  // places, like config files
+	// See if anything's in the front matter
+	// regarding the theme.
+	// TODO: Start accounting for theme in other
+	// places, like config files
 	if app.page.frontMatterRaw["theme"] == nil {
 		fullTheme = ""
 	} else {
 		fullTheme = fmt.Sprint(app.page.frontMatterRaw["theme"])
 	}
 
-  // If no theme specified, use the default theme.
+	// If no theme specified, use the default theme.
 	if fullTheme == "" {
 		fullTheme = defaults.DefaultThemeName
 	}
 
-  // If it's something like debut/gallery, loop
-  // around and load from root to branch.
-  // That way styles are overridden the way
-  // CSS expects.
+	// If it's something like debut/gallery, loop
+	// around and load from root to branch.
+	// That way styles are overridden the way
+	// CSS expects.
 	themeDirs := strings.Split(fullTheme, "/")
 	theme := ""
 
-  // Get directory from which themes will be copied
-  source := filepath.Join(app.site.factoryThemesPath,
-    defaults.ThemesDir)
-  dest := app.site.siteThemesPath
+	// Get directory from which themes will be copied
+	source := filepath.Join(app.site.factoryThemesPath,
+		defaults.ThemesDir)
+	dest := app.site.siteThemesPath
 	for level := 0; level < len(themeDirs); level++ {
 		if level == 0 {
-      // Build the deepest directory necessary, e.g.
-      // .mb/pub/themes/debut/gallery
+			// Build the deepest directory necessary, e.g.
+			// .mb/pub/themes/debut/gallery
 			err := os.MkdirAll(filepath.Join(app.site.siteThemesPath, fullTheme), defaults.PublicFilePermissions)
 			if err != nil {
-        // TODO: Handle error properly & and document error code
+				// TODO: Handle error properly & and document error code
 				app.Note("\tos.MkdirAll() error: %v", err.Error())
 				return
 			}
 		}
-    theme = themeDirs[level]
-    // Get the next level of directory and append 
-    // to the previous directory
+		theme = themeDirs[level]
+		// Get the next level of directory and append
+		// to the previous directory
 		source = filepath.Join(source, theme)
 		dest = filepath.Join(dest, theme)
 		if err := copyDirAll(source, dest); err != nil {
@@ -149,7 +162,43 @@ func (app *App) loadTheme() {
 			// msg := fmt.Errorf("Error attempting to create project file %s: %v", projectFile, err.Error()).Error()
 			app.QuitError(err)
 		}
+		// Theme directory is known. Use it to load the .yaml file
+		// for this theme.
+		app.loadThemeConfig(dest)
 	}
+}
+
+// loadThemeConfig reads the theme's config file, so
+// if the theme is named "debut" that file would be
+// named debut.yaml. The path passe in is something
+// like /Users/tom/code/m/cmd/mb/foo/.mb/pub/themes/wide
+// so all that's needed now is to create the fully
+// qualified filename, for example, you pass in
+//   Users/tom/mb/foo/.mb/pub/themes/wide/
+// and convert it to
+//   Users/tom/mb/foo/.mb/pub/themes/wide/wide.yaml
+func (app *App) loadThemeConfig(path string) error {
+	// Strip off everything but the theme name itself.
+	// Add that to the base directory because that's the
+	// base of the filename. Then add the rest to the
+	// filename, which is the theme name + ".yaml"
+	filename := filepath.Join(path, filepath.Base(path)+"."+defaults.ConfigFileDefaultExt)
+	app.Note("\tloadThemeConfig(%v)", filename)
+  b, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return err
+	}
+
+  app.Note("\traw contents:\n%v", string(b))
+	var t Theme
+	err = yaml.Unmarshal(b, &t)
+	if err != nil {
+		return err
+	}
+  app.Note("\tloadThemeConfig() result:\n\t%#v", t)
+
+  return nil
+	
 }
 
 func (app *App) cfgStr() string {
