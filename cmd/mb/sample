@@ -1,0 +1,20 @@
+#!/bin/zsh
+# Generate new project named foo in a very specific directory.
+# Delete any existing project named foo.
+# Generate a sample index.md file.
+DIR=~/code/m/cmd/mb/
+rm -rf ~/code/m/cmd/mb/foo
+~/code/m/cmd/mb/mb new site ~/code/m/cmd/mb/foo 
+echo TESTFILE > ~/code/m/cmd/mb/foo/index.md
+cat <<EOM > ~/code/m/cmd/mb/foo/index.md
+---
+Title: Metabuzz, brofus
+Description: hey now
+---
+# hello, world.
+Check out that description in the source
+
+EOM
+
+
+

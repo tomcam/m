@@ -9,6 +9,12 @@ theme-light.css or theme-dark.css is used.
   - Fix hardcoded paths in the files `gf`, `bu`
 * Ensure mdToHTML and mdFileToHTML return errors and use application error handling
 * Look for occurrences of App.Note(), which is only meant for prerelease usage
+* Understand whether I should create empty index.html files for dirs
+that don't have anything else to oprevent directory traversla attacks
+* Should search and replqce almost all QuitError calsl because
+everything should return errors instead of dislaying anything.
+That'lll be implrtant for the interactive website version
+* Add versioning for themes (already did it in the older version)
 
 10/25/2021
 * Work on marshalling front matter to a FrontMatter struct

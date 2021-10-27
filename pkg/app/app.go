@@ -51,6 +51,10 @@ type App struct {
 } // type Application
 
 type Flags struct {
+	// Global Debug mode. When true, App.Debug()
+  // output gets displayed
+	Debug bool
+
 	// DontCopy means don't copy theme directory to the site directory.
 	// Use the global theme set (which means if you change it, it
 	// will affect all new sites created using that theme)

@@ -1,9 +1,9 @@
 package app
 
 import (
-	"path/filepath"
 	"github.com/tomcam/m/pkg/default"
-  "os"
+	"os"
+	"path/filepath"
 )
 
 type description struct {
@@ -169,8 +169,8 @@ func (app *App) kitchenSink(pathname string) error {
 	if err := app.writeSiteConfig(); err != nil {
 		app.Note("Error writing site file %v", app.site.siteFilePath)
 		return ErrCode("PREVIOUS", err.Error())
-	}	
-  app.Print("Created site %v", app.site.path)
+	}
+	app.Print("Created site %v", app.site.path)
 	return nil
 
 }

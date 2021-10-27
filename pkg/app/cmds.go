@@ -24,7 +24,7 @@ func (app *App) addCommands() {
 			Short: "generates a test site",
 			Long:  "creates a test site called ./kitchensink",
 			Run: func(cmd *cobra.Command, args []string) {
-        app.Note("kitchensink")
+				app.Note("kitchensink")
 				var err error
 				if len(args) > 0 {
 					err = app.kitchenSink(args[0])

@@ -15,22 +15,36 @@ import (
 )
 
 type Theme struct {
-	Branding    string        `yaml:"Branding"`
-	Description string        `yaml:"Description"`
-	Stylesheets []string      `yaml:"Stylesheets"`
-	Nav         layoutElement `yaml:"Nav"`
-	Header      layoutElement `yaml:"Header"`
-	Article     layoutElement `yaml:"Article"`
-	Footer      layoutElement `yaml:"Footer"`
-	Sidebar     layoutElement `yaml:"Sidebar"`
+  // Name is the name of the theme for this page,
+  // e.g. "wide"
+  Name          string        `yaml:"Name"`
+	Branding      string        `yaml:"Branding"`
+	Description   string        `yaml:"Description"`
+	Stylesheets   []string      `yaml:"Stylesheets"`
+	Nav           layoutElement `yaml:"Nav"`
+	Header        layoutElement `yaml:"Header"`
+	Article       layoutElement `yaml:"Article"`
+	Footer        layoutElement `yaml:"Footer"`
+	Sidebar       layoutElement `yaml:"Sidebar"`
+	Language      string        `yaml:"Language"` // 'en', 'fr', etc.
+	HTMLStartFile htmlFragment  `yaml:"HTML-start-file"`
+	HTMLEndFile   htmlFragment  `yaml:"HTML-end-file"`
 }
 
 type layoutElement struct {
 	// Inline HTML
-  HTML string `yaml:"HTML"`
+	HTML string `yaml:"HTML"`
 
 	// Filename specifying HTML or Markdown
-  File string `yaml:"File"`
+	File string `yaml:"File"`
+}
+
+type htmlFragment struct {
+	// Inline HTML
+	HTML string `yaml:"HTML"`
+
+	// Filename specifying HTML or Markdown
+	File string `yaml:"File"`
 }
 
 // The following embeds all files and subdirectories
@@ -181,7 +195,6 @@ func (app *App) loadTheme() {
 			// TODO: Handle error properly & and document error code
 			app.QuitError(err)
 		}
-    app.Note("THEME: %v\n%v\n\n", theme, app.page.theme)
 		app.loadStylesheets()
 
 	}
@@ -263,6 +276,10 @@ func (app *App) loadThemeConfig(path string) error {
 		// TODO: Handle error properly & and document error code
 		return err
 	}
+
+  // Save the current theme. Force to lowercase because
+  // it's  filename
+  app.page.theme.Name = strings.ToLower(filepath.Base(path))
 
 	err = yaml.Unmarshal(b, &app.page.theme)
 	if err != nil {

@@ -18,7 +18,7 @@ type Page struct {
 
 type FrontMatter struct {
 	// Theme specified by user
-	Theme string `json:"name"`
+	Theme string `json:"theme"`
 
 	// Generates a Description metatag on output
 	Description string `json:"description"`

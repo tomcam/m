@@ -11,6 +11,14 @@ They are used for things like creating a gallery of themes, and or help text.
 for that particular theme.
 Those don't get copied out to the publishing directiory. Copying
 a theme would copy all CSS files, and the hidden directories.
+* Name of the theme comes form the directory. It's not in the theme's yaml file
+* All the files (except for excluded ones) in your article's directory
+get published (copied to the publish dirctory). However, the same is
+not true for stylesheets. Stylesheets must be specified by the `Stylesheets`
+tag of your theme YAML file. That's because they're handled differently,
+because of the mode setting, sidebar, etc.
+* sidebar designation in your theme YAML file determines which
+sidebar CSS file is included.
 * "mode" setting determines whether `theme-light.css` or
 `theme-dark.css` is used
 * Example `wide.yaml`
@@ -29,6 +37,20 @@ Article: {File:, HTML:}
 Sidebar: {File: sidebar.md, HTML:}
 Footer: {File: footer.md, HTML:}
 ```
+
+* These two are equivalent:
+```
+
+# This:
+Nav: {
+  File: nav.md, 
+  HTML:
+}
+
+# is the same as:
+Nav: {File: nav.md, HTML:}
+
+
 ## Data dump: Old notes from here forward
 
 * Old dimensions for Pillar

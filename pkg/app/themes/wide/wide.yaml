@@ -1,14 +1,22 @@
+# THIS IS 
+# THE REASL ONE
+#  BE CAREFUL
 Branding: "Wide by Metabuzz"
 Description: "A good general-purpose theme"
 Stylesheets: 
-- "wide.css"
 - "sizes.css"
-- "bind.css"
+- "theme-light.css"
+- "wide.css"
+- "responsive.css"
 - "reset.css"
 - "fonts.css"
+- "layout.css.css"
 Nav: {File: nav.md, HTML:}
 Header: {File: header.md, HTML:}
 Article: {File:, HTML:}
 Sidebar: {File: sidebar.md, HTML:}
 Footer: {File: footer.md, HTML:}
+Language: en
+HTML-start-file: {HTML: "<DOCTYPE html>\n<HTML lang=", File: } 
+HTML-end-file: {HTML: "</body></html>", File: } 
 

@@ -185,6 +185,33 @@ func fileExists(filename string) bool {
 	return !info.IsDir()
 }
 
+// fileToBuf() reads the named file into a byte slice and returns
+// that byte slice. In the spirit of HTML it simply returns an empty
+// slice on failure.
+func fileToBuf(filename string) []byte {
+	var input []byte
+	var err error
+	// Read the whole file into memory as a byte slice.
+	input, err = ioutil.ReadFile(filename)
+	if err != nil {
+		return []byte{}
+	}
+	return input
+}
+
+
+
+// fileToString() sucks up a file and returns its contents as a string.
+// Fails quietly  if unable to open the file, since
+// we're just generating HTML.
+func fileToString(infile string) string {
+	input, err := ioutil.ReadFile(infile)
+	if err != nil {
+		return ""
+	}
+	return string(input)
+}
+
 // hasExtension() returns true if the string ends in the specified extension
 // (case insensitive). Need to supply the period too:
 // if hasExtension(filename, ".aside") {
@@ -243,6 +270,12 @@ func isProject(path string) bool {
 func isSiteFilePath(path string) bool {
 	siteFile := filepath.Join(path, defaults.CfgDir, defaults.SiteConfigFilename)
 	return fileExists(siteFile)
+}
+
+// metatag() generates a meta tag. It's complicated.
+func metatag(tag string, content string) string {
+	const quote = `"`
+	return ("\n<meta name=" + quote + tag + quote + " content=" + quote + content + quote + ">\n")
 }
 
 // promptString() displays a prompt, then awaits for keyboard
@@ -330,6 +363,30 @@ func userConfigPath() string {
 		path = homeDir()
 	}
 	return filepath.Join(path, defaults.CfgDir)
+}
+
+// wrapTag() returns the HTML code contents surrounded
+// by the tag specified, which might look like
+// '<nav>' or it might look like '<article id="article">'
+// If block is true then it simply adds a newline for
+// clarity.
+func wrapTag(tag string, contents string, block bool) string {
+	var newline string
+	if block {
+		newline = "\n"
+	}
+	var endTag, output string
+	if len(tag) > 3 {
+		output = newline + tag + contents + tag[:1] + "/"
+		if strings.Contains(tag, "id=") {
+			endTag = strings.Fields(tag[1:])[0]
+			output += endTag + ">"
+		} else {
+			output += tag[1:]
+		}
+		return output + newline
+	}
+	return ""
 }
 
 // WriteTextFile creates a file called filename without checking to see if it
