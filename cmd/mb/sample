@@ -1,14 +1,27 @@
 #!/bin/zsh
-# Generate new project named foo in a very specific directory.
-# Delete any existing project named foo.
-# Generate a sample index.md file.
-DIR=~/code/m/cmd/mb/
-rm -rf ~/code/m/cmd/mb/foo
-~/code/m/cmd/mb/mb new site ~/code/m/cmd/mb/foo 
-echo TESTFILE > ~/code/m/cmd/mb/foo/index.md
-cat <<EOM > ~/code/m/cmd/mb/foo/index.md
+# Delete the project named 
+# foo, create a new one by the same
+# name, then builds the new one.
+#
+# Make sure everything happens only in a
+# single, safe directory because the foo 
+# subdirectory gets blown away and replaced
+# each time without warning.
+DIR=~/code/m/cmd/mb
+
+# Delete the old project.
+rm -rf $DIR/foo
+
+# Create a new project in the sample place.
+$DIR/mb new site $DIR/foo 
+
+# Populate it with a sample file
+echo TESTFILE > $DIR/foo/index.md
+
+# Generate HTML for the new project.
+$DIR/mb build $DIR/foo
+cat <<EOM > $DIR/foo/index.md
 ---
-Title: Metabuzz, brofus
 Description: hey now
 ---
 # hello, world.
@@ -19,6 +32,7 @@ Check out that description in the source
 | Column 1        | Column 2         |
 | --------------- | ---------------- |
 | Row 1, Column 1 | Row 1, Column 2  |
+
 EOM
 
 
