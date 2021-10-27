@@ -1,5 +1,15 @@
 # To do
 
+## Priority 1: Showstoppers--required for the next release
+* Search for "TODO:" in source
+* Document how Frontmatter Mode determines whether
+theme-light.css or theme-dark.css is used.
+* Document all error codes
+* Make these changes when returning to the standard mb directory
+  - Fix hardcoded paths in the files `gf`, `bu`
+* Ensure mdToHTML and mdFileToHTML return errors and use application error handling
+* Look for occurrences of App.Note(), which is only meant for prerelease usage
+
 10/25/2021
 * Work on marshalling front matter to a FrontMatter struct
 * mb new foo does something, and it shouldn't
@@ -27,14 +37,6 @@ first time for the current directory and the second time for the target director
     - copy it to the publish directory
 * Bind flags & other values to viper
 * Document order of execution on startup in regards to Cobra and Viper
-
-## Priority 1: Showstoppers--required for the next release
-* Seqrch for "TODO:" in source
-* Document all error codes
-* Make these changes when returning to the standard mb directory
-  - Fix hardcoded paths in the files `gf`, `bu`
-* Ensure mdToHTML and mdFileToHTML return errors and use application error handling
-* Look for occurrences of App.Note(), which is only meant for prerelease usage
 
 ## Priority 2: Desired but not required for the next release
 * Make most or all goldmark extensions and parsers optional
