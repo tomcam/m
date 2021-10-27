@@ -59,9 +59,9 @@ func (a *App) Verbose(format string, ss ...interface{}) {
 // to stdout.
 // Formats it like Fprintf.
 func (a *App) Debug(format string, ss ...interface{}) {
-  if a.Flags.Debug {
-	  fmt.Println(a.fmtMsg(format, ss...))
-  }
+	if a.Flags.Debug {
+		fmt.Println(a.fmtMsg(format, ss...))
+	}
 }
 
 // App.Note() displays a message followed by a newline

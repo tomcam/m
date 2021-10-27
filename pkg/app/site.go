@@ -141,7 +141,7 @@ type Site struct {
 	factoryThemesPath string
 
 	// Location of theme files copied over for this
-	// particular site  
+	// particular site
 	siteThemesPath string
 
 	// All the rendered pages on the site, plus meta information.

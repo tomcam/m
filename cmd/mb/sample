@@ -14,6 +14,11 @@ Description: hey now
 # hello, world.
 Check out that description in the source
 
+## Table test
+
+| Column 1        | Column 2         |
+| --------------- | ---------------- |
+| Row 1, Column 1 | Row 1, Column 2  |
 EOM
 
 

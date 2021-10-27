@@ -9,7 +9,7 @@ import (
 
 func (app *App) addFlags() {
 	// TODO: Make sure this comports with reality
-	app.RootCmd.PersistentFlags().StringVar(&app.cfgFile, "config", "", "config file (default is "+filepath.Join(homeDir(), ".", defaults.ConfigFilename) + ")")
+	app.RootCmd.PersistentFlags().StringVar(&app.cfgFile, "config", "", "config file (default is "+filepath.Join(homeDir(), ".", defaults.ConfigFilename)+")")
 	app.RootCmd.PersistentFlags().BoolVarP(&app.Flags.Verbose, "verbose", "v", false, "verbose output")
 	app.RootCmd.PersistentFlags().BoolVarP(&app.Flags.Debug, "debug", "d", false, "show debug output")
 	app.RootCmd.PersistentFlags().BoolVarP(&app.Flags.Info, "info", "i", false, "Show info after "+os.Args[0]+" runs")

@@ -1,5 +1,9 @@
 package app
 
+import (
+	"fmt"
+)
+
 // type Page contains read-only information about the Markdown page currently
 // being processed.
 type Page struct {
@@ -32,4 +36,19 @@ type FrontMatter struct {
 	// Determine whether aside is on the
 	// right, left, or none
 	Sidebar string `json:"sidebar"`
+}
+
+// frontMatterMust() obtains the value of a
+// requested key from the front matter.
+// It's  called frontMatterMust() because it doesn't
+// return an error if, for example, the requested
+// doesn't exist, or doesn't have a definition.
+// TODO: Perf? Get as []byte?
+//func (app *App) frontMatterMust(key string) string {
+func (page *Page) frontMatterMust(key string) string {
+	// If the key exists, return its value.
+	if page.frontMatterRaw[key] != nil {
+		return fmt.Sprint(page.frontMatterRaw[key])
+	}
+	return ""
 }

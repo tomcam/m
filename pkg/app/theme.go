@@ -1,7 +1,7 @@
 package app
 
 import (
-	"fmt"
+	//"fmt"
 	//"encoding/json"
 	"embed"
 	"github.com/tomcam/m/pkg/default"
@@ -15,9 +15,9 @@ import (
 )
 
 type Theme struct {
-  // Name is the name of the theme for this page,
-  // e.g. "wide"
-  Name          string        `yaml:"Name"`
+	// Name is the name of the theme for this page,
+	// e.g. "wide"
+	Name          string        `yaml:"Name"`
 	Branding      string        `yaml:"Branding"`
 	Description   string        `yaml:"Description"`
 	Stylesheets   []string      `yaml:"Stylesheets"`
@@ -140,17 +140,15 @@ func (app *App) loadTheme() {
 	//  debut/gallery
 	//  debut/gallery/item
 
-	fullTheme := ""
+	fullTheme := app.page.frontMatterMust("theme")
 	// See if anything's in the front matter
 	// regarding the theme.
 	// TODO: Start accounting for theme in other
 	// places, like config files
 	// TODO: Getting lazy. Remember to marshal front matter appropriately
-	if app.page.frontMatterRaw["theme"] == nil {
-		// If no theme specified, use the default theme.
+	// If no theme specified, use the default theme.
+	if fullTheme == "" {
 		fullTheme = defaults.DefaultThemeName
-	} else {
-		fullTheme = fmt.Sprint(app.page.frontMatterRaw["theme"])
 	}
 
 	// If it's something like debut/gallery, loop
@@ -277,9 +275,9 @@ func (app *App) loadThemeConfig(path string) error {
 		return err
 	}
 
-  // Save the current theme. Force to lowercase because
-  // it's  filename
-  app.page.theme.Name = strings.ToLower(filepath.Base(path))
+	// Save the current theme. Force to lowercase because
+	// it's  filename
+	app.page.theme.Name = strings.ToLower(filepath.Base(path))
 
 	err = yaml.Unmarshal(b, &app.page.theme)
 	if err != nil {

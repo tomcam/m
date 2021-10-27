@@ -199,8 +199,6 @@ func fileToBuf(filename string) []byte {
 	return input
 }
 
-
-
 // fileToString() sucks up a file and returns its contents as a string.
 // Fails quietly  if unable to open the file, since
 // we're just generating HTML.

@@ -52,7 +52,7 @@ type App struct {
 
 type Flags struct {
 	// Global Debug mode. When true, App.Debug()
-  // output gets displayed
+	// output gets displayed
 	Debug bool
 
 	// DontCopy means don't copy theme directory to the site directory.
@@ -83,20 +83,14 @@ func NewApp() *App {
 		//deleteme: make([]byte)
 		page: Page{},
 		site: Site{},
-		//parser: goldmark.Markdown,
-		//parser: parserWithOptions(),
-		parserCtx:           parser.NewContext(),
+    // Missing here: initializing the parser.
+    // Can't set parser options until command 
+    // line has been processed.
+    // So that happens at App.initConfig()
 		RootCmd:             cobra.Command{},
 		applicationDataPath: userConfigPath(),
 		factoryThemesPath:   filepath.Join(userConfigPath(), defaults.ThemesDir),
 	}
-	//app.setSiteDefaults()
-	// TODO: Get values from viper here I think.
-	// If there are any configuration files,
-	// environment variables, etc. with info
-	// that overrides what was just initialized,
-	// read them in.
-	//app.updateConfig()
 	return &app
 }
 
@@ -159,6 +153,12 @@ func (app *App) initConfig() {
 	if err := viper.ReadInConfig(); err == nil {
 		app.Note("Using config file:", viper.ConfigFileUsed())
 	}
+
+  // Had to wait until now so parser options
+  // were understood.
+  app.parser = app.parserWithOptions()
+	app.parserCtx = parser.NewContext()
+
 }
 
 // setSiteDefaults() intializes the Site object

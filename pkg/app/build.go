@@ -1,6 +1,7 @@
 package app
 
 import (
+	//"github.com/yuin/goldmark/util"
 	"bytes"
 	//"fmt"
 	"github.com/tomcam/m/pkg/default"
@@ -17,10 +18,20 @@ import (
 	"path/filepath"
 )
 
+
+// mdWithFrontMatterToHTML() converts a Markdown source file 
+// in a byte slice to HTML. It may have front matter,
+// such as a YAML document, at the start of the file.
+// TODO: Everything possible, such as table extensions, 
+// should be optional.
+func (app *App) mdWithFrontMatterToHTML(source []byte) ([]byte, error) {
+  return []byte{}, nil
+}
 // mdToHTML converts a Markdown source file in a byte
 // slice to HTML.
+//func (app *App) mdToHTML(source []byte, hasFrontMatter bool) ([]byte, error) {
 func (app *App) mdToHTML(source []byte) ([]byte, error) {
-	//markdown := goldmark.New(
+  /*
 	app.parser = goldmark.New(
 		goldmark.WithExtensions(
 			// Extension: YAML front matter support
@@ -28,17 +39,18 @@ func (app *App) mdToHTML(source []byte) ([]byte, error) {
 		),
 		goldmark.WithRendererOptions(
 			renderer.WithNodeRenderers(
-			//util.Prioritized(extension.NewTableHTMLRenderer(), 500),
+			util.Prioritized(extension.NewTableHTMLRenderer(), 500),
 			),
 		),
 	)
+  */
 
 	var buf bytes.Buffer
 	if err := app.parser.Convert(source, &buf, parser.WithContext(app.parserCtx)); err != nil {
 		// TODO: Handle error properly & and document error code
 		return buf.Bytes(), ErrCode("0920", err.Error())
 	}
-	// Obtain the parsed YAML file as a raw
+	// Obtain the parsed front matter as a raw
 	// interface
 	app.page.frontMatterRaw = meta.Get(app.parserCtx)
 	//app.page.Data = meta.Get(app.parserCtx)
@@ -136,7 +148,7 @@ func (app *App) build(path string) error {
 }
 
 // TODO: Move this to mark package or eliinate mark
-func parserWithOptions() goldmark.Markdown {
+func (app *App) parserWithOptions() goldmark.Markdown {
 	exts := []goldmark.Extender{
 		//mdext.New(mdext.WithTable()), extension.Table,
 

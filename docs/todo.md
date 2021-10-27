@@ -11,10 +11,14 @@ theme-light.css or theme-dark.css is used.
 * Look for occurrences of App.Note(), which is only meant for prerelease usage
 * Understand whether I should create empty index.html files for dirs
 that don't have anything else to oprevent directory traversla attacks
-* Should search and replqce almost all QuitError calsl because
-everything should return errors instead of dislaying anything.
+* Search and replqce almost all QuitError calls because
+everything should return errors, displaying to stdout at the last
+possible moment.
 That'lll be implrtant for the interactive website version
-* Add versioning for themes (already did it in the older version)
+* Add versioning for themes (already did it in the older version). That should also mean:
+  - Check for conflicting versions with new theme command
+* RSS support
+* Add to glossary: `command` means a command-line verb such as `new theme` or `new site`
 
 10/25/2021
 * Work on marshalling front matter to a FrontMatter struct

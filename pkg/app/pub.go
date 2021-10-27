@@ -3,10 +3,6 @@ package app
 import (
 	"github.com/tomcam/m/pkg/default"
 	"github.com/tomcam/m/pkg/util"
-	//"strings"
-	//"github.com/tomcam/m/pkg/mark"
-	//"json"
-	"fmt"
 	"os"
 	"path/filepath"
 )
@@ -50,8 +46,8 @@ func (app *App) publishFile(filename string) error {
 		app.stylesheetTags() +
 		"</head>" + "\n" + "<body>" + "\n" +
 		app.header() +
-		string(body) +
-		// xxx"<article id=\"article\">"
+		app.article(body, "article") +
+		app.footer() +
 		"</body>" + "\n" + "</html>" + "\n"
 
 	if err = os.WriteFile(target, []byte(fullPage), defaults.PublicFilePermissions); err != nil {
@@ -77,10 +73,9 @@ func (app *App) stylesheetTags() string {
 // and returns as the full
 // TODO: Get as []byte and also soee FullDescriptionTag
 func (app *App) descriptionTag() string {
-	if app.page.frontMatterRaw["Description"] != nil {
-		return fmt.Sprint(app.page.frontMatterRaw["Description"])
-	}
-	return ""
+	description := app.page.frontMatterMust("Description")
+	// TODO: Incorporiate logic from FullDescriptionTag
+	return description
 }
 
 // mdFileToHTML converts the markdown file in filename to HTML.
@@ -149,8 +144,11 @@ func (app *App) layoutElementToHTML(tag string) string {
 	default:
 		html = ""
 		// TODO: Consider logging this error or something.
-	case "header":
-		html = app.layoutElement(tag)
+	case "header", "nav", "footer":
+		html = wrapTag("<"+tag+">", app.layoutElement(tag), true)
+	case "sidebar":
+		html = wrapTag("<"+"aside"+">", app.layoutElement(tag), true)
+		return ""
 	}
 	return html
 }
@@ -166,16 +164,20 @@ func (app *App) layoutElement(tag string) string {
 	switch tag {
 	case "header":
 		l = app.page.theme.Header
-		return app.layoutEl(l)
+	case "nav":
+		l = app.page.theme.Nav
+	case "sidebar":
+		l = app.page.theme.Sidebar
+	case "footer":
+		l = app.page.theme.Footer
 	}
-	return ""
+	return app.layoutEl(l)
 }
 
 // siteThemesPath() determines the directory a
 // theme file is found it.
-//func (app *App) siteThemesPath(theme string) string() {
 func (app *App) siteThemesPath() string {
-  return filepath.Join(app.site.siteThemesPath, app.page.theme.Name)
+	return filepath.Join(app.site.siteThemesPath, app.page.theme.Name)
 }
 
 // TODO: Probably want to return a byte slice
@@ -185,39 +187,67 @@ func (app *App) layoutEl(l layoutElement) string {
 		return l.HTML
 	}
 
-  // No inline HTML. Get filename.
-  filename := l.File
+	// No inline HTML. Get filename.
+	filename := l.File
 
-  // Locate it in the theme directory
-  //filename = filepath.Join(app.site.siteThemesPath, filepath.Base(filename))
-  //filename = filepath.Join(app.siteThemesPath(), filepath.Base(filename))
-  filename = filepath.Join(app.siteThemesPath(), filename)
+	// Locate it in the theme directory
+	filename = filepath.Join(app.siteThemesPath(), filename)
 
-  // TODO: Should probably return an error
-  // Quit silently if file can't be found
-  if !fileExists(filename) {
-    app.Debug("Can't find theme file %v", filename)
-    return ""
-  }
+	// TODO: Should probably return an error
+	// Quit silently if file can't be found
+	if !fileExists(filename) {
+		app.Debug("Can't find theme file %v", filename)
+		return ""
+	}
 
-
-  var err error
+	var err error
 	var html []byte
 	// Convert file contents to a byte slice of HTML
-  if isMarkdownFile(filename) {
-    if html, err = app.MdFileToHTML(filename); err != nil {
-      // TODO: Handle error properly & and document error code
-      return ""
+	if isMarkdownFile(filename) {
+    app.Note("\tlayoutEl() converting Markdown file %v", filename)
+		if html, err = app.MdFileToHTML(filename); err != nil {
+      app.Note("\tlayoutEl() ERROR converting Markdown file %v", filename)
+			// TODO: Handle error properly & and document error code
+			return ""
+		} else {
+      return string(html)
     }
-  } else {
-    // html = fileToBuf(filename)
-    html = fileToBuf(filename)
-  }
+	} else {
+		html = fileToBuf(filename)
+	}
 	return string(html)
+}
+
+// article() takes the already-generated HTML and returns
+// the text wrapped in an "<article>" tag.
+// You can optionally include an id tag with it.
+func (app *App) article(body []byte, params ...string) string {
+	html := string(body)
+	if len(params) < 1 {
+    // Optional ID tag was not supplied
+		html = wrapTag("<"+"article"+">", html, true)
+	} else {
+		// Use the supplied ID tag
+		id := params[0]
+		html = wrapTag("<"+"article"+" id=\""+id+"\""+">", html, true)
+	}
+	return html
 }
 
 func (app *App) header() string {
 	return app.layoutElementToHTML("header")
+}
+
+func (app *App) nav() string {
+	return app.layoutElementToHTML("nav")
+}
+
+func (app *App) sidebar() string {
+	return app.layoutElementToHTML("sidebar")
+}
+
+func (app *App) footer() string {
+	return app.layoutElementToHTML("footer")
 }
 
 //layoutElement struct {
