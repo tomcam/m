@@ -118,15 +118,12 @@ func (app *App) loadTheme() {
 	// regarding the theme.
 	// TODO: Start accounting for theme in other
 	// places, like config files
+	// TODO: Getting lazy. Remember to marshal front matter appropriately
 	if app.page.frontMatterRaw["theme"] == nil {
-		fullTheme = ""
+		// If no theme specified, use the default theme.
+		fullTheme = defaults.DefaultThemeName
 	} else {
 		fullTheme = fmt.Sprint(app.page.frontMatterRaw["theme"])
-	}
-
-	// If no theme specified, use the default theme.
-	if fullTheme == "" {
-		fullTheme = defaults.DefaultThemeName
 	}
 
 	// If it's something like debut/gallery, loop
@@ -155,6 +152,7 @@ func (app *App) loadTheme() {
 		// Get the next level of directory and append
 		// to the previous directory
 		source = filepath.Join(source, theme)
+    app.page.themePath = source
 		dest = filepath.Join(dest, theme)
 		if err := copyDirAll(source, dest); err != nil {
 			//return ErrCode("0401", source)
@@ -165,16 +163,52 @@ func (app *App) loadTheme() {
 		}
 		// Theme directory is known. Use it to load the .yaml file
 		// for this theme.
+		// Load theme info into app.page.theme
 		if err := app.loadThemeConfig(dest); err != nil {
 			// TODO: Handle error properly & and document error code
 			app.QuitError(err)
-    }
+		}
+		app.loadStylesheets()
+
+	}
+}
+
+// loadStylesheets() finds the stylesheets
+// named in the theme file, which is in
+// app.page.theme after the call to
+// loadThemeConfig()
+// In the spirit of browsers, which don't stop
+// loading the page when a stylesheet can't
+// be found, this function doesn't return errors
+// TODO: Track when these things are copied
+// to avoid redoing this work unnecessarily
+func (app *App) loadStylesheets() {
+  // If no style sheets don't waste time here
+	if len(app.page.theme.Stylesheets) <= 0 {
+		return
+	}
+	// Create the published style sheet directory
+  // TODO: Track this to make sure it's not repeated unnecessarily
+	err := os.MkdirAll(app.site.cssPath, defaults.PublicFilePermissions)
+	if err != nil {
+		return
+	}
+
+  // Go through the list of stylesheets for this theme.
+	for _, stylesheet := range app.page.theme.Stylesheets {
+    // Copy stylesheets for this theme from the local
+    // theme directory to the publish 
+    // CSS directory for stylesheets
+    source := filepath.Join(app.page.themePath, stylesheet)
+		dest := filepath.Join(app.site.cssPath, stylesheet)
+		app.Note("loadStylesheets(): copy %v to %v", source, dest)
 	}
 }
 
 // loadThemeConfig reads the theme's config file, so
 // if the theme is named "debut" that file would be
-// named debut.yaml. The path passe in is something
+// named debut.yaml. Write to app.page.theme.
+// The path passed in is something
 // like /Users/tom/code/m/cmd/mb/foo/.mb/pub/themes/wide
 // so all that's needed now is to create the fully
 // qualified filename, for example, you pass in
@@ -187,14 +221,13 @@ func (app *App) loadThemeConfig(path string) error {
 	// base of the filename. Then add the rest to the
 	// filename, which is the theme name + ".yaml"
 	filename := filepath.Join(path, filepath.Base(path)+"."+defaults.ConfigFileDefaultExt)
-  //app.Note("\tloadThemeConfig(%v)", filename)
+	//app.Note("\tloadThemeConfig(%v)", filename)
 	b, err := ioutil.ReadFile(filename)
 	if err != nil {
 		// TODO: Handle error properly & and document error code
 		return err
 	}
 
-    
 	err = yaml.Unmarshal(b, &app.page.theme)
 	if err != nil {
 		// TODO: Handle error properly & and document error code

@@ -6,6 +6,9 @@ type Page struct {
 	// TODO: Load in front matter as a real struct
 	frontMatterRaw map[string]interface{}
 	theme          Theme
+  // Location of source theme files computed at
+  // runtime
+  themePath string
 }
 
 type FrontMatter struct {

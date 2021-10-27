@@ -193,7 +193,7 @@ func (app *App) setPaths() {
 		defaults.DefaultPublishPath)
 
 	// Compute the directory location for asset files
-	app.site.assetPath = filepath.Join(app.cfgPath,
+	app.site.assetPath = filepath.Join(app.site.publishPath,
 		defaults.DefaultAssetPath)
 
 	// Compute the directory location for CSS files
