@@ -1,9 +1,14 @@
 # To do
 
 ## Priority 1: Showstoppers--required for the next release
+* Move HTML fragments from theme to site
 * Search for "TODO:" in source
 * Document how Frontmatter Mode determines whether
 theme-light.css or theme-dark.css is used.
+* Incomplete list of things that need to be handled once I start accepting
+options other than the front matter:
+  - Site.Mode sets default for FrontMatter.Mode
+  - Site.Language sets default for front Theme.Language
 * Document all error codes
 * Make these changes when returning to the standard mb directory
   - Fix hardcoded paths in the files `gf`, `bu`
@@ -14,11 +19,36 @@ that don't have anything else to oprevent directory traversla attacks
 * Search and replqce almost all QuitError calls because
 everything should return errors, displaying to stdout at the last
 possible moment.
-That'lll be implrtant for the interactive website version
+That'll be important for the interactive website version
 * Add versioning for themes (already did it in the older version). That should also mean:
+  - new theme should increment version and allow an optional version, something like this:
+
+```
+mb new theme test 0.2.0 from wide 1.1.0
+
+```
   - Check for conflicting versions with new theme command
 * RSS support
 * Add to glossary: `command` means a command-line verb such as `new theme` or `new site`
+
+## Priority 2: Desired but not required for the next release
+* If nothing is avaialble for header, footer, and so on, 
+publish nothing. Right now I'm publishing empty tags.
+* Make most or all goldmark extensions and parsers optional
+* Consider creating NewSite(filename) and rolling up site.New() into it
+* Ensure Dedent is working properly. The generated source always has a newline appended. Does Dedent account for that, or should it?
+* Introduce idea of drafts so you don't publish something by accident
+* Move util.go to pkg/util
+* In util.go, see if I need all the cfgPath code
+* Create a test case for each error code
+* Ensure each error code is documented
+* Make `/docs` directory configurable
+* Supplement QuitError to take only the error number for clarity
+* Write tests for slice pkg
+* Support for TOML front matter. See pkg/mdedxt/tomltc.go.sav and 
+[Reddit RFP for TOML](https://www.reddit.com/r/golang/comments/pthh4p/paying_gig_for_foss_project_extending_the/)
+* Ability to handle links with `.md` files instead of `.html`,
+e.g. instead of
 
 10/25/2021
 * Work on marshalling front matter to a FrontMatter struct
@@ -47,23 +77,6 @@ first time for the current directory and the second time for the target director
     - copy it to the publish directory
 * Bind flags & other values to viper
 * Document order of execution on startup in regards to Cobra and Viper
-
-## Priority 2: Desired but not required for the next release
-* Make most or all goldmark extensions and parsers optional
-* Consider creating NewSite(filename) and rolling up site.New() into it
-* Ensure Dedent is working properly. The generated source always has a newline appended. Does Dedent account for that, or should it?
-* Introduce idea of drafts so you don't publish something by accident
-* Move util.go to pkg/util
-* In util.go, see if I need all the cfgPath code
-* Create a test case for each error code
-* Ensure each error code is documented
-* Make `/docs` directory configurable
-* Supplement QuitError to take only the error number for clarity
-* Write tests for slice pkg
-* Support for TOML front matter. See pkg/mdedxt/tomltc.go.sav and 
-[Reddit RFP for TOML](https://www.reddit.com/r/golang/comments/pthh4p/paying_gig_for_foss_project_extending_the/)
-* Ability to handle links with `.md` files instead of `.html`,
-e.g. instead of
 
 ### Code smell
 

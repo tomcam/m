@@ -154,8 +154,8 @@ func (app *App) initConfig() {
 		app.Note("Using config file:", viper.ConfigFileUsed())
 	}
 
-  // Had to wait until now so parser options
-  // were understood.
+  // Parser couldn't be initialized until command line and
+  // other options were processed 
   app.parser = app.parserWithOptions()
 	app.parserCtx = parser.NewContext()
 

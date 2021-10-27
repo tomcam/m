@@ -145,10 +145,15 @@ func (app *App) layoutElementToHTML(tag string) string {
 		html = ""
 		// TODO: Consider logging this error or something.
 	case "header", "nav", "footer":
-		html = wrapTag("<"+tag+">", app.layoutElement(tag), true)
+		html = app.layoutElement(tag)
+    if html != "" {
+		  return wrapTag("<"+tag+">", html, true)
+    }
 	case "sidebar":
-		html = wrapTag("<"+"aside"+">", app.layoutElement(tag), true)
-		return ""
+		html = app.layoutElement(tag)
+    if html != "" {
+		  return wrapTag("<"+tag+">", html, true)
+    }
 	}
 	return html
 }
@@ -204,9 +209,9 @@ func (app *App) layoutEl(l layoutElement) string {
 	var html []byte
 	// Convert file contents to a byte slice of HTML
 	if isMarkdownFile(filename) {
-    app.Note("\tlayoutEl() converting Markdown file %v", filename)
+    app.Debug("\tlayoutEl() converting Markdown file %v", filename)
 		if html, err = app.MdFileToHTML(filename); err != nil {
-      app.Note("\tlayoutEl() ERROR converting Markdown file %v", filename)
+      app.Debug("\tlayoutEl() ERROR converting Markdown file %v", filename)
 			// TODO: Handle error properly & and document error code
 			return ""
 		} else {
@@ -250,6 +255,4 @@ func (app *App) footer() string {
 	return app.layoutElementToHTML("footer")
 }
 
-//layoutElement struct {
-//	HTML string `yaml:"HTML"`
-// File string `yaml:"File"`
+

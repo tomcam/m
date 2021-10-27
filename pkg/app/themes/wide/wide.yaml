@@ -11,11 +11,11 @@ Stylesheets:
 - "reset.css"
 - "fonts.css"
 - "layout.css.css"
-Nav: {File: nav.md, HTML:}
-Header: {File: header.md, HTML:}
+Nav: {File: inav.md, HTML:}
+Header: {File: iheader.md, HTML:}
 Article: {File:, HTML:}
-Sidebar: {File: sidebar.md, HTML:}
-Footer: {File: footer.md, HTML:}
+Sidebar: {File: isidebar.md, HTML:}
+Footer: {File: ifooter.md, HTML:}
 Language: en
 HTML-start-file: {HTML: "<DOCTYPE html>\n<HTML lang=", File: } 
 HTML-end-file: {HTML: "</body></html>", File: } 

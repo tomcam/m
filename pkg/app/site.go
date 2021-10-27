@@ -76,18 +76,20 @@ type Site struct {
 	// Full path of header tags for "code injection"
 	headTagsPath string
 
+	HTMLStartFile htmlFragment  `yaml:"HTML-start-file"`
+	HTMLEndFile   htmlFragment  `yaml:"HTML-end-file"`
 	// Subdirectory under the AssetDir where image files go
 	// Was imageDir
 	imagePath string
 
 	// for HTML header, as in "en" or "fr"
-	Language string
+  Language string `yaml:"Language"`
 
 	// Flags indicating which non-CommonMark Markdown extensions to use
 	markdownOptions MarkdownOptions
 
 	// Mode ("dark" or "light") used by this site unless overridden in front matter
-	Mode string
+  Mode string `yaml:"Mode"`
 
 	// Site's project name, so it's a filename.
 	// It's an identifier so it should be in slug format:
