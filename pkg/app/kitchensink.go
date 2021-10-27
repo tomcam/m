@@ -2,6 +2,8 @@ package app
 
 import (
 	"path/filepath"
+	"github.com/tomcam/m/pkg/default"
+  "os"
 )
 
 type description struct {
@@ -124,32 +126,51 @@ func writeSiteFromArray(sitename string, site []description) error {
 // array of structures containing a filename,
 // a path to that filename, and the markdown
 // text itself.
-func (app *App) kitchenSink(sitename string) error {
+func (app *App) kitchenSink(pathname string) error {
+
 	var err error
-	err = app.createSite(sitename)
+	// Create a project at the specified path
+	err = os.MkdirAll(pathname, defaults.ProjectFilePermissions)
 	if err != nil {
-		// TODO: Improve error handling
-		//a.QuitError(err)
+		return ErrCode("0401", pathname)
+	}
+	// Update app.site.path and build all related directories
+	if err := app.setWorkingDir(pathname); err != nil {
 		return err
 	}
 
 	// Change to specified directory.
-	// Update app.site.path and build all related directories
-	if err := app.setWorkingDir(sitename); err != nil {
-		return err
-	}
+	pathname = app.site.path
 
 	// Create directory structure for test site
 	if err := createDirStructure(&testDirs); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 
+	// Create minimal directory structure: Publish directory
+	// .site directory, .themes, etc.
+	if err := createDirStructure(&defaults.SitePaths); err != nil {
+		return ErrCode("PREVIOUS", err.Error())
+	}
 	// Build the site from the array of data structures
-	if err := writeSiteFromArray(sitename, siteTest); err != nil {
+	if err := writeSiteFromArray(pathname, siteTest); err != nil {
+		// TODO: Improve error handling
+		app.QuitError(err)
 		return err
 	}
 
-	app.Print("Created site %v", app.site.path)
+	// Get factory themes and copy to project. They will then
+	// be copied on demand to the publish directory as needed.
+	// This makes it easy to find themes and modify theme.
+	if err := app.copyFactoryThemes(); err != nil {
+		return ErrCode("PREVIOUS", err.Error())
+	}
+
+	if err := app.writeSiteConfig(); err != nil {
+		app.Note("Error writing site file %v", app.site.siteFilePath)
+		return ErrCode("PREVIOUS", err.Error())
+	}	
+  app.Print("Created site %v", app.site.path)
 	return nil
 
 }

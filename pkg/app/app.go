@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/tomcam/m/pkg/default"
 	"github.com/yuin/goldmark"
+	"io"
 	"os"
 	"path/filepath"
 	//"sync"
@@ -197,7 +198,8 @@ func (app *App) setPaths() {
 		defaults.DefaultAssetPath)
 
 	// Compute the directory location for CSS files
-	app.site.cssPath = filepath.Join(app.site.assetPath,
+	// to be published for this theme.
+	app.site.cssPublishPath = filepath.Join(app.site.assetPath,
 		defaults.DefaultPublishCssPath)
 
 	// Compute the directory location for image files
@@ -248,4 +250,35 @@ func (app *App) setWorkingDir(dir string) error {
 	app.site.path = currDir()
 	app.setSiteDefaults()
 	return nil
+}
+
+// CopyMust() copies a single file named source to
+// the file named in dest but doesn't return an
+// error if something goes wrong.
+// If a file got copied, returns its
+// destination name
+func (app *App) copyMust(src, dest string) string {
+	sourceFileStat, err := os.Stat(src)
+	if err != nil {
+		return ""
+	}
+
+	if !sourceFileStat.Mode().IsRegular() {
+		return ""
+	}
+	source, err := os.Open(src)
+	if err != nil {
+		return ""
+	}
+	destination, err := os.Create(dest)
+	if err != nil {
+		return ""
+	}
+	defer destination.Close()
+	_, err = io.Copy(destination, source)
+	if err != nil {
+		return ""
+	}
+	// Success
+	return dest
 }

@@ -15,9 +15,22 @@ import (
 )
 
 type Theme struct {
-	Branding    string   `yaml:"Branding"`
-	Description string   `yaml:"Description"`
-	Stylesheets []string `yaml:"Stylesheets"`
+	Branding    string        `yaml:"Branding"`
+	Description string        `yaml:"Description"`
+	Stylesheets []string      `yaml:"Stylesheets"`
+	Nav         layoutElement `yaml:"Nav"`
+	Header      layoutElement `yaml:"Header"`
+	Article     layoutElement `yaml:"Article"`
+	Footer      layoutElement `yaml:"Footer"`
+	Sidebar     layoutElement `yaml:"Sidebar"`
+}
+
+type layoutElement struct {
+	// Inline HTML
+  HTML string `yaml:"HTML"`
+
+	// Filename specifying HTML or Markdown
+  File string `yaml:"File"`
 }
 
 // The following embeds all files and subdirectories
@@ -152,7 +165,7 @@ func (app *App) loadTheme() {
 		// Get the next level of directory and append
 		// to the previous directory
 		source = filepath.Join(source, theme)
-    app.page.themePath = source
+		app.page.themePath = source
 		dest = filepath.Join(dest, theme)
 		if err := copyDirAll(source, dest); err != nil {
 			//return ErrCode("0401", source)
@@ -168,6 +181,7 @@ func (app *App) loadTheme() {
 			// TODO: Handle error properly & and document error code
 			app.QuitError(err)
 		}
+    app.Note("THEME: %v\n%v\n\n", theme, app.page.theme)
 		app.loadStylesheets()
 
 	}
@@ -183,26 +197,48 @@ func (app *App) loadTheme() {
 // TODO: Track when these things are copied
 // to avoid redoing this work unnecessarily
 func (app *App) loadStylesheets() {
-  // If no style sheets don't waste time here
+	// If no style sheets don't waste time here
 	if len(app.page.theme.Stylesheets) <= 0 {
 		return
 	}
 	// Create the published style sheet directory
-  // TODO: Track this to make sure it's not repeated unnecessarily
-	err := os.MkdirAll(app.site.cssPath, defaults.PublicFilePermissions)
+	// TODO: Track this to make sure it's not repeated unnecessarily
+	err := os.MkdirAll(app.site.cssPublishPath, defaults.PublicFilePermissions)
+
 	if err != nil {
 		return
 	}
 
-  // Go through the list of stylesheets for this theme.
+	// Go through the list of stylesheets for this theme.
+	// Copy stylesheets for this theme from the local
+	// theme directory to the publish
+	// CSS directory for stylesheets
 	for _, stylesheet := range app.page.theme.Stylesheets {
-    // Copy stylesheets for this theme from the local
-    // theme directory to the publish 
-    // CSS directory for stylesheets
-    source := filepath.Join(app.page.themePath, stylesheet)
-		dest := filepath.Join(app.site.cssPath, stylesheet)
-		app.Note("loadStylesheets(): copy %v to %v", source, dest)
+		// Check every stylesheet to see if it's
+		// a dark theme vs a light theme. If it
+		// is, change to dark if requested.
+		file := app.getMode(stylesheet)
+		source := filepath.Join(app.page.themePath, file)
+		dest := filepath.Join(app.site.cssPublishPath, file)
+		// Keep list of stylesheets that got published
+		copied := app.copyMust(source, dest)
+		if copied != "" {
+			app.page.stylesheets = append(app.page.stylesheets, dest)
+		}
 	}
+}
+
+// getMode() checks if the stylesheet is dark or light
+// and adjusts as needed.
+func (app *App) getMode(stylesheet string) string {
+	// Check every stylesheet to see if it's named
+	// "theme-light.css". If it is, and if Dark mode
+	// has been specified, alter its name to
+	// theme-dark.css.
+	if stylesheet == "theme-light.css" && app.page.frontMatter.Mode == "dark" {
+		stylesheet = "theme-dark.css"
+	}
+	return stylesheet
 }
 
 // loadThemeConfig reads the theme's config file, so

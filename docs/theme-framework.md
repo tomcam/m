@@ -1,4 +1,4 @@
-# Metabuzz theme architecture
+# Metabuzz theme framework 
 
 ## TODO: Things to cover
 * Publishing themes is different from copying.
@@ -13,6 +13,22 @@ Those don't get copied out to the publishing directiory. Copying
 a theme would copy all CSS files, and the hidden directories.
 * "mode" setting determines whether `theme-light.css` or
 `theme-dark.css` is used
+* Example `wide.yaml`
+```
+Branding: "Wide by Metabuzz"
+Description: "A good general-purpose theme"
+Stylesheets: 
+- "wide.css"
+- "sizes.css"
+- "bind.css"
+- "reset.css"
+- "fonts.css"
+Nav: {File: nav.md, HTML:}
+Header: {File: header.md, HTML:}
+Article: {File:, HTML:}
+Sidebar: {File: sidebar.md, HTML:}
+Footer: {File: footer.md, HTML:}
+```
 ## Data dump: Old notes from here forward
 
 * Old dimensions for Pillar

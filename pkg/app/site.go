@@ -45,10 +45,10 @@ type Site struct {
 	// Company name & other info user specifies in site.toml
 	Company company
 
-	// Subdirectory under the AssetDir where 
-  // CSS files go when published.
+	// Subdirectory under the AssetDir where
+	// CSS files go when published.
 	// Was cssDir string
-	cssPath string
+	cssPublishPath string
 
 	// List of all directories in the site
 	dirs map[string]dirInfo

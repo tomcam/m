@@ -1,24 +1,14 @@
-Branding: 
-Description:
-Stylesheets: ["sizes.css", "theme-light.css", "wide.css", "responsive.css", "reset.css", "fonts.css", "layout.css"]
-PathName:
+Branding: "Wide by Metabuzz"
+Description: "A good general-purpose theme"
+Stylesheets: 
+- "wide.css"
+- "sizes.css"
+- "bind.css"
+- "reset.css"
+- "fonts.css"
+Nav: {File: nav.md, HTML:}
+Header: {File: header.md, HTML:}
+Article: {File:, HTML:}
+Sidebar: {File: sidebar.md, HTML:}
+Footer: {File: footer.md, HTML:}
 
-Nav:
-- HTML:
-- File: "nav.md"
-
-Header:
-- HTML:
-- File: "header.md"
-
-Article:
-- HTML:
-- File: 
-
-Footer:
-- HTML:
-- File: footer.md
-
-Sidebar:
-- HTML:
-- File: "sidebar.md"
