@@ -311,5 +311,9 @@ func (app *App) createSite(pathname string) error {
 // project's site subdirectory.
 // Assumes you're in the project directory.
 func (app *App) writeSiteConfig() error {
+	// Populate site with default values from config info.
+	app.setSiteDefaults()
 	return writeYamlFile(app.Site.siteFilePath, app.Site)
 }
+
+

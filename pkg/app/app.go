@@ -174,14 +174,13 @@ func (app *App) initConfig() {
 	app.addTemplateFunctions()
 }
 
-// setSiteDefaults() intializes the Site object
-// It's on app instead of app.site so I can use
-// global flags and debugging features
-// like App.Note().
-// Must be in the working directory at app.Site.path.
-//func (app *App) setSiteDefaults(home string) {
+// setSiteDefaults() obtains starting values
+// for a fresh Site object before it's writtne
+// to a site config file.
 func (app *App) setSiteDefaults() {
-	app.Verbose("\tsetSiteDefaults()")
+	app.Debug("\tsetSiteDefaults()")
+	app.Site.HTMLStartFile.HTML = defaults.HTMLStartFile
+	app.Site.HTMLEndFile.HTML = defaults.HTMLStartFile
 	app.setPaths()
 }
 

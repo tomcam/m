@@ -30,8 +30,6 @@ type Theme struct {
 	Footer        layoutElement `yaml:"Footer"`
 	Sidebar       layoutElement `yaml:"Sidebar"`
 	Language      string        `yaml:"Language"` // 'en', 'fr', etc.
-	HTMLStartFile htmlFragment  `yaml:"HTML-start-file"`
-	HTMLEndFile   htmlFragment  `yaml:"HTML-end-file"`
 }
 
 type layoutElement struct {

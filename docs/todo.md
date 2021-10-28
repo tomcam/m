@@ -1,7 +1,6 @@
 # To do
 
 ## Priority 1: Showstoppers--required for the next release
-* I think I need to ensure order stylesheets appear in published output
 * Move HTML fragments from theme to site
 * Search for "TODO:" in source
 * Document how Frontmatter Mode determines whether

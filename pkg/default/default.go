@@ -57,6 +57,9 @@ const (
 Welcome to %s
 `
 
+	HTMLStartFile = `<DOCTYPE html>\n<HTML lang=`
+	HTMLEndFile   = `</body></html>`
+
 	// Name of subdirectory within the publish directory for CSS, theme files.
 	// for that theme.
 	DefaultAssetPath = "assets"
