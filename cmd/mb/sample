@@ -17,9 +17,6 @@ $DIR/mb new site $DIR/foo
 
 # Populate it with a sample file
 echo TESTFILE > $DIR/foo/index.md
-
-# Generate HTML for the new project.
-$DIR/mb build $DIR/foo
 cat <<EOM > $DIR/foo/index.md
 ---
 Description: hey now
@@ -35,5 +32,11 @@ Check out that description in the source
 
 EOM
 
+
+# Generate HTML for the new project.
+$DIR/mb build $DIR/foo
+
+# And display it
+open $DIR/foo/.mb/pub/index.html
 
 

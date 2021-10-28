@@ -16,7 +16,7 @@ func (app *App) publishFile(filename string) error {
 	//   /test
 	rel := relDirFile(app.Site.path, filename)
 	app.Page.filePath = filename
-	app.Note("\tpublishFile(%v)", filename)
+	app.Debug("\tpublishFile(%v)", filename)
 	app.Page.dir = currDir()
 	// Get the fully qualified name of the destination file
 	target := replaceExtension(filename, "html")
@@ -76,7 +76,7 @@ func (app *App) stylesheetTags() string {
 // and returns as the full
 // TODO: Get as []byte and also soee FullDescriptionTag
 func (app *App) descriptionTag() string {
-	description := app.Page.frontMatterMust("Description")
+	description := app.frontMatterMust("Description")
 	// TODO: Incorporiate logic from FullDescriptionTag
 	return description
 }

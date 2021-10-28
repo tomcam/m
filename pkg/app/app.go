@@ -2,7 +2,7 @@ package app
 
 import (
 	//"flag"
-	//"fmt"
+	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/tomcam/m/pkg/default"
@@ -312,4 +312,26 @@ func (app *App) copyMust(src, dest string) string {
 func (app *App) cfgLower(key string) string {
 	value := ""
 	return strings.ToLower(value)
+}
+
+// frontMatterMust() obtains the value of a
+// requested key from the front matter.
+// It's  called frontMatterMust() because it doesn't
+// return an error if, for example, the requested
+// doesn't exist, or doesn't have a definition.
+// TODO: Perf? Get as []byte?
+func (app *App) frontMatterMust(key string) string {
+	// If the key exists, return its value.
+	if app.Page.frontMatterRaw[strings.ToLower(key)] != nil {
+		return fmt.Sprint(app.Page.frontMatterRaw[key])
+	}
+	return ""
+}
+
+// frontMatterMustLower() obtains the value of a
+// requested key from the front matter, then
+// forces the return value to lowercase.
+func (app *App) frontMatterMustLower(key string) string {
+	// If the key exists, return its value.
+	return strings.ToLower(app.frontMatterMust(key))
 }

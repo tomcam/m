@@ -125,7 +125,7 @@ func (app *App) copyFactoryThemes() error {
 // - If no theme is specified, use the default theme
 func (app *App) themeName() string {
 	app.Debug("\t\tthemeName(): Checking front matter")
-	theme := app.Page.frontMatterMust("theme")
+	theme := app.frontMatterMust("theme")
 	// See if anything's in the front matter
 	// regarding the theme.
 	// TODO: Start accounting for theme in other
@@ -133,6 +133,7 @@ func (app *App) themeName() string {
 	// TODO: Getting lazy. Remember to marshal front matter appropriately
 	// If no theme specified, use the default theme.
 	if theme == "" {
+	  app.Debug("\t\tthemeName(): No theme named in front matter. Using default theme name %v", defaults.DefaultThemeName)
 		theme = defaults.DefaultThemeName
 	}
 	return theme
@@ -257,7 +258,7 @@ func (app *App) getMode(stylesheet string) string {
 	// "theme-light.css" (light theme is the default).
 	// If it is, and if Dark mode
 	// has been specified, publish theme-dark.css instead.
-	if stylesheet == "theme-light.css" && strings.ToLower(app.Page.frontMatterMust("Mode")) == "dark" {
+	if stylesheet == "theme-light.css" && strings.ToLower(app.frontMatterMust("Mode")) == "dark" {
 		stylesheet = "theme-dark.css"
 	}
 	return stylesheet

@@ -1,7 +1,7 @@
 # To do
 
 ## Priority 1: Showstoppers--required for the next release
-* Move HTML fragments from theme to site
+* bug: specifying theme "pillar" in front matter failed
 * Search for "TODO:" in source
 * Document how Frontmatter Mode determines whether
 theme-light.css or theme-dark.css is used.

@@ -17,6 +17,4 @@ Article: {File:, HTML:}
 Sidebar: {File: sidebar.md, HTML:}
 Footer: {File: footer.md, HTML:}
 Language: en
-HTML-start-file: {HTML: "<DOCTYPE html>\n<HTML lang=", File: } 
-HTML-end-file: {HTML: "</body></html>", File: } 
 
