@@ -40,14 +40,6 @@ type layoutElement struct {
 	File string `yaml:"File"`
 }
 
-type htmlFragment struct {
-	// Inline HTML
-	HTML string `yaml:"HTML"`
-
-	// Filename specifying HTML or Markdown
-	File string `yaml:"File"`
-}
-
 // The following embeds all files and subdirectories
 // from the themes subdirectory of this package into
 // the executable. That subdirectory contains all

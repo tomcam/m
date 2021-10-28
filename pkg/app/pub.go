@@ -40,7 +40,7 @@ func (app *App) publishFile(filename string) error {
 	app.loadTheme()
 
 	// Write HTML text of the body
-	fullPage := app.Site.HTMLStartFile.HTML +
+	fullPage := app.Site.HTMLStartFile +
 		app.Page.Theme.Language + ">" + "\n" +
 		"<meta charset=\"utf-8\">" + "\n" +
 		"<head>" +
@@ -51,7 +51,7 @@ func (app *App) publishFile(filename string) error {
 		app.header() +
 		app.article(body, "article") +
 		app.footer() +
-		app.Site.HTMLEndFile.HTML
+		app.Site.HTMLEndFile
 
 	if err = os.WriteFile(target, []byte(fullPage), defaults.PublicFilePermissions); err != nil {
 		// TODO: Handle error properly & and document error code

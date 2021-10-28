@@ -179,8 +179,8 @@ func (app *App) initConfig() {
 // to a site config file.
 func (app *App) setSiteDefaults() {
 	app.Debug("\tsetSiteDefaults()")
-	app.Site.HTMLStartFile.HTML = defaults.HTMLStartFile
-	app.Site.HTMLEndFile.HTML = defaults.HTMLStartFile
+	app.Site.HTMLStartFile = defaults.HTMLStartFile
+	app.Site.HTMLEndFile = defaults.HTMLStartFile
 	app.setPaths()
 }
 

@@ -73,8 +73,8 @@ type Site struct {
 	// Full path of header tags for "code injection"
 	headTagsPath string
 
-	HTMLStartFile htmlFragment `yaml:"HTML-start-file"`
-	HTMLEndFile   htmlFragment `yaml:"HTML-end-file"`
+	HTMLStartFile string `yaml:"HTML-start-file"`
+	HTMLEndFile   string `yaml:"HTML-end-file"`
 	// Subdirectory under the AssetDir where image files go
 	// Was imageDir
 	imagePath string
