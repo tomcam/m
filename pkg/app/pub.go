@@ -15,6 +15,8 @@ func (app *App) publishFile(filename string) error {
 	// Results in:
 	//   /test
 	rel := relDirFile(app.site.path, filename)
+	app.Page.filePath = filename
+	app.Page.dir = currDir()
 	// Get the fully qualified name of the destination file
 	target := replaceExtension(filename, "html")
 	target = filepath.Join(app.site.publishPath, rel, filepath.Base(target))
@@ -22,7 +24,7 @@ func (app *App) publishFile(filename string) error {
 	var err error
 	var body []byte
 	// Convert Markdown file to a byte slice of HTML
-	// Return with YAML front matter in app.page.frontMatter
+	// Return with YAML front matter in app.Page.frontMatter
 	if body, err = app.MdFileToHTML(filename); err != nil {
 		// TODO: Handle error properly & and document error code
 		return err
@@ -37,8 +39,8 @@ func (app *App) publishFile(filename string) error {
 	app.loadTheme()
 
 	// Write HTML text of the body
-	fullPage := app.page.theme.HTMLStartFile.HTML +
-		app.page.theme.Language + ">" + "\n" +
+	fullPage := app.Page.theme.HTMLStartFile.HTML +
+		app.Page.theme.Language + ">" + "\n" +
 		"<meta charset=\"utf-8\">" + "\n" +
 		"<head>" +
 		metatag("description", app.descriptionTag()) +
@@ -62,7 +64,7 @@ func (app *App) publishFile(filename string) error {
 // stylesheetTags generates all stylesheet tags at once
 func (app *App) stylesheetTags() string {
 	stylesheets := ""
-	for _, stylesheet := range app.page.theme.Stylesheets {
+	for _, stylesheet := range app.Page.theme.Stylesheets {
 		stylesheets = stylesheets +
 			stylesheetTag(filepath.Join(app.site.cssPublishPath, stylesheet))
 	}
@@ -73,19 +75,21 @@ func (app *App) stylesheetTags() string {
 // and returns as the full
 // TODO: Get as []byte and also soee FullDescriptionTag
 func (app *App) descriptionTag() string {
-	description := app.page.frontMatterMust("Description")
+	description := app.Page.frontMatterMust("Description")
 	// TODO: Incorporiate logic from FullDescriptionTag
 	return description
 }
 
 // mdFileToHTML converts the markdown file in filename to HTML.
 // It may include optional front matter.
-// TODO: Do I jactually use this?
+// TODO: Document that it also runs interps, which perhaps
+// should be a separate step
 func (app *App) MdFileToHTML(filename string) ([]byte, error) {
 	// Read file into a byte slice.
-	s := util.FileToBytes(filename)
+	b := util.FileToBytes(filename)
+	s := app.interps(filename, string(b))
 	// Convert to HTML
-	return app.mdToHTML(s)
+	return app.mdToHTML([]byte(s))
 }
 
 // buildPublishDirs() creates a mirror of the source
@@ -146,14 +150,14 @@ func (app *App) layoutElementToHTML(tag string) string {
 		// TODO: Consider logging this error or something.
 	case "header", "nav", "footer":
 		html = app.layoutElement(tag)
-    if html != "" {
-		  return wrapTag("<"+tag+">", html, true)
-    }
+		if html != "" {
+			return wrapTag("<"+tag+">", html, true)
+		}
 	case "sidebar":
 		html = app.layoutElement(tag)
-    if html != "" {
-		  return wrapTag("<"+tag+">", html, true)
-    }
+		if html != "" {
+			return wrapTag("<"+tag+">", html, true)
+		}
 	}
 	return html
 }
@@ -168,13 +172,13 @@ func (app *App) layoutElement(tag string) string {
 	var l layoutElement
 	switch tag {
 	case "header":
-		l = app.page.theme.Header
+		l = app.Page.theme.Header
 	case "nav":
-		l = app.page.theme.Nav
+		l = app.Page.theme.Nav
 	case "sidebar":
-		l = app.page.theme.Sidebar
+		l = app.Page.theme.Sidebar
 	case "footer":
-		l = app.page.theme.Footer
+		l = app.Page.theme.Footer
 	}
 	return app.layoutEl(l)
 }
@@ -182,7 +186,7 @@ func (app *App) layoutElement(tag string) string {
 // siteThemesPath() determines the directory a
 // theme file is found it.
 func (app *App) siteThemesPath() string {
-	return filepath.Join(app.site.siteThemesPath, app.page.theme.Name)
+	return filepath.Join(app.site.siteThemesPath, app.Page.theme.Name)
 }
 
 // TODO: Probably want to return a byte slice
@@ -209,14 +213,14 @@ func (app *App) layoutEl(l layoutElement) string {
 	var html []byte
 	// Convert file contents to a byte slice of HTML
 	if isMarkdownFile(filename) {
-    app.Debug("\tlayoutEl() converting Markdown file %v", filename)
+		app.Debug("\tlayoutEl() converting Markdown file %v", filename)
 		if html, err = app.MdFileToHTML(filename); err != nil {
-      app.Debug("\tlayoutEl() ERROR converting Markdown file %v", filename)
+			app.Debug("\tlayoutEl() ERROR converting Markdown file %v", filename)
 			// TODO: Handle error properly & and document error code
 			return ""
 		} else {
-      return string(html)
-    }
+			return string(html)
+		}
 	} else {
 		html = fileToBuf(filename)
 	}
@@ -229,7 +233,7 @@ func (app *App) layoutEl(l layoutElement) string {
 func (app *App) article(body []byte, params ...string) string {
 	html := string(body)
 	if len(params) < 1 {
-    // Optional ID tag was not supplied
+		// Optional ID tag was not supplied
 		html = wrapTag("<"+"article"+">", html, true)
 	} else {
 		// Use the supplied ID tag
@@ -254,5 +258,3 @@ func (app *App) sidebar() string {
 func (app *App) footer() string {
 	return app.layoutElementToHTML("footer")
 }
-
-

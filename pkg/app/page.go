@@ -7,13 +7,20 @@ import (
 // type Page contains read-only information about the Markdown page currently
 // being processed.
 type Page struct {
+	// Directory location of this page
+	dir string
+
 	// TODO: Marshal in front matter as a real struct
 	frontMatterRaw map[string]interface{}
-	frontMatter    FrontMatter
+	FrontMatter    FrontMatter
 	theme          Theme
 	// Location of source theme files computed at
 	// runtime
 	themePath string
+
+	// Fully qualified filename of this source file
+	filePath string
+
 	// List of stylesheets actually published
 	// (for example, only sidebar-left.css
 	// or sidebar-right.css will be published)
@@ -36,6 +43,10 @@ type FrontMatter struct {
 	// Determine whether aside is on the
 	// right, left, or none
 	Sidebar string `json:"sidebar"`
+
+	// If set to "off", don't execute templates on this page.
+	// Used for documentation purposes.
+	Templates string
 }
 
 // frontMatterMust() obtains the value of a

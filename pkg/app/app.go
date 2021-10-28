@@ -37,7 +37,12 @@ type App struct {
 	// Global options such as Verbose
 	Flags Flags
 
-	page Page
+	// All built-in functions must appear here to be publicly available
+	funcs map[string]interface{}
+	// Copy of funcs but without "scode"
+	fewerFuncs map[string]interface{}
+
+	Page Page
 
 	parser    goldmark.Markdown
 	parserCtx parser.Context
@@ -81,12 +86,12 @@ type Flags struct {
 func NewApp() *App {
 	app := App{
 		//deleteme: make([]byte)
-		page: Page{},
+		Page: Page{},
 		site: Site{},
-    // Missing here: initializing the parser.
-    // Can't set parser options until command 
-    // line has been processed.
-    // So that happens at App.initConfig()
+		// Missing here: initializing the parser.
+		// Can't set parser options until command
+		// line has been processed.
+		// So that happens at App.initConfig()
 		RootCmd:             cobra.Command{},
 		applicationDataPath: userConfigPath(),
 		factoryThemesPath:   filepath.Join(userConfigPath(), defaults.ThemesDir),
@@ -141,10 +146,15 @@ func (app *App) initConfig() {
 		home, err := os.UserHomeDir()
 		cobra.CheckErr(err)
 
-		// Search config in home directory with name ".mb" (without extension).
+		// Search config in home directory
 		viper.AddConfigPath(home)
-		viper.SetConfigType("yaml")
-		viper.SetConfigName(".mb")
+
+		// Default config file extension, probably "yaml"
+		viper.SetConfigType(defaults.ConfigFileDefaultExt)
+
+		// Make the config file name obvious but "." to
+		// hide it.
+		viper.SetConfigName("." + defaults.ProductName)
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
@@ -154,11 +164,13 @@ func (app *App) initConfig() {
 		app.Note("Using config file:", viper.ConfigFileUsed())
 	}
 
-  // Parser couldn't be initialized until command line and
-  // other options were processed 
-  app.parser = app.parserWithOptions()
+	// Parser couldn't be initialized until command line and
+	// other options were processed
+	app.parser = app.parserWithOptions()
 	app.parserCtx = parser.NewContext()
 
+  // Add snazzy Go template functions like ftime() etc.
+  app.addTemplateFunctions() 
 }
 
 // setSiteDefaults() intializes the Site object

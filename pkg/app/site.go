@@ -2,10 +2,7 @@ package app
 
 import (
 	"github.com/tomcam/m/pkg/default"
-	"gopkg.in/yaml.v3"
-	"io/ioutil"
 	"os"
-	//"path/filepath"
 )
 
 // Site contains configuration specific to each site, such as
@@ -22,28 +19,28 @@ type Site struct {
 	assetPath string
 
 	// Make it easy if you just have 1 author.
-	Author author
+	Author author `yaml:"Author"`
 
 	// List of authors with roles and websites in site.toml
-	Authors []author
+	Authors []author `yaml:"Authors"`
 
 	// Base directory for URL root, which may be different
 	// from its actual root. For example, GitHub Pages prefers
 	// the blog to start in /docs instead of root, but
 	// a URL would omit it.
 	// Was BaseDir
-	BasePath string
+	BasePath string `yaml:"Base-Path"`
 
 	// Site's branding, any string, that user specifies in site.toml.
 	// So, for example, if the Name is 'my-project' this might be
 	// 'My Insanely Cool Project"
-	Branding string
+	Branding string `yaml:"Branding"`
 
 	// Full pathname of common directory. Derived from CommonSubDir
 	commonPath string
 
 	// Company name & other info user specifies in site.toml
-	Company company
+	Company company `yaml:"Company"`
 
 	// Subdirectory under the AssetDir where
 	// CSS files go when published.
@@ -58,38 +55,38 @@ type Site struct {
 	// Note that directory names starting with a "." are excluded too.
 	// DO NOT ACCESS DIRECTLY:
 	// Use excludedDirs() because it applies other information such as PublishDir()
-	ExcludeDirs []string
+	ExcludeDirs []string `yaml:"Exclude-Dirs"`
 
 	// List of file extensions to exclude. For example. [ ".css" ".go" ".php" ]
-	ExcludeExtensions []string
+	ExcludeExtensions []string `yaml:"Exclude-Extensions"`
 
 	// Number of markdown files processed
 	fileCount uint
 
 	// Google Analytics tracking ID specified in site.toml
-	Ganalytics string
+	Ganalytics string `yaml:"Ganalytics"`
 
 	// All these files are copied into the HTML header.
 	// Example: favicon links.
-	HeadTags []string
+	HeadTags []string `yaml:"Head-Tags"`
 
 	// Full path of header tags for "code injection"
 	headTagsPath string
 
-	HTMLStartFile htmlFragment  `yaml:"HTML-start-file"`
-	HTMLEndFile   htmlFragment  `yaml:"HTML-end-file"`
+	HTMLStartFile htmlFragment `yaml:"HTML-start-file"`
+	HTMLEndFile   htmlFragment `yaml:"HTML-end-file"`
 	// Subdirectory under the AssetDir where image files go
 	// Was imageDir
 	imagePath string
 
 	// for HTML header, as in "en" or "fr"
-  Language string `yaml:"Language"`
+	Language string `yaml:"Language"`
 
 	// Flags indicating which non-CommonMark Markdown extensions to use
 	markdownOptions MarkdownOptions
 
 	// Mode ("dark" or "light") used by this site unless overridden in front matter
-  Mode string `yaml:"Mode"`
+	Mode string `yaml:"Mode"`
 
 	// Site's project name, so it's a filename.
 	// It's an identifier so it should be in slug format:
@@ -128,14 +125,16 @@ type Site struct {
 	siteFilePath string
 
 	// Social media URLs
-	Social social
+	Social social `yaml:"Social"`
 
 	// Site defaults to using this sidebar setting unless
 	// a page specifies otherwise
-	DefaultSidebar string
+	// Was DefaultSidebar
+	Sidebar string `yaml:"Sidebar"`
 
 	// Name (not path) of Theme used by this site unless overridden in front matter.
-	DefaultTheme string
+	// Was DefaultTheme
+	Theme string `yaml:"Theme"`
 
 	// Location of complete set of themes included
 	// with product release. A subset of these
@@ -152,32 +151,33 @@ type Site struct {
 
 	// THIS ALWAYS GOES AT THE END OF THE FILE/DATA STRUCTURE
 	// User data.
-	List interface{}
+
+	List interface{} `yaml:"List"`
 }
 
 type company struct {
 	// Company name, like "Metabuzz" or "Example Inc."
-	Name string
-	URL  string
+	Name string `yaml:"Name"`
+	URL  string `yaml:"URL"`
 
 	// Logo file for the header
 	HeaderLogo string
 }
 type author struct {
-	FullName string
-	URL      string
-	Role     string
+	FullName string `yaml:"Full-Name"`
+	URL      string `yaml:"URL"`
+	Role     string `yaml:"Role"`
 }
 
 type authors struct {
-	Authors []author
+	Authors []author `yaml:"Authors"`
 }
 
 // MarkdownOptions consists of goldmark
 // options used when converting markdown to HTML.
 type MarkdownOptions struct {
 	// If true, line breaks are significant
-	hardWraps bool
+	HardWraps bool `yaml:"Hard-wraps"`
 
 	// Name of color scheme used for code highlighting,
 	// for example, "monokai"
@@ -185,10 +185,10 @@ type MarkdownOptions struct {
 	// https://github.com/alecthomas/chroma/blob/master/README.md
 	// I believe the list of themes is here:
 	// https://github.com/alecthomas/chroma/tree/master/styles
-	HighlightStyle string
+	HighlightStyle string `yaml:"Highlight-style"`
 
 	// Create id= attributes for all headers automatically
-	HeadingIDs bool
+	HeadingIDs bool `yaml:"Heading-IDs"`
 }
 
 // Indicates whether it's directory, a directory containing
@@ -201,18 +201,18 @@ type dirInfo struct {
 }
 
 type social struct {
-	DeviantArt string
-	Facebook   string
-	GitHub     string
-	Gitlab     string
-	Instagram  string
-	LinkedIn   string
-	Pinterest  string
-	Reddit     string
-	Tumblr     string
-	Twitter    string
-	Weibo      string
-	YouTube    string
+	DeviantArt string `yaml:"Deviant-Art"`
+	Facebook   string `yaml:"Facebook"`
+	GitHub     string `yaml:"GitHub"`
+	Gitlab     string `yaml:"GitLab"`
+	Instagram  string `yaml:"Instagram"`
+	LinkedIn   string `yaml:"LinkedIn"`
+	Pinterest  string `yaml:"Pinterest"`
+	Reddit     string `yaml:"Reddit"`
+	Tumblr     string `yaml:"Tumbler"`
+	Twitter    string `yaml:"Twitter"`
+	Weibo      string `yaml:"Weibo"`
+	YouTube    string `yaml:"YouTube"`
 }
 
 // Everything relevant about the page to be published,
@@ -312,16 +312,4 @@ func (app *App) createSite(pathname string) error {
 // Assumes you're in the project directory.
 func (app *App) writeSiteConfig() error {
 	return writeYamlFile(app.site.siteFilePath, app.site)
-}
-
-// TODO: Move to util file
-// writeYamlFile() creates a YAML file based on the filename and
-// data structure passed in.
-func writeYamlFile(filename string, target interface{}) error {
-	theYaml, err := yaml.Marshal(&target)
-	if err != nil {
-		return ErrCode("PREVIOUS", err.Error())
-	}
-	// TODO: TRY TO REUSE ERROR CODES
-	return ioutil.WriteFile(filename, theYaml, defaults.ProjectFilePermissions)
 }

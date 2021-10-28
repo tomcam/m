@@ -10,7 +10,7 @@ import (
 // frontMatter() displays the raw contents of the front matter
 func (app *App) ShowFrontMatter() {
 	fmt.Println("FRONT MATTER")
-	fmt.Printf("%#v\n", app.page.frontMatterRaw)
+	fmt.Printf("%#v\n", app.Page.frontMatterRaw)
 }
 
 // ShowInfo() displays debug information about the app and site.

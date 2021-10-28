@@ -18,32 +18,32 @@ import (
 	"path/filepath"
 )
 
-
-// mdWithFrontMatterToHTML() converts a Markdown source file 
+// mdWithFrontMatterToHTML() converts a Markdown source file
 // in a byte slice to HTML. It may have front matter,
 // such as a YAML document, at the start of the file.
-// TODO: Everything possible, such as table extensions, 
+// TODO: Everything possible, such as table extensions,
 // should be optional.
 func (app *App) mdWithFrontMatterToHTML(source []byte) ([]byte, error) {
-  return []byte{}, nil
+	return []byte{}, nil
 }
+
 // mdToHTML converts a Markdown source file in a byte
 // slice to HTML.
 //func (app *App) mdToHTML(source []byte, hasFrontMatter bool) ([]byte, error) {
 func (app *App) mdToHTML(source []byte) ([]byte, error) {
-  /*
-	app.parser = goldmark.New(
-		goldmark.WithExtensions(
-			// Extension: YAML front matter support
-			meta.Meta,
-		),
-		goldmark.WithRendererOptions(
-			renderer.WithNodeRenderers(
-			util.Prioritized(extension.NewTableHTMLRenderer(), 500),
+	/*
+		app.parser = goldmark.New(
+			goldmark.WithExtensions(
+				// Extension: YAML front matter support
+				meta.Meta,
 			),
-		),
-	)
-  */
+			goldmark.WithRendererOptions(
+				renderer.WithNodeRenderers(
+				util.Prioritized(extension.NewTableHTMLRenderer(), 500),
+				),
+			),
+		)
+	*/
 
 	var buf bytes.Buffer
 	if err := app.parser.Convert(source, &buf, parser.WithContext(app.parserCtx)); err != nil {
@@ -52,7 +52,7 @@ func (app *App) mdToHTML(source []byte) ([]byte, error) {
 	}
 	// Obtain the parsed front matter as a raw
 	// interface
-	app.page.frontMatterRaw = meta.Get(app.parserCtx)
+	app.Page.frontMatterRaw = meta.Get(app.parserCtx)
 	//app.page.Data = meta.Get(app.parserCtx)
 	return buf.Bytes(), nil
 }

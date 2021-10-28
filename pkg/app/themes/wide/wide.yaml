@@ -1,6 +1,6 @@
 # THIS IS 
-# THE REASL ONE
-#  BE CAREFUL
+# THE REAL ONE
+# BE CAREFUL
 Branding: "Wide by Metabuzz"
 Description: "A good general-purpose theme"
 Stylesheets: 
@@ -11,11 +11,11 @@ Stylesheets:
 - "reset.css"
 - "fonts.css"
 - "layout.css.css"
-Nav: {File: inav.md, HTML:}
-Header: {File: iheader.md, HTML:}
+Nav: {File: nav.md, HTML:}
+Header: {File: header.md, HTML:}
 Article: {File:, HTML:}
 Sidebar: {File: isidebar.md, HTML:}
-Footer: {File: ifooter.md, HTML:}
+Footer: {File: footer.md, HTML:}
 Language: en
 HTML-start-file: {HTML: "<DOCTYPE html>\n<HTML lang=", File: } 
 HTML-end-file: {HTML: "</body></html>", File: } 

@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/tomcam/m/pkg/default"
 	"github.com/tomcam/m/pkg/util"
+	"gopkg.in/yaml.v3"
 	"io"
 	"io/ioutil"
 	"os"
@@ -401,4 +402,16 @@ func writeTextFile(filename, contents string) error {
 		return ErrCode("0903", "Problem writing to file %v: %v\n", filename, err.Error())
 	}
 	return nil
+}
+
+// TODO: Move to util file
+// writeYamlFile() creates a YAML file based on the filename and
+// data structure passed in.
+func writeYamlFile(filename string, target interface{}) error {
+	theYaml, err := yaml.Marshal(&target)
+	if err != nil {
+		return ErrCode("PREVIOUS", err.Error())
+	}
+	// TODO: TRY TO REUSE ERROR CODES
+	return ioutil.WriteFile(filename, theYaml, defaults.ProjectFilePermissions)
 }

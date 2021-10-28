@@ -140,7 +140,7 @@ func (app *App) loadTheme() {
 	//  debut/gallery
 	//  debut/gallery/item
 
-	fullTheme := app.page.frontMatterMust("theme")
+	fullTheme := app.Page.frontMatterMust("theme")
 	// See if anything's in the front matter
 	// regarding the theme.
 	// TODO: Start accounting for theme in other
@@ -150,7 +150,7 @@ func (app *App) loadTheme() {
 	if fullTheme == "" {
 		fullTheme = defaults.DefaultThemeName
 	}
-
+	app.Page.FrontMatter.Theme = fullTheme
 	// If it's something like debut/gallery, loop
 	// around and load from root to branch.
 	// That way styles are overridden the way
@@ -177,7 +177,7 @@ func (app *App) loadTheme() {
 		// Get the next level of directory and append
 		// to the previous directory
 		source = filepath.Join(source, theme)
-		app.page.themePath = source
+		app.Page.themePath = source
 		dest = filepath.Join(dest, theme)
 		if err := copyDirAll(source, dest); err != nil {
 			//return ErrCode("0401", source)
@@ -188,7 +188,7 @@ func (app *App) loadTheme() {
 		}
 		// Theme directory is known. Use it to load the .yaml file
 		// for this theme.
-		// Load theme info into app.page.theme
+		// Load theme info into app.Page.theme
 		if err := app.loadThemeConfig(dest); err != nil {
 			// TODO: Handle error properly & and document error code
 			app.QuitError(err)
@@ -200,7 +200,7 @@ func (app *App) loadTheme() {
 
 // loadStylesheets() finds the stylesheets
 // named in the theme file, which is in
-// app.page.theme after the call to
+// app.Page.theme after the call to
 // loadThemeConfig()
 // In the spirit of browsers, which don't stop
 // loading the page when a stylesheet can't
@@ -209,7 +209,7 @@ func (app *App) loadTheme() {
 // to avoid redoing this work unnecessarily
 func (app *App) loadStylesheets() {
 	// If no style sheets don't waste time here
-	if len(app.page.theme.Stylesheets) <= 0 {
+	if len(app.Page.theme.Stylesheets) <= 0 {
 		return
 	}
 	// Create the published style sheet directory
@@ -224,17 +224,17 @@ func (app *App) loadStylesheets() {
 	// Copy stylesheets for this theme from the local
 	// theme directory to the publish
 	// CSS directory for stylesheets
-	for _, stylesheet := range app.page.theme.Stylesheets {
+	for _, stylesheet := range app.Page.theme.Stylesheets {
 		// Check every stylesheet to see if it's
 		// a dark theme vs a light theme. If it
 		// is, change to dark if requested.
 		file := app.getMode(stylesheet)
-		source := filepath.Join(app.page.themePath, file)
+		source := filepath.Join(app.Page.themePath, file)
 		dest := filepath.Join(app.site.cssPublishPath, file)
 		// Keep list of stylesheets that got published
 		copied := app.copyMust(source, dest)
 		if copied != "" {
-			app.page.stylesheets = append(app.page.stylesheets, dest)
+			app.Page.stylesheets = append(app.Page.stylesheets, dest)
 		}
 	}
 }
@@ -246,7 +246,7 @@ func (app *App) getMode(stylesheet string) string {
 	// "theme-light.css". If it is, and if Dark mode
 	// has been specified, alter its name to
 	// theme-dark.css.
-	if stylesheet == "theme-light.css" && app.page.frontMatter.Mode == "dark" {
+	if stylesheet == "theme-light.css" && app.Page.FrontMatter.Mode == "dark" {
 		stylesheet = "theme-dark.css"
 	}
 	return stylesheet
@@ -254,7 +254,7 @@ func (app *App) getMode(stylesheet string) string {
 
 // loadThemeConfig reads the theme's config file, so
 // if the theme is named "debut" that file would be
-// named debut.yaml. Write to app.page.theme.
+// named debut.yaml. Write to app.Page.theme.
 // The path passed in is something
 // like /Users/tom/code/m/cmd/mb/foo/.mb/pub/themes/wide
 // so all that's needed now is to create the fully
@@ -277,9 +277,9 @@ func (app *App) loadThemeConfig(path string) error {
 
 	// Save the current theme. Force to lowercase because
 	// it's  filename
-	app.page.theme.Name = strings.ToLower(filepath.Base(path))
+	app.Page.theme.Name = strings.ToLower(filepath.Base(path))
 
-	err = yaml.Unmarshal(b, &app.page.theme)
+	err = yaml.Unmarshal(b, &app.Page.theme)
 	if err != nil {
 		// TODO: Handle error properly & and document error code
 		return err
