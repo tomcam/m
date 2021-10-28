@@ -2,7 +2,7 @@ package app
 
 import (
 	"fmt"
-  "strings"
+	"strings"
 )
 
 // type Page contains read-only information about the Markdown page currently
@@ -15,9 +15,6 @@ type Page struct {
 	frontMatterRaw map[string]interface{}
 	FrontMatter    FrontMatter
 	Theme          Theme
-	// Location of source theme files computed at
-	// runtime
-	themePath string
 
 	// Fully qualified filename of this source file
 	filePath string
@@ -63,10 +60,11 @@ func (page *Page) frontMatterMust(key string) string {
 	}
 	return ""
 }
+
 // frontMatterMustLower() obtains the value of a
 // requested key from the front matter, then
 // forces the return value to lowercase.
 func (page *Page) frontMatterMustLower(key string) string {
 	// If the key exists, return its value.
-  return strings.ToLower(page.frontMatterMust(key))
+	return strings.ToLower(page.frontMatterMust(key))
 }

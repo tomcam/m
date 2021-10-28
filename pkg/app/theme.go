@@ -15,6 +15,9 @@ import (
 )
 
 type Theme struct {
+	// Location of source theme files computed at
+	// runtime
+	path string
 	// Name is the name of the theme for this page,
 	// e.g. "wide"
 	Name          string        `yaml:"Name"`
@@ -131,8 +134,8 @@ func (app *App) copyFactoryThemes() error {
 // - If none is there, use Viper
 // - If no theme is specified, use the default theme
 func (app *App) themeName() string {
-  app.Debug("\t\tthemeName(): Checking front matter")
-  theme := app.Page.frontMatterMust("theme")
+	app.Debug("\t\tthemeName(): Checking front matter")
+	theme := app.Page.frontMatterMust("theme")
 	// See if anything's in the front matter
 	// regarding the theme.
 	// TODO: Start accounting for theme in other
@@ -142,7 +145,7 @@ func (app *App) themeName() string {
 	if theme == "" {
 		theme = defaults.DefaultThemeName
 	}
-  return theme
+	return theme
 }
 
 // loadTheme() finds the theme specified for this page.
@@ -186,7 +189,7 @@ func (app *App) loadTheme() {
 		// Get the next level of directory and append
 		// to the previous directory
 		source = filepath.Join(source, theme)
-		app.Page.themePath = source
+		app.Page.Theme.path = source
 		dest = filepath.Join(dest, theme)
 		if err := copyDirAll(source, dest); err != nil {
 			//return ErrCode("0401", source)
@@ -227,7 +230,7 @@ func (app *App) loadStylesheets() {
 	if err != nil {
 		return
 	}
-  app.publishStylesheets()
+	app.publishStylesheets()
 
 }
 
@@ -245,7 +248,7 @@ func (app *App) publishStylesheets() {
 		// a dark theme vs a light Theme. If it
 		// is, change to dark if requested.
 		file := app.getMode(stylesheet)
-		source := filepath.Join(app.Page.themePath, file)
+		source := filepath.Join(app.Page.Theme.path, file)
 		dest := filepath.Join(app.Site.cssPublishPath, file)
 		// Keep list of stylesheets that got published
 		copied := app.copyMust(source, dest)
@@ -261,8 +264,8 @@ func (app *App) publishStylesheets() {
 // search other places, like an app config file
 func (app *App) getMode(stylesheet string) string {
 	// Check every stylesheet to see if it's named
-	// "theme-light.css" (light theme is the default). 
-  // If it is, and if Dark mode
+	// "theme-light.css" (light theme is the default).
+	// If it is, and if Dark mode
 	// has been specified, publish theme-dark.css instead.
 	if stylesheet == "theme-light.css" && strings.ToLower(app.Page.frontMatterMust("Mode")) == "dark" {
 		stylesheet = "theme-dark.css"

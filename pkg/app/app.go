@@ -9,8 +9,8 @@ import (
 	"github.com/yuin/goldmark"
 	"io"
 	"os"
-  "strings"
 	"path/filepath"
+	"strings"
 	//"sync"
 	//"context"
 	"github.com/yuin/goldmark/parser"
@@ -304,14 +304,13 @@ func (app *App) copyMust(src, dest string) string {
 // the key parameter from configuration.
 // A cfg value is one that can come from several
 // places. For example, the theme name might normally
-// come from the individual Page.FrontMatter setting. 
-// Or you might prefer to use Site.FrontMatter to 
+// come from the individual Page.FrontMatter setting.
+// Or you might prefer to use Site.FrontMatter to
 // set a default theme for the entire site, then change it
 // only for specific pages in Page.FrontMatter.
 //
 // NOTE: The return value is forced to lowercase
-func (app *App) cfgLower (key string)  string {
-  value := ""
-  return strings.ToLower(value)
+func (app *App) cfgLower(key string) string {
+	value := ""
+	return strings.ToLower(value)
 }
-

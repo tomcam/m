@@ -225,8 +225,8 @@ func (app *App) layoutEl(l layoutElement) string {
 	} else {
 		html = fileToBuf(filename)
 	}
-  // Handle the case where pure HTML was specified. First
-  // handle any Go template values.
+	// Handle the case where pure HTML was specified. First
+	// handle any Go template values.
 	return app.interps(filename, string(html))
 }
 
@@ -262,6 +262,3 @@ func (app *App) sidebar() string {
 func (app *App) footer() string {
 	return app.layoutElementToHTML("footer")
 }
-
-
-
