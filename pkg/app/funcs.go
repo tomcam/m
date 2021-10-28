@@ -17,9 +17,9 @@ import (
 // the markdown text, because that would cause a Markdown inception.
 func (app *App) articlefunc(params ...string) string {
 	if len(params) < 1 {
-		return string(app.site.webPages[app.Page.filePath].html)
+		return string(app.Site.webPages[app.Page.filePath].html)
 	} else {
-		return string(app.site.webPages[app.Page.filePath].html)
+		return string(app.Site.webPages[app.Page.filePath].html)
 	}
 }
 
@@ -113,7 +113,7 @@ func (app *App) inc(filename string) template.HTML {
 		case "article":
 			filename = filepath.Join(app.Page.dir, filename)
 		case "common":
-			filename = filepath.Join(app.site.commonPath, filename)
+			filename = filepath.Join(app.Site.commonPath, filename)
 		default:
 			app.QuitError(ErrCode("0119", location))
 		}
@@ -172,7 +172,7 @@ func (app *App) scode(params map[string]interface{}) template.HTML {
 	}
 
 	// Find that file in the shortcode file directory
-	filename = filepath.Join(app.site.sCodePath, filename)
+	filename = filepath.Join(app.Site.sCodePath, filename)
 
 	if !fileExists(filename) {
 		app.QuitError(ErrCode("0122", filename))

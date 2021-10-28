@@ -62,7 +62,11 @@ code they call.
 *	At the end of `App.initCobra()`,  `cobra.OnInitialize(app.initConfig)` 
 gets called. The argument to cobra.OnInitialize() is optional, 
 but Metabuzz calls `App.initConfig()`.
-* `App.initConfig()` is where Viper starts looking for configuration files.
+* `App.initConfig()` is where Viper starts looking for configuration files,
+and where the Application object can finish initialization (because
+some of its state, such as which Goldmark extensions to apply), 
+depends on config values set on the command line, in the environment,
+or whatever.
 After it runs `app.RootCmd.Execute()` finally runs.
 * `app.RootCmd.Execute()`, actually does the command line parsing. First it calls initCobra(), which is explained just after this. It also uses Viper to obtain configuration information from config files in
 the user's documents directory, config files in the
@@ -180,4 +184,12 @@ create theme based on an existing one.
 `
 )
 ```
+## Reading configuration (or cfg) after startup
+
+* Front matter: call `app.Page.frontMatterMust()` or
+`app.Page.frontMatterMustLower()` (forces return
+value to loser case),
+e.g., `app.Page.frontMatterMust("Description")`
+to get some value without throwing an error if
+for example that key doesn't exist.
 

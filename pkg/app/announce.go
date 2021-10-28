@@ -16,7 +16,7 @@ func (app *App) ShowFrontMatter() {
 // ShowInfo() displays debug information about the app and site.
 func (app *App) ShowInfo(pathname string) error {
 	// Change to specified directory.
-	// Update app.site.path and build all related directories
+	// Update app.Site.path and build all related directories
 	if err := app.setWorkingDir(pathname); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
@@ -26,18 +26,18 @@ func (app *App) ShowInfo(pathname string) error {
 	}
 
 	tbl := table.New("Site Directories", "")
-	tbl.AddRow("Project name", app.site.name)
-	tbl.AddRow("Project directory", app.site.path)
+	tbl.AddRow("Project name", app.Site.name)
+	tbl.AddRow("Project directory", app.Site.path)
 	tbl.AddRow("Config file directory", app.cfgPath)
-	tbl.AddRow("Site file", app.site.siteFilePath)
-	tbl.AddRow("Asset path", app.site.assetPath)
-	tbl.AddRow("Image path", app.site.imagePath)
-	tbl.AddRow("Common path", app.site.commonPath)
-	tbl.AddRow("Head tags path", app.site.headTagsPath)
-	tbl.AddRow("Publish path", app.site.publishPath)
-	tbl.AddRow("CSS publish path", app.site.cssPublishPath)
-	tbl.AddRow("Factory themes path", app.site.factoryThemesPath)
-	tbl.AddRow("Site themes path", app.site.siteThemesPath)
+	tbl.AddRow("Site file", app.Site.siteFilePath)
+	tbl.AddRow("Asset path", app.Site.assetPath)
+	tbl.AddRow("Image path", app.Site.imagePath)
+	tbl.AddRow("Common path", app.Site.commonPath)
+	tbl.AddRow("Head tags path", app.Site.headTagsPath)
+	tbl.AddRow("Publish path", app.Site.publishPath)
+	tbl.AddRow("CSS publish path", app.Site.cssPublishPath)
+	tbl.AddRow("Factory themes path", app.Site.factoryThemesPath)
+	tbl.AddRow("Site themes path", app.Site.siteThemesPath)
 	tbl.AddRow("", "")
 	tbl.AddRow("APPLICATION DATA", "")
 	tbl.AddRow("User application data", app.applicationDataPath)

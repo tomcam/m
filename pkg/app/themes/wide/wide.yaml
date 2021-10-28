@@ -10,11 +10,11 @@ Stylesheets:
 - "responsive.css"
 - "reset.css"
 - "fonts.css"
-- "layout.css.css"
+- "layout.css"
 Nav: {File: nav.md, HTML:}
 Header: {File: header.md, HTML:}
 Article: {File:, HTML:}
-Sidebar: {File: isidebar.md, HTML:}
+Sidebar: {File: sidebar.md, HTML:}
 Footer: {File: footer.md, HTML:}
 Language: en
 HTML-start-file: {HTML: "<DOCTYPE html>\n<HTML lang=", File: } 

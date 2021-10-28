@@ -96,7 +96,7 @@ func (app *App) copyFactoryThemes() error {
 		}
 		//app.Note("\t\t%v", path)
 		// Handle individual file
-		target = filepath.Join(app.site.factoryThemesPath, path)
+		target = filepath.Join(app.Site.factoryThemesPath, path)
 		f, err := factoryThemeFiles.Open(path)
 		if err != nil {
 			// TODO: Handle error properly & and document error code
@@ -122,13 +122,31 @@ func (app *App) copyFactoryThemes() error {
 	return nil
 }
 
-// loadTheme() finds the theme specified for this page.
-// TODO:
+// themeName() determines the theme name in
+// proper order, from most to least proximate.
 // Correct operation is:
 // - Look for theme named in front matter
 // - If no theme is named in front matter,
 //   look for one named in the site file
+// - If none is there, use Viper
 // - If no theme is specified, use the default theme
+func (app *App) themeName() string {
+  app.Debug("\t\tthemeName(): Checking front matter")
+  theme := app.Page.frontMatterMust("theme")
+	// See if anything's in the front matter
+	// regarding the theme.
+	// TODO: Start accounting for theme in other
+	// places, like config files
+	// TODO: Getting lazy. Remember to marshal front matter appropriately
+	// If no theme specified, use the default theme.
+	if theme == "" {
+		theme = defaults.DefaultThemeName
+	}
+  return theme
+}
+
+// loadTheme() finds the theme specified for this page.
+// TODO:
 // TODO: Create docs for the Metabuzz file
 // - If no theme is named in the site file,
 //   look for one named in the Metabuzz file
@@ -140,16 +158,7 @@ func (app *App) loadTheme() {
 	//  debut/gallery
 	//  debut/gallery/item
 
-	fullTheme := app.Page.frontMatterMust("theme")
-	// See if anything's in the front matter
-	// regarding the theme.
-	// TODO: Start accounting for theme in other
-	// places, like config files
-	// TODO: Getting lazy. Remember to marshal front matter appropriately
-	// If no theme specified, use the default theme.
-	if fullTheme == "" {
-		fullTheme = defaults.DefaultThemeName
-	}
+	fullTheme := app.themeName()
 	app.Page.FrontMatter.Theme = fullTheme
 	// If it's something like debut/gallery, loop
 	// around and load from root to branch.
@@ -159,14 +168,14 @@ func (app *App) loadTheme() {
 	theme := ""
 
 	// Get directory from which themes will be copied
-	source := filepath.Join(app.site.factoryThemesPath,
+	source := filepath.Join(app.Site.factoryThemesPath,
 		defaults.ThemesDir)
-	dest := app.site.siteThemesPath
+	dest := app.Site.siteThemesPath
 	for level := 0; level < len(themeDirs); level++ {
 		if level == 0 {
 			// Build the deepest directory necessary, e.g.
 			// .mb/pub/themes/debut/gallery
-			err := os.MkdirAll(filepath.Join(app.site.siteThemesPath, fullTheme), defaults.PublicFilePermissions)
+			err := os.MkdirAll(filepath.Join(app.Site.siteThemesPath, fullTheme), defaults.PublicFilePermissions)
 			if err != nil {
 				// TODO: Handle error properly & and document error code
 				app.Note("\tos.MkdirAll() error: %v", err.Error())
@@ -209,28 +218,35 @@ func (app *App) loadTheme() {
 // to avoid redoing this work unnecessarily
 func (app *App) loadStylesheets() {
 	// If no style sheets don't waste time here
-	if len(app.Page.theme.Stylesheets) <= 0 {
+	if len(app.Page.Theme.Stylesheets) <= 0 {
 		return
 	}
 	// Create the published style sheet directory
 	// TODO: Track this to make sure it's not repeated unnecessarily
-	err := os.MkdirAll(app.site.cssPublishPath, defaults.PublicFilePermissions)
-
+	err := os.MkdirAll(app.Site.cssPublishPath, defaults.PublicFilePermissions)
 	if err != nil {
 		return
 	}
+  app.publishStylesheets()
 
+}
+
+func (app *App) publishStylesheets() {
 	// Go through the list of stylesheets for this theme.
 	// Copy stylesheets for this theme from the local
 	// theme directory to the publish
-	// CSS directory for stylesheets
-	for _, stylesheet := range app.Page.theme.Stylesheets {
+	// CSS directory for stylesheets.
+	// This doesn't handle everything. Some stylesheets,
+	// such as "theme-dark.css" and "theme-light.css",
+	// don't get copied until publish time because
+	// they depend on configuration options.
+	for _, stylesheet := range app.Page.Theme.Stylesheets {
 		// Check every stylesheet to see if it's
-		// a dark theme vs a light theme. If it
+		// a dark theme vs a light Theme. If it
 		// is, change to dark if requested.
 		file := app.getMode(stylesheet)
 		source := filepath.Join(app.Page.themePath, file)
-		dest := filepath.Join(app.site.cssPublishPath, file)
+		dest := filepath.Join(app.Site.cssPublishPath, file)
 		// Keep list of stylesheets that got published
 		copied := app.copyMust(source, dest)
 		if copied != "" {
@@ -241,12 +257,14 @@ func (app *App) loadStylesheets() {
 
 // getMode() checks if the stylesheet is dark or light
 // and adjusts as needed.
+// TODO: It should probably call App.cfg() to
+// search other places, like an app config file
 func (app *App) getMode(stylesheet string) string {
 	// Check every stylesheet to see if it's named
-	// "theme-light.css". If it is, and if Dark mode
-	// has been specified, alter its name to
-	// theme-dark.css.
-	if stylesheet == "theme-light.css" && app.Page.FrontMatter.Mode == "dark" {
+	// "theme-light.css" (light theme is the default). 
+  // If it is, and if Dark mode
+	// has been specified, publish theme-dark.css instead.
+	if stylesheet == "theme-light.css" && strings.ToLower(app.Page.frontMatterMust("Mode")) == "dark" {
 		stylesheet = "theme-dark.css"
 	}
 	return stylesheet
@@ -254,7 +272,7 @@ func (app *App) getMode(stylesheet string) string {
 
 // loadThemeConfig reads the theme's config file, so
 // if the theme is named "debut" that file would be
-// named debut.yaml. Write to app.Page.theme.
+// named debut.yaml. Write to app.Page.Theme.
 // The path passed in is something
 // like /Users/tom/code/m/cmd/mb/foo/.mb/pub/themes/wide
 // so all that's needed now is to create the fully
@@ -277,9 +295,9 @@ func (app *App) loadThemeConfig(path string) error {
 
 	// Save the current theme. Force to lowercase because
 	// it's  filename
-	app.Page.theme.Name = strings.ToLower(filepath.Base(path))
+	app.Page.Theme.Name = strings.ToLower(filepath.Base(path))
 
-	err = yaml.Unmarshal(b, &app.Page.theme)
+	err = yaml.Unmarshal(b, &app.Page.Theme)
 	if err != nil {
 		// TODO: Handle error properly & and document error code
 		return err

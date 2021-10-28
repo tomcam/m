@@ -66,12 +66,12 @@ func (app *App) mdToHTML(source []byte) ([]byte, error) {
 func (app *App) build(path string) error {
 	var err error
 	// Change to specified directory.
-	// Update app.site.path and build all related directories
+	// Update app.Site.path and build all related directories
 	if err := app.setWorkingDir(path); err != nil {
 		return err
 	}
 
-	if !isProject(app.site.path) {
+	if !isProject(app.Site.path) {
 		return ErrCode("1002", path)
 	}
 
@@ -82,13 +82,13 @@ func (app *App) build(path string) error {
 	}
 
 	// Get a list of all files & directories in the site.
-	if _, err = app.getProjectTree(app.site.path); err != nil {
-		return ErrCode("0913", app.site.path)
+	if _, err = app.getProjectTree(app.Site.path); err != nil {
+		return ErrCode("0913", app.Site.path)
 	}
 
 	// Delete any existing publish dir
-	if err := os.RemoveAll(app.site.publishPath); err != nil {
-		return ErrCode("0302", app.site.publishPath)
+	if err := os.RemoveAll(app.Site.publishPath); err != nil {
+		return ErrCode("0302", app.Site.publishPath)
 	}
 
 	// Build the target publish dir so there should be
@@ -96,7 +96,7 @@ func (app *App) build(path string) error {
 	app.buildPublishDirs()
 
 	// Loop through the list of permitted directories for this site.
-	for dir := range app.site.dirs {
+	for dir := range app.Site.dirs {
 		// Change to each directory
 		if err := os.Chdir(dir); err != nil {
 			// TODO: Handle error properly & and document error code
@@ -116,13 +116,13 @@ func (app *App) build(path string) error {
 		commaNeeded := false
 		for _, file := range files {
 			if !file.IsDir() && isMarkdownFile(file.Name()) {
-				app.site.fileCount++
+				app.Site.fileCount++
 				// It's a Markdown file, not a dir or anything else.
 				if commaNeeded {
 
 					// TODO: Add error checking
 					// TODO: Add this back
-					// app.AddCommaToSearchIndex(app.site.SearchJSONFilePath)
+					// app.AddCommaToSearchIndex(app.Site.SearchJSONFilePath)
 					commaNeeded = false
 				}
 				if err = app.publishFile(filepath.Join(dir, file.Name())); err != nil {
@@ -137,8 +137,8 @@ func (app *App) build(path string) error {
 		// DelimitIndexJSON(a.Site.SearchJSONFilePath, false)
 
 	}
-	if app.site.fileCount != 1 {
-		app.Print("%v files", app.site.fileCount)
+	if app.Site.fileCount != 1 {
+		app.Print("%v files", app.Site.fileCount)
 	} else {
 		app.Print("1 file")
 	}

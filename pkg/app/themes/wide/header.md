@@ -1,7 +1,7 @@
 {{- /*  IMPORTANT: No need to change any of
         this manually. Just fill in the 
-        appropriate parts of the site.toml file
-        (probably found in .mb/site/site.toml).
+        appropriate parts of the site configuration file
+        (probably found in .mb/site/site.yaml).
 
         Automatically name first item in header    
         based on company name, then author name.
@@ -20,8 +20,8 @@
 {{- else if .Site.Author.FullName -}}
 {{- $name := .Site.Author.FullName -}}
 * [{{ $name -}}](/)
-{{- else if .Page.Theme.PageType.Branding -}}
-{{- $name := .Page.Theme.PageType.Branding -}}
+{{- else if .Page.Theme.Branding -}}
+{{- $name := .Page.Theme.Branding -}}
 * [{{ $name -}}](/)
 {{- else }}
 * [{{.FrontMatter.Theme}} {{.FrontMatter.PageType}}](/)

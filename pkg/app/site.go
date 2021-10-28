@@ -246,16 +246,16 @@ const (
 
 // TODO: Document
 func (a *App) addMdOption(dir string, mdOption MdOptions) {
-	d := a.site.dirs[dir]
+	d := a.Site.dirs[dir]
 	d.mdOptions |= mdOption
-	a.site.dirs[dir] = d
+	a.Site.dirs[dir] = d
 }
 
 // TODO: Document
 func (a *App) setMdOption(dir string, mdOption MdOptions) {
-	d := a.site.dirs[dir]
+	d := a.Site.dirs[dir]
 	d.mdOptions = mdOption
-	a.site.dirs[dir] = d
+	a.Site.dirs[dir] = d
 }
 
 // IsOptionSet returns true if the opt bit is set.
@@ -264,7 +264,7 @@ func (m MdOptions) IsOptionSet(opt MdOptions) bool {
 }
 
 // createSite() generates an empty site at
-// the directory specified in app.site.path
+// the directory specified in app.Site.path
 func (app *App) createSite(pathname string) error {
 	var err error
 	// Create a project at the specified path
@@ -272,13 +272,13 @@ func (app *App) createSite(pathname string) error {
 	if err != nil {
 		return ErrCode("0401", pathname)
 	}
-	// Update app.site.path and build all related directories
+	// Update app.Site.path and build all related directories
 	if err := app.setWorkingDir(pathname); err != nil {
 		return err
 	}
 
 	// Change to specified directory.
-	pathname = app.site.path
+	pathname = app.Site.path
 
 	// Exit if there's already a project at specified location.
 	if isProject(pathname) {
@@ -299,7 +299,7 @@ func (app *App) createSite(pathname string) error {
 
 	// TODO: Populate
 	if err := app.writeSiteConfig(); err != nil {
-		app.Note("Error writing site file %v", app.site.siteFilePath)
+		app.Note("Error writing site file %v", app.Site.siteFilePath)
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	return nil
@@ -311,5 +311,5 @@ func (app *App) createSite(pathname string) error {
 // project's site subdirectory.
 // Assumes you're in the project directory.
 func (app *App) writeSiteConfig() error {
-	return writeYamlFile(app.site.siteFilePath, app.site)
+	return writeYamlFile(app.Site.siteFilePath, app.Site)
 }

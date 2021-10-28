@@ -126,7 +126,7 @@ func (app *App) addCommands() {
 					// tree and build as a complete site.
 					pathname = promptString("Name of site to create?")
 				}
-				// site.new() requires a fully qualified filename.
+				// Site.new() requires a fully qualified filename.
 				if pathname == "" || pathname == "." {
 					pathname = currDir()
 				}
@@ -134,7 +134,7 @@ func (app *App) addCommands() {
 				if err != nil {
 					app.QuitError(err)
 				}
-				app.Note("Created site %v", app.site.path)
+				app.Note("Created site %v", app.Site.path)
 				if app.Flags.Info == true {
 					app.ShowInfo(pathname)
 				}

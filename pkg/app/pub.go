@@ -14,12 +14,13 @@ func (app *App) publishFile(filename string) error {
 	//   /Users/tom/code/m/cmd/mb -> /Users/tom/code/m/cmd/mb/test/test.md
 	// Results in:
 	//   /test
-	rel := relDirFile(app.site.path, filename)
+	rel := relDirFile(app.Site.path, filename)
 	app.Page.filePath = filename
+	app.Note("\tpublishFile(%v)", filename)
 	app.Page.dir = currDir()
 	// Get the fully qualified name of the destination file
 	target := replaceExtension(filename, "html")
-	target = filepath.Join(app.site.publishPath, rel, filepath.Base(target))
+	target = filepath.Join(app.Site.publishPath, rel, filepath.Base(target))
 
 	var err error
 	var body []byte
@@ -39,8 +40,8 @@ func (app *App) publishFile(filename string) error {
 	app.loadTheme()
 
 	// Write HTML text of the body
-	fullPage := app.Page.theme.HTMLStartFile.HTML +
-		app.Page.theme.Language + ">" + "\n" +
+	fullPage := app.Page.Theme.HTMLStartFile.HTML +
+		app.Page.Theme.Language + ">" + "\n" +
 		"<meta charset=\"utf-8\">" + "\n" +
 		"<head>" +
 		metatag("description", app.descriptionTag()) +
@@ -64,9 +65,9 @@ func (app *App) publishFile(filename string) error {
 // stylesheetTags generates all stylesheet tags at once
 func (app *App) stylesheetTags() string {
 	stylesheets := ""
-	for _, stylesheet := range app.Page.theme.Stylesheets {
+	for _, stylesheet := range app.Page.Theme.Stylesheets {
 		stylesheets = stylesheets +
-			stylesheetTag(filepath.Join(app.site.cssPublishPath, stylesheet))
+			stylesheetTag(filepath.Join(app.Site.cssPublishPath, stylesheet))
 	}
 	return stylesheets
 }
@@ -95,15 +96,15 @@ func (app *App) MdFileToHTML(filename string) ([]byte, error) {
 // buildPublishDirs() creates a mirror of the source
 // directory in the publish directory.
 func (app *App) buildPublishDirs() error {
-	for dir := range app.site.dirs {
+	for dir := range app.Site.dirs {
 		// Get the relative path.
-		rel := relDirFile(app.site.path, filepath.Join(dir, "a"))
+		rel := relDirFile(app.Site.path, filepath.Join(dir, "a"))
 		// Join it with the publish directory.
-		full := filepath.Join(app.site.publishPath, rel)
+		full := filepath.Join(app.Site.publishPath, rel)
 		if err := os.MkdirAll(full, defaults.PublicFilePermissions); err != nil {
 			app.Verbose("buildPublishDirs(): Unable to create path %v", full)
 			// TODO: Check error handling here
-			//return ErrCode("0403", app.site.publishPath,"" )
+			//return ErrCode("0403", app.Site.publishPath,"" )
 			return ErrCode("PREVIOUS", err.Error())
 		}
 	}
@@ -172,13 +173,13 @@ func (app *App) layoutElement(tag string) string {
 	var l layoutElement
 	switch tag {
 	case "header":
-		l = app.Page.theme.Header
+		l = app.Page.Theme.Header
 	case "nav":
-		l = app.Page.theme.Nav
+		l = app.Page.Theme.Nav
 	case "sidebar":
-		l = app.Page.theme.Sidebar
+		l = app.Page.Theme.Sidebar
 	case "footer":
-		l = app.Page.theme.Footer
+		l = app.Page.Theme.Footer
 	}
 	return app.layoutEl(l)
 }
@@ -186,14 +187,16 @@ func (app *App) layoutElement(tag string) string {
 // siteThemesPath() determines the directory a
 // theme file is found it.
 func (app *App) siteThemesPath() string {
-	return filepath.Join(app.site.siteThemesPath, app.Page.theme.Name)
+	return filepath.Join(app.Site.siteThemesPath, app.Page.Theme.Name)
 }
 
 // TODO: Probably want to return a byte slice
 func (app *App) layoutEl(l layoutElement) string {
+	var err error
+	var html []byte
 	// Inline HTML is top priority
 	if l.HTML != "" {
-		return l.HTML
+		html = []byte(l.HTML)
 	}
 
 	// No inline HTML. Get filename.
@@ -209,14 +212,12 @@ func (app *App) layoutEl(l layoutElement) string {
 		return ""
 	}
 
-	var err error
-	var html []byte
 	// Convert file contents to a byte slice of HTML
 	if isMarkdownFile(filename) {
 		app.Debug("\tlayoutEl() converting Markdown file %v", filename)
 		if html, err = app.MdFileToHTML(filename); err != nil {
-			app.Debug("\tlayoutEl() ERROR converting Markdown file %v", filename)
 			// TODO: Handle error properly & and document error code
+			app.Debug("\tlayoutEl() ERROR converting Markdown file %v", filename)
 			return ""
 		} else {
 			return string(html)
@@ -224,14 +225,17 @@ func (app *App) layoutEl(l layoutElement) string {
 	} else {
 		html = fileToBuf(filename)
 	}
-	return string(html)
+  // Handle the case where pure HTML was specified. First
+  // handle any Go template values.
+	return app.interps(filename, string(html))
 }
 
 // article() takes the already-generated HTML and returns
 // the text wrapped in an "<article>" tag.
 // You can optionally include an id tag with it.
 func (app *App) article(body []byte, params ...string) string {
-	html := string(body)
+	// interps runs custom Go template functions like ftime
+	html := app.interps(app.Page.filePath, string(body))
 	if len(params) < 1 {
 		// Optional ID tag was not supplied
 		html = wrapTag("<"+"article"+">", html, true)
@@ -258,3 +262,6 @@ func (app *App) sidebar() string {
 func (app *App) footer() string {
 	return app.layoutElementToHTML("footer")
 }
+
+
+

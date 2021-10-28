@@ -74,9 +74,9 @@ func (a *App) getProjectTree(path string) (tree []string, err error) {
 // publish directory) and any existing excludes (for example, Exclude=["pub", "node_modules"])
 // in the site config file.
 func (a *App) excludeDirs() []string {
-	// fmt.Println("Excluded in site.toml:", a.Site.ExcludeDirs)
+	// fmt.Println("Excluded in Site.toml:", a.Site.ExcludeDirs)
 	// Add the publish directory if it isn't already there.
-	return append(a.site.ExcludeDirs,
+	return append(a.Site.ExcludeDirs,
 		defaults.CommonPath,
 		defaults.HeadTagsPath,
 		defaults.HeadTagsPath,

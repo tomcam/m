@@ -9,6 +9,7 @@ import (
 	"github.com/yuin/goldmark"
 	"io"
 	"os"
+  "strings"
 	"path/filepath"
 	//"sync"
 	//"context"
@@ -22,7 +23,7 @@ import (
 type App struct {
 	// Location (on startup) of user application data directory
 	applicationDataPath string
-	site                Site
+	Site                Site
 
 	// Cobra Command Processes command lin options
 	//Cmd *cobra.Command
@@ -87,7 +88,7 @@ func NewApp() *App {
 	app := App{
 		//deleteme: make([]byte)
 		Page: Page{},
-		site: Site{},
+		Site: Site{},
 		// Missing here: initializing the parser.
 		// Can't set parser options until command
 		// line has been processed.
@@ -169,15 +170,15 @@ func (app *App) initConfig() {
 	app.parser = app.parserWithOptions()
 	app.parserCtx = parser.NewContext()
 
-  // Add snazzy Go template functions like ftime() etc.
-  app.addTemplateFunctions() 
+	// Add snazzy Go template functions like ftime() etc.
+	app.addTemplateFunctions()
 }
 
 // setSiteDefaults() intializes the Site object
 // It's on app instead of app.site so I can use
 // global flags and debugging features
 // like App.Note().
-// Must be in the working directory at app.site.path.
+// Must be in the working directory at app.Site.path.
 //func (app *App) setSiteDefaults(home string) {
 func (app *App) setSiteDefaults() {
 	app.Verbose("\tsetSiteDefaults()")
@@ -191,39 +192,39 @@ func (app *App) setSiteDefaults() {
 // variables, and other application configuration has been done.
 // home is the fully qualified directory name
 // the project lives in.
-// Must be in the working directory at app.site.path.
+// Must be in the working directory at app.Site.path.
 // This is based on App.SiteDefaults() in the previous
 // version of Metabuzz.
 func (app *App) setPaths() {
-	app.site.name = filepath.Base(app.site.path)
+	app.Site.name = filepath.Base(app.Site.path)
 	// Compute location of base directory used for all
 	// config info, which includes directories for
 	// CSS files, graphic assets, HTML partials, etc.
-	app.cfgPath = filepath.Join(app.site.path, defaults.CfgDir)
+	app.cfgPath = filepath.Join(app.Site.path, defaults.CfgDir)
 
 	// Compute full pathname of the site file.
-	app.site.siteFilePath = filepath.Join(app.cfgPath,
+	app.Site.siteFilePath = filepath.Join(app.cfgPath,
 		defaults.SiteConfigFilename)
 
 	// Compute the publish directory  (aka WWW directory)
-	app.site.publishPath = filepath.Join(app.cfgPath,
+	app.Site.publishPath = filepath.Join(app.cfgPath,
 		defaults.DefaultPublishPath)
 
 	// Compute the directory location for asset files
-	app.site.assetPath = filepath.Join(app.site.publishPath,
+	app.Site.assetPath = filepath.Join(app.Site.publishPath,
 		defaults.DefaultAssetPath)
 
 	// Compute the directory location for CSS files
 	// to be published for this theme.
-	app.site.cssPublishPath = filepath.Join(app.site.assetPath,
+	app.Site.cssPublishPath = filepath.Join(app.Site.assetPath,
 		defaults.DefaultPublishCssPath)
 
 	// Compute the directory location for image files
-	app.site.imagePath = filepath.Join(app.site.assetPath,
+	app.Site.imagePath = filepath.Join(app.Site.assetPath,
 		defaults.DefaultPublishImgPath)
 
 	// Compute the directory location for common files
-	app.site.commonPath = filepath.Join(app.cfgPath,
+	app.Site.commonPath = filepath.Join(app.cfgPath,
 		defaults.CommonPath)
 
 	// Compute the directory location for the
@@ -231,17 +232,17 @@ func (app *App) setPaths() {
 	// The entire /themes directory gets copied here.
 	// Don't want that name configurable.
 	// Therefore cfgPath is enough.
-	app.site.factoryThemesPath = app.cfgPath
+	app.Site.factoryThemesPath = app.cfgPath
 
 	// Compute the directory location of themes
 	// that get copied over selectively for a
 	// particular site.
-	app.site.siteThemesPath = filepath.Join(app.site.publishPath,
+	app.Site.siteThemesPath = filepath.Join(app.Site.publishPath,
 		defaults.SiteThemesDir)
 
 	// Compute the directory location for tags
 	// that live in the HTML <head>
-	app.site.headTagsPath = filepath.Join(app.cfgPath,
+	app.Site.headTagsPath = filepath.Join(app.cfgPath,
 		defaults.HeadTagsPath)
 
 	// Compute the directory location for theme files
@@ -250,7 +251,7 @@ func (app *App) setPaths() {
 
 	// Create a new, empty map to hold the
 	// source directory tree.
-	app.site.dirs = make(map[string]dirInfo)
+	app.Site.dirs = make(map[string]dirInfo)
 
 } // setPaths()
 
@@ -263,7 +264,7 @@ func (app *App) setWorkingDir(dir string) error {
 			return ErrCode("PREVIOUS", dir)
 		}
 	}
-	app.site.path = currDir()
+	app.Site.path = currDir()
 	app.setSiteDefaults()
 	return nil
 }
@@ -298,3 +299,19 @@ func (app *App) copyMust(src, dest string) string {
 	// Success
 	return dest
 }
+
+// cfgLower() reads a string value specified in
+// the key parameter from configuration.
+// A cfg value is one that can come from several
+// places. For example, the theme name might normally
+// come from the individual Page.FrontMatter setting. 
+// Or you might prefer to use Site.FrontMatter to 
+// set a default theme for the entire site, then change it
+// only for specific pages in Page.FrontMatter.
+//
+// NOTE: The return value is forced to lowercase
+func (app *App) cfgLower (key string)  string {
+  value := ""
+  return strings.ToLower(value)
+}
+

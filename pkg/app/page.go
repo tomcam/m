@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+  "strings"
 )
 
 // type Page contains read-only information about the Markdown page currently
@@ -13,7 +14,7 @@ type Page struct {
 	// TODO: Marshal in front matter as a real struct
 	frontMatterRaw map[string]interface{}
 	FrontMatter    FrontMatter
-	theme          Theme
+	Theme          Theme
 	// Location of source theme files computed at
 	// runtime
 	themePath string
@@ -55,11 +56,17 @@ type FrontMatter struct {
 // return an error if, for example, the requested
 // doesn't exist, or doesn't have a definition.
 // TODO: Perf? Get as []byte?
-//func (app *App) frontMatterMust(key string) string {
 func (page *Page) frontMatterMust(key string) string {
 	// If the key exists, return its value.
-	if page.frontMatterRaw[key] != nil {
+	if page.frontMatterRaw[strings.ToLower(key)] != nil {
 		return fmt.Sprint(page.frontMatterRaw[key])
 	}
 	return ""
+}
+// frontMatterMustLower() obtains the value of a
+// requested key from the front matter, then
+// forces the return value to lowercase.
+func (page *Page) frontMatterMustLower(key string) string {
+	// If the key exists, return its value.
+  return strings.ToLower(page.frontMatterMust(key))
 }
