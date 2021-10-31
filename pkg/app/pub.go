@@ -3,9 +3,24 @@ package app
 import (
 	"github.com/tomcam/m/pkg/default"
 	"github.com/tomcam/m/pkg/util"
+	"gopkg.in/yaml.v2"
+	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 )
+
+func (t *Theme) themeFromYaml(filename string) *Theme {
+	b, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return nil
+	}
+	err = yaml.Unmarshal(b, t)
+	if err != nil {
+		return nil
+	}
+	return t
+}
 
 func (app *App) publishFile(filename string) error {
 
@@ -14,15 +29,21 @@ func (app *App) publishFile(filename string) error {
 	//   /Users/tom/code/m/cmd/mb -> /Users/tom/code/m/cmd/mb/test/test.md
 	// Results in:
 	//   /test
+  app.Debug("publishFile(%#v)", filename)
 	rel := relDirFile(app.Site.path, filename)
 	app.Page.filePath = filename
-	app.Debug("\tpublishFile(%v)", filename)
+	var err error
+	app.readSiteFileConfig()
+	if err != nil {
+		app.Note("\trSiteFileConfig() failed: %v", err.Error())
+		// TODO: Handle error properly & and document error code
+		return err
+	}
 	app.Page.dir = currDir()
 	// Get the fully qualified name of the destination file
 	target := replaceExtension(filename, "html")
 	target = filepath.Join(app.Site.publishPath, rel, filepath.Base(target))
 
-	var err error
 	var body []byte
 	// Convert Markdown file to a byte slice of HTML
 	// Return with YAML front matter in app.Page.frontMatter
@@ -32,12 +53,15 @@ func (app *App) publishFile(filename string) error {
 	}
 
 	// Read the theme configuration file (usally called
-	// themename.yaml, where themename is replaced
+	// themename.yaml), where themename is replaced
 	// by a theme directory name, such as wide or pillar
 	// TODO: make sure loadTheme() looks in all correct
 	// places for the theme, such as config files, not
 	// just the page front matter
+	app.Note("Front matter is %#v", app.Page.FrontMatter)
 	app.loadTheme()
+  app.Note("After loadTheme() front matter Struct is:\n%#v", app.Page.FrontMatter)
+  app.Note("After loadTheme() raw front matter is:\n%#v", app.Page.frontMatterRaw)
 
 	// Write HTML text of the body
 	fullPage := app.Site.HTMLStartFile +
@@ -184,12 +208,6 @@ func (app *App) layoutElement(tag string) string {
 	return app.layoutEl(l)
 }
 
-// siteThemesPath() determines the directory a
-// theme file is found it.
-func (app *App) siteThemesPath() string {
-	return filepath.Join(app.Site.siteThemesPath, app.Page.Theme.Name)
-}
-
 // TODO: Probably want to return a byte slice
 func (app *App) layoutEl(l layoutElement) string {
 	var err error
@@ -208,16 +226,17 @@ func (app *App) layoutEl(l layoutElement) string {
 	// TODO: Should probably return an error
 	// Quit silently if file can't be found
 	if !fileExists(filename) {
+		// TODO: Handle error properly & and document error code
+    // T
 		app.Debug("Can't find theme file %v", filename)
 		return ""
 	}
+	app.Debug("\t\tlayoutEl(%v", filename)
 
 	// Convert file contents to a byte slice of HTML
 	if isMarkdownFile(filename) {
-		app.Debug("\tlayoutEl() converting Markdown file %v", filename)
 		if html, err = app.MdFileToHTML(filename); err != nil {
-			// TODO: Handle error properly & and document error code
-			app.Debug("\tlayoutEl() ERROR converting Markdown file %v", filename)
+			app.Debug("\t\tlayoutEl() ERROR converting Markdown file %v", filename)
 			return ""
 		} else {
 			return string(html)
@@ -261,4 +280,31 @@ func (app *App) sidebar() string {
 
 func (app *App) footer() string {
 	return app.layoutElementToHTML("footer")
+}
+
+// sidebarType() determines what sidebar to use,
+// if any.
+// If no value has been set for this page,
+// it assigns the sidebar value set in
+// Site.DefaultSidebar.
+func (app *App) sidebarType() {
+	// TODO: Maket this a cfg value
+	sidebar := app.frontMatterMustLower("Sidebar")
+	if sidebar == "" {
+		sidebar = strings.ToLower(app.Site.Sidebar)
+	}
+	if sidebar == "left" || sidebar == "right" {
+		app.Page.FrontMatter.Sidebar = sidebar
+	}
+}
+
+// sidebar() adds a sidebar as appropriate.
+// Formerly calle just sidebar()
+func (a *App) addSidebar() {
+	a.Note("\taddSideBar() not implemented")
+	/*
+		if a.FrontMatter.Sidebar == "left" || a.FrontMatter.Sidebar == "right" {
+			a.appendStr(a.layoutElementToHTML(&a.Page.Theme.PageType.Sidebar, "<aside id=\"sidebar\">"))
+		}
+	*/
 }

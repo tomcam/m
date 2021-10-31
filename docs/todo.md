@@ -2,6 +2,9 @@
 
 ## Priority 1: Showstoppers--required for the next release
 * bug: specifying theme "pillar" in front matter failed
+* Append all stylesheets to a single file as encountered (for all levels of theme, so inheritance works correctly)
+* Add idea of post and specfiications like YYYY-MM-DD or y-m-d etc, using dirs or strings as needed . That way mb new post "/blog/avengers review" would expand to something like "/blog/2022/04/21/avengers-review.html" or "/blog/2022-March-1-avengers-review.html" and so on 
+* Mention in docs that should default to post
 * Search for "TODO:" in source
 * Document how Frontmatter Mode determines whether
 theme-light.css or theme-dark.css is used.
@@ -32,6 +35,7 @@ mb new theme test 0.2.0 from wide 1.1.0
 * Add to glossary: `command` means a command-line verb such as `new theme` or `new site`
 
 ## Priority 2: Desired but not required for the next release
+* Change readThemeFile to readThemeConfig. Also write- version
 * If nothing is avaialble for header, footer, and so on, 
 publish nothing. Right now I'm publishing empty tags.
 * Make most or all goldmark extensions and parsers optional

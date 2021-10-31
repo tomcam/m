@@ -2,6 +2,8 @@ package app
 
 import (
 	"github.com/tomcam/m/pkg/default"
+	"gopkg.in/yaml.v3"
+	"io/ioutil"
 	"os"
 )
 
@@ -93,9 +95,6 @@ type Site struct {
 	// Preferably just alphanumerics, underline or hyphen, and
 	// no spaces, for example, 'my-project'
 	name string
-
-	// Fullly qualified pathname of output file, e.g. index.html
-	outfile string
 
 	// Home directory for the project. All other
 	// paths, such as location of publish directory,
@@ -298,22 +297,44 @@ func (app *App) createSite(pathname string) error {
 	}
 
 	// TODO: Populate
-	if err := app.writeSiteConfig(); err != nil {
-		app.Note("Error writing site file %v", app.Site.siteFilePath)
+	if err := app.writeSiteFileConfig(); err != nil {
+		// TODO: Handle error properly & and document error code
+		app.Debug("Error writing site file %v", app.Site.siteFilePath)
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	return nil
 }
 
-// writeSiteConfig() writes the contents of App.Site
+func (app *App) readSiteFileConfig() error {
+	var err error
+	var b []byte
+	if b, err = ioutil.ReadFile(app.Site.siteFilePath); err != nil {
+		// TODO: Handle error properly & and document error code
+		return err
+	}
+
+	err = yaml.Unmarshal(b, &app.Site)
+	if err != nil {
+		// TODO: Handle error properly & and document error code
+		return err
+	}
+
+	err = yaml.Unmarshal(b, &app.Site)
+	if err != nil {
+		// TODO: Handle error properly & and document error code
+		return err
+	}
+	return nil
+}
+
+
+// writeSiteFileConfig() writes the contents of App.Site
 // to .mb/site.yaml.
 // and creates or replaces a TOML file in the
 // project's site subdirectory.
 // Assumes you're in the project directory.
-func (app *App) writeSiteConfig() error {
+func (app *App) writeSiteFileConfig() error {
 	// Populate site with default values from config info.
 	app.setSiteDefaults()
 	return writeYamlFile(app.Site.siteFilePath, app.Site)
 }
-
-

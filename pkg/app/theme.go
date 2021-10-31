@@ -20,16 +20,16 @@ type Theme struct {
 	path string
 	// Name is the name of the theme for this page,
 	// e.g. "wide"
-	Name          string        `yaml:"Name"`
-	Branding      string        `yaml:"Branding"`
-	Description   string        `yaml:"Description"`
-	Stylesheets   []string      `yaml:"Stylesheets"`
-	Nav           layoutElement `yaml:"Nav"`
-	Header        layoutElement `yaml:"Header"`
-	Article       layoutElement `yaml:"Article"`
-	Footer        layoutElement `yaml:"Footer"`
-	Sidebar       layoutElement `yaml:"Sidebar"`
-	Language      string        `yaml:"Language"` // 'en', 'fr', etc.
+	Name        string        `yaml:"Name"`
+	Branding    string        `yaml:"Branding"`
+	Description string        `yaml:"Description"`
+	Stylesheets []string      `yaml:"Stylesheets"`
+	Nav         layoutElement `yaml:"Nav"`
+	Header      layoutElement `yaml:"Header"`
+	Article     layoutElement `yaml:"Article"`
+	Footer      layoutElement `yaml:"Footer"`
+	Sidebar     layoutElement `yaml:"Sidebar"`
+	Language    string        `yaml:"Language"` // 'en', 'fr', etc.
 }
 
 type layoutElement struct {
@@ -125,7 +125,8 @@ func (app *App) copyFactoryThemes() error {
 // - If no theme is specified, use the default theme
 func (app *App) themeName() string {
 	app.Debug("\t\tthemeName(): Checking front matter")
-	theme := app.frontMatterMust("theme")
+  app.Debug("\t\tFront matter:\n%#v", app.Page.FrontMatter)
+	theme := app.Page.FrontMatter.Theme
 	// See if anything's in the front matter
 	// regarding the theme.
 	// TODO: Start accounting for theme in other
@@ -133,7 +134,7 @@ func (app *App) themeName() string {
 	// TODO: Getting lazy. Remember to marshal front matter appropriately
 	// If no theme specified, use the default theme.
 	if theme == "" {
-	  app.Debug("\t\tthemeName(): No theme named in front matter. Using default theme name %v", defaults.DefaultThemeName)
+		app.Debug("\t\tthemeName(): No theme named in front matter. Using default theme name %v", defaults.DefaultThemeName)
 		theme = defaults.DefaultThemeName
 	}
 	return theme
@@ -280,9 +281,10 @@ func (app *App) loadThemeConfig(path string) error {
 	// base of the filename. Then add the rest to the
 	// filename, which is the theme name + ".yaml"
 	filename := filepath.Join(path, filepath.Base(path)+"."+defaults.ConfigFileDefaultExt)
-	//app.Note("\tloadThemeConfig(%v)", filename)
+	app.Debug("\tloadThemeConfig(%v)", filename)
 	b, err := ioutil.ReadFile(filename)
 	if err != nil {
+	  app.Debug("\tloadThemeConfig() failed to read %v", filename)
 		// TODO: Handle error properly & and document error code
 		return err
 	}
@@ -293,14 +295,25 @@ func (app *App) loadThemeConfig(path string) error {
 
 	err = yaml.Unmarshal(b, &app.Page.Theme)
 	if err != nil {
+	  app.Debug("\tloadThemeConfig() Unable to marshal YAML from %v", filename)
 		// TODO: Handle error properly & and document error code
 		return err
 	}
-
 	return nil
 
 }
 
 func (app *App) cfgStr() string {
 	return ""
+}
+
+func readThemeConfig(filename string) (*Theme, error) {
+	var theme Theme
+	err2 := readYAMLFile(filename, &theme)
+	if err2 != nil {
+		panic(err2)
+	}
+	// This works.
+	// fmt.Printf("theme: %v", theme)
+	return &theme, nil
 }

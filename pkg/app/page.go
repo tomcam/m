@@ -1,8 +1,5 @@
 package app
 
-import (
-)
-
 // type Page contains read-only information about the Markdown page currently
 // being processed.
 type Page struct {
@@ -44,5 +41,3 @@ type FrontMatter struct {
 	// Used for documentation purposes.
 	Templates string
 }
-
-

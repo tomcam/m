@@ -2,7 +2,7 @@ package app
 
 import (
 	//"flag"
-	"fmt"
+	//"fmt"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/tomcam/m/pkg/default"
@@ -172,6 +172,7 @@ func (app *App) initConfig() {
 
 	// Add snazzy Go template functions like ftime() etc.
 	app.addTemplateFunctions()
+
 }
 
 // setSiteDefaults() obtains starting values
@@ -180,7 +181,7 @@ func (app *App) initConfig() {
 func (app *App) setSiteDefaults() {
 	app.Debug("\tsetSiteDefaults()")
 	app.Site.HTMLStartFile = defaults.HTMLStartFile
-	app.Site.HTMLEndFile = defaults.HTMLStartFile
+	app.Site.HTMLEndFile = defaults.HTMLEndFile
 	app.setPaths()
 }
 
@@ -300,18 +301,39 @@ func (app *App) copyMust(src, dest string) string {
 }
 
 // cfgLower() reads a string value specified in
-// the key parameter from configuration.
+// the key parameter from configuration. Returns
+// the value of that key forced to lowercase.
 // A cfg value is one that can come from several
 // places. For example, the theme name might normally
 // come from the individual Page.FrontMatter setting.
 // Or you might prefer to use Site.FrontMatter to
 // set a default theme for the entire site, then change it
 // only for specific pages in Page.FrontMatter.
-//
-// NOTE: The return value is forced to lowercase
 func (app *App) cfgLower(key string) string {
 	value := ""
-	return strings.ToLower(value)
+	switch key {
+	// Handle values we know could be in either or
+	// both the front matter or site config file.
+	case "Sidebar", "Theme":
+		// Check front matter first.
+		value = app.frontMatterMustLower(key)
+		if value == "" {
+			// Next fall back to site config
+		}
+
+		return strings.ToLower(value)
+	}
+	return value
+}
+
+// SiteMustLower() obtains the value of a
+// requested key from the site configuration
+// and returns it as a string forced to lowercase.
+// The Must means it doesn't return an error
+// if the key doesn't exist. It simply returns
+// an empty string.
+func (app *App) siteMustLower(key string) string {
+	return structFieldByNameStrMust(app.Site, key)
 }
 
 // frontMatterMust() obtains the value of a
@@ -322,16 +344,33 @@ func (app *App) cfgLower(key string) string {
 // TODO: Perf? Get as []byte?
 func (app *App) frontMatterMust(key string) string {
 	// If the key exists, return its value.
-	if app.Page.frontMatterRaw[strings.ToLower(key)] != nil {
-		return fmt.Sprint(app.Page.frontMatterRaw[key])
-	}
-	return ""
+	// This also works
+	return structFieldByNameStrMust(app.Page.FrontMatter, key)
+	return structFieldByNameStrMust(app.Page.frontMatterRaw, key)
+	/*
+		if app.Page.frontMatterRaw[strings.ToLower(key)] != nil {
+			return fmt.Sprint(app.Page.frontMatterRaw[key])
+		}
+		return ""
+	*/
 }
 
 // frontMatterMustLower() obtains the value of a
 // requested key from the front matter, then
 // forces the return value to lowercase.
+// The Must means it doesn't return an error
+// if the key doesn't exist. It simply returns
+// an empty string.
 func (app *App) frontMatterMustLower(key string) string {
 	// If the key exists, return its value.
 	return strings.ToLower(app.frontMatterMust(key))
 }
+
+// siteThemesPath() determines the directory a
+// theme file is found it.
+func (app *App) siteThemesPath() string {
+	return filepath.Join(app.Site.siteThemesPath, app.Page.Theme.Name)
+}
+
+
+

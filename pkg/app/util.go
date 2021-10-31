@@ -12,6 +12,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 )
 
@@ -177,6 +178,23 @@ func dirExists(path string) bool {
 	}
 }
 
+// fieldIsStringType() determines whether the struct passed in the
+// argument has a field named in the second argument of type string.
+func fieldIsStringType(obj interface{}, key string) bool {
+	if reflect.TypeOf(obj).Kind() != reflect.Struct {
+		return false
+	}
+	t := reflect.TypeOf(obj)
+	v := reflect.ValueOf(obj)
+	for i := 0; i < t.NumField(); i++ {
+		fieldType := fmt.Sprint(v.Field(i).Type())
+		if fieldType == "string" && v.Type().Field(i).Name == key {
+			return true
+		}
+	}
+	return false
+}
+
 // fileExists() returns true, well, if the named file exists
 func fileExists(filename string) bool {
 	info, err := os.Stat(filename)
@@ -309,6 +327,33 @@ func promptYes(prompt string) bool {
 	return strings.HasPrefix(strings.ToLower(answer), "y")
 }
 
+func readYAMLFile(filename string, target interface{}) (err error) {
+	b, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return err
+	}
+	err = yaml.Unmarshal(b, &target)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("readYAMLFile: \n%#v\n", string(b))
+	return nil
+}
+
+// TODO: Do someting with this
+func oldreadYAMLFile(filename string, target interface{}) (err error) {
+	b, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return err
+	}
+	err = yaml.Unmarshal(b, &target)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("readYAMLFile: \n%#v\n", string(b))
+	return nil
+}
+
 // relDirFile() takes a base directory,
 // for example, /users/tom/mysite, and a filename, for
 // example, /users/tom/mysite/articles/announce.md,
@@ -342,6 +387,31 @@ func replaceExtension(filename string, newExtension string) string {
 // formerly SitePath
 func siteFilePath(path string) string {
 	return filepath.Join(path, defaults.CfgDir)
+}
+
+// structFieldByNameStrMust() takes any struct and field name (as a string)
+// passed in at runtime and returns the string value of that field.
+// It returns an empty string if the
+// object passed in isn't a struct, or if the named field isn't a struct.
+func structFieldByNameStrMust(obj interface{}, field string) string {
+	v := reflect.ValueOf(obj)
+	if v.Kind() != reflect.Struct {
+		return ""
+	}
+	kind := v.FieldByName(field).Kind()
+	if kind != reflect.String {
+		return ""
+	}
+	return (fmt.Sprint(v.FieldByName(field)))
+}
+
+// structHasField() returns true if a struct passed to it at runtime contains a field name passed as a string
+func structHasField(obj interface{}, field string) bool {
+	v := reflect.ValueOf(obj)
+	if reflect.TypeOf(obj).Kind() != reflect.Struct {
+		return false
+	}
+	return reflect.Indirect(v).FieldByName(field).IsValid()
 }
 
 // userConfigPath() returns the location used to store
@@ -404,7 +474,7 @@ func writeTextFile(filename, contents string) error {
 	return nil
 }
 
-// TODO: Move to util file
+// TODO: may be outdated
 // writeYamlFile() creates a YAML file based on the filename and
 // data structure passed in.
 func writeYamlFile(filename string, target interface{}) error {
@@ -414,4 +484,29 @@ func writeYamlFile(filename string, target interface{}) error {
 	}
 	// TODO: TRY TO REUSE ERROR CODES
 	return ioutil.WriteFile(filename, theYaml, defaults.ProjectFilePermissions)
+}
+
+func writeStructToYAML(filename string, i interface{}) error {
+	b, err := yaml.Marshal(i)
+	if err != nil {
+		return err
+	}
+	err = ioutil.WriteFile(filename, b, os.ModePerm)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func readYAMLToStruct(filename string, i interface{}) error {
+	b, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return err
+	}
+
+	err = yaml.Unmarshal(b, &i)
+	if err != nil {
+		return err
+	}
+	return nil
 }
