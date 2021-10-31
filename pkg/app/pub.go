@@ -5,11 +5,78 @@ import (
 	"github.com/tomcam/m/pkg/util"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
+	"fmt"
+	"reflect"
+	"errors"
 	"os"
 	"path/filepath"
 	"strings"
 )
 
+// Based on https://stackoverflow.com/a/26746461
+func SetFieldMust(obj interface{}, name string, value interface{}) {
+    structValue := reflect.ValueOf(obj).Elem()
+    structFieldValue := structValue.FieldByName(name)
+
+    if !structFieldValue.IsValid() {
+        return
+    }
+
+    if !structFieldValue.CanSet() {
+        return 
+    }
+
+    structFieldType := structFieldValue.Type()
+    val := reflect.ValueOf(value)
+    if structFieldType != val.Type() {
+      return
+    }
+
+    structFieldValue.Set(val)
+    return
+}
+
+
+// TODO: Obsolete I hope
+func (f *FrontMatter)TODOfrontMatterRawToStruct(m map[string]interface{}){
+  for k, v := range m {
+    SetFieldMust(f, k, v)
+  }
+}
+func (app *App)frontMatterRawToStruct(){
+  for k, v := range app.Page.frontMatterRaw {
+    SetFieldMust(&app.Page.FrontMatter, k, v)
+  }
+}
+
+
+// Based on https://stackoverflow.com/a/26746461
+func SetField(obj interface{}, name string, value interface{}) error {
+    structValue := reflect.ValueOf(obj).Elem()
+    structFieldValue := structValue.FieldByName(name)
+
+    if !structFieldValue.IsValid() {
+        return fmt.Errorf("No such field: %s in obj", name)
+    }
+
+    if !structFieldValue.CanSet() {
+        return fmt.Errorf("Cannot set %s field value", name)
+    }
+
+    structFieldType := structFieldValue.Type()
+    val := reflect.ValueOf(value)
+    if structFieldType != val.Type() {
+        return errors.New("Provided value type didn't match obj field type")
+    }
+
+    structFieldValue.Set(val)
+    return nil
+}
+
+
+
+
+// TODO: probably toss this
 func (t *Theme) themeFromYaml(filename string) *Theme {
 	b, err := ioutil.ReadFile(filename)
 	if err != nil {
@@ -58,7 +125,10 @@ func (app *App) publishFile(filename string) error {
 	// TODO: make sure loadTheme() looks in all correct
 	// places for the theme, such as config files, not
 	// just the page front matter
-	app.Note("Front matter is %#v", app.Page.FrontMatter)
+  app.Note("publishFile(): FrontMatter needs to be marshaled from the map")
+  //app.Page.FrontMatter.frontMatterRawToStruct(app.Page.frontMatterRaw)
+  app.frontMatterRawToStruct()
+  app.Debug("\tpublishFile(%v): Front matter is:\n %#v", filename, app.Page.FrontMatter)
 	app.loadTheme()
   app.Note("After loadTheme() front matter Struct is:\n%#v", app.Page.FrontMatter)
   app.Note("After loadTheme() raw front matter is:\n%#v", app.Page.frontMatterRaw)
