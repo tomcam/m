@@ -29,7 +29,6 @@ type Theme struct {
 	Article     layoutElement `yaml:"Article"`
 	Footer      layoutElement `yaml:"Footer"`
 	Sidebar     layoutElement `yaml:"Sidebar"`
-	Language    string        `yaml:"Language"` // 'en', 'fr', etc.
 }
 
 type layoutElement struct {
@@ -115,29 +114,34 @@ func (app *App) copyFactoryThemes() error {
 	return nil
 }
 
-// themeName() determines the theme name in
+// themeNameToLower() determines the theme name in
 // proper order, from most to least proximate.
+// TODO: document the following
+// It forces the theme name to lowercase.
 // Correct operation is:
 // - Look for theme named in front matter
 // - If no theme is named in front matter,
 //   look for one named in the site file
 // - If none is there, use Viper
 // - If no theme is specified, use the default theme
-func (app *App) themeName() string {
+func (app *App) themeNameToLower() string {
 	app.Debug("\t\tthemeName(): Checking front matter")
-  app.Debug("\t\tFront matter:\n%#v", app.Page.FrontMatter)
-	theme := app.Page.FrontMatter.Theme
 	// See if anything's in the front matter
 	// regarding the theme.
+	theme := app.Page.FrontMatter.Theme
 	// TODO: Start accounting for theme in other
 	// places, like config files
-	// TODO: Getting lazy. Remember to marshal front matter appropriately
-	// If no theme specified, use the default theme.
 	if theme == "" {
-		app.Debug("\t\tthemeName(): No theme named in front matter. Using default theme name %v", defaults.DefaultThemeName)
-		theme = defaults.DefaultThemeName
+		if app.Site.Theme != "" {
+			theme = app.Site.Theme
+			app.Debug("\t\tthemeName(): No theme named in front matter. Trying theme name from Site file: %v", app.Site.Theme)
+		}
+		if theme == "" {
+			app.Debug("\t\tthemeName(): No theme named in front matter. Trying default theme name %v", defaults.DefaultThemeName)
+			theme = defaults.DefaultThemeName
+		}
 	}
-	return theme
+	return strings.ToLower(theme)
 }
 
 // loadTheme() finds the theme specified for this page.
@@ -153,10 +157,13 @@ func (app *App) loadTheme() {
 	//  debut/gallery
 	//  debut/gallery/item
 
-	fullTheme := app.themeName()
-	app.Page.FrontMatter.Theme = fullTheme
-	// If it's something like debut/gallery, loop
-	// around and load from root to branch.
+	app.Debug("\tloadTheme()")
+	app.Page.FrontMatter.Theme = app.themeNameToLower()
+	// This is called fullTheme because the theme designation
+	// can be something "debut" or it can go down deper,
+	// for example, "debut/gallery/item"
+	fullTheme := app.Page.FrontMatter.Theme
+	// If it's something like debut/gallery, loop around and load from root to branch.
 	// That way styles are overridden the way
 	// CSS expects.
 	themeDirs := strings.Split(fullTheme, "/")
@@ -184,10 +191,8 @@ func (app *App) loadTheme() {
 		app.Page.Theme.path = source
 		dest = filepath.Join(dest, theme)
 		if err := copyDirAll(source, dest); err != nil {
-			//return ErrCode("0401", source)
-			//app.QuitError("0401", source)
-			// msg := fmt.Errorf("Error attempting to create project file %s: %v", projectFile, err.Error()).Error()
 			// TODO: Handle error properly & and document error code
+			//return ErrCode("0401", source)
 			app.QuitError(err)
 		}
 		// Theme directory is known. Use it to load the .yaml file
@@ -198,7 +203,6 @@ func (app *App) loadTheme() {
 			app.QuitError(err)
 		}
 		app.loadStylesheets()
-
 	}
 }
 
@@ -222,32 +226,18 @@ func (app *App) loadStylesheets() {
 	if err != nil {
 		return
 	}
-	app.publishStylesheets()
 
 }
 
-func (app *App) publishStylesheets() {
-	// Go through the list of stylesheets for this theme.
-	// Copy stylesheets for this theme from the local
-	// theme directory to the publish
-	// CSS directory for stylesheets.
-	// This doesn't handle everything. Some stylesheets,
-	// such as "theme-dark.css" and "theme-light.css",
-	// don't get copied until publish time because
-	// they depend on configuration options.
-	for _, stylesheet := range app.Page.Theme.Stylesheets {
-		// Check every stylesheet to see if it's
-		// a dark theme vs a light Theme. If it
-		// is, change to dark if requested.
-		file := app.getMode(stylesheet)
-		source := filepath.Join(app.Page.Theme.path, file)
-		dest := filepath.Join(app.Site.cssPublishPath, file)
-		// Keep list of stylesheets that got published
-		copied := app.copyMust(source, dest)
-		if copied != "" {
-			app.Page.stylesheets = append(app.Page.stylesheets, dest)
-		}
+// sidebarCSSFilename() returns name of CSS file
+// used for sidebar, either left or right
+func (app *App) sidebarCSSFilename(sidebar string) string {
+	switch sidebar {
+	case "left":
+	case "right":
+		return "sidebar" + "-" + sidebar + ".css"
 	}
+	return ""
 }
 
 // getMode() checks if the stylesheet is dark or light
@@ -259,8 +249,11 @@ func (app *App) getMode(stylesheet string) string {
 	// "theme-light.css" (light theme is the default).
 	// If it is, and if Dark mode
 	// has been specified, publish theme-dark.css instead.
-	if stylesheet == "theme-light.css" && strings.ToLower(app.frontMatterMust("Mode")) == "dark" {
-		stylesheet = "theme-dark.css"
+	app.Note("getMode(%v): Mode is %v", stylesheet, app.Page.FrontMatter.Mode)
+	if stylesheet == "theme-light.css" &&
+		strings.ToLower(app.Page.FrontMatter.Mode) == "dark" {
+		app.Note("\t\tSWITCHAROONIE!")
+		return ("theme-dark.css")
 	}
 	return stylesheet
 }
@@ -284,7 +277,7 @@ func (app *App) loadThemeConfig(path string) error {
 	app.Debug("\tloadThemeConfig(%v)", filename)
 	b, err := ioutil.ReadFile(filename)
 	if err != nil {
-	  app.Debug("\tloadThemeConfig() failed to read %v", filename)
+		app.Debug("\tloadThemeConfig() failed to read %v", filename)
 		// TODO: Handle error properly & and document error code
 		return err
 	}
@@ -295,7 +288,7 @@ func (app *App) loadThemeConfig(path string) error {
 
 	err = yaml.Unmarshal(b, &app.Page.Theme)
 	if err != nil {
-	  app.Debug("\tloadThemeConfig() Unable to marshal YAML from %v", filename)
+		app.Debug("\tloadThemeConfig() Unable to marshal YAML from %v", filename)
 		// TODO: Handle error properly & and document error code
 		return err
 	}

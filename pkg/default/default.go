@@ -68,6 +68,9 @@ Welcome to %s
 	// Excluded from publishing.
 	HeadTagsPath = "headtags"
 
+	// Language used for `HTML lang=`
+	Language = "en"
+
 	// Name of the subdirectory the rendered files get rendered
 	// to. It can't be changed because it's used to determine
 	// whether a site is contained within its parent directory.

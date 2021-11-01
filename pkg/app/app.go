@@ -1,8 +1,8 @@
 package app
 
 import (
-	//"flag"
-	//"fmt"
+	"errors"
+	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/tomcam/m/pkg/default"
@@ -10,6 +10,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	//"sync"
 	//"context"
@@ -25,8 +26,7 @@ type App struct {
 	applicationDataPath string
 	Site                Site
 
-	// Cobra Command Processes command lin options
-	//Cmd *cobra.Command
+	// Cobra Command Processes command line options
 	RootCmd cobra.Command
 	// For viper
 	cfgFile string
@@ -180,6 +180,7 @@ func (app *App) initConfig() {
 // to a site config file.
 func (app *App) setSiteDefaults() {
 	app.Debug("\tsetSiteDefaults()")
+	app.Site.Language = defaults.Language
 	app.Site.HTMLStartFile = defaults.HTMLStartFile
 	app.Site.HTMLEndFile = defaults.HTMLEndFile
 	app.setPaths()
@@ -318,6 +319,7 @@ func (app *App) cfgLower(key string) string {
 		// Check front matter first.
 		value = app.frontMatterMustLower(key)
 		if value == "" {
+			//App.Note("\tcfgLower(): sound find %v.[%v]",
 			// Next fall back to site config
 		}
 
@@ -346,13 +348,6 @@ func (app *App) frontMatterMust(key string) string {
 	// If the key exists, return its value.
 	// This also works
 	return structFieldByNameStrMust(app.Page.FrontMatter, key)
-	return structFieldByNameStrMust(app.Page.frontMatterRaw, key)
-	/*
-		if app.Page.frontMatterRaw[strings.ToLower(key)] != nil {
-			return fmt.Sprint(app.Page.frontMatterRaw[key])
-		}
-		return ""
-	*/
 }
 
 // frontMatterMustLower() obtains the value of a
@@ -366,11 +361,69 @@ func (app *App) frontMatterMustLower(key string) string {
 	return strings.ToLower(app.frontMatterMust(key))
 }
 
-// siteThemesPath() determines the directory a
-// theme file is found it.
+// siteThemesPath() determines the directory the
+// theme file is found in.
 func (app *App) siteThemesPath() string {
 	return filepath.Join(app.Site.siteThemesPath, app.Page.Theme.Name)
 }
 
+// frontMatterRawToStruct() takes the generic map of front
+// matter produced by Goldmark's YAML parser
+// and copies it to the FrontMatter struct.
+// The *Must functions are used because its structure
+// is known so why check for errors.
+// I'll probably regret this but what the hay.
+func (app *App) frontMatterRawToStruct() {
+	for k, v := range app.Page.frontMatterRaw {
+		setFieldMust(&app.Page.FrontMatter, k, v)
+	}
+}
 
+// Based on https://stackoverflow.com/a/26746461
+func setField(obj interface{}, name string, value interface{}) error {
+	structValue := reflect.ValueOf(obj).Elem()
+	structFieldValue := structValue.FieldByName(name)
 
+	if !structFieldValue.IsValid() {
+		return fmt.Errorf("No such field: %s in obj", name)
+	}
+
+	if !structFieldValue.CanSet() {
+		return fmt.Errorf("Cannot set %s field value", name)
+	}
+
+	structFieldType := structFieldValue.Type()
+	val := reflect.ValueOf(value)
+	if structFieldType != val.Type() {
+		return errors.New("Provided value type didn't match obj field type")
+	}
+
+	structFieldValue.Set(val)
+	return nil
+}
+
+// setFieldMust() is identical to setField but strips the
+// error checking.
+// Use in cases like frontMatterRawtoStruct()
+// where the structure type is known in advance.
+func setFieldMust(obj interface{}, name string, value interface{}) {
+	structValue := reflect.ValueOf(obj).Elem()
+	structFieldValue := structValue.FieldByName(name)
+
+	if !structFieldValue.IsValid() {
+		return
+	}
+
+	if !structFieldValue.CanSet() {
+		return
+	}
+
+	structFieldType := structFieldValue.Type()
+	val := reflect.ValueOf(value)
+	if structFieldType != val.Type() {
+		return
+	}
+
+	structFieldValue.Set(val)
+	return
+}

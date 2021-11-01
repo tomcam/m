@@ -3,91 +3,10 @@ package app
 import (
 	"github.com/tomcam/m/pkg/default"
 	"github.com/tomcam/m/pkg/util"
-	"gopkg.in/yaml.v2"
-	"io/ioutil"
-	"fmt"
-	"reflect"
-	"errors"
 	"os"
 	"path/filepath"
 	"strings"
 )
-
-// Based on https://stackoverflow.com/a/26746461
-func SetFieldMust(obj interface{}, name string, value interface{}) {
-    structValue := reflect.ValueOf(obj).Elem()
-    structFieldValue := structValue.FieldByName(name)
-
-    if !structFieldValue.IsValid() {
-        return
-    }
-
-    if !structFieldValue.CanSet() {
-        return 
-    }
-
-    structFieldType := structFieldValue.Type()
-    val := reflect.ValueOf(value)
-    if structFieldType != val.Type() {
-      return
-    }
-
-    structFieldValue.Set(val)
-    return
-}
-
-
-// TODO: Obsolete I hope
-func (f *FrontMatter)TODOfrontMatterRawToStruct(m map[string]interface{}){
-  for k, v := range m {
-    SetFieldMust(f, k, v)
-  }
-}
-func (app *App)frontMatterRawToStruct(){
-  for k, v := range app.Page.frontMatterRaw {
-    SetFieldMust(&app.Page.FrontMatter, k, v)
-  }
-}
-
-
-// Based on https://stackoverflow.com/a/26746461
-func SetField(obj interface{}, name string, value interface{}) error {
-    structValue := reflect.ValueOf(obj).Elem()
-    structFieldValue := structValue.FieldByName(name)
-
-    if !structFieldValue.IsValid() {
-        return fmt.Errorf("No such field: %s in obj", name)
-    }
-
-    if !structFieldValue.CanSet() {
-        return fmt.Errorf("Cannot set %s field value", name)
-    }
-
-    structFieldType := structFieldValue.Type()
-    val := reflect.ValueOf(value)
-    if structFieldType != val.Type() {
-        return errors.New("Provided value type didn't match obj field type")
-    }
-
-    structFieldValue.Set(val)
-    return nil
-}
-
-
-
-
-// TODO: probably toss this
-func (t *Theme) themeFromYaml(filename string) *Theme {
-	b, err := ioutil.ReadFile(filename)
-	if err != nil {
-		return nil
-	}
-	err = yaml.Unmarshal(b, t)
-	if err != nil {
-		return nil
-	}
-	return t
-}
 
 func (app *App) publishFile(filename string) error {
 
@@ -96,18 +15,24 @@ func (app *App) publishFile(filename string) error {
 	//   /Users/tom/code/m/cmd/mb -> /Users/tom/code/m/cmd/mb/test/test.md
 	// Results in:
 	//   /test
-  app.Debug("publishFile(%#v)", filename)
+	app.Debug("publishFile(%#v)", filename)
 	rel := relDirFile(app.Site.path, filename)
 	app.Page.filePath = filename
 	var err error
-	app.readSiteFileConfig()
+
+	// Obtain site configuration from site.yaml
+	app.readSiteConfig()
 	if err != nil {
-		app.Note("\trSiteFileConfig() failed: %v", err.Error())
+		app.Debug("\trSiteFileConfig() failed: %v", err.Error())
 		// TODO: Handle error properly & and document error code
 		return err
 	}
 	app.Page.dir = currDir()
-	// Get the fully qualified name of the destination file
+
+	// Take the input file name, e.g. myarticle.md or whatever,
+	// and use it to form the fully qualified name of the
+	// output file, e.g.
+	// /Users/tom/mb/mysite/.pub/myarticle.html
 	target := replaceExtension(filename, "html")
 	target = filepath.Join(app.Site.publishPath, rel, filepath.Base(target))
 
@@ -119,31 +44,26 @@ func (app *App) publishFile(filename string) error {
 		return err
 	}
 
-	// Read the theme configuration file (usally called
-	// themename.yaml), where themename is replaced
-	// by a theme directory name, such as wide or pillar
-	// TODO: make sure loadTheme() looks in all correct
-	// places for the theme, such as config files, not
-	// just the page front matter
-  app.Note("publishFile(): FrontMatter needs to be marshaled from the map")
-  //app.Page.FrontMatter.frontMatterRawToStruct(app.Page.frontMatterRaw)
-  app.frontMatterRawToStruct()
-  app.Debug("\tpublishFile(%v): Front matter is:\n %#v", filename, app.Page.FrontMatter)
+	// Convert the FrontMatter map produced by Goldmark into
+	// the Page.FrontMatter struct.
+	app.frontMatterRawToStruct()
 	app.loadTheme()
-  app.Note("After loadTheme() front matter Struct is:\n%#v", app.Page.FrontMatter)
-  app.Note("After loadTheme() raw front matter is:\n%#v", app.Page.frontMatterRaw)
 
+	if err := app.publishStylesheets(); err != nil {
+		return ErrCode("PREVIOUS", err.Error())
+	}
 	// Write HTML text of the body
 	fullPage := app.Site.HTMLStartFile +
-		app.Page.Theme.Language + ">" + "\n" +
+		"\"" + app.Site.Language + "\"" + ">" + "\n" +
 		"<meta charset=\"utf-8\">" + "\n" +
 		"<head>" +
 		metatag("description", app.descriptionTag()) +
 		metatag("viewport", "width=device-width,initial-scale=1") +
 		app.stylesheetTags() +
-		"</head>" + "\n" + "<body>" + "\n" +
+		//"</head>" + "\n" + "<body>" + "\n" +
 		app.header() +
 		app.article(body, "article") +
+		app.sidebar() +
 		app.footer() +
 		app.Site.HTMLEndFile
 
@@ -160,8 +80,16 @@ func (app *App) publishFile(filename string) error {
 func (app *App) stylesheetTags() string {
 	stylesheets := ""
 	for _, stylesheet := range app.Page.Theme.Stylesheets {
+		// TODO: Performance issue? Probably not because it's a short list?
 		stylesheets = stylesheets +
 			stylesheetTag(filepath.Join(app.Site.cssPublishPath, stylesheet))
+	}
+	switch app.Page.FrontMatter.Sidebar {
+	case "left", "right":
+		// TODO: Performance issue? Probably not because it's a short list?
+		stylesheets = stylesheets +
+			stylesheetTag(filepath.Join(app.Site.cssPublishPath,
+				"sidebar-"+app.Page.FrontMatter.Sidebar+".css"))
 	}
 	return stylesheets
 }
@@ -251,7 +179,7 @@ func (app *App) layoutElementToHTML(tag string) string {
 	case "sidebar":
 		html = app.layoutElement(tag)
 		if html != "" {
-			return wrapTag("<"+tag+">", html, true)
+			return wrapTag("<aside id='sidebar'>", html, true)
 		}
 	}
 	return html
@@ -297,7 +225,7 @@ func (app *App) layoutEl(l layoutElement) string {
 	// Quit silently if file can't be found
 	if !fileExists(filename) {
 		// TODO: Handle error properly & and document error code
-    // T
+		// T
 		app.Debug("Can't find theme file %v", filename)
 		return ""
 	}
@@ -345,7 +273,7 @@ func (app *App) nav() string {
 }
 
 func (app *App) sidebar() string {
-	return app.layoutElementToHTML("sidebar")
+	return (app.layoutElementToHTML("sidebar"))
 }
 
 func (app *App) footer() string {
@@ -357,8 +285,9 @@ func (app *App) footer() string {
 // If no value has been set for this page,
 // it assigns the sidebar value set in
 // Site.DefaultSidebar.
-func (app *App) sidebarType() {
-	// TODO: Maket this a cfg value
+func (app *App) sidebarType() string {
+	// TODO: Maket this a cfg value, bcause like Theme it can also be
+	// set in other areas
 	sidebar := app.frontMatterMustLower("Sidebar")
 	if sidebar == "" {
 		sidebar = strings.ToLower(app.Site.Sidebar)
@@ -366,15 +295,52 @@ func (app *App) sidebarType() {
 	if sidebar == "left" || sidebar == "right" {
 		app.Page.FrontMatter.Sidebar = sidebar
 	}
+	return sidebar
 }
 
-// sidebar() adds a sidebar as appropriate.
-// Formerly calle just sidebar()
-func (a *App) addSidebar() {
-	a.Note("\taddSideBar() not implemented")
-	/*
-		if a.FrontMatter.Sidebar == "left" || a.FrontMatter.Sidebar == "right" {
-			a.appendStr(a.layoutElementToHTML(&a.Page.Theme.PageType.Sidebar, "<aside id=\"sidebar\">"))
+// TODO: Should return error
+func (app *App) publishStylesheet(source string, dest string) error {
+  app.Debug("publishStylesheet(%v, %v)", source, dest)
+	// Keep list of stylesheets that got published
+	err := Copy(source, dest)
+	if err != nil {
+		return ErrCode("PREVIOUS", err.Error())
+	}
+	app.Page.stylesheets = append(app.Page.stylesheets, dest)
+	return nil
+}
+
+func (app *App) publishStylesheets() error {
+  app.Debug("\tpublishStylesheets()")
+	// Go through the list of stylesheets for this theme.
+	// Copy stylesheets for this theme from the local
+	// theme directory to the publish
+	// CSS directory for stylesheets.
+	// This doesn't handle everything. Some stylesheets,
+	// such as "theme-dark.css" and "theme-light.css",
+	// don't get copied until publish time because
+	// they depend on configuration options.
+	for _, stylesheet := range app.Page.Theme.Stylesheets {
+
+		// Check every stylesheet to see if it's
+		// a dark theme vs a light theme. If it
+		// is, change to dark if requested.
+		file := app.getMode(stylesheet)
+		app.Debug("\t\tFile after getMode(): %v", file)
+		source := filepath.Join(app.Page.Theme.path, file)
+		dest := filepath.Join(app.Site.cssPublishPath, file)
+		if err := app.publishStylesheet(source, dest); err != nil {
+			return ErrCode("PREVIOUS", err.Error())
 		}
-	*/
+	}
+	sidebar := app.sidebarCSSFilename(app.Page.FrontMatter.Sidebar)
+  app.Debug("sidebarCSSFilename(): %v", sidebar)
+	if sidebar != "" {
+		source := filepath.Join(app.Page.Theme.path, sidebar)
+		dest := filepath.Join(app.Site.cssPublishPath, sidebar)
+		if err := app.publishStylesheet(source, dest); err != nil {
+			return ErrCode("1024", source)
+		}
+	}
+	return nil
 }

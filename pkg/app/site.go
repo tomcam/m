@@ -297,7 +297,7 @@ func (app *App) createSite(pathname string) error {
 	}
 
 	// TODO: Populate
-	if err := app.writeSiteFileConfig(); err != nil {
+	if err := app.writeSiteConfig(); err != nil {
 		// TODO: Handle error properly & and document error code
 		app.Debug("Error writing site file %v", app.Site.siteFilePath)
 		return ErrCode("PREVIOUS", err.Error())
@@ -305,7 +305,9 @@ func (app *App) createSite(pathname string) error {
 	return nil
 }
 
-func (app *App) readSiteFileConfig() error {
+// readSiteConfig() obtains site config info from the
+// site configuration file, i.e. site.yaml
+func (app *App) readSiteConfig() error {
 	var err error
 	var b []byte
 	if b, err = ioutil.ReadFile(app.Site.siteFilePath); err != nil {
@@ -327,13 +329,12 @@ func (app *App) readSiteFileConfig() error {
 	return nil
 }
 
-
-// writeSiteFileConfig() writes the contents of App.Site
+// writeSiteConfig() writes the contents of App.Site
 // to .mb/site.yaml.
 // and creates or replaces a TOML file in the
 // project's site subdirectory.
 // Assumes you're in the project directory.
-func (app *App) writeSiteFileConfig() error {
+func (app *App) writeSiteConfig() error {
 	// Populate site with default values from config info.
 	app.setSiteDefaults()
 	return writeYamlFile(app.Site.siteFilePath, app.Site)

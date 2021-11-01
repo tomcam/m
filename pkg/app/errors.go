@@ -57,6 +57,7 @@ var errMsgs = map[string]string{
 	"0902": "Error creating new site file",
 	"0915": "Error copying theme to site", // filename
 	"0920": "Error generating Markdown",
+  "0921": "Unable to build project", // filename
 
 	// 0950 - Something's already there
 	"0951": "Site already exists at", // sitename
@@ -65,7 +66,7 @@ var errMsgs = map[string]string{
 	"1001": "Missing front matter and markdown", // filename
 	"1002": "This isn't a project directory:",   // directoryname
 	"1013": "Please specify a site name",
-
+  "1024": "Couldn't find stylesheet", //filename
 	// 1100 - Problem changing to a directory
 	"1101": "Unable to", // chdir to bad dir name
 	"1102": "Unable to", // chdir to bad dir name during showInfo()

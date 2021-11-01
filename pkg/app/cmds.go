@@ -75,7 +75,7 @@ func (app *App) addCommands() {
 				}
 				if err != nil {
 					// TODO: Use pathname in error message
-					app.QuitError(ErrCode("1002", pathname))
+					app.QuitError(ErrCode("0921", pathname))
 				}
 			},
 		}
