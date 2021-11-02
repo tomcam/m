@@ -26,17 +26,26 @@ sidebar CSS file is included.
 Branding: "Wide by Metabuzz"
 Description: "A good general-purpose theme"
 Stylesheets: 
-- "wide.css"
-- "sizes.css"
-- "bind.css"
-- "reset.css"
-- "fonts.css"
+  - reset.css
+  - fonts.css
+  - bind.css
+  - sizes.css
+  - theme-light.css
+  - layout.css
+  - wide.css
+  - responsive.css
 Nav: {File: nav.md, HTML:}
 Header: {File: header.md, HTML:}
 Article: {File:, HTML:}
 Sidebar: {File: sidebar.md, HTML:}
 Footer: {File: footer.md, HTML:}
 ```
+
+* Order of stylesheets is important. Reasons:
+  - responsive.css overrides some values in layout.css or themename.css
+  - themename.css (add a glossary entry for this tem) may override some of the values in bind.css or even layout.css
+
+* theme-light.css is required but not theme-dark.css
 
 * These two are equivalent:
 ```
