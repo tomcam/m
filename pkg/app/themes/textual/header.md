@@ -19,11 +19,6 @@
 {{- else if .Site.Author.FullName -}}
 {{- $name := .Site.Author.FullName -}}
 * [{{ $name -}}](/)
-{{- else if .Page.Theme.PageType.Branding -}}
-{{- $name := .Page.Theme.PageType.Branding -}}
-* [{{ $name -}}](/)
-{{- else }}
-* [{{.FrontMatter.Theme}} {{.FrontMatter.PageType}}](/)
 {{- end }} 
 * [Events](/)
 * [Podcast](/)

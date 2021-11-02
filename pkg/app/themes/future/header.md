@@ -8,11 +8,11 @@
 {{- if .Site.Company.Name -}}
 {{- $name := .Site.Company.Name -}}
 * [{{ $name -}}](/)
-{{- else if .FrontMatter.Theme -}}
-{{- $name := .FrontMatter.Theme -}}
+{{- else if .Page.FrontMatter.Theme -}}
+{{- $name := .Page.FrontMatter.Theme -}}
 * [{{ $name -}}](/)
 {{- else }}
-* [{{.FrontMatter.Theme}}](/)
+* [{{.Page.FrontMatter.Theme}}](/)
 {{- end }} 
 * [Create](/)
 * [Pricing](/)

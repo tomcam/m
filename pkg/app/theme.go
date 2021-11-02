@@ -86,7 +86,6 @@ func (app *App) copyFactoryThemes() error {
 			}
 			return nil
 		}
-		//app.Note("\t\t%v", path)
 		// Handle individual file
 		target = filepath.Join(app.Site.factoryThemesPath, path)
 		f, err := factoryThemeFiles.Open(path)
@@ -240,7 +239,6 @@ func (app *App) getMode(stylesheet string) string {
 	// has been specified, publish theme-dark.css instead.
 	mode := strings.ToLower(app.Page.FrontMatter.Mode)
 	if stylesheet == "theme-light.css" && mode == "dark" {
-    app.Note("\tgetMode(%v): mode is %v. returning theme-dark.css", stylesheet, mode)
 		return "theme-dark.css"
 	}
 	return stylesheet

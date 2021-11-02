@@ -71,7 +71,6 @@ func (app *App) publishFile(filename string) error {
 	if err := app.publishStylesheets(); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
-	// app.Note("Description: %v", app.descriptionTag())
 
 	return nil
 }
@@ -81,11 +80,8 @@ func (app *App) stylesheetTags() string {
 	stylesheets := ""
 	for _, stylesheet := range app.Page.Theme.Stylesheets {
 		// TODO: Performance issue? Probably not because it's a short list?
-		file := app.getMode(stylesheet)
 		mode := strings.ToLower(app.Page.FrontMatter.Mode)
-		app.Note("\tstylesheetTags() stylesheet: %v. Mode: %v", file, mode)
 		if filepath.Base(stylesheet) == "theme-light.css" && mode == "dark" {
-		  app.Note("\tTHEME-DARK AMIRIGHT? stylesheetTags() stylesheet: %v. Mode: %v", file, mode)
 			stylesheet = "theme-dark.css"
 		}
 		stylesheets = stylesheets +
@@ -322,7 +318,6 @@ func (app *App) publishStylesheet(source string, dest string) error {
 }
 
 func (app *App) publishStylesheets() error {
-	//app.Debug("\tpublishStylesheets()")
 	// Go through the list of stylesheets for this theme.
 	// Copy stylesheets for this theme from the local
 	// theme directory to the publish
@@ -337,10 +332,7 @@ func (app *App) publishStylesheets() error {
 		// a dark theme vs a light theme. If it
 		// is, change to dark if requested.
 		file := app.getMode(stylesheet)
-		app.Note("\tpublishStyleSheets: %v", file)
     if file == "theme-light.css" && app.Page.FrontMatter.Mode == "dark" {
-      // XXX THIS IS IT!!!!
-      app.Note("BINGO")
       file = "theme-dark.css"
     }
 		source := filepath.Join(app.Page.Theme.path, file)
@@ -355,7 +347,6 @@ func (app *App) publishStylesheets() error {
 	sidebar := app.Page.FrontMatter.Sidebar
 	switch sidebar {
 	case "":
-		app.Note("publishStylesheets(): error")
 		return nil
 	case "left", "right":
 		//stylesheets = stylesheets +
