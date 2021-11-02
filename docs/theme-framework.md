@@ -41,7 +41,10 @@ Sidebar: {File: sidebar.md, HTML:}
 Footer: {File: footer.md, HTML:}
 ```
 
-* Order of stylesheets is important. Reasons:
+Anything with color, even if it contains other formatting info, must go in
+`theme-light.css` and `theme-right.css`
+
+* Order of stylesheets is important:
   - responsive.css overrides some values in layout.css or themename.css
   - themename.css (add a glossary entry for this tem) may override some of the values in bind.css or even layout.css
 

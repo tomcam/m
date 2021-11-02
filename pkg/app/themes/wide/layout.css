@@ -6,6 +6,7 @@ header {height:var(--header-height);line-height:var(--header-height);}
 header {width:var(--header-footer-width);}
 header {white-space:nowrap;}
 header {margin-left:var(--left-gap);margin-right:var(--right-gap);}
+header {overflow:hidden;}
 nav {width:var(--full-page);}
 nav {height:var(--nav-height);line-height:var(--nav-height);}
 nav {margin-top:var(--nav-margin-top);margin-bottom:var(--nav-margin-bottom);}
