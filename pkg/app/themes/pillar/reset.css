@@ -1,3 +1,4 @@
+html,body,nav,header,article,footer{float:left;clear:both;overflow:auto;}
 html {box-sizing: border-box;}
 *, *:before, *:after {box-sizing: inherit;}
 

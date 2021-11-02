@@ -6,19 +6,19 @@
    * ******************************/
 
   /* adjusts header height and keeps it vertically centered */
-  --header-height:5rem;
+  --header-height:8rem;
 
   /* size of the main text in the header. */
-  --branding-height:5rem;
+  --branding-height:4em;
 
   /* Same as header {margin-top:}  */
   --header-margin-top:3rem;
 
   /* Same as header {margin-bottom:}  */
-  --header-margin-bottom:3rem;
+  --header-margin-bottom:0rem;
 
    /* Same as header {padding-top:}  */
-  --header-padding-top:3rem;
+  --header-padding-top:1rem;
 
   /* Same as header {padding-bottom} */
   --header-padding-bottom:3.5rem;
