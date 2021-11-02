@@ -235,7 +235,10 @@ func (app *App) sidebarCSSFilename(sidebar string) string {
 	switch sidebar {
 	case "left":
 	case "right":
-		return "sidebar" + "-" + sidebar + ".css"
+		app.Note("\tsidebarCSSFilename(%v) requested", sidebar)
+		sidebar := "sidebar" + "-" + sidebar + ".css"
+		app.Note("\tsidebarCSSFilename(%v) generated", sidebar)
+		return sidebar
 	}
 	return ""
 }
@@ -249,10 +252,10 @@ func (app *App) getMode(stylesheet string) string {
 	// "theme-light.css" (light theme is the default).
 	// If it is, and if Dark mode
 	// has been specified, publish theme-dark.css instead.
-	app.Note("getMode(%v): Mode is %v", stylesheet, app.Page.FrontMatter.Mode)
 	if stylesheet == "theme-light.css" &&
 		strings.ToLower(app.Page.FrontMatter.Mode) == "dark" {
-		app.Note("\t\tSWITCHAROONIE!")
+		app.Debug("\t\tgetMode(%v): Mode is %v", stylesheet, app.Page.FrontMatter.Mode)
+		app.Note("\t\t\tSWITCHAROONIE!")
 		return ("theme-dark.css")
 	}
 	return stylesheet
@@ -285,6 +288,7 @@ func (app *App) loadThemeConfig(path string) error {
 	// Save the current theme. Force to lowercase because
 	// it's  filename
 	app.Page.Theme.Name = strings.ToLower(filepath.Base(path))
+	app.Site.cssPublishPath = filepath.Join(app.Site.cssPublishPath, app.Page.Theme.Name)
 
 	err = yaml.Unmarshal(b, &app.Page.Theme)
 	if err != nil {

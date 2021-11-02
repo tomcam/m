@@ -11,6 +11,14 @@ on the command line
 * `/cmd/mb` CLI app to compile projects in bulk
 * `/cmd/web` Web app to create pages interactively
 
+
+## Code reminders
+* Base name of theme is in app.Page.Theme.Name
+* Publish means copying from somewhere such as the source Markdown
+file or a theme in .mb/themes to the generated project directory,
+where everything is expected to have read permissions to the world
+upon publication
+
 ## Creating a project
 
 * A Metabuzz website consists of at least one Markdown source

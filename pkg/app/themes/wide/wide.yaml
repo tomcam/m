@@ -9,7 +9,7 @@ Stylesheets:
 - "layout.css"
 #- "bind.css"
 - "sizes.css"
-- "theme-light.css"
+#- "theme-light.css"
 - "wide.css"
 - "responsive.css"
 Nav: {File: nav.md, HTML:}

@@ -1,7 +1,8 @@
 # To do
 
 ## Priority 1: Showstoppers--required for the next release
-* Creatin a site file needs to default to English as the language 
+* Sidebar: left fails nd doesn't include the style sheet
+* Mode: Dark fails. Includes theme-light.css in link rels but doesn't copy it over
 * Not returning errors when specified stylesheets aren't found
 * wide theme using to have {{ toc }} in the sidebar. Hve to revivi that aftermaking parser options more detailed
 * Append all stylesheets to a single file as encountered (for all levels of theme, so inheritance works correctly)
