@@ -229,20 +229,6 @@ func (app *App) loadStylesheets() {
 
 }
 
-// sidebarCSSFilename() returns name of CSS file
-// used for sidebar, either left or right
-func (app *App) sidebarCSSFilename(sidebar string) string {
-	switch sidebar {
-	case "left":
-	case "right":
-		app.Note("\tsidebarCSSFilename(%v) requested", sidebar)
-		sidebar := "sidebar" + "-" + sidebar + ".css"
-		app.Note("\tsidebarCSSFilename(%v) generated", sidebar)
-		return sidebar
-	}
-	return ""
-}
-
 // getMode() checks if the stylesheet is dark or light
 // and adjusts as needed.
 // TODO: It should probably call App.cfg() to
@@ -252,11 +238,10 @@ func (app *App) getMode(stylesheet string) string {
 	// "theme-light.css" (light theme is the default).
 	// If it is, and if Dark mode
 	// has been specified, publish theme-dark.css instead.
-	if stylesheet == "theme-light.css" &&
-		strings.ToLower(app.Page.FrontMatter.Mode) == "dark" {
-		app.Debug("\t\tgetMode(%v): Mode is %v", stylesheet, app.Page.FrontMatter.Mode)
-		app.Note("\t\t\tSWITCHAROONIE!")
-		return ("theme-dark.css")
+	mode := strings.ToLower(app.Page.FrontMatter.Mode)
+	if stylesheet == "theme-light.css" && mode == "dark" {
+    app.Note("\tgetMode(%v): mode is %v. returning theme-dark.css", stylesheet, mode)
+		return "theme-dark.css"
 	}
 	return stylesheet
 }

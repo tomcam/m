@@ -15,7 +15,7 @@ func (app *App) publishFile(filename string) error {
 	//   /Users/tom/code/m/cmd/mb -> /Users/tom/code/m/cmd/mb/test/test.md
 	// Results in:
 	//   /test
-	app.Debug("publishFile(%#v)", filename)
+	//app.Debug("publishFile(%#v)", filename)
 	rel := relDirFile(app.Site.path, filename)
 	app.Page.filePath = filename
 	var err error
@@ -81,22 +81,22 @@ func (app *App) stylesheetTags() string {
 	stylesheets := ""
 	for _, stylesheet := range app.Page.Theme.Stylesheets {
 		// TODO: Performance issue? Probably not because it's a short list?
+		file := app.getMode(stylesheet)
+		mode := strings.ToLower(app.Page.FrontMatter.Mode)
+		app.Note("\tstylesheetTags() stylesheet: %v. Mode: %v", file, mode)
+		if filepath.Base(stylesheet) == "theme-light.css" && mode == "dark" {
+		  app.Note("\tTHEME-DARK AMIRIGHT? stylesheetTags() stylesheet: %v. Mode: %v", file, mode)
+			stylesheet = "theme-dark.css"
+		}
 		stylesheets = stylesheets +
 			stylesheetTag(filepath.Join(app.Site.cssPublishPath, stylesheet))
 	}
-	// good
-  // switch app.Page.FrontMatter.Sidebar {
-  sidebar :=app.Page.FrontMatter.Sidebar 
+	sidebar := app.Page.FrontMatter.Sidebar
 	switch sidebar {
-	//switch app.Page.FrontMatter.Sidebar {
 	case "left", "right":
-		app.Debug("\tstylesheetTags(): sidebar is %v", app.Page.FrontMatter.Sidebar)
 		stylesheets = stylesheets +
 			stylesheetTag(filepath.Join(app.Site.cssPublishPath,
 				"sidebar-"+strings.ToLower(sidebar)+".css"))
-				//"sidebar-"+strings.ToLower(app.Page.FrontMatter.Sidebar)+".css"))
-				// FAIL
-        //app.sidebarCSSFilename(app.Page.FrontMatter.Sidebar )))
 	}
 	return stylesheets
 }
@@ -184,7 +184,7 @@ func (app *App) layoutElementToHTML(tag string) string {
 			return wrapTag("<"+tag+">", html, true)
 		}
 	case "sidebar":
-    app.Debug("\tlayoutElement(%v)", tag)
+		app.Debug("\tlayoutElement(%v)", tag)
 		html = app.layoutElement(tag)
 		if html != "" {
 			return wrapTag("<aside id='sidebar'>", html, true)
@@ -289,7 +289,7 @@ func (app *App) footer() string {
 }
 
 // sidebarType() determines what sidebar to use,
-// if any. Returns either "left" or "right", 
+// if any. Returns either "left" or "right",
 // forced to lowercase
 // If no value has been set for this page,
 // it assigns the sidebar value set in
@@ -322,7 +322,7 @@ func (app *App) publishStylesheet(source string, dest string) error {
 }
 
 func (app *App) publishStylesheets() error {
-	app.Debug("\tpublishStylesheets()")
+	//app.Debug("\tpublishStylesheets()")
 	// Go through the list of stylesheets for this theme.
 	// Copy stylesheets for this theme from the local
 	// theme directory to the publish
@@ -337,6 +337,12 @@ func (app *App) publishStylesheets() error {
 		// a dark theme vs a light theme. If it
 		// is, change to dark if requested.
 		file := app.getMode(stylesheet)
+		app.Note("\tpublishStyleSheets: %v", file)
+    if file == "theme-light.css" && app.Page.FrontMatter.Mode == "dark" {
+      // XXX THIS IS IT!!!!
+      app.Note("BINGO")
+      file = "theme-dark.css"
+    }
 		source := filepath.Join(app.Page.Theme.path, file)
 		dest := filepath.Join(app.Site.cssPublishPath, file)
 		if err := app.publishStylesheet(source, dest); err != nil {
@@ -346,44 +352,22 @@ func (app *App) publishStylesheets() error {
 
 	//switch app.Page.FrontMatter.Sidebar {
 
- sidebar :=app.Page.FrontMatter.Sidebar 
+	sidebar := app.Page.FrontMatter.Sidebar
 	switch sidebar {
-  case "":
-    app.Note("publishStylesheets(): error")
-    return nil
+	case "":
+		app.Note("publishStylesheets(): error")
+		return nil
 	case "left", "right":
 		//stylesheets = stylesheets +
-    sheet :="sidebar-" + sidebar + ".css" 
+		sheet := "sidebar-" + sidebar + ".css"
 		dest := filepath.Join(app.Site.cssPublishPath, sheet)
-    app.Debug("\tpublishStylesheets(): dest: %v", dest)
-    app.Debug("\tpublishStylesheets(): dest is now: %v", dest)
-		app.Debug("\tpublishStylesheets(): sidebar %v", sidebar)
-    stylesheet := stylesheetTag(dest)
-				//"sidebar-"+strings.ToLower(app.Page.FrontMatter.Sidebar)+".css"))
-				// FAIL
-        //app.sidebarCSSFilename(app.Page.FrontMatter.Sidebar )))
-		app.Debug("\tpublishStylesheets(): publish %v", stylesheet)
+		//stylesheet := stylesheetTag(dest)
 		source := filepath.Join(app.Page.Theme.path, sheet)
 		if err := app.publishStylesheet(source, dest); err != nil {
 			app.Debug("ERROR in publishStylesheets(): %v", sidebar)
 			return ErrCode("1024", source)
 		}
-    return nil
+		return nil
 	}
-  /*
-
-	sidebar := app.sidebarCSSFilename(strings.ToLower(app.Page.FrontMatter.Sidebar))
-	//app.Debug("\tpublishStylesheets: sidebar is %v", app.Page.FrontMatter.Sidebar)
-	app.Debug("\tpublishStylesheets: sidebar is %v", sidebar)
-	if sidebar != "" {
-		source := filepath.Join(app.Page.Theme.path, sidebar)
-		dest := filepath.Join(app.Site.cssPublishPath, sidebar)
-		if err := app.publishStylesheet(source, dest); err != nil {
-			app.Debug("ERROR in sidebarCSSFilename(): %v", sidebar)
-			return ErrCode("1024", source)
-		}
-		app.Debug("sidebarCSSFilename(): %v succeeded", sidebar)
-	}
-  */
 	return nil
 }
