@@ -4,5 +4,6 @@ header,nav,article {width:100%;max-width:100%;margin:0;padding-right:1em;padding
 article {width:100%;max-width:100%;}
 aside,footer {display:none}
 }
+/* header,nav,article {margin-left:0;margin-right:0;padding-left:1rem;padding-right:0} */
 
 

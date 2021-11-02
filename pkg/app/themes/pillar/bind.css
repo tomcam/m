@@ -1,28 +1,8 @@
-html,body,nav,header,article,footer{float:left;clear:both;overflow:auto;}
 html,body,nav,header,article,aside,footer{color:var(--fg);background-color:var(--bg);}
-aside{float:left;}
-
 
 header {color:var(--header-fg);background-color:var(--header-bg);overflow:hidden;}
-header {margin-top:var(--header-margin-top);padding-bottom:var(--header-margin-bottom);}
-header {padding-top:var(--header-padding-top);padding-bottom:var(--header-padding-bottom);}
-header {padding-left:var(--text-start);padding-right:var(--header-padding-right);}
-/* Prevent word wrap. Looks bad on smaller screens. */
-header {white-space:nowrap;}
-header {width:var(--header-footer-width);}
-/* Blank space on each side of client area */
-header {margin-right:var(--right-margin);margin-left:var(--left-margin);}
-
 
 nav {color:var(--nav-fg);background-color:var(--nav-bg);overflow:hidden;}
-nav {margin-top:var(--nav-margin-top);margin-bottom:var(--nav-margin-bottom);}
-nav {padding-top:var(--nav-padding-top);padding-bottom:var(--nav-padding-bottom);}
-nav {padding-left:var(--text-start);}
-nav {height:var(--nav-height);width:var(--header-footer-width);}
-nav {margin-right:var(--right-margin);margin-left:var(--left-margin);}
-/* Prevent word wrap. Looks bad on smaller screens. */
-nav {white-space:nowrap;}
-
 
 article {color:var(--article-fg);background-color:var(--article-bg);}
 article {width:var(--article-column-width);}                       

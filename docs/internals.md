@@ -19,6 +19,18 @@ file or a theme in .mb/themes to the generated project directory,
 where everything is expected to have read permissions to the world
 upon publication
 
+
+# Theme
+Put file sin this order
+- reset.css
+- fonts.css
+- bind.css
+- sizes.css
+- theme-light.css
+- layout.css
+- "wide.css"
+- "responsive.css"
+
 ## Creating a project
 
 * A Metabuzz website consists of at least one Markdown source

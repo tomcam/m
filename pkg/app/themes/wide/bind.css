@@ -1,0 +1,6 @@
+nav {color:var(--nav-fg);background-color:var(--nav-bg);}
+article {color:var(--article-fg);background-color:var(--article-bg);} 
+aside {color:var(--aside-fg);background-color:var(--aside-bg);}
+footer {color:var(--footer-fg);background-color:var(--footer-bg);}
+
+

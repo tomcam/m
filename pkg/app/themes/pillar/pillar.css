@@ -9,8 +9,6 @@ table > thead > tr > th  {margin-top:4rem;}
 /*  HEADER BRANDING AND LINKS */
 /* ****************************/
 
-header {width:var(--header-footer-width);} 
-
 
 /*
  * --------------------------------------------------
@@ -37,11 +35,6 @@ header > ul > li > a,
 header > ul > li > a:link,
 header > ul > li > a:visited
 	{font-weight:400;text-decoration:none;}
-/*
-header > ul > li > a:hover,
-header > ul > li > a:active
-	{text-decoration:underline;}
-*/
 
 /*
  * --------------------------------------------------
@@ -103,7 +96,6 @@ nav > ul > li > a:active {text-decoration:underline;}
 /*  ARTICLE-MAIN PORTION OF TEXT*/
 /* ******************************/
 
-article {padding-right:var(--article-pad-text-end);}
 article > p, article > ul, article > ol {font-family:var(--times);}
 article > h1,article > h2 {font-weight:700;}
 article > h4 {font-weight:normal;} /* Byline */
@@ -193,7 +185,6 @@ article > table > tbody > tr > td {padding:1rem;}
 /*  SIDEBAR (ASIDE TAG)         */
 /* ******************************/
 
-aside {height:100vh;}
 aside, aside > p, aside > h2, aside > h3, aside > h4 {margin-left:0;padding-left:0;padding-right:0rem;} 
 aside > p {margin-bottom:1rem;font-size:.8rem;padding-left:.75em;padding-right:.75em;}
 aside > h2 {margin:0;padding:1rem;font-size:1.75rem;font-weight:bold;white-space:nowrap;}
@@ -222,7 +213,6 @@ aside > p > img {padding:0;padding-top:1rem;width:100%;}
 /*  FOOTER                      */
 /* ******************************/
 
-footer {width:var(--header-footer-width);} 
 
 /*
  * --------------------------------------------------

@@ -6,7 +6,9 @@ Stylesheets:
   - bind.css
   - sizes.css
   - theme-light.css
+  - layout.css
   - pillar.css
+  - responsive.css
 PathName: ''
 Version: 1.2.3
 Nav:
