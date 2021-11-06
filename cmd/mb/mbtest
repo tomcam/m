@@ -7,18 +7,19 @@
 # single, safe directory because the foo 
 # subdirectory gets blown away and replaced
 # each time without warning.
-DIR=~/code/m/cmd/mb
+MB=~/code/m/cmd/mb/mb
+DIR=~/code/m/cmd/mb/foo
 
 # Delete the old project.
-rm -rf $DIR/foo
+rm -rf $DIR
 
 # Create a new project in the sample place.
-$DIR/mb new site $DIR/foo 
+$MB new site $DIR
 
 # Create the full directory structure
-mkdir -p $DIR/foo/level2/level3
+mkdir -p $DIR/level2/level3
 # Populate it with a sample file
-cat <<EOM > $DIR/foo/index.md
+cat <<EOM > $DIR/index.md
 ---
 Description: hey now
 Theme: pillar 
@@ -31,6 +32,12 @@ Mode: light
 # hello, world.
 This is in {{ .Page.FrontMatter.Mode }} mode. 
 Sidebar type: {{ .Page.FrontMatter.Sidebar }} 
+
+## Pages to try
+
+* [debut](debut.html)
+* [right](right.html) at
+
 Check out that description in the source or 
 try visitng the page named [right](right.html) at
 the same directory level, or try:
@@ -51,7 +58,7 @@ the same directory level, or try:
 EOM
 
 # Add a second file at the same directory level
-cat <<EOM > $DIR/foo/right.md
+cat <<EOM > $DIR/right.md
 ---
 Description: hey now
 Theme: wide
@@ -64,7 +71,7 @@ Mode: light
 EOM
 
 # Add a file one directory level deeper
-cat <<EOM > $DIR/foo/level2/index.md
+cat <<EOM > $DIR/level2/index.md
 ---
 Description: level 2 directory test
 Theme: pillar
@@ -80,7 +87,7 @@ Go deeper to [level 3](level3/index.html)
 EOM
 
 # Add a file two directory level deeper
-cat <<EOM > $DIR/foo/level2/level3/index.md
+cat <<EOM > $DIR/level2/level3/index.md
 ---
 Description: level 3 directory test
 Theme: wide
@@ -101,9 +108,21 @@ EOM
 # -d means print debug output
 # -v means use verbose output
 # -i means show site information at end
-$DIR/mb build -d -v -i $DIR/foo
+$MB build -d -v -i $DIR
 
 # And display it
-open $DIR/foo/.mb/pub/index.html
+open $DIR/.mb/pub/index.html
 
+# DEBUT THEME TEST
+cat <<EOM > $DIR/debut.md
+---
+Description: Debut theme test
+Theme: debut 
+Mode: light
+---
+# Debut theme
+## Hello, world.
+This is Debut!
+[Home](/index.html)
+EOM
 

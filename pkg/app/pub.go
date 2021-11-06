@@ -15,7 +15,7 @@ func (app *App) publishFile(filename string) error {
 	//   /Users/tom/code/m/cmd/mb -> /Users/tom/code/m/cmd/mb/test/test.md
 	// Results in:
 	//   /test
-	//app.Debug("publishFile(%#v)", filename)
+	app.Debug("publishFile(%#v)", filename)
 	rel := relDirFile(app.Site.path, filename)
 	app.Page.filePath = filename
 	var err error

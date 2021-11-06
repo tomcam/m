@@ -5,7 +5,7 @@
 {{- $name := .Site.Author.FullName -}}
 * [{{ $name -}}](/)
 {{- else }}
-* [{{.FrontMatter.Theme}}](/)
+* [{{.Page.FrontMatter.Theme}}](#)
 {{- end }} 
 * [Gallery](/)
 * [Docs](/)

@@ -1,7 +1,6 @@
 # To do
 
 ## Priority 1: Showstoppers--required for the next release
-* Sidebar: left fails nd doesn't include the style sheet
 * Mode: Dark fails. Includes theme-light.css in link rels but doesn't copy it over
 * Not returning errors when specified stylesheets aren't found
 * wide theme using to have {{ toc }} in the sidebar. Hve to revivi that aftermaking parser options more detailed
@@ -37,7 +36,11 @@ mb new theme test 0.2.0 from wide 1.1.0
 * RSS support
 * Add to glossary: `command` means a command-line verb such as `new theme` or `new site`
 
+### Testing
+* Deformed YAML file
+
 ## Priority 2: Desired but not required for the next release
+* Error in YAML file doesn't identify the YAML filename
 * Change readThemeFile to readThemeConfig. Also write- version
 * If nothing is avaialble for header, footer, and so on, 
 publish nothing. Right now I'm publishing empty tags.

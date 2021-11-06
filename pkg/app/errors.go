@@ -1,5 +1,27 @@
 package app
-
+// Example usage
+//
+//   return ErrCode("1234", err.Error())
+//
+//   return ErrCode("PREVIOUS", err.Error())
+//
+//   return ErrCode("0401", err.Error(), filename)
+//
+//   Example (a very good example) from util.go
+//	 if err != nil {
+//     return ErrCode("1234", "from '"+source+"' to '"+dest+"'", "")
+//   }
+//
+//   err = copyDirAll(App.themesPath, App.Site.themesPath)
+//   if err != nil {
+// 	   QuitError(ErrCode("0911", "from '"+App.themesPath+"' to '"+App.Site.themesPath+"'"))
+//   }
+//
+//   if err := copyDirOnly(from, to); err != nil {
+//     msg := fmt.Sprintf("Unable to copy from pageType directory %s to new pageType directory %s", from, to)
+//     return ErrCode("0906", msg)
+//   }
+//
 import (
 	"fmt"
 	"github.com/tomcam/m/pkg/default"

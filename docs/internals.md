@@ -11,6 +11,14 @@ on the command line
 * `/cmd/mb` CLI app to compile projects in bulk
 * `/cmd/web` Web app to create pages interactively
 
+## Testing
+* Ideas for defective themename.yaml files
+```
+Branding: Debut theme"
+Stylesheets:
+fred.css
+```
+
 
 ## Code reminders
 * Base name of theme is in app.Page.Theme.Name
@@ -26,15 +34,15 @@ upon publication
 because it will be the name of a file. Could be like "debut" or
 also "debut/gallery/item". DOCUMENT that the covnention is always
 forward slash even on Windows
-Put file sin this order
+Put CSS files sin this order
 - reset.css
 - fonts.css
 - bind.css
 - sizes.css
 - theme-light.css
 - layout.css
-- "wide.css"
-- "responsive.css"
+- [theme name such as wide].css
+- responsive.css
 
 ## Creating a project
 
