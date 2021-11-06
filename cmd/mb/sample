@@ -15,14 +15,31 @@ rm -rf $DIR/foo
 # Create a new project in the sample place.
 $DIR/mb new site $DIR/foo 
 
+# Create the full directory structure
+mkdir -p $DIR/foo/level2/level3
 # Populate it with a sample file
-echo TESTFILE > $DIR/foo/index.md
 cat <<EOM > $DIR/foo/index.md
 ---
 Description: hey now
+Theme: pillar 
+#Theme: textual 
+#Theme: future
+#Theme: reference
+Sidebar: left
+Mode: light
 ---
 # hello, world.
-Check out that description in the source
+This is in dark mode. Sidebar is on the left. 
+Check out that description in the source or 
+try visitng the page named [right](right.html) at
+the same directory level, or try:
+
+* [level2/index.html](level2/index.html)
+* [level2/level3/index.html](level2/level3/index.html)
+* [/level2/index.html](/level2/index.html)
+* [/level2/level3/index.html](/level2/level3/index.html)
+
+
 
 ## Table test
 
@@ -32,9 +49,58 @@ Check out that description in the source
 
 EOM
 
+# Add a second file at the same directory level
+cat <<EOM > $DIR/foo/right.md
+---
+Description: hey now
+Theme: wide
+Sidebar: right
+Mode: light
+---
+# Sidebar on right.
+
+[Back](index.html)
+EOM
+
+# Add a file one directory level deeper
+cat <<EOM > $DIR/foo/level2/index.md
+---
+Description: level 2 directory test
+Theme: pillar
+Sidebar: none
+---
+# level2/index.md
+
+No sidebar on this page.
+
+Go deeper to [level 3](level3/index.html)
+
+[Home](../index.html)
+EOM
+
+# Add a file two directory level deeper
+cat <<EOM > $DIR/foo/level2/level3/index.md
+---
+Description: level 3 directory test
+Theme: wide
+Sidebar: none
+---
+# level2/level3/index.md
+
+Go back down to to [level 2](../index.html)
+
+[Home](/index.html)
+EOM
+
+
+
+
 
 # Generate HTML for the new project.
-$DIR/mb build $DIR/foo
+# -d means print debug output
+# -v means use verbose output
+# -i means show site information at end
+$DIR/mb build -d -v -i $DIR/foo
 
 # And display it
 open $DIR/foo/.mb/pub/index.html
