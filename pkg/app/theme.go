@@ -18,6 +18,12 @@ type Theme struct {
 	// Themes can be nested, e.g. debut/gallery/item.
 	// Each level get its own entry here.
 	levels []string
+
+  // Tracks level of nesting for this theme. So if
+  // the theme is specified as debut/gallery/item,
+  // debut is 0, gallery is 1, and item is 2.
+  nestingLevel int
+
 	// Location of theme files after they have been
 	// copied to the publish directory for themes
 	// used by this site.
@@ -25,6 +31,10 @@ type Theme struct {
 	// Location of source theme files computed at
 	// runtime
 	sourcePath string
+
+  // List of all stylesheet tags generated for this theme
+  stylesheetTags []string
+
 	// Name is the name of the theme for this page,
 	// e.g. "wide"
 	Name        string        `yaml:"Name"`
@@ -258,6 +268,7 @@ func (app *App) loadTheme() error {
 		// to the previous directory
 		source = filepath.Join(source, theme)
 		app.Page.Theme.sourcePath = source
+    app.Page.Theme.nestingLevel = level
 		dest = filepath.Join(dest, theme)
 		app.loadThemeLevel(source, dest, level)
 	}

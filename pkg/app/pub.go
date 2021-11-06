@@ -80,20 +80,26 @@ func (app *App) publishFile(filename string) error {
 
 // stylesheetTags generates all stylesheet tags at once
 func (app *App) stylesheetTags() string {
+  var tag string
 	stylesheets := ""
 	for _, stylesheet := range app.Page.Theme.Stylesheets {
 		mode := strings.ToLower(app.Page.FrontMatter.Mode)
 		if filepath.Base(stylesheet) == "theme-light.css" && mode == "dark" {
 			stylesheet = "theme-dark.css"
 		}
-		stylesheets = stylesheets + stylesheetTag(filepath.Join(app.Page.Theme.publishPath, stylesheet))
+		tag = stylesheetTag(filepath.Join(app.Page.Theme.publishPath, stylesheet))
+		app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags,tag)
+    stylesheets = stylesheets + tag
 	}
 	sidebar := app.Page.FrontMatter.Sidebar
 	switch sidebar {
 	default:
 		return stylesheets
 	case "left", "right":
-		stylesheets = stylesheets + stylesheetTag(filepath.Join(app.Page.Theme.publishPath, "sidebar-"+strings.ToLower(sidebar)+".css"))
+  //app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags,filepath.Join(app.Page.Theme.publishPath, "sidebar-"+strings.ToLower(sidebar)+".css"))
+		tag = stylesheetTag(filepath.Join(app.Page.Theme.publishPath, "sidebar-"+strings.ToLower(sidebar)+".css"))
+    stylesheets = stylesheets + tag
+		app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags,tag) 
 		return stylesheets
 	}
 }
@@ -349,7 +355,6 @@ func (app *App) publishStylesheets() error {
 	source = filepath.Join(app.Page.Theme.sourcePath, file)
 	dest = filepath.Join(app.Page.Theme.publishPath, file)
 	if err := app.publishStylesheet(source, dest); err != nil {
-		app.Debug("ERROR in publishStylesheets(): %v", sidebar)
 		return ErrCode("1024", source)
 	}
 	return nil
