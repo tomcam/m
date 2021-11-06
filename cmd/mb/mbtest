@@ -36,6 +36,7 @@ Sidebar type: {{ .Page.FrontMatter.Sidebar }}
 ## Pages to try
 
 * [debut](debut.html)
+* [debut/gallery](debut-gallery.html)
 * [right](right.html) at
 
 Check out that description in the source or 
@@ -125,4 +126,18 @@ Mode: light
 This is Debut!
 [Home](/index.html)
 EOM
+
+# DEBUT/GALLERY THEME TEST
+cat <<EOM > $DIR/debut-gallery.md
+---
+Description: Debut Gallery theme test
+Theme: debut/gallery
+Mode: light
+---
+# Gallery theme
+
+This is debut/gallery, aka {{ .Page.FrontMatter.Theme }}
+[Home](/index.html)
+EOM
+
 
