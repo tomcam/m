@@ -86,17 +86,16 @@ func (app *App) stylesheetTags() string {
 		if filepath.Base(stylesheet) == "theme-light.css" && mode == "dark" {
 			stylesheet = "theme-dark.css"
 		}
-		stylesheets = stylesheets +
-			stylesheetTag(filepath.Join(app.Page.Theme.publishPath, stylesheet))
+		stylesheets = stylesheets + stylesheetTag(filepath.Join(app.Page.Theme.publishPath, stylesheet))
 	}
 	sidebar := app.Page.FrontMatter.Sidebar
 	switch sidebar {
+	default:
+		return stylesheets
 	case "left", "right":
-		stylesheets = stylesheets +
-			stylesheetTag(filepath.Join(app.Page.Theme.publishPath,
-				"sidebar-"+strings.ToLower(sidebar)+".css"))
+		stylesheets = stylesheets + stylesheetTag(filepath.Join(app.Page.Theme.publishPath, "sidebar-"+strings.ToLower(sidebar)+".css"))
+		return stylesheets
 	}
-	return stylesheets
 }
 
 // descriptionTag() reads Description from front matter
@@ -182,7 +181,6 @@ func (app *App) layoutElementToHTML(tag string) string {
 			return wrapTag("<"+tag+">", html, true)
 		}
 	case "sidebar":
-		app.Debug("\tlayoutElement(%v)", tag)
 		html = app.layoutElement(tag)
 		if html != "" {
 			return wrapTag("<aside id='sidebar'>", html, true)
@@ -205,6 +203,10 @@ func (app *App) layoutElement(tag string) string {
 	case "nav":
 		l = app.Page.Theme.Nav
 	case "sidebar":
+		if app.Page.FrontMatter.Sidebar != "left" &&
+			app.Page.FrontMatter.Sidebar != "right" {
+			return ""
+		}
 		l = app.Page.Theme.Sidebar
 	case "footer":
 		l = app.Page.Theme.Footer
@@ -337,15 +339,11 @@ func (app *App) publishStylesheets() error {
 			file = "theme-dark.css"
 		}
 		source := filepath.Join(app.Page.Theme.sourcePath, file)
-		//dest := filepath.Join(app.Site.cssPublishPath, file)
 		dest := filepath.Join(app.Page.Theme.publishPath, file)
 		if err := app.publishStylesheet(source, dest); err != nil {
-			//app.Note("TODO: publishStyleSheets(%v,%v) error", source, dest)
 			return ErrCode("PREVIOUS", err.Error())
 		}
 	}
-
-	//switch app.Page.FrontMatter.Sidebar {
 
 	sidebar := app.Page.FrontMatter.Sidebar
 	switch sidebar {

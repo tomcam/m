@@ -245,11 +245,12 @@ func (app *App) loadStylesheets() error {
 	if err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
-
-	err = os.MkdirAll(app.Page.Theme.sourcePath, defaults.PublicFilePermissions)
-	if err != nil {
-		return ErrCode("PREVIOUS", err.Error())
-	}
+	/*
+		err = os.MkdirAll(app.Page.Theme.sourcePath, defaults.PublicFilePermissions)
+		if err != nil {
+			return ErrCode("PREVIOUS", err.Error())
+		}
+	*/
 
 	return nil
 }
