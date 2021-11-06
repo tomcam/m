@@ -47,7 +47,10 @@ func (app *App) publishFile(filename string) error {
 	// Convert the FrontMatter map produced by Goldmark into
 	// the Page.FrontMatter struct.
 	app.frontMatterRawToStruct()
-	app.loadTheme()
+	if err = app.loadTheme(); err != nil {
+		// TODO: Handle error properly & and document error code
+		return err
+	}
 
 	// Write HTML text of the body
 	fullPage := app.Site.HTMLStartFile +
@@ -79,19 +82,18 @@ func (app *App) publishFile(filename string) error {
 func (app *App) stylesheetTags() string {
 	stylesheets := ""
 	for _, stylesheet := range app.Page.Theme.Stylesheets {
-		// TODO: Performance issue? Probably not because it's a short list?
 		mode := strings.ToLower(app.Page.FrontMatter.Mode)
 		if filepath.Base(stylesheet) == "theme-light.css" && mode == "dark" {
 			stylesheet = "theme-dark.css"
 		}
 		stylesheets = stylesheets +
-			stylesheetTag(filepath.Join(app.Site.cssPublishPath, stylesheet))
+			stylesheetTag(filepath.Join(app.Page.Theme.publishPath, stylesheet))
 	}
 	sidebar := app.Page.FrontMatter.Sidebar
 	switch sidebar {
 	case "left", "right":
 		stylesheets = stylesheets +
-			stylesheetTag(filepath.Join(app.Site.cssPublishPath,
+			stylesheetTag(filepath.Join(app.Page.Theme.publishPath,
 				"sidebar-"+strings.ToLower(sidebar)+".css"))
 	}
 	return stylesheets
@@ -233,7 +235,6 @@ func (app *App) layoutEl(l layoutElement) string {
 		app.Debug("Can't find theme file %v", filename)
 		return ""
 	}
-	app.Debug("\t\tlayoutEl(%v", filename)
 
 	// Convert file contents to a byte slice of HTML
 	if isMarkdownFile(filename) {
@@ -307,7 +308,7 @@ func (app *App) sidebarType() string {
 
 // TODO: Should return error
 func (app *App) publishStylesheet(source string, dest string) error {
-	app.Debug("publishStylesheet(%v, %v)", source, dest)
+	app.Debug("\tpublishStylesheet(%v, %v)", source, dest)
 	// Keep list of stylesheets that got published
 	err := Copy(source, dest)
 	if err != nil {
@@ -332,12 +333,14 @@ func (app *App) publishStylesheets() error {
 		// a dark theme vs a light theme. If it
 		// is, change to dark if requested.
 		file := app.getMode(stylesheet)
-    if file == "theme-light.css" && app.Page.FrontMatter.Mode == "dark" {
-      file = "theme-dark.css"
-    }
-		source := filepath.Join(app.Page.Theme.path, file)
-		dest := filepath.Join(app.Site.cssPublishPath, file)
+		if file == "theme-light.css" && app.Page.FrontMatter.Mode == "dark" {
+			file = "theme-dark.css"
+		}
+		source := filepath.Join(app.Page.Theme.sourcePath, file)
+		//dest := filepath.Join(app.Site.cssPublishPath, file)
+		dest := filepath.Join(app.Page.Theme.publishPath, file)
 		if err := app.publishStylesheet(source, dest); err != nil {
+			//app.Note("TODO: publishStyleSheets(%v,%v) error", source, dest)
 			return ErrCode("PREVIOUS", err.Error())
 		}
 	}
@@ -353,7 +356,7 @@ func (app *App) publishStylesheets() error {
 		sheet := "sidebar-" + sidebar + ".css"
 		dest := filepath.Join(app.Site.cssPublishPath, sheet)
 		//stylesheet := stylesheetTag(dest)
-		source := filepath.Join(app.Page.Theme.path, sheet)
+		source := filepath.Join(app.Page.Theme.sourcePath, sheet)
 		if err := app.publishStylesheet(source, dest); err != nil {
 			app.Debug("ERROR in publishStylesheets(): %v", sidebar)
 			return ErrCode("1024", source)

@@ -36,7 +36,11 @@ var errMsgs = map[string]string{
 
 	// 0100	- Error reading file
 	"0101": "Error reading front matter", // filename
+	"0112": "Unable to copy file",        // filename
+
 	// 0200	- Error creating file
+	"0216": "Error publishing theme file", // filename
+
 	// 0250 - Error closing file
 	// 0300	- Error deleting file
 	"0302": "Unable to delete publish directory",
@@ -45,7 +49,7 @@ var errMsgs = map[string]string{
 	"0401": "Unable to create project directory", // filename
 	"0403": "Unable to create publish directory",
 	"0406": "Unable to copy site directory",
-
+	"0409": "Error creating theme directory for theme", // Fully qualified pathname
 	// 0500	- Error determining directory name
 	// 0600 - Error deleting directory
 	// 0700	- Error reading directory
@@ -150,13 +154,13 @@ func new(key string, previous string, extra ...string) error {
 //
 //   return ErrCode("PREVIOUS", err.Error())
 //
-//   return ErrCode("0401", err.Error())
+//   return ErrCode("1234", err.Error())
 //
 //   return ErrCode("0401", err.Error(), filename)
 //
 //   Example (a very good example) from util.go
 //	 if err != nil {
-//     return ErrCode("0406", "from '"+source+"' to '"+dest+"'", "")
+//     return ErrCode("1234", "from '"+source+"' to '"+dest+"'", "")
 //   }
 
 //
@@ -191,11 +195,7 @@ func ErrCode(key string, previous string, extra ...string) error {
 // constraint, for example, fulfilling an interface method
 // that doesn't support this practice.
 func (a *App) QuitError(e error) {
-	/*
-		if a.Page.filePath != "" {
-			fmt.Printf("%s ", a.Page.filePath)
-		}
-	*/
+	// Error message from an earlier error return needs to be seen.
 	displayError(e)
 	if e == nil {
 		os.Exit(0)

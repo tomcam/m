@@ -53,7 +53,7 @@ type App struct {
 	// It's where the site's themes come from when a new site
 	// is created.
 	// TODO: renamed from themesPath
-	factoryThemesPath string
+	//factoryThemesPath string
 } // type Application
 
 type Flags struct {
@@ -88,15 +88,15 @@ func NewApp() *App {
 	app := App{
 		//deleteme: make([]byte)
 		Page: Page{},
-		Site: Site{},
 		// Missing here: initializing the parser.
 		// Can't set parser options until command
 		// line has been processed.
 		// So that happens at App.initConfig()
 		RootCmd:             cobra.Command{},
 		applicationDataPath: userConfigPath(),
-		factoryThemesPath:   filepath.Join(userConfigPath(), defaults.ThemesDir),
+		//factoryThemesPath:   filepath.Join(userConfigPath(), defaults.ThemesDir),
 	}
+	app.Site.publishedThemes = make(map[string]bool)
 	return &app
 }
 
@@ -245,10 +245,6 @@ func (app *App) setPaths() {
 	// that live in the HTML <head>
 	app.Site.headTagsPath = filepath.Join(app.cfgPath,
 		defaults.HeadTagsPath)
-
-	// Compute the directory location for theme files
-	app.factoryThemesPath = filepath.Join(app.cfgPath,
-		defaults.ThemesDir)
 
 	// Create a new, empty map to hold the
 	// source directory tree.

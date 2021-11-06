@@ -21,6 +21,11 @@ upon publication
 
 
 # Theme
+* Site.FactoryThemesPath is where the source themes are
+* loadThemeConfig() forces Page.FrontMatter.Theme to lowercase
+because it will be the name of a file. Could be like "debut" or
+also "debut/gallery/item". DOCUMENT that the covnention is always
+forward slash even on Windows
 Put file sin this order
 - reset.css
 - fonts.css

@@ -15,9 +15,13 @@ import (
 )
 
 type Theme struct {
+	// Location of theme files after they have been
+	// copied to the publish directory for themes
+	// used by this site.
+	publishPath string
 	// Location of source theme files computed at
 	// runtime
-	path string
+	sourcePath string
 	// Name is the name of the theme for this page,
 	// e.g. "wide"
 	Name        string        `yaml:"Name"`
@@ -62,6 +66,7 @@ var factoryThemeFiles embed.FS
 func (app *App) copyFactoryThemes() error {
 	// TODO: Can this whole thing be replaced with a copyDirAll()?
 	// Is there a perf benefit either way?
+	app.Debug("\tcopyFactoryThemes")
 	var target string
 	fs.WalkDir(factoryThemeFiles, ".", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -82,12 +87,17 @@ func (app *App) copyFactoryThemes() error {
 			if err != nil {
 				// TODO: Handle error properly & and document error code
 				app.Note("\tos.MkdirAll() error: %v", err.Error())
-				return err
+				return ErrCode("0409", target)
 			}
+			app.Debug("\t\tcreated directory %v", target)
 			return nil
 		}
+		// It's a file, not a directory
+		app.Debug("\t\tCreated theme directory %v", target)
 		// Handle individual file
+		//app.Page.Theme.sourcePath
 		target = filepath.Join(app.Site.factoryThemesPath, path)
+		app.Note("app.Site.factoryThemesPath: %v. path: %v", app.Site.factoryThemesPath, path)
 		f, err := factoryThemeFiles.Open(path)
 		if err != nil {
 			// TODO: Handle error properly & and document error code
@@ -104,8 +114,12 @@ func (app *App) copyFactoryThemes() error {
 		// Copy the recently read file to its destination
 		err = ioutil.WriteFile(target, b, defaults.ProjectFilePermissions)
 		if err != nil {
+			app.Note("\t\tcopyFactoryThemes(): err after WriteFile:  %#v", err)
 			// TODO: Handle error properly & and document error code
-			app.Note("\tio.WriteFile(%v) error: %v", f, err.Error())
+			//app.Debug("\t\tHEY io.WriteFile(%v) error: %v happened during copyFactoryThemes() %v", f, err.Error(), target)
+			return ErrCode("0216", err.Error(), target)
+			//app.Note("\t\tcopyFactoryThemes(): supposed to return with error value of %#v. err == nil: %v", err, err == nil)
+			//return ErrCode("0216", target, err.Error())
 			return err
 		}
 		return nil
@@ -150,18 +164,18 @@ func (app *App) themeNameToLower() string {
 //   look for one named in the Metabuzz file
 // - If no theme is named in the Metabuzz file,
 //   use the default theme named in defaults.DefaultThemeName
-func (app *App) loadTheme() {
+func (app *App) loadTheme() error {
 	// Theme designation could something like:
 	//  debut
 	//  debut/gallery
 	//  debut/gallery/item
 
-	app.Debug("\tloadTheme()")
 	app.Page.FrontMatter.Theme = app.themeNameToLower()
 	// This is called fullTheme because the theme designation
 	// can be something "debut" or it can go down deper,
 	// for example, "debut/gallery/item"
 	fullTheme := app.Page.FrontMatter.Theme
+	app.Debug("\tloadTheme %v", fullTheme)
 	// If it's something like debut/gallery, loop around and load from root to branch.
 	// That way styles are overridden the way
 	// CSS expects.
@@ -169,40 +183,46 @@ func (app *App) loadTheme() {
 	theme := ""
 
 	// Get directory from which themes will be copied
-	source := filepath.Join(app.Site.factoryThemesPath,
-		defaults.ThemesDir)
+	source := filepath.Join(app.Site.factoryThemesPath, defaults.SiteThemesDir)
 	dest := app.Site.siteThemesPath
 	for level := 0; level < len(themeDirs); level++ {
-		if level == 0 {
-			// Build the deepest directory necessary, e.g.
-			// .mb/pub/themes/debut/gallery
-			err := os.MkdirAll(filepath.Join(app.Site.siteThemesPath, fullTheme), defaults.PublicFilePermissions)
-			if err != nil {
-				// TODO: Handle error properly & and document error code
-				app.Note("\tos.MkdirAll() error: %v", err.Error())
-				return
-			}
-		}
 		theme = themeDirs[level]
 		// Get the next level of directory and append
 		// to the previous directory
 		source = filepath.Join(source, theme)
-		app.Page.Theme.path = source
+		app.Page.Theme.sourcePath = source
 		dest = filepath.Join(dest, theme)
-		if err := copyDirAll(source, dest); err != nil {
-			// TODO: Handle error properly & and document error code
-			//return ErrCode("0401", source)
-			app.QuitError(err)
+		// See if this theme has already been
+		// published.
+		_, ok := app.Site.publishedThemes[dest]
+		if !ok {
+			// Cant find theme in map so apparently it's
+			// not yet published.
+			// Create a directory for it.
+			err := os.MkdirAll(dest, defaults.PublicFilePermissions)
+			if err != nil {
+				// TODO: Handle error properly & and document error code
+				app.Note("\tos.MkdirAll() error: %v", err.Error())
+				return ErrCode("PREVIOUS", err.Error())
+			}
+			// Theme directory created successfuly
 		}
+		app.Debug("\tloadTheme: copy from %v to %v", source, dest)
+
+		if err := copyDirAll(source, dest); err != nil {
+			return ErrCode("PREVIOUS", err.Error())
+		}
+		app.Page.Theme.publishPath = dest
+		app.Site.publishedThemes[dest] = true
 		// Theme directory is known. Use it to load the .yaml file
 		// for this theme.
 		// Load theme info into app.Page.theme
 		if err := app.loadThemeConfig(dest); err != nil {
-			// TODO: Handle error properly & and document error code
-			app.QuitError(err)
+			return ErrCode("PREVIOUS", err.Error())
 		}
 		app.loadStylesheets()
 	}
+	return nil
 }
 
 // loadStylesheets() finds the stylesheets
@@ -214,18 +234,24 @@ func (app *App) loadTheme() {
 // be found, this function doesn't return errors
 // TODO: Track when these things are copied
 // to avoid redoing this work unnecessarily
-func (app *App) loadStylesheets() {
+func (app *App) loadStylesheets() error {
 	// If no style sheets don't waste time here
 	if len(app.Page.Theme.Stylesheets) <= 0 {
-		return
+		return nil
 	}
 	// Create the published style sheet directory
 	// TODO: Track this to make sure it's not repeated unnecessarily
 	err := os.MkdirAll(app.Site.cssPublishPath, defaults.PublicFilePermissions)
 	if err != nil {
-		return
+		return ErrCode("PREVIOUS", err.Error())
 	}
 
+	err = os.MkdirAll(app.Page.Theme.sourcePath, defaults.PublicFilePermissions)
+	if err != nil {
+		return ErrCode("PREVIOUS", err.Error())
+	}
+
+	return nil
 }
 
 // getMode() checks if the stylesheet is dark or light
@@ -270,8 +296,8 @@ func (app *App) loadThemeConfig(path string) error {
 
 	// Save the current theme. Force to lowercase because
 	// it's  filename
-	app.Page.Theme.Name = strings.ToLower(filepath.Base(path))
-	app.Site.cssPublishPath = filepath.Join(app.Site.cssPublishPath, app.Page.Theme.Name)
+	app.Page.Theme.Name = strings.ToLower(app.Page.FrontMatter.Theme)
+	app.Page.Theme.publishPath = filepath.Join(app.Site.siteThemesPath, app.Page.Theme.Name)
 
 	err = yaml.Unmarshal(b, &app.Page.Theme)
 	if err != nil {

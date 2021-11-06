@@ -140,6 +140,11 @@ type Site struct {
 	// gets copied to the siteThemesPath directory.
 	factoryThemesPath string
 
+	// Tracks which themes are used by this site
+	// to avoid copying over themes that have
+	// already been copied.
+	publishedThemes map[string]bool
+
 	// Location of theme files copied over for this
 	// particular site
 	siteThemesPath string
@@ -265,6 +270,7 @@ func (m MdOptions) IsOptionSet(opt MdOptions) bool {
 // createSite() generates an empty site at
 // the directory specified in app.Site.path
 func (app *App) createSite(pathname string) error {
+	app.Debug("\tcreateSite(%v)", pathname)
 	var err error
 	// Create a project at the specified path
 	err = os.MkdirAll(pathname, defaults.ProjectFilePermissions)
@@ -272,7 +278,7 @@ func (app *App) createSite(pathname string) error {
 		return ErrCode("0401", pathname)
 	}
 	// Update app.Site.path and build all related directories
-	if err := app.setWorkingDir(pathname); err != nil {
+	if err = app.setWorkingDir(pathname); err != nil {
 		return err
 	}
 
@@ -286,15 +292,25 @@ func (app *App) createSite(pathname string) error {
 
 	// Create minimal directory structure: Publish directory
 	// .site directory, .themes, etc.
-	if err := createDirStructure(&defaults.SitePaths); err != nil {
+	if err = createDirStructure(&defaults.SitePaths); err != nil {
+		app.Debug("\t\tcreateDirStructure() failed during createSite()")
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	// Get factory themes and copy to project. They will then
 	// be copied on demand to the publish directory as needed.
 	// This makes it easy to find themes and modify theme.
-	if err := app.copyFactoryThemes(); err != nil {
+	app.Note("About to copy factory themes")
+	//if err = app.copyFactoryThemes(); err != nil {
+	err = app.copyFactoryThemes()
+	app.Note("\terr after calling app.copyFactoryThemes(): %v", err)
+	if err != nil {
+		// TODO: Improve error handling?
+		app.Note("TODO: DUDE!!!")
+		app.Debug("\t\tcopyFactoryThemes() failed during createSite()")
 		return ErrCode("PREVIOUS", err.Error())
+
 	}
+	app.Note("Copied factory themes")
 
 	// TODO: Populate
 	if err := app.writeSiteConfig(); err != nil {
@@ -307,6 +323,7 @@ func (app *App) createSite(pathname string) error {
 
 // readSiteConfig() obtains site config info from the
 // site configuration file, i.e. site.yaml
+// Pre: call Site.newSite()
 func (app *App) readSiteConfig() error {
 	var err error
 	var b []byte
