@@ -105,15 +105,6 @@ EOM
 
 
 
-# Generate HTML for the new project.
-# -d means print debug output
-# -v means use verbose output
-# -i means show site information at end
-$MB build -d -v -i $DIR
-
-# And display it
-open $DIR/.mb/pub/index.html
-
 # DEBUT THEME TEST
 cat <<EOM > $DIR/debut.md
 ---
@@ -139,5 +130,17 @@ Mode: light
 This is debut/gallery, aka {{ .Page.FrontMatter.Theme }}
 [Home](/index.html)
 EOM
+
+
+
+
+# Generate HTML for the new project.
+# -d means print debug output
+# -v means use verbose output
+# -i means show site information at end
+$MB build -d -v -i $DIR
+
+# And display it
+open $DIR/.mb/pub/index.html
 
 

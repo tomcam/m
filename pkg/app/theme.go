@@ -15,9 +15,9 @@ import (
 )
 
 type Theme struct {
-  // Themes can be nested, e.g. debut/gallery/item.
-  // Each level get its own entry here.
-  levels []string
+	// Themes can be nested, e.g. debut/gallery/item.
+	// Each level get its own entry here.
+	levels []string
 	// Location of theme files after they have been
 	// copied to the publish directory for themes
 	// used by this site.
@@ -178,21 +178,6 @@ func (app *App) loadThemeLevel(source string, dest string, level int) error {
 	// Get directory from which themes will be copied
 	// See if this theme has already been
 	// published.
-	/*
-		_, ok := app.Site.publishedThemes[dest]
-		if !ok {
-			// Cant find theme in map so apparently it's
-			// not yet published.
-			// Create a directory for it.
-			err := os.MkdirAll(dest, defaults.PublicFilePermissions)
-			if err != nil {
-				// TODO: Handle error properly & and document error code
-				app.Note("\t\t\tos.MkdirAll() error: %v", err.Error())
-				return ErrCode("PREVIOUS", err.Error())
-			}
-			// Theme directory created successfuly
-		}
-	*/
 	_, ok := app.Site.publishedThemes[dest]
 	if !ok {
 		err := os.MkdirAll(dest, defaults.PublicFilePermissions)
@@ -211,13 +196,10 @@ func (app *App) loadThemeLevel(source string, dest string, level int) error {
 	}
 
 	app.Page.Theme.publishPath = dest
-	//app.Site.publishedThemes[dest] = true
-	// Theme directory is known. Use it to load the .yaml file
-	// for this theme.
 	// Load theme info into app.Page.theme
 	app.Debug("\t\t\tcopyDirAll(%v, %v)", source, dest)
 	if err := app.loadThemeConfig(dest); err != nil {
-    // TODO: Better error handling
+		// TODO: Better error handling
 		app.Note("\t\t\tWHOA Can't load theme config %v", dest)
 		return ErrCode("PREVIOUS", err.Error())
 	}
