@@ -29,7 +29,8 @@ Sidebar: left
 Mode: light
 ---
 # hello, world.
-This is in dark mode. Sidebar is on the left. 
+This is in {{ .Page.FrontMatter.Mode }} mode. 
+Sidebar type: {{ .Page.FrontMatter.Sidebar }} 
 Check out that description in the source or 
 try visitng the page named [right](right.html) at
 the same directory level, or try:
