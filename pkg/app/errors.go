@@ -1,4 +1,5 @@
 package app
+
 // Example usage
 //
 //   return ErrCode("1234", err.Error())

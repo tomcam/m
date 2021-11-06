@@ -2,10 +2,7 @@ Branding: 'Debut/Gallery Theme'
 Description: ''
 Stylesheets:
 #  - bind.css
-  - sizes.css
-  - theme-light.css
   - gallery.css
-  - responsive.css
 PathName: ''
 Version: 1.2.3
 Nav:

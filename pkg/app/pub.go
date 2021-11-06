@@ -353,7 +353,8 @@ func (app *App) publishStylesheets() error {
 		//stylesheets = stylesheets +
 		sheet := "sidebar-" + sidebar + ".css"
 		dest := filepath.Join(app.Site.cssPublishPath, sheet)
-		//stylesheet := stylesheetTag(dest)
+		dest = filepath.Join(app.Page.Theme.publishPath, sheet)
+		//sheet = stylesheetTag(dest)
 		source := filepath.Join(app.Page.Theme.sourcePath, sheet)
 		if err := app.publishStylesheet(source, dest); err != nil {
 			app.Debug("ERROR in publishStylesheets(): %v", sidebar)
