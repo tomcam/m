@@ -71,16 +71,14 @@ func (app *App) publishFile(filename string) error {
 		// TODO: Handle error properly & and document error code
 		return err
 	}
-	if err := app.publishStylesheets(); err != nil {
-		return ErrCode("PREVIOUS", err.Error())
-	}
+	app.Note("Stylesheets:\n%v\n\n", app.Page.stylesheets)
 
 	return nil
 }
 
 // stylesheetTags generates all stylesheet tags at once
 func (app *App) stylesheetTags() string {
-  var tag string
+	var tag string
 	stylesheets := ""
 	for _, stylesheet := range app.Page.Theme.Stylesheets {
 		mode := strings.ToLower(app.Page.FrontMatter.Mode)
@@ -88,18 +86,17 @@ func (app *App) stylesheetTags() string {
 			stylesheet = "theme-dark.css"
 		}
 		tag = stylesheetTag(filepath.Join(app.Page.Theme.publishPath, stylesheet))
-		app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags,tag)
-    stylesheets = stylesheets + tag
+		app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags, tag)
+		stylesheets = stylesheets + tag
 	}
 	sidebar := app.Page.FrontMatter.Sidebar
 	switch sidebar {
 	default:
 		return stylesheets
 	case "left", "right":
-  //app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags,filepath.Join(app.Page.Theme.publishPath, "sidebar-"+strings.ToLower(sidebar)+".css"))
 		tag = stylesheetTag(filepath.Join(app.Page.Theme.publishPath, "sidebar-"+strings.ToLower(sidebar)+".css"))
-    stylesheets = stylesheets + tag
-		app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags,tag) 
+		stylesheets = stylesheets + tag
+		app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags, tag)
 		return stylesheets
 	}
 }
@@ -316,7 +313,7 @@ func (app *App) sidebarType() string {
 
 // TODO: Should return error
 func (app *App) publishStylesheet(source string, dest string) error {
-	app.Debug("\tpublishStylesheet(%v, %v)", source, dest)
+	app.Note("\t\t\tpublishStylesheet(%v, %v)", source, dest)
 	// Keep list of stylesheets that got published
 	err := Copy(source, dest)
 	if err != nil {
@@ -327,6 +324,7 @@ func (app *App) publishStylesheet(source string, dest string) error {
 }
 
 func (app *App) publishStylesheets() error {
+	app.Note("\t\tpublishStylesheets()")
 	var source, dest, file string
 	// Go through the list of stylesheets for this theme.
 	// Copy stylesheets for this theme from the local
@@ -344,6 +342,11 @@ func (app *App) publishStylesheets() error {
 		if file == "theme-light.css" && app.Page.FrontMatter.Mode == "dark" {
 			file = "theme-dark.css"
 		}
+		source = filepath.Join(app.Page.Theme.sourcePath, file)
+		dest = filepath.Join(app.Page.Theme.publishPath, file)
+		if err := app.publishStylesheet(source, dest); err != nil {
+			return ErrCode("1024", source)
+		}
 	}
 	sidebar := app.Page.FrontMatter.Sidebar
 	switch sidebar {
@@ -352,8 +355,6 @@ func (app *App) publishStylesheets() error {
 	case "left", "right":
 		file = "sidebar-" + sidebar + ".css"
 	}
-	source = filepath.Join(app.Page.Theme.sourcePath, file)
-	dest = filepath.Join(app.Page.Theme.publishPath, file)
 	if err := app.publishStylesheet(source, dest); err != nil {
 		return ErrCode("1024", source)
 	}
