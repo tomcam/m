@@ -19,7 +19,7 @@ func (app *App) publishFile(filename string) error {
 	rel := relDirFile(app.Site.path, filename)
 	app.Page.filePath = filename
 	var err error
-  // xxx
+	// xxx
 	// Obtain site configuration from site.yaml
 	app.readSiteConfig()
 	if err != nil {
@@ -48,7 +48,7 @@ func (app *App) publishFile(filename string) error {
 	// the Page.FrontMatter struct.
 	app.frontMatterRawToStruct()
 
-  // Theme has been named in Page.FrontMatter so load it.
+	// Theme has been named in Page.FrontMatter so load it.
 	if err = app.loadTheme(); err != nil {
 		// TODO: Handle error properly & and document error code
 		return err
@@ -74,10 +74,10 @@ func (app *App) publishFile(filename string) error {
 		return err
 	}
 	//app.Note("Stylesheets:\n%v\n\n", app.Page.stylesheets)
-  app.Page.stylesheets = []string{}
-  // TODO: May be unnecessary
-  app.Page.Theme = Theme{}
-  app.Site.publishedThemes =map[string]bool{}
+	app.Page.stylesheets = []string{}
+	// TODO: May be unnecessary
+	app.Page.Theme = Theme{}
+	app.Site.publishedThemes = map[string]bool{}
 	return nil
 }
 
@@ -226,7 +226,7 @@ func (app *App) layoutElement(tag string) string {
 
 // TODO: Probably want to return a byte slice
 func (app *App) layoutEl(l layoutElement) string {
-  app.Debug("\t\tlayoutEl(%#v)", l)
+	app.Debug("\t\tlayoutEl(%#v)", l)
 	var err error
 	var html []byte
 	// Inline HTML is top priority

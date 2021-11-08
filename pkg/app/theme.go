@@ -181,7 +181,7 @@ func (app *App) copyTheme(source string, dest string) error {
 		app.Debug("\t\t\t\tFAILED copyDirAll(%v, %v)", source, dest)
 		return ErrCode("PREVIOUS", err.Error())
 	}
-  return nil
+	return nil
 }
 
 // loadThemeLevel() finds the theme specified for this page.
@@ -205,7 +205,7 @@ func (app *App) loadThemeLevel(source string, dest string, level int) error {
 	_, ok := app.Site.publishedThemes[dest]
 	if !ok {
 		err := app.copyTheme(source, dest)
-    // TODO: May want to improve error handling
+		// TODO: May want to improve error handling
 		if err != nil {
 			return err
 		}
@@ -217,7 +217,7 @@ func (app *App) loadThemeLevel(source string, dest string, level int) error {
 
 	// Theme directory is known. Load its config
 	// (e.g. .yaml) file
-  if err := app.loadThemeConfig(dest); err != nil {
+	if err := app.loadThemeConfig(dest); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	return nil
@@ -227,7 +227,7 @@ func (app *App) loadThemeLevel(source string, dest string, level int) error {
 // Load the theme and all its descendants, because
 // a theme could be as sample as "debut" or it could be
 // gallery and its descendants, e.g. "debut/gallery/item".
-// 
+//
 // TODO:
 // - Create docs for the Metabuzz file
 // - If no theme is named in the site file,
@@ -249,15 +249,15 @@ func (app *App) loadTheme() error {
 	// If it's something like debut/gallery, loop around and load from root to branch.
 	// That way styles are overridden the way
 	// CSS expects.
-  // They've all been forced to lowercase, so "Debut/gallery/image"
-  // becomes "debut/gallery/image"
+	// They've all been forced to lowercase, so "Debut/gallery/image"
+	// becomes "debut/gallery/image"
 	app.Page.Theme.levels = strings.Split(fullTheme, "/")
 	theme := ""
 
 	// Get directory from which themes will be copied
 	source := filepath.Join(app.Site.factoryThemesPath, defaults.SiteThemesDir)
 
-  // Get directory to which the theme will be copied for this site 
+	// Get directory to which the theme will be copied for this site
 	dest := app.Site.siteThemesPath
 
 	for level := 0; level < len(app.Page.Theme.levels); level++ {
@@ -268,8 +268,8 @@ func (app *App) loadTheme() error {
 		dest = filepath.Join(dest, theme)
 		app.Page.Theme.sourcePath = source
 		app.Page.Theme.nestingLevel = level
-    // Finds the theme specified for this page.
-    // Copy the required files to the theme publish directory.
+		// Finds the theme specified for this page.
+		// Copy the required files to the theme publish directory.
 		app.loadThemeLevel(source, dest, level)
 	}
 	return nil
@@ -367,4 +367,25 @@ func readThemeConfig(filename string) (*Theme, error) {
 	// This works.
 	// fmt.Printf("theme: %v", theme)
 	return &theme, nil
+}
+
+// newTheme() copies an existing root theme in the
+// site themes directory and creates a new theme
+// based on it, placing the new theme in the
+// site themes directory.
+// from is the name of the theme, not its path,
+// e.g. "debut" or "pillar".
+// TODO: Validate new name so it works as a slug/directory name
+func (app *App) newTheme(from, to string) error {
+
+	// Get directory from which themes will be copied
+	//source := filepath.Join(app.Site.siteThemesPath, defaults.SiteThemesDir, from)
+	source := filepath.Join(app.Site.siteThemesPath, from)
+
+	// Get directory to which the theme will be copied for this site
+	dest := filepath.Join(app.Site.siteThemesPath, to)
+	app.Note("About to copy %v to %v", source, dest)
+
+    app.ShowInfo(".")
+	return nil
 }
