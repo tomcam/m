@@ -19,7 +19,7 @@ func (app *App) publishFile(filename string) error {
 	rel := relDirFile(app.Site.path, filename)
 	app.Page.filePath = filename
 	var err error
-
+  // xxx
 	// Obtain site configuration from site.yaml
 	app.readSiteConfig()
 	if err != nil {
@@ -47,6 +47,8 @@ func (app *App) publishFile(filename string) error {
 	// Convert the FrontMatter map produced by Goldmark into
 	// the Page.FrontMatter struct.
 	app.frontMatterRawToStruct()
+
+  // Theme has been named in Page.FrontMatter so load it.
 	if err = app.loadTheme(); err != nil {
 		// TODO: Handle error properly & and document error code
 		return err
@@ -71,8 +73,11 @@ func (app *App) publishFile(filename string) error {
 		// TODO: Handle error properly & and document error code
 		return err
 	}
-	app.Note("Stylesheets:\n%v\n\n", app.Page.stylesheets)
-
+	//app.Note("Stylesheets:\n%v\n\n", app.Page.stylesheets)
+  app.Page.stylesheets = []string{}
+  // TODO: May be unnecessary
+  app.Page.Theme = Theme{}
+  app.Site.publishedThemes =map[string]bool{}
 	return nil
 }
 
@@ -80,12 +85,14 @@ func (app *App) publishFile(filename string) error {
 func (app *App) stylesheetTags() string {
 	var tag string
 	stylesheets := ""
-	for _, stylesheet := range app.Page.Theme.Stylesheets {
+	//for _, stylesheet := range app.Page.Theme.Stylesheets {
+	for _, stylesheet := range app.Page.stylesheets {
 		mode := strings.ToLower(app.Page.FrontMatter.Mode)
 		if filepath.Base(stylesheet) == "theme-light.css" && mode == "dark" {
 			stylesheet = "theme-dark.css"
 		}
-		tag = stylesheetTag(filepath.Join(app.Page.Theme.publishPath, stylesheet))
+		//tag = stylesheetTag(filepath.Join(app.Page.Theme.publishPath, stylesheet))
+		tag = stylesheetTag(stylesheet)
 		app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags, tag)
 		stylesheets = stylesheets + tag
 	}
@@ -219,6 +226,7 @@ func (app *App) layoutElement(tag string) string {
 
 // TODO: Probably want to return a byte slice
 func (app *App) layoutEl(l layoutElement) string {
+  app.Debug("\t\tlayoutEl(%#v)", l)
 	var err error
 	var html []byte
 	// Inline HTML is top priority
@@ -237,7 +245,7 @@ func (app *App) layoutEl(l layoutElement) string {
 	if !fileExists(filename) {
 		// TODO: Handle error properly & and document error code
 		// T
-		app.Debug("Can't find theme file %v", filename)
+		app.Debug("\t\t\tlayoutEl() Can't find layout element file %v", filename)
 		return ""
 	}
 
@@ -313,7 +321,7 @@ func (app *App) sidebarType() string {
 
 // TODO: Should return error
 func (app *App) publishStylesheet(source string, dest string) error {
-	app.Note("\t\t\tpublishStylesheet(%v, %v)", source, dest)
+	app.Debug("\t\t\tpublishStylesheet(%v, %v)", source, dest)
 	// Keep list of stylesheets that got published
 	err := Copy(source, dest)
 	if err != nil {
@@ -324,7 +332,7 @@ func (app *App) publishStylesheet(source string, dest string) error {
 }
 
 func (app *App) publishStylesheets() error {
-	app.Note("\t\tpublishStylesheets()")
+	app.Debug("\t\tpublishStylesheets()")
 	var source, dest, file string
 	// Go through the list of stylesheets for this theme.
 	// Copy stylesheets for this theme from the local

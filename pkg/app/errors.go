@@ -97,7 +97,9 @@ var errMsgs = map[string]string{
 	"1101": "Unable to",                // chdir to bad dir name
 	"1102": "Unable to",                // chdir to bad dir name during showInfo()
 	"1103": "Unable to",                // chdir to bad dir name during createSite()
+
 	// 1200 - Syntax error!
+	"1204": "Unknown dot value in Go template function ",                // 
 }
 
 type ErrMsg struct {

@@ -1,8 +1,9 @@
 # To do
 
 ## Priority 1: Showstoppers--required for the next release
-* Mode: Dark fails. Includes theme-light.css in link rels but doesn't copy it over
 * Not returning errors when specified stylesheets aren't found
+* responsive.css and themename.css seem to get copied twice? I think it's only when inheritance is used
+* If a themefile has a defect, say somethinglike .FrontMatter.PageType (which no longer exists) you don't know exactly where the defect occurred. Or what source file was being processed at the time.
 * wide theme using to have {{ toc }} in the sidebar. Hve to revivi that aftermaking parser options more detailed
 * Append all stylesheets to a single file as encountered (for all levels of theme, so inheritance works correctly)
 * Add idea of post and specfiications like YYYY-MM-DD or y-m-d etc, using dirs or strings as needed . That way mb new post "/blog/avengers review" would expand to something like "/blog/2022/04/21/avengers-review.html" or "/blog/2022-March-1-avengers-review.html" and so on 
@@ -26,7 +27,7 @@ everything should return errors, displaying to stdout at the last
 possible moment.
 That'll be important for the interactive website version
 * Add versioning for themes (already did it in the older version). That should also mean:
-  - new theme should increment version and allow an optional version, something like this:
+  - new theme should increment version and allow an optional version, something like this: 
 
 ```
 mb new theme test 0.2.0 from wide 1.1.0
