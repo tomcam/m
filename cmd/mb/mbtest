@@ -22,7 +22,7 @@ mkdir -p $DIR/level2/level3
 cat <<EOM > $DIR/index.md
 ---
 Description: hey now
-Theme: pillar 
+Theme: tradesman
 #Theme: textual 
 #Theme: future
 #Theme: reference
