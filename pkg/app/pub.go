@@ -19,7 +19,6 @@ func (app *App) publishFile(filename string) error {
 	rel := relDirFile(app.Site.path, filename)
 	app.Page.filePath = filename
 	var err error
-	// xxx
 	// Obtain site configuration from site.yaml
 	app.readSiteConfig()
 	if err != nil {

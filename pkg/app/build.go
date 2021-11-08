@@ -7,6 +7,7 @@ import (
 	"github.com/tomcam/m/pkg/default"
 	//"github.com/tomcam/m/pkg/mdext"
 	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark-highlighting"
 	"github.com/yuin/goldmark-meta"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
@@ -57,7 +58,7 @@ func (app *App) mdToHTML(source []byte) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-// build() is wht it's all about!
+// build() is what it's all about!
 // It converts the project to HTML files.
 // pathname isn't known to be good. It's
 // for situation such as mb build ~/foo
@@ -112,6 +113,7 @@ func (app *App) build(path string) error {
 		// Go through all the Markdown files and convert.
 		// Start search index JSON file with opening '['
 		// TODO: Add this back
+		// TODO: I think this will be superseded by Yuin's toc feature
 		//app.DelimitIndexJSON(a.Site.SearchJSONFilePath, true)
 		commaNeeded := false
 		for _, file := range files {
@@ -150,24 +152,17 @@ func (app *App) build(path string) error {
 // TODO: Move this to mark package or eliinate mark
 func (app *App) parserWithOptions() goldmark.Markdown {
 	exts := []goldmark.Extender{
-		//mdext.New(mdext.WithTable()), extension.Table,
 
 		// YAML support
-		//mdext.New(),
-		//meta.New(),
 		meta.Meta,
 		// Support GitHub tables
 		extension.Table,
 		extension.GFM,
 		extension.DefinitionList,
 		extension.Footnote,
-		// TC: Add highlighting options
-		/*
-			highlighting.NewHighlighting(
-				highlighting.WithStyle(a.Site.MarkdownOptions.HighlightStyle),
-				highlighting.WithFormatOptions()),
-		*/
-
+		highlighting.NewHighlighting(
+			highlighting.WithStyle(app.Site.markdownOptions.HighlightStyle),
+			highlighting.WithFormatOptions()),
 	}
 
 	parserOpts := []parser.Option{parser.WithAttribute(), parser.WithAutoHeadingID()}

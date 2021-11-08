@@ -66,6 +66,11 @@ type Flags struct {
 	// will affect all new sites created using that theme)
 	DontCopy bool
 
+	// Factory means when you do a new theme command instead
+	// of copying from  site theme, copy from a factory theme
+	// instead.
+	Factory bool
+
 	// Global verbose mode
 	Verbose bool
 
@@ -86,7 +91,6 @@ type Flags struct {
 //
 func NewApp() *App {
 	app := App{
-		//deleteme: make([]byte)
 		Page: Page{},
 		// Missing here: initializing the parser.
 		// Can't set parser options until command
@@ -94,8 +98,10 @@ func NewApp() *App {
 		// So that happens at App.initConfig()
 		RootCmd:             cobra.Command{},
 		applicationDataPath: userConfigPath(),
-		//factoryThemesPath:   filepath.Join(userConfigPath(), defaults.ThemesDir),
 	}
+	// TODO: This didn't help newTheme()
+	// app.Site.factoryThemesPath = filepath.Join(userConfigPath(), defaults.ThemesDir)
+	app.Debug("newApp()")
 	app.Site.publishedThemes = make(map[string]bool)
 	return &app
 }

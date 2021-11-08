@@ -1,8 +1,6 @@
 package app
 
 import (
-	//"fmt"
-	//"encoding/json"
 	"embed"
 	"github.com/tomcam/m/pkg/default"
 	"gopkg.in/yaml.v3"
@@ -376,8 +374,9 @@ func readThemeConfig(filename string) (*Theme, error) {
 // from is the name of the theme, not its path,
 // e.g. "debut" or "pillar".
 // TODO: Validate new name so it works as a slug/directory name
-func (app *App) newTheme(from, to string) error {
-
+func (app *App) newTheme(from, to string, factory bool) error {
+	app.readSiteConfig()
+	app.Debug("newTheme(%v, %v, %v)", from, to, factory)
 	// Get directory from which themes will be copied
 	//source := filepath.Join(app.Site.siteThemesPath, defaults.SiteThemesDir, from)
 	source := filepath.Join(app.Site.siteThemesPath, from)
@@ -385,7 +384,8 @@ func (app *App) newTheme(from, to string) error {
 	// Get directory to which the theme will be copied for this site
 	dest := filepath.Join(app.Site.siteThemesPath, to)
 	app.Note("About to copy %v to %v", source, dest)
+	app.Note("siteThemesPath: %v", filepath.Join(app.Site.siteThemesPath))
 
-    app.ShowInfo(".")
+	//app.ShowInfo(".")
 	return nil
 }

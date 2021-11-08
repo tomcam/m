@@ -15,5 +15,4 @@ func (app *App) addFlags() {
 	app.RootCmd.PersistentFlags().BoolVarP(&app.Flags.Info, "info", "i", false, "Show info after "+os.Args[0]+" runs")
 	app.RootCmd.PersistentFlags().BoolVarP(&app.Flags.InfoVerbose, "info-verbose", "b", false, "Show info after "+os.Args[0]+" runs with full path information")
 	app.RootCmd.PersistentFlags().BoolVarP(&app.Flags.InfoFrontMatter, "front", "f", false, "show front matter")
-
 }

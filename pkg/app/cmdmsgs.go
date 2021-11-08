@@ -19,7 +19,7 @@ var (
       open .pub/index.html
 `
 
-	cmdNewMsg = `
+	CmdNewMsg = `
 site: Use new site to start a new project. Use new theme to 
 create theme based on an existing one. 
       Typical usage of new site:

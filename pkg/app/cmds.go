@@ -82,7 +82,7 @@ func (app *App) addCommands() {
 		/*****************************************************
 		TOP LEVEL COMMAND: new
 		*****************************************************/
-		cmdNew = &cobra.Command{
+		CmdNew = &cobra.Command{
 			Use:   "new",
 			Short: "new commands: new site|theme",
 			Long: `site: Use new site to start a new project. Use new theme to 
@@ -107,7 +107,7 @@ create theme based on an existing one.
 		    Subcommand: new site
 		*****************************************************/
 
-		cmdNewSite = &cobra.Command{
+		CmdNewSite = &cobra.Command{
 			Use:   "site {sitename}",
 			Short: "new site mycoolsite",
 			Long: `new site {sitename}
@@ -144,18 +144,23 @@ create theme based on an existing one.
 		    Subcommand: new theme
 		*****************************************************/
 
-		cmdNewTheme = &cobra.Command{
+		CmdNewTheme = &cobra.Command{
 			//Use:   "new theme {from} {to}",
 			Use:   "theme",
 			Short: "theme",
 			// TODO: Copy text from old site
 			Long: `new theme {from} {to}
-      Where {themename} is a valid directory name. For example, if your want create a theme caled 
+      Creates a new theme based on an existing one.
+      {to} must be a valid directory name. For example, 
+      if you want create a theme called 
       itemdetail from the theme named item:
+
       mb new theme item-detail item
 `,
 			Run: func(cmd *cobra.Command, args []string) {
-				app.Note("# of args: %v. args: %v", len(args), args)
+				if !isProject(".") {
+					app.QuitError(ErrCode("1025", currDir()))
+				}
 				var from, to string
 				// See if the user specfied a theme name.
 				switch len(args) {
@@ -165,12 +170,13 @@ create theme based on an existing one.
 				case 1:
 					from = args[0]
 					to = promptString("Name of theme to create from theme " +
-          from + "?")
+						from + "?")
 				case 2:
 					from = args[0]
 					to = args[1]
 				}
-				err := app.newTheme(from, to)
+				err := app.newTheme(from, to, app.Flags.Factory)
+
 				if err != nil {
 					app.QuitError(err)
 				}
@@ -193,15 +199,14 @@ create theme based on an existing one.
 		*****************************************************/
 
 	// Example:
-	// app.RootCmd.PersistentFlags().BoolVarP(&app.Flags.Verbose, "verbose", "v", false, "verbose output")
-
+	CmdNewTheme.PersistentFlags().BoolVarP(&app.Flags.Factory, "factory", "y", false, "use factory theme, not from local project")
 	/*****************************************************
 	  AddCommand()
 		*****************************************************/
-	app.RootCmd.AddCommand(cmdNew)
+	app.RootCmd.AddCommand(CmdNew)
 	app.RootCmd.AddCommand(cmdKitchenSink)
-	cmdNew.AddCommand(cmdNewSite)
-	cmdNew.AddCommand(cmdNewTheme)
+	CmdNew.AddCommand(CmdNewSite)
+	CmdNew.AddCommand(CmdNewTheme)
 	app.RootCmd.AddCommand(cmdInfo)
 	app.RootCmd.AddCommand(cmdBuild)
 }

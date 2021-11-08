@@ -93,10 +93,11 @@ var errMsgs = map[string]string{
 	"1001": "Missing front matter and markdown", // filename
 	"1002": "This isn't a project directory:",   // directoryname
 	"1013": "Please specify a site name",
-	"1024": "Couldn't find stylesheet", //filename
-	"1101": "Unable to",                // chdir to bad dir name
-	"1102": "Unable to",                // chdir to bad dir name during showInfo()
-	"1103": "Unable to",                // chdir to bad dir name during createSite()
+	"1024": "Couldn't find stylesheet",        //filename
+	"1025": "This isn't a project directory:", // directoryname
+	"1101": "Unable to",                       // chdir to bad dir name
+	"1102": "Unable to",                       // chdir to bad dir name during showInfo()
+	"1103": "Unable to",                       // chdir to bad dir name during createSite()
 
 	// 1200 - Syntax error!
 	"1204": "Unknown dot value in Go template function ", //
