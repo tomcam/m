@@ -80,7 +80,10 @@ func (app *App) publishFile(filename string) error {
 	return nil
 }
 
-// stylesheetTags generates all stylesheet tags at once
+// stylesheetTags generates all stylesheet tags at once.
+// Note that
+// - sidebar-left.css or sidebar-right.css must appear second to last
+// - responsive.css must appear appear last
 func (app *App) stylesheetTags() string {
 	var tag string
 	stylesheets := ""
@@ -88,8 +91,8 @@ func (app *App) stylesheetTags() string {
 	filename := ""
 	// Get the list of stylesheets EXCEPT for sidebar*.css,
 	// then responsive.css, which must be the last 2 and in that order
+	mode := strings.ToLower(app.Page.FrontMatter.Mode)
 	for _, stylesheet := range app.Page.stylesheets {
-		mode := strings.ToLower(app.Page.FrontMatter.Mode)
 		filename = filepath.Base(stylesheet)
 		if filename == "theme-light.css" && mode == "dark" {
 			stylesheet = "theme-dark.css"

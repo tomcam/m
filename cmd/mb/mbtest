@@ -35,6 +35,8 @@ Sidebar type: {{ .Page.FrontMatter.Sidebar }}
 
 ## Pages to try
 
+* [dark](dark.html) version of this page
+* [light](index.html) light version of this page
 * [debut](debut.html)
 * [debut/gallery](debut-gallery.html)
 * [right](right.html) at
@@ -129,6 +131,47 @@ Mode: light
 
 This is debut/gallery, aka {{ .Page.FrontMatter.Theme }}
 [Home](/index.html)
+EOM
+
+cat <<EOM > $DIR/dark.md
+---
+Description: Dark version
+Theme: tradesman
+#Theme: textual 
+#Theme: future
+#Theme: reference
+Sidebar: left
+Mode: dark
+---
+# Dark page
+This is in {{ .Page.FrontMatter.Mode }} mode. 
+Sidebar type: {{ .Page.FrontMatter.Sidebar }} 
+
+## Pages to try
+
+* [dark](dark.html) version of this page
+* [light](index.html) light version of this page
+* [debut](debut.html)
+* [debut/gallery](debut-gallery.html)
+* [right](right.html) at
+
+Check out that description in the source or 
+try visitng the page named [right](right.html) at
+the same directory level, or try:
+
+* [level2/index.html](level2/index.html)
+* [level2/level3/index.html](level2/level3/index.html)
+* [/level2/index.html](/level2/index.html)
+* [/level2/level3/index.html](/level2/level3/index.html)
+
+
+
+## Table test
+
+| Column 1        | Column 2         |
+| --------------- | ---------------- |
+| Row 1, Column 1 | Row 1, Column 2  |
+
 EOM
 
 
