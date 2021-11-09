@@ -42,7 +42,10 @@ Put CSS files sin this order
 - theme-light.css
 - layout.css
 - [theme name such as wide].css
+- sidebar-left.css (or sidebar-right.css)
 - responsive.css
+
+REMEMBER responsive*.css has to follow sidebar*.css
 
 ## Creating a project
 

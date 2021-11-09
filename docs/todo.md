@@ -2,6 +2,8 @@
 
 ## Priority 1: Showstoppers--required for the next release
 * Not returning errors when specified stylesheets aren't found
+* Due to the handlikng of responsive.css and sidebar-left/-right.css, I may need
+some kind onf indicator in the theme. yaml 
 * responsive.css and themename.css seem to get copied twice? I think it's only when inheritance is used
 * If a themefile has a defect, say somethinglike .FrontMatter.PageType (which no longer exists) you don't know exactly where the defect occurred. Or what source file was being processed at the time.
 * wide theme using to have {{ toc }} in the sidebar. Hve to revivi that aftermaking parser options more detailed

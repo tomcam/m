@@ -299,10 +299,10 @@ func (app *App) createSite(pathname string) error {
 	// Get factory themes and copy to project. They will then
 	// be copied on demand to the publish directory as needed.
 	// This makes it easy to find themes and modify theme.
-	app.Note("About to copy factory themes")
+	app.Debug("About to copy factory themes")
 	//if err = app.copyFactoryThemes(); err != nil {
 	err = app.copyFactoryThemes()
-	app.Note("\terr after calling app.copyFactoryThemes(): %v", err)
+	app.Debug("\terr after calling app.copyFactoryThemes(): %v", err)
 	if err != nil {
 		// TODO: Improve error handling?
 		app.Note("TODO: DUDE!!!")

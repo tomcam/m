@@ -84,27 +84,37 @@ func (app *App) publishFile(filename string) error {
 func (app *App) stylesheetTags() string {
 	var tag string
 	stylesheets := ""
-	//for _, stylesheet := range app.Page.Theme.Stylesheets {
+	responsive := false
+	filename := ""
+	// Get the list of stylesheets EXCEPT for sidebar*.css,
+	// then responsive.css, which must be the last 2 and in that order
 	for _, stylesheet := range app.Page.stylesheets {
 		mode := strings.ToLower(app.Page.FrontMatter.Mode)
-		if filepath.Base(stylesheet) == "theme-light.css" && mode == "dark" {
+		filename = filepath.Base(stylesheet)
+		if filename == "theme-light.css" && mode == "dark" {
 			stylesheet = "theme-dark.css"
 		}
-		//tag = stylesheetTag(filepath.Join(app.Page.Theme.publishPath, stylesheet))
-		tag = stylesheetTag(stylesheet)
-		app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags, tag)
-		stylesheets = stylesheets + tag
+		if filename == "responsive.css" {
+			responsive = true
+		} else {
+			tag = stylesheetTag(stylesheet)
+			app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags, tag)
+			stylesheets = stylesheets + tag
+		}
 	}
 	sidebar := app.Page.FrontMatter.Sidebar
 	switch sidebar {
-	default:
-		return stylesheets
 	case "left", "right":
 		tag = stylesheetTag(filepath.Join(app.Page.Theme.publishPath, "sidebar-"+strings.ToLower(sidebar)+".css"))
 		stylesheets = stylesheets + tag
 		app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags, tag)
-		return stylesheets
 	}
+  if responsive == true {
+	  tag = stylesheetTag(filepath.Join(app.Page.Theme.publishPath, "responsive.css"))
+	  app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags, tag)
+	  stylesheets = stylesheets + tag
+  }
+	return stylesheets
 }
 
 // descriptionTag() reads Description from front matter
@@ -269,6 +279,7 @@ func (app *App) layoutEl(l layoutElement) string {
 // You can optionally include an id tag with it.
 func (app *App) article(body []byte, params ...string) string {
 	// interps runs custom Go template functions like ftime
+	//html := app.interps(app.Page.filePath, string(body) + app.sidebar())
 	html := app.interps(app.Page.filePath, string(body))
 	if len(params) < 1 {
 		// Optional ID tag was not supplied

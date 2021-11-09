@@ -88,6 +88,8 @@
     --a-footer-hover: var(--a); 
     --a-footer-active: var(--a);
 
+    /* Other */
+    --responsive-width: 50%
 }
 
 /* HEADER colors */
