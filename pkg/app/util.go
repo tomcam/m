@@ -362,13 +362,6 @@ func replaceExtension(filename string, newExtension string) string {
 
 }
 
-// siteFilePath() returns the expected pathname where
-// the site file lives. Example: "/Users/tom/html/foo/.mb"
-// formerly SitePath
-func siteFilePath(path string) string {
-	return filepath.Join(path, defaults.CfgDir)
-}
-
 // structFieldByNameStrMust() takes any struct and field name (as a string)
 // passed in at runtime and returns the string value of that field.
 // It returns an empty string if the
