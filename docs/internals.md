@@ -1,5 +1,9 @@
 # Internals: How Metabuzz builds, starts, and runs
 
+## Utilities
+* errdoc 1234 creates a help file for error code 1234. Must be 4 digits.
+* mbtest deletes the directory foo where mb lives. It generates new 
+
 ## REMINDERS FOR TC:
 * mb alone builds in the current directory, 
 or in the specified directory if a directory name is supplied 

@@ -73,7 +73,10 @@ var errMsgs = map[string]string{
 	"0403": "Unable to create publish directory",
 	"0406": "Unable to copy site directory",
 	"0409": "Error creating theme directory for theme", // Fully qualified pathname
+
 	// 0500	- Error determining directory name
+	"0501": "Couldn't get relative directory name", // custom message I think
+
 	// 0600 - Error deleting directory
 	// 0700	- Error reading directory
 	// 0800	- Can't determine the name of something
@@ -85,8 +88,7 @@ var errMsgs = map[string]string{
 	"0915": "Error copying theme to site", // filename
 	"0920": "Error generating Markdown",
 	"0921": "Unable to build project", // filename
-  "0922": "No project found at", // message 
-
+	"0922": "No project found at",     // message
 
 	// 0950 - Something's already there
 	"0951": "Site already exists at", // sitename

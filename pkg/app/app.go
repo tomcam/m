@@ -47,7 +47,6 @@ type App struct {
 
 	parser    goldmark.Markdown
 	parserCtx parser.Context
-
 } // type Application
 
 type Flags struct {
@@ -98,7 +97,7 @@ func NewApp() *App {
 	app.Site.Generate = make(map[string]Page)
 	app.Site.publishedThemes = make(map[string]bool)
 	// Obtain site configuration from site.yaml
-  app.readSiteConfig()
+	app.readSiteConfig()
 	return &app
 }
 

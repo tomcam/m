@@ -354,26 +354,6 @@ func oldreadYAMLFile(filename string, target interface{}) (err error) {
 	return nil
 }
 
-// relDirFile() takes a base directory,
-// for example, /users/tom/mysite, and a filename, for
-// example, /users/tom/mysite/articles/announce.md,
-// and returns the relative directory, which would be
-// the directory named /articles in this case.
-func relDirFile(baseDir, filename string) string {
-	// Begin at the end of the base directory
-	// xxx
-	start := len(baseDir)
-	// Extract the target directory from the
-	// input filename
-	l := len(filepath.Dir(filename))
-	// End at the beginning of the filename
-	stop := l - start
-	// TODO: Playing with fire?
-	if stop < 0 {
-		stop = start
-	}
-	return string(filename[start : start+stop])
-}
 
 // replaceExtension() is passed a filename and returns a filename
 // with the specified extension.

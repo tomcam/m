@@ -30,22 +30,7 @@ func (app *App) mdWithFrontMatterToHTML(source []byte) ([]byte, error) {
 
 // mdToHTML converts a Markdown source file in a byte
 // slice to HTML.
-//func (app *App) mdToHTML(source []byte, hasFrontMatter bool) ([]byte, error) {
 func (app *App) mdToHTML(source []byte) ([]byte, error) {
-	/*
-		app.parser = goldmark.New(
-			goldmark.WithExtensions(
-				// Extension: YAML front matter support
-				meta.Meta,
-			),
-			goldmark.WithRendererOptions(
-				renderer.WithNodeRenderers(
-				util.Prioritized(extension.NewTableHTMLRenderer(), 500),
-				),
-			),
-		)
-	*/
-
 	var buf bytes.Buffer
 	if err := app.parser.Convert(source, &buf, parser.WithContext(app.parserCtx)); err != nil {
 		// TODO: Handle error properly & and document error code
@@ -106,31 +91,47 @@ func (app *App) build(path string) error {
 		// Get the files in just this directory
 		files, err := ioutil.ReadDir(".")
 		if err != nil {
-			// TODO: Handle error properly & and document error code
 			return ErrCode("0703", dir)
 		}
 
+		// https://github.com/tomcam/mb/blob/master/pkg/app/pub.go
 		// Go through all the Markdown files and convert.
 		// Start search index JSON file with opening '['
 		// TODO: Add this back
 		// TODO: I think this will be superseded by Yuin's toc feature
 		//app.DelimitIndexJSON(a.Site.SearchJSONFilePath, true)
+		filename := ""
 		commaNeeded := false
 		for _, file := range files {
-			if !file.IsDir() && isMarkdownFile(file.Name()) {
-				app.Site.fileCount++
-				// It's a Markdown file, not a dir or anything else.
-				if commaNeeded {
+			if !file.IsDir() {
+				if isMarkdownFile(file.Name()) {
+					// It's a Markdown file
+					app.Site.fileCount++
+					// It's a Markdown file, not a dir or anything else.
+					if commaNeeded {
 
-					// TODO: Add error checking
-					// TODO: Add this back
-					// app.AddCommaToSearchIndex(app.Site.SearchJSONFilePath)
-					commaNeeded = false
+						// TODO: Add this back when I add search
+						// app.AddCommaToSearchIndex(app.Site.SearchJSONFilePath)
+						commaNeeded = false
+					}
+					filename = filepath.Join(dir, file.Name())
+					//if err = app.publishFile(filepath.Join(dir, file.Name())); err != nil {
+					app.Note("Markdown file %v", filename)
+					if err = app.publishFile(filename); err != nil {
+						return ErrCode("PREVIOUS", err.Error())
+					}
+					commaNeeded = true
+				} else {
+					// It's not a Markdown file. Copy if it's a graphic
+					// asset or something.
+					//if err = app.publishFile(filepath.Join(dir, file.Name())); err != nil {
+					/*
+						app.Note("Non-Markdown file %v", filename)
+						if err = app.publishFile(filename); err != nil {
+							return ErrCode("PREVIOUS", err.Error())
+						}
+					*/
 				}
-				if err = app.publishFile(filepath.Join(dir, file.Name())); err != nil {
-					return ErrCode("PREVIOUS", err.Error())
-				}
-				commaNeeded = true
 			}
 		}
 

@@ -16,9 +16,13 @@ func (app *App) publishFile(filename string) error {
 	// Results in:
 	//   /test
 	app.Debug("publishFile(%#v)", filename)
-	rel := relDirFile(app.Site.path, filename)
+	rel, err := filepath.Rel(app.Site.path, filepath.Dir(filename))
+	if err != nil {
+    // TODO: Perhaps better error context
+		return ErrCode("PREVIOUS", err.Error())
+	}
 	app.Page.filePath = filename
-	var err error
+	//var err error
 	// Obtain site configuration from site.yaml
 	//app.readSiteConfig()
 	if err != nil {
@@ -61,7 +65,6 @@ func (app *App) publishFile(filename string) error {
 		metatag("description", app.descriptionTag()) +
 		metatag("viewport", "width=device-width,initial-scale=1") +
 		app.stylesheetTags() +
-		//"</head>" + "\n" + "<body>" + "\n" +
 		app.header() +
 		app.article(body, "article") +
 		app.sidebar() +
@@ -72,7 +75,11 @@ func (app *App) publishFile(filename string) error {
 		// TODO: Handle error properly & and document error code
 		return err
 	}
-	//app.Note("Stylesheets:\n%v\n\n", app.Page.stylesheets)
+
+	// TODO: Write out assets in same dir as page
+	// TODO: If  you have a lot of source files in the directory,
+	// you'd be copying them all mulitple times. That's a perf issue.
+
 	app.Page.stylesheets = []string{}
 	// TODO: May be unnecessary
 	app.Page.Theme = Theme{}
@@ -86,41 +93,53 @@ func (app *App) publishFile(filename string) error {
 // - responsive.css must appear appear last
 func (app *App) stylesheetTags() string {
 	var tag string
-	stylesheets := ""
+	//app.Page.Theme.stylesheetTags = {}
+	//stylesheets := ""
 	responsive := false
 	filename := ""
-	// Get the list of stylesheets EXCEPT for sidebar*.css,
+	// Is this page light (system default) or dark mode?
 	mode := strings.ToLower(app.Page.FrontMatter.Mode)
+	// Get the list of stylesheets specified for this theme.
 	for _, stylesheet := range app.Page.stylesheets {
-    app.Debug("\t\tstylesheetTags(%v)", stylesheet)
-		filename = filepath.Base(stylesheet)
+		app.Note("\t\tstylesheetTags(%v)", stylesheet)
+		filename = stylesheet
+		// theme-light.css is the system default. If user
+		// specified "Mode: dark" in (for example,
+		// in front matter), use the dark theme
+		// stylesheet instead.
+
 		if filename == "theme-light.css" && mode == "dark" {
 			stylesheet = "theme-dark.css"
 		}
+
+		// Always defer writing out the "responsive.css" tag until
+		// the end because it overrides defaults set in previous
+		// stylesheets.
 		if filename == "responsive.css" {
 			responsive = true
 		} else {
-      // Add stylesheet if it's NOT responsive.css
+			// Add stylesheet if it's NOT responsive.css
 			tag = stylesheetTag(stylesheet)
 			app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags, tag)
-			stylesheets = stylesheets + tag
 		}
 	}
-  // sidebar-right.css or sidebar-left.css must be penultimate
+	// sidebar-right.css or sidebar-left.css must be penultimate
 	sidebar := app.Page.FrontMatter.Sidebar
 	switch sidebar {
 	case "left", "right":
 		tag = stylesheetTag(filepath.Join(app.Page.Theme.publishPath, "sidebar-"+strings.ToLower(sidebar)+".css"))
-		stylesheets = stylesheets + tag
 		app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags, tag)
 	}
-  // responsive.css is the final stylesheet to add
-  if responsive == true {
-	  tag = stylesheetTag(filepath.Join(app.Page.Theme.publishPath, "responsive.css"))
-	  app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags, tag)
-	  stylesheets = stylesheets + tag
-  }
-	return stylesheets
+	// responsive.css is the final stylesheet to add
+	if responsive == true {
+		tag = stylesheetTag(filepath.Join(app.Page.Theme.publishPath, "responsive.css"))
+		app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags, tag)
+	}
+	var stylesheets strings.Builder
+	for _, stylesheet := range app.Page.Theme.stylesheetTags {
+		stylesheets.WriteString(stylesheet)
+	}
+	return stylesheets.String()
 }
 
 // descriptionTag() reads Description from front matter
@@ -149,7 +168,11 @@ func (app *App) MdFileToHTML(filename string) ([]byte, error) {
 func (app *App) buildPublishDirs() error {
 	for dir := range app.Site.dirs {
 		// Get the relative path.
-		rel := relDirFile(app.Site.path, filepath.Join(dir, "a"))
+		rel, err := filepath.Rel(app.Site.path, dir)
+		if err != nil {
+			return ErrCode("0501", err.Error())
+		}
+
 		// Join it with the publish directory.
 		full := filepath.Join(app.Site.publishPath, rel)
 		if err := os.MkdirAll(full, defaults.PublicFilePermissions); err != nil {
