@@ -90,7 +90,6 @@ func (app *App) stylesheetTags() string {
 	responsive := false
 	filename := ""
 	// Get the list of stylesheets EXCEPT for sidebar*.css,
-	// then responsive.css, which must be the last 2 and in that order
 	mode := strings.ToLower(app.Page.FrontMatter.Mode)
 	for _, stylesheet := range app.Page.stylesheets {
 		filename = filepath.Base(stylesheet)
@@ -100,11 +99,13 @@ func (app *App) stylesheetTags() string {
 		if filename == "responsive.css" {
 			responsive = true
 		} else {
+      // Add stylesheet if it's NOT responsive.css
 			tag = stylesheetTag(stylesheet)
 			app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags, tag)
 			stylesheets = stylesheets + tag
 		}
 	}
+  // sidebar-right.css or sidebar-left.css must be penultimate
 	sidebar := app.Page.FrontMatter.Sidebar
 	switch sidebar {
 	case "left", "right":
@@ -112,6 +113,7 @@ func (app *App) stylesheetTags() string {
 		stylesheets = stylesheets + tag
 		app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags, tag)
 	}
+  // responsive.css is the final stylesheet to ad
   if responsive == true {
 	  tag = stylesheetTag(filepath.Join(app.Page.Theme.publishPath, "responsive.css"))
 	  app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags, tag)
