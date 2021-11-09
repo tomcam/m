@@ -85,6 +85,8 @@ var errMsgs = map[string]string{
 	"0915": "Error copying theme to site", // filename
 	"0920": "Error generating Markdown",
 	"0921": "Unable to build project", // filename
+  "0922": "No project found at", // message 
+
 
 	// 0950 - Something's already there
 	"0951": "Site already exists at", // sitename

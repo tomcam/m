@@ -157,7 +157,12 @@ type Site struct {
 	// User data.
 
 	List interface{} `yaml:"List"`
+
+  // Pages to generate when site is created
+  Generate map[string]Page
 }
+
+
 
 type company struct {
 	// Company name, like "Metabuzz" or "Example Inc."

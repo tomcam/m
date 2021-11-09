@@ -1,9 +1,16 @@
 # To do
 
 ## Priority 1: Showstoppers--required for the next release
+* pub.go: stylesheetTags()  Last stylesheet tag always gets duplicated
+* userConfigPath() is probably the same as app.cfgPath. NO! It's the user application directory
+	app.Site.factoryThemesPath = filepath.Join(userConfigPath(), defaults.ThemesDir)
+
 * Not returning errors when specified stylesheets aren't found
+* Wide and therefrore tradesman: Bullets are partially obscure. Check output of mbtest
 * Due to the handlikng of responsive.css and sidebar-left/-right.css, I may need
 some kind onf indicator in the theme. yaml 
+* showInfo(): Factory Themes path output is wrong
+* showInfo(): works even when not in a project directory
 * responsive.css and themename.css seem to get copied twice? I think it's only when inheritance is used
 * If a themefile has a defect, say somethinglike .FrontMatter.PageType (which no longer exists) you don't know exactly where the defect occurred. Or what source file was being processed at the time.
 * wide theme using to have {{ toc }} in the sidebar. Hve to revivi that aftermaking parser options more detailed
@@ -42,7 +49,12 @@ mb new theme test 0.2.0 from wide 1.1.0
 ### Testing
 * Deformed YAML file
 
+## Credits
+* https://iconduck.com/icons/84801/tools
+* https://iconduck.com/icons/22486/tools
+
 ## Priority 2: Desired but not required for the next release
+
 * Error in YAML file doesn't identify the YAML filename
 * Change readThemeFile to readThemeConfig. Also write- version
 * If nothing is avaialble for header, footer, and so on, 

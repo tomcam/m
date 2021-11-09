@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"github.com/rodaine/table"
+	"github.com/tomcam/m/pkg/default"
 	//"os"
 	"strings"
 )
@@ -17,11 +18,20 @@ func (app *App) ShowFrontMatter() {
 func (app *App) ShowInfo(pathname string) error {
 	// Change to specified directory.
 	// Update app.Site.path and build all related directories
+  if pathname == "" || pathname == "." {
+    pathname = currDir()
+  }
+  if !isProject(pathname) {
+    app.QuitError(ErrCode("0922", pathname))
+    app.Print("%v doesn't have a %v project", pathname, defaults.ProductName)
+	  app.QuitError(ErrCode("0000", "hey"))
+
+  }
+
 	if err := app.setWorkingDir(pathname); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
-
-	table.DefaultHeaderFormatter = func(format string, vals ...interface{}) string {
+ 	table.DefaultHeaderFormatter = func(format string, vals ...interface{}) string {
 		return strings.ToUpper(fmt.Sprintf(format, vals...))
 	}
 

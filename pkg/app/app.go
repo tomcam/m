@@ -48,12 +48,6 @@ type App struct {
 	parser    goldmark.Markdown
 	parserCtx parser.Context
 
-	// This is the global themes path. It's the source directory
-	// containing the themes as they came from the factory.
-	// It's where the site's themes come from when a new site
-	// is created.
-	// TODO: renamed from themesPath
-	//factoryThemesPath string
 } // type Application
 
 type Flags struct {
@@ -100,9 +94,11 @@ func NewApp() *App {
 		applicationDataPath: userConfigPath(),
 	}
 	// TODO: This didn't help newTheme()
-	// app.Site.factoryThemesPath = filepath.Join(userConfigPath(), defaults.ThemesDir)
 	app.Debug("newApp()")
+	app.Site.Generate = make(map[string]Page)
 	app.Site.publishedThemes = make(map[string]bool)
+	// Obtain site configuration from site.yaml
+  app.readSiteConfig()
 	return &app
 }
 
@@ -237,8 +233,6 @@ func (app *App) setPaths() {
 	// Compute the directory location for the
 	// complete set of factory themes.
 	// The entire /themes directory gets copied here.
-	// Don't want that name configurable.
-	// Therefore cfgPath is enough.
 	app.Site.factoryThemesPath = app.cfgPath
 
 	// Compute the directory location of themes

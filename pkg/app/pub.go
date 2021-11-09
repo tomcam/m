@@ -20,7 +20,7 @@ func (app *App) publishFile(filename string) error {
 	app.Page.filePath = filename
 	var err error
 	// Obtain site configuration from site.yaml
-	app.readSiteConfig()
+	//app.readSiteConfig()
 	if err != nil {
 		app.Debug("\trSiteFileConfig() failed: %v", err.Error())
 		// TODO: Handle error properly & and document error code
@@ -92,6 +92,7 @@ func (app *App) stylesheetTags() string {
 	// Get the list of stylesheets EXCEPT for sidebar*.css,
 	mode := strings.ToLower(app.Page.FrontMatter.Mode)
 	for _, stylesheet := range app.Page.stylesheets {
+    app.Debug("\t\tstylesheetTags(%v)", stylesheet)
 		filename = filepath.Base(stylesheet)
 		if filename == "theme-light.css" && mode == "dark" {
 			stylesheet = "theme-dark.css"
@@ -113,7 +114,7 @@ func (app *App) stylesheetTags() string {
 		stylesheets = stylesheets + tag
 		app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags, tag)
 	}
-  // responsive.css is the final stylesheet to ad
+  // responsive.css is the final stylesheet to add
   if responsive == true {
 	  tag = stylesheetTag(filepath.Join(app.Page.Theme.publishPath, "responsive.css"))
 	  app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags, tag)
