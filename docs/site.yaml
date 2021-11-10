@@ -1,0 +1,47 @@
+Author:
+    Full-Name: "Tom Campbell"
+    URL: ""
+    Role: ""
+Authors: []
+Base-Path: ""
+Branding: "Metabuzz, Inc."
+Company:
+    Name: ""
+    URL: ""
+    headerlogo: ""
+Exclude-Dirs: []
+Exclude-Extensions: []
+Ganalytics: ""
+Head-Tags: []
+HTML-start-file: <!DOCTYPE html><HTML lang=
+HTML-end-file: |-
+    </body>
+    </html>
+Language: en
+Mode: ""
+Social:
+    Deviant-Art: ""
+    Facebook: ""
+    GitHub: ""
+    GitLab: ""
+    Instagram: ""
+    LinkedIn: ""
+    Pinterest: ""
+    Reddit: ""
+    Tumbler: ""
+    Twitter: ""
+    Weibo: ""
+    YouTube: ""
+Sidebar: ""
+Theme: ""
+Generate:
+  About:
+    Title: About page
+    Filename: about.md
+    Description: Learn about our company
+  /News/articles:
+    Title: About page
+    Filename: about.md
+    Description: Learn about our company
+List: null
+#generate: {}

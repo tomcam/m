@@ -8,14 +8,31 @@ import (
 	"strings"
 )
 
-func (app *App) publishFile(filename string) error {
+// publish() copies the file to the publish directory, 
+// as long as it's not excluded.
+func (app *App) publish(filename string) error {
+	rel, err := filepath.Rel(app.Site.path, filepath.Dir(filename))
+	if err != nil {
+    // TODO: Perhaps better error context
+		return ErrCode("PREVIOUS", err.Error())
+	}
+  dest := filepath.Join(app.Site.publishPath, rel, filepath.Base(filename))
+  //app.Note("publish(%v) to %v", filename, rel)
+  app.Debug("publish(%v) to %v", filename, dest)
+	err = Copy(filename, dest)
+	if err != nil {
+		return ErrCode("PREVIOUS", err.Error())
+	}
+  return nil
+}
 
+func (app *App) publishMarkdownFile(filename string) error {
+	app.Note("publishFile(%#v)", filename)
 	// Figure out this file's relative position in the output
 	// directory true. For example:
 	//   /Users/tom/code/m/cmd/mb -> /Users/tom/code/m/cmd/mb/test/test.md
 	// Results in:
 	//   /test
-	app.Debug("publishFile(%#v)", filename)
 	rel, err := filepath.Rel(app.Site.path, filepath.Dir(filename))
 	if err != nil {
     // TODO: Perhaps better error context
@@ -101,7 +118,7 @@ func (app *App) stylesheetTags() string {
 	mode := strings.ToLower(app.Page.FrontMatter.Mode)
 	// Get the list of stylesheets specified for this theme.
 	for _, stylesheet := range app.Page.stylesheets {
-		app.Note("\t\tstylesheetTags(%v)", stylesheet)
+		//app.Note("\t\tstylesheetTags(%v)", stylesheet)
 		filename = stylesheet
 		// theme-light.css is the system default. If user
 		// specified "Mode: dark" in (for example,

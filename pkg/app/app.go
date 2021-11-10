@@ -94,7 +94,7 @@ func NewApp() *App {
 	}
 	// TODO: This didn't help newTheme()
 	app.Debug("newApp()")
-	app.Site.Generate = make(map[string]Page)
+	app.Site.Generate = make(map[string]Stub)
 	app.Site.publishedThemes = make(map[string]bool)
 	// Obtain site configuration from site.yaml
 	app.readSiteConfig()
@@ -120,6 +120,8 @@ func (app *App) Execute() {
 	app.Verbose("app.Execute()")
 	app.initCobra()
 	cobra.CheckErr(app.RootCmd.Execute())
+  app.Note("About to generate site")
+  app.generate()
 }
 
 func (app *App) initCobra() {

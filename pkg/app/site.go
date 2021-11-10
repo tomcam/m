@@ -159,7 +159,13 @@ type Site struct {
 	List interface{} `yaml:"List"`
 
 	// Pages to generate when site is created
-	Generate map[string]Page
+  Generate map[string]Stub `yaml:"Generate"`
+}
+
+type Stub struct {
+  Title string `yaml:"Title"`
+  Filename string `yaml:"Filename"`
+  Description string `yaml:"Description"`
 }
 
 type company struct {
@@ -359,3 +365,29 @@ func (app *App) writeSiteConfig() error {
 	app.setSiteDefaults()
 	return writeYamlFile(app.Site.siteFilePath, app.Site)
 }
+
+
+// generate() creates files specified in the 
+// site file. It assumes a site has been created
+// via createSite() and that we're in the 
+// project site specified in app.Site.path
+func (app *App) generate() error {
+  pathname := app.Site.path
+  app.readSiteConfig()
+	app.Note("\tgenerate(%v)", pathname)
+  app.Note("\tSite %#v\n\n", app.Site)
+  app.Note("\tSite.Generate: %#v\n\n", app.Site.Generate)
+	//var err error
+
+	// Exit if there's already a project at specified location.
+	if !isProject(pathname) {
+		return ErrCode("1026", pathname)
+	}
+  for k, v := range app.Site.Generate {
+    app.Note("%v: %v\n", k, v)
+  }
+
+
+	return nil
+}
+

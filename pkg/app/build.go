@@ -117,20 +117,18 @@ func (app *App) build(path string) error {
 					filename = filepath.Join(dir, file.Name())
 					//if err = app.publishFile(filepath.Join(dir, file.Name())); err != nil {
 					app.Note("Markdown file %v", filename)
-					if err = app.publishFile(filename); err != nil {
+					if err = app.publishMarkdownFile(filename); err != nil {
 						return ErrCode("PREVIOUS", err.Error())
 					}
 					commaNeeded = true
 				} else {
 					// It's not a Markdown file. Copy if it's a graphic
 					// asset or something.
-					//if err = app.publishFile(filepath.Join(dir, file.Name())); err != nil {
-					/*
-						app.Note("Non-Markdown file %v", filename)
-						if err = app.publishFile(filename); err != nil {
+					filename = filepath.Join(dir, file.Name())
+					app.Note("PUBLISH non-Markdown file %v", filename)
+					if err = app.publish(filename); err != nil {
 							return ErrCode("PREVIOUS", err.Error())
 						}
-					*/
 				}
 			}
 		}
