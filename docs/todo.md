@@ -1,23 +1,14 @@
 # To do
 
 ## Priority 1: Showstoppers--required for the next release
-* pub.go: stylesheetTags()  Last stylesheet tag always gets duplicated
-* userConfigPath() is probably the same as app.cfgPath. NO! It's the user application directory
-	app.Site.factoryThemesPath = filepath.Join(userConfigPath(), defaults.ThemesDir)
-
 * Not returning errors when specified stylesheets aren't found
-* Wide and therefrore tradesman: Bullets are partially obscure. Check output of mbtest
-* Due to the handlikng of responsive.css and sidebar-left/-right.css, I may need
 some kind onf indicator in the theme. yaml 
-* showInfo(): Factory Themes path output is wrong
-* showInfo(): works even when not in a project directory
-* responsive.css and themename.css seem to get copied twice? I think it's only when inheritance is used
 * If a themefile has a defect, say somethinglike .FrontMatter.PageType (which no longer exists) you don't know exactly where the defect occurred. Or what source file was being processed at the time.
-* wide theme using to have {{ toc }} in the sidebar. Hve to revivi that aftermaking parser options more detailed
-* Append all stylesheets to a single file as encountered (for all levels of theme, so inheritance works correctly)
 * Add idea of post and specfiications like YYYY-MM-DD or y-m-d etc, using dirs or strings as needed . That way mb new post "/blog/avengers review" would expand to something like "/blog/2022/04/21/avengers-review.html" or "/blog/2022-March-1-avengers-review.html" and so on 
 * Mention in docs that should default to post
 * Search for "TODO:" in source
+* Documenting themes:
+  Image properties are likely based on adjancent headers, which can be added empty (without text for the header)
 * Document how Frontmatter Mode determines whether
 theme-light.css or theme-dark.css is used.
 * Incomplete list of things that need to be handled once I start accepting
@@ -43,7 +34,6 @@ mb new theme test 0.2.0 from wide 1.1.0
 
 ```
   - Check for conflicting versions with new theme command
-* RSS support
 * Add to glossary: `command` means a command-line verb such as `new theme` or `new site`
 
 ### Testing
@@ -53,8 +43,16 @@ mb new theme test 0.2.0 from wide 1.1.0
 * https://iconduck.com/icons/84801/tools
 * https://iconduck.com/icons/22486/tools
 
-## Priority 2: Desired but not required for the next release
+## Marketing
+* Promise that in early versions while data stuctures and features may change, the
+source file directory structure remains sacrosanct: a tree of Markdown files
 
+## Priority 2: Desired but not required for the next release
+* wide theme using to have {{ toc }} in the sidebar. Hve to revivi that aftermaking parser options more detailed
+* Append all stylesheets to a single file as encountered (for all levels of theme, so inheritance works correctly)
+* pub.go: stylesheetTags()  Last stylesheet tag always gets duplicated
+* RSS support
+* Sitemap support
 * Error in YAML file doesn't identify the YAML filename
 * Change readThemeFile to readThemeConfig. Also write- version
 * If nothing is avaialble for header, footer, and so on, 

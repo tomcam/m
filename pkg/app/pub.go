@@ -8,22 +8,22 @@ import (
 	"strings"
 )
 
-// publish() copies the file to the publish directory, 
+// publish() copies the file to the publish directory,
 // as long as it's not excluded.
 func (app *App) publish(filename string) error {
 	rel, err := filepath.Rel(app.Site.path, filepath.Dir(filename))
 	if err != nil {
-    // TODO: Perhaps better error context
+		// TODO: Perhaps better error context
 		return ErrCode("PREVIOUS", err.Error())
 	}
-  dest := filepath.Join(app.Site.publishPath, rel, filepath.Base(filename))
-  //app.Note("publish(%v) to %v", filename, rel)
-  app.Debug("publish(%v) to %v", filename, dest)
+	dest := filepath.Join(app.Site.publishPath, rel, filepath.Base(filename))
+	//app.Note("publish(%v) to %v", filename, rel)
+	app.Debug("publish(%v) to %v", filename, dest)
 	err = Copy(filename, dest)
 	if err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
-  return nil
+	return nil
 }
 
 func (app *App) publishMarkdownFile(filename string) error {
@@ -35,7 +35,7 @@ func (app *App) publishMarkdownFile(filename string) error {
 	//   /test
 	rel, err := filepath.Rel(app.Site.path, filepath.Dir(filename))
 	if err != nil {
-    // TODO: Perhaps better error context
+		// TODO: Perhaps better error context
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	app.Page.filePath = filename
@@ -81,6 +81,7 @@ func (app *App) publishMarkdownFile(filename string) error {
 		"<head>" +
 		metatag("description", app.descriptionTag()) +
 		metatag("viewport", "width=device-width,initial-scale=1") +
+		metatag("generator", defaults.ProductBranding) +
 		app.stylesheetTags() +
 		app.header() +
 		app.article(body, "article") +

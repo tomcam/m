@@ -45,7 +45,7 @@ type Theme struct {
 	Article     layoutElement `yaml:"Article"`
 	Footer      layoutElement `yaml:"Footer"`
 	Sidebar     layoutElement `yaml:"Sidebar"`
-}
+} // type Theme
 
 type layoutElement struct {
 	// Inline HTML
@@ -205,7 +205,7 @@ func (app *App) loadThemeLevel(source string, dest string, level int) error {
 		err := app.copyTheme(source, dest)
 		// TODO: May want to improve error handling
 		if err != nil {
-			return err
+			return ErrCode("PREVIOUS", err.Error())
 		}
 	} else {
 		// Theme already loaded
@@ -268,7 +268,9 @@ func (app *App) loadTheme() error {
 		app.Page.Theme.nestingLevel = level
 		// Finds the theme specified for this page.
 		// Copy the required files to the theme publish directory.
-		app.loadThemeLevel(source, dest, level)
+    if err := app.loadThemeLevel(source, dest, level); err != nil {
+			return ErrCode("PREVIOUS", err.Error())
+    }
 	}
 	return nil
 } //loadTheme()

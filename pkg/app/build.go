@@ -127,8 +127,8 @@ func (app *App) build(path string) error {
 					filename = filepath.Join(dir, file.Name())
 					app.Note("PUBLISH non-Markdown file %v", filename)
 					if err = app.publish(filename); err != nil {
-							return ErrCode("PREVIOUS", err.Error())
-						}
+						return ErrCode("PREVIOUS", err.Error())
+					}
 				}
 			}
 		}

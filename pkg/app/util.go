@@ -354,7 +354,6 @@ func oldreadYAMLFile(filename string, target interface{}) (err error) {
 	return nil
 }
 
-
 // replaceExtension() is passed a filename and returns a filename
 // with the specified extension.
 func replaceExtension(filename string, newExtension string) string {

@@ -114,7 +114,9 @@ article > p,
     padding-right:var(--right-end);
 }
 
-article > ul, article > ol {margin-top:.5em;}
+article > ul, article > ol {
+  list-style-position: inside;
+}
 article > p > strong {font-family:var(--informal);font-weight:700;}
 /* Override font rule for code */
 article > p > code, article > code, article > pre, article > pre > code {
@@ -136,7 +138,8 @@ article > p >  a:active
 
 article > img, article > p > img {
   width:100%;
-  box-shadow: rgb(128,128,128) 1px 1px 3px 0px;
+  /* box-shadow: rgb(128,128,128) 1px 1px 3px 0px; */
+  border: 2px solid black;
   display:block;
 }
 
@@ -172,15 +175,6 @@ aside {border-bottom:none;}
 
 aside > h2 {padding:1em;text-align:center;font-size:1.2rem;font-weight:700;}
 aside > h3 {font-size:.75em;font-weight:bold;margin-bottom:2rem;}
-/*
-aside > ul {text-align:right;margin-right:1rem;line-height:1.5em;}
-aside > ul > li {list-style-type:none;} 
-aside > ul > li > a,
-aside > ul > li > a:link,
-aside > ul > li > a:visited {text-decoration:none;font-size:1rem;line-height:2.5rem;font-weight:normal;margin-right:1em;} 
-aside > ul > li > a:hover,
-aside > ul > li > a:active {font-weight:bold;} 
-*/
 aside > p > img {margin-top:1rem;width:100%;padding:0;}
 aside > p {font-size:1.2rem;margin-bottom:0em;}
 

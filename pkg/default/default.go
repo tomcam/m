@@ -1,10 +1,10 @@
 package defaults
 
 import "github.com/tomcam/m/pkg/util"
-
+const (
+	Version = "0.4.0"
+)
 var (
-	Version = ProductName + " version " +
-		"0.4.0"
 
 	// Directory configuration for a project--a new site.
 	SitePaths = [][]string{
@@ -162,6 +162,11 @@ Welcome to %s
 	// like docset or metabuzz.
 	// If this changes update CfgDir
 	ProductName = "metabuzz"
+
+  // Name of the product as it would appear in published copy.
+  // Capitalization, spaces, special characters, etc. 
+  // are respected
+	ProductBranding = "Metabuzz" +	"™ " + "v." + Version
 
 	// Abbreviation, used for name command line program.
 	ProductShortName = "mb"

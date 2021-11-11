@@ -153,19 +153,40 @@ type Site struct {
 	// Index by the fully qualified path name of the source .md file.
 	webPages map[string]WebPage
 
-	// THIS ALWAYS GOES AT THE END OF THE FILE/DATA STRUCTURE
-	// User data.
-
-	List interface{} `yaml:"List"`
-
 	// Pages to generate when site is created
-  Generate map[string]Stub `yaml:"Generate"`
+	Starters map[string]Starter `yaml:"Starters"`
+
+	// IMPORTANT
+	// LIST ALWAYS GOES AT THE END OF THE FILE/DATA STRUCTURE
+	// User data.
+	List interface{} `yaml:"List"`
 }
 
-type Stub struct {
-  Title string `yaml:"Title"`
-  Filename string `yaml:"Filename"`
-  Description string `yaml:"Description"`
+// Starter type is used to generate a stub page when
+// the site is created (or later, but it makes most
+// sense upon site creation).
+type Starter struct {
+	// For title tag
+	Title string `yaml:"Title"`
+
+	// Derived from the map key name if not given here
+	Filename string `yaml:"Filename"`
+
+	// For description meta tag
+	Description string `yaml:"Description"`
+
+	// If specified, the Permalink template makes it post
+	// and not a page
+	Permalink string `yaml:"Permalink"`
+
+	// Name of theme
+	Theme string `yaml:"Theme"`
+
+	// Specify sidebar direction, if any
+	Sidebar string `yaml:"Sidebar"`
+
+	// Text of the article portion, if desired
+	Article string `yaml:"Article"`
 }
 
 type company struct {
@@ -366,28 +387,25 @@ func (app *App) writeSiteConfig() error {
 	return writeYamlFile(app.Site.siteFilePath, app.Site)
 }
 
-
-// generate() creates files specified in the 
+// generate() creates files specified in the
 // site file. It assumes a site has been created
-// via createSite() and that we're in the 
+// via createSite() and that we're in the
 // project site specified in app.Site.path
 func (app *App) generate() error {
-  pathname := app.Site.path
-  app.readSiteConfig()
+	pathname := app.Site.path
+	app.readSiteConfig()
 	app.Note("\tgenerate(%v)", pathname)
-  app.Note("\tSite %#v\n\n", app.Site)
-  app.Note("\tSite.Generate: %#v\n\n", app.Site.Generate)
+	app.Note("\tSite %#v\n\n", app.Site)
+	app.Note("\tSite.Starters: %#v\n\n", app.Site.Starters)
 	//var err error
 
 	// Exit if there's already a project at specified location.
 	if !isProject(pathname) {
 		return ErrCode("1026", pathname)
 	}
-  for k, v := range app.Site.Generate {
-    app.Note("%v: %v\n", k, v)
-  }
-
+	for k, v := range app.Site.Starters {
+		app.Note("%v: %v", k, v)
+	}
 
 	return nil
 }
-
