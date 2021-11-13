@@ -5,8 +5,8 @@
 
 DIR=~/code/m/cmd/mb/theme-test
 mkdir -p ./$DIR
-
-cat <<-EOF > ./$DIR/index.md
+INDEX=$DIR/index.md
+cat <<-EOF > $INDEX
 ---
 Theme: pillar
 Sidebar: none
@@ -24,7 +24,8 @@ declare -a files=(
 # Loop through the array
 for file in "${files[@]}"
 do
-	# And execute the command
+	# Generate a filename base on traits
+  # to test
   FILENAME=theme-${file}-left-light.md
 cat <<-EOF > ./$DIR/$FILENAME
 ---
@@ -40,14 +41,19 @@ Here's what we know about the test.
 * Mode should be light
 
 ```
-# Code test
 print "hello, world."
 ```
-
 EOF
-  echo "${FILENAME}"
+  echo "going to mv ${FILENAME} ${DIR}"
+  mv $FILENAME $DIR
+  LINK="[${file}-left-light](${file}-left-light.html)"
+  echo "About to append ${LINK} to  ${INDEX}"
+  echo $LINK >> $INDEX
 done
-ls foo*.md
+
+
+echo "Files created in ${DIR}:"
+ls $DIR
 exit
 
 read -r -d '' VAR <<-'EOF'
