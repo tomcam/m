@@ -15,19 +15,19 @@ Mode: light
 EOF
 
 # Create an array of filenames
-declare -a files=(
+declare -a themes=(
 	'wide'
 	'pillar'
 	)
 
 
 # Loop through the array
-for file in "${files[@]}"
+for file in "${themes[@]}"
 do
 	# Generate a filename base on traits
   # to test
-  FILENAME=theme-${file}-left-light.md
-cat <<-EOF > ./$DIR/$FILENAME
+  FILENAME=theme-${file}-left-light
+cat <<-EOF > ./$DIR/$FILENAME.md
 ---
 Theme: ${file}
 Sidebar: left
@@ -46,7 +46,8 @@ print "hello, world."
 EOF
   echo "going to mv ${FILENAME} ${DIR}"
   mv $FILENAME $DIR
-  LINK="[${file}-left-light](${file}-left-light.html)"
+  #LINK="* **Theme:** ${file} [${file}-left-light](${file}-left-light.html)"
+  LINK="* **Theme:** ${file} [${file}-left-light](${FILENAME}.html)"
   echo "About to append ${LINK} to  ${INDEX}"
   echo $LINK >> $INDEX
 done
@@ -54,6 +55,9 @@ done
 
 echo "Files created in ${DIR}:"
 ls $DIR
+mb build $DIR
+open $DIR/.mb/pub/index.html
+#nvim $INDEX
 exit
 
 read -r -d '' VAR <<-'EOF'
