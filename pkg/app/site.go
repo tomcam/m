@@ -392,6 +392,7 @@ func (app *App) writeSiteConfig() error {
 // via createSite() and that we're in the
 // project site specified in app.Site.path
 func (app *App) generate() error {
+	return nil
 	pathname := app.Site.path
 	app.readSiteConfig()
 	app.Note("\tgenerate(%v)", pathname)

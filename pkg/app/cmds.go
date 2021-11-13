@@ -59,6 +59,39 @@ func (app *App) addCommands() {
 		}
 
 		/*****************************************************
+		TOP LEVEL COMMAND: update 
+		*****************************************************/
+
+		cmdUpdate = &cobra.Command{
+			Use:   "update",
+			Short: "Update one or more factory themes",
+			Long:  "Update one or more factory themes",
+			Run: func(cmd *cobra.Command, args []string) {
+			},
+		}
+
+		/*****************************************************
+		    Subcommand: update themes 
+		*****************************************************/
+
+		cmdUpdateThemes = &cobra.Command{
+			Use:   "themes",
+			Short: "update themes",
+			Long: `update themes
+      Replaces local copy of factory themes:
+
+      mb update themes
+`,
+			Run: func(cmd *cobra.Command, args []string) {
+				err := app.updateThemes()
+				if err != nil {
+					app.QuitError(err)
+				}
+				app.Note("Updated all factory themes")
+			},
+		}
+
+		/*****************************************************
 		TOP LEVEL COMMAND: build
 		*****************************************************/
 
@@ -205,8 +238,10 @@ create theme based on an existing one.
 		*****************************************************/
 	app.RootCmd.AddCommand(CmdNew)
 	app.RootCmd.AddCommand(cmdKitchenSink)
+	app.RootCmd.AddCommand(cmdUpdate)
 	CmdNew.AddCommand(CmdNewSite)
 	CmdNew.AddCommand(CmdNewTheme)
+  cmdUpdate.AddCommand(cmdUpdateThemes)
 	app.RootCmd.AddCommand(cmdInfo)
 	app.RootCmd.AddCommand(cmdBuild)
 }

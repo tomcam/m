@@ -120,8 +120,8 @@ func (app *App) Execute() {
 	app.Verbose("app.Execute()")
 	app.initCobra()
 	cobra.CheckErr(app.RootCmd.Execute())
-	app.Note("About to generate site")
-	app.generate()
+	//app.Note("About to generate site")
+	//app.generate()
 }
 
 func (app *App) initCobra() {

@@ -391,3 +391,10 @@ func (app *App) newTheme(from, to string, factory bool) error {
 	//app.ShowInfo(".")
 	return nil
 }
+
+// updateThemes() replaces all factory themes for the 
+// project with the latest ones 
+func (app *App) updateThemes() error {
+  app.Note("updateThemes()")
+  return nil
+}
