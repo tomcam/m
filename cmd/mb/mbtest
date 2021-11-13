@@ -4,6 +4,7 @@ rm -rf $DIR
 mb new site $DIR
 INDEX=$DIR/index.md
 LINKSECTION=$DIR/links.tmp
+THEMELIST=$DIR/themelist.tmp
 
 # Create an array of filenames
 declare -a themes=(
@@ -26,25 +27,28 @@ declare -a modes=(
 )
 
 # Loop through the array
-for file in "${themes[@]}";
+for theme in "${themes[@]}";
 do
-  echo "## Theme: ${file}" >> $LINKSECTION
+  echo "<a name=\"${theme}\"></a><br/>" >> $LINKSECTION
+  echo "## Theme: ${theme}" >> $LINKSECTION
+  echo "[${theme}](#${theme}) " >> $THEMELIST
+
   for sidebar in "${sidebars[@]}";
   do
     for mode in "${modes[@]}";
     do
-      FILENAME=theme-${file}-${sidebar}-${mode}
+      FILENAME=theme-${theme}-${sidebar}-${mode}
       echo ${FILENAME}.md
 cat <<-EOM > $DIR/$FILENAME.md
 ---
-Theme: ${file}
+Theme: ${theme}
 Sidebar: ${sidebar}
 Mode: ${mode}
 ---
-# Auto-generated test for ${file} theme
+# Auto-generated test for ${theme} theme
 
 Here's what we know about the test.
-* Theme is **${file}** Acording to frontmatter it's **{{ .Page.FrontMatter.Theme }}**
+* Theme is **${theme}** Acording to frontmatter it's **{{ .Page.FrontMatter.Theme }}**
 * Sidebar should be on the **${sidebar}**.
 * Mode should be **${mode}**
 
@@ -65,6 +69,7 @@ echo $LINK >> $LINKSECTION
     done
   done
 done
+cat $THEMELIST >> $INDEX
 cat $LINKSECTION >> $INDEX
 mb build $DIR
 open $DIR/.mb/pub/index.html
