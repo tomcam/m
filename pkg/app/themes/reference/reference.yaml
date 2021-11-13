@@ -1,13 +1,14 @@
 Branding: Reference
 Description: ''
 Stylesheets:
-  - sizes.css
-  - theme-light.css
-  - layout.css
-  - reference.css
-  - reset.css
-  - fonts.css
-  - layout.css
+- "reset.css"
+- "fonts.css"
+- "layout.css"
+- "bind.css"
+- "sizes.css"
+- "theme-light.css"
+- "reference.css"
+- "responsive.css"
 PathName: ''
 Nav:
   HTML: ''

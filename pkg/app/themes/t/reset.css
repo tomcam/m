@@ -1,5 +1,4 @@
 html {box-sizing: border-box;}
-html,body,nav,header,article,footer{float:left;clear:both;overflow:auto;}
 *, *:before, *:after {box-sizing: inherit;}
 
 html, body, div, span, applet, object, iframe,

@@ -2,7 +2,7 @@ html,body,nav,header,article,aside,footer{color:var(--fg);background-color:var(-
 header {color:var(--header-fg);background-color:var(--header-bg);}
 nav {color:var(--nav-fg);background-color:var(--nav-bg);}
 article {color:var(--article-fg);background-color:var(--article-bg);} 
-aside {color:var(--sidebar-fg);background-color:var(--sidebar-bg);}
+aside {color:var(--aside-fg);background-color:var(--aside-bg);}
 footer {color:var(--footer-fg);background-color:var(--footer-bg);}
 article > h1{font-size:var(--h1-font-size);padding-top:var(--h1-padding-top);padding-bottom:var(--h1-padding-bottom);margin-top:var(--h1-margin-top);margin-bottom:var(--h1-margin-bottom);}
 article > h2{font-size:var(--h2-font-size);padding-top:var(--h2-padding-top);padding-bottom:var(--h2-padding-bottom);margin-top:var(--h2-margin-top);margin-bottom:var(--h2-margin-bottom);}
