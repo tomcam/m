@@ -1,12 +1,13 @@
 #!/bin/zsh
-
 # Do this only in a specified directory
 # because it generates files:
 DIR=~/code/m/cmd/mb/theme-test
-mkdir -p ./$DIR
+rm -rf $DIR
+mb new site $DIR
 
 INDEX=$DIR/index.md
-
+LINKSECTION=$DIR/links.tmp
+rm $LINKSECTION
 # Generate the driver file- a home page for the test suite
 cat <<-EOF > $INDEX
 ---
@@ -28,7 +29,7 @@ declare -a themes=(
 # Loop through the array
 for file in "${themes[@]}"
 do
-	# Generate a filename base on traits
+	# Generate a filename based on traits
   # to test
   FILENAME=theme-${file}-left-light
 cat <<-EOM > $DIR/$FILENAME.md
@@ -54,11 +55,8 @@ print "hello, world."
 ````
 
 EOM
-  mv $FILENAME $DIR
   LINK="\n**Theme: ${file}**\n* [Left sidebar, light mode](${FILENAME}.html) | "
-  echo $LINK >> $INDEX
-
-
+  echo $LINK >> $LINKSECTION
   FILENAME=theme-${file}-right-light
 cat <<-EOM > $DIR/$FILENAME.md
 ---
@@ -82,22 +80,17 @@ Here's what we know about the test.
 print "hello, world."
 ```
 EOM
-  mv $FILENAME $DIR
-  #LINK="* ${file} [${file}-right-light](${FILENAME}.html)"
   LINK="[Right sidebar, light mode](${FILENAME}.html)"
-  echo $LINK >> $INDEX
-
-
-
+  echo $LINK >> $LINKSECTION
 
 done
 
 
-#echo "Files created in ${DIR}:"
-#ls $DIR
+  cat $LINKSECTION >> $INDEX
+
+
 mb build $DIR
 open $DIR/.mb/pub/index.html
-#nvim $INDEX
 exit
 
 read -r -d '' VAR <<-'EOF'
