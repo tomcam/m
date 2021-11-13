@@ -1,20 +1,20 @@
 #!/bin/zsh
 
 # Do this only in a specified directory
-# because it generates files
-
+# because it generates files:
 DIR=~/code/m/cmd/mb/theme-test
 mkdir -p ./$DIR
+
 INDEX=$DIR/index.md
 
-# Generate home page for tests
+# Generate the driver file- a home page for the test suite
 cat <<-EOF > $INDEX
 ---
 Theme: pillar
 Sidebar: none
 Mode: light
 ---
-# Themes being test
+# Themes being tested
 
 EOF
 
@@ -36,7 +36,6 @@ cat <<-EOM > $DIR/$FILENAME.md
 Theme: ${file}
 Sidebar: left
 Mode: light
-Hey: there
 ---
 # Auto-generated test for ${file} theme
 
@@ -49,16 +48,48 @@ Here's what we know about the test.
 
 * Resize this to check for responsive versions
 
-
-```
+#### Code example
+````
 print "hello, world."
-```
+````
 
 EOM
   mv $FILENAME $DIR
-  LINK="* **Theme:** ${file} [${file}-left-light](${FILENAME}.html)"
-  echo "About to append ${LINK} to  ${INDEX}"
+  LINK="\n**Theme: ${file}**\n* [Left sidebar, light mode](${FILENAME}.html) | "
   echo $LINK >> $INDEX
+
+
+  FILENAME=theme-${file}-right-light
+cat <<-EOM > $DIR/$FILENAME.md
+---
+Theme: ${file}
+Sidebar: right
+Mode: light
+---
+# Auto-generated test for ${file} theme
+
+Here's what we know about the test.
+* Theme is **${file}** Acording to frontmatter it's **{{ .Page.FrontMatter.Theme }}**
+* Sidebar should be on the **right**.
+* Mode should be **light**
+
+**Note**
+
+* Resize this to check for responsive versions
+
+#### Code example
+```
+print "hello, world."
+```
+EOM
+  mv $FILENAME $DIR
+  #LINK="* ${file} [${file}-right-light](${FILENAME}.html)"
+  LINK="[Right sidebar, light mode](${FILENAME}.html)"
+  echo $LINK >> $INDEX
+
+
+
+
 done
 
 
