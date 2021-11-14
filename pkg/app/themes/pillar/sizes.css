@@ -185,8 +185,8 @@
    * stretch out with botht the article and the sidebar. */
   --header-footer-width:var(--article-column-width);
 
-  --left-margin:7.5%;
-  --right-margin:7.5%;
+  --left-margin:10%;
+  --right-margin:10%;
 
 /*
  * --------------------------------------------------
