@@ -8,12 +8,12 @@ h6{ font-size:0.9em; }
 table > thead > tr > th  {margin-top:4rem;}
 blockquote {font-style:italic;margin: 2rem 2rem 2rem 2rem;}
 
-header {color:var(--header-fg);background-color:var(--header-bg);overflow:hidden;}
 
 /* ****************************/
 /*  HEADER BRANDING AND LINKS */
 /* ****************************/
 
+header {overflow:hidden;}
 /*
  * --------------------------------------------------
  * Simplest case: Branded name, nothing else
@@ -208,14 +208,12 @@ aside > p {font-size:1.2rem;margin-bottom:0em;}
  * --------------------------------------------------
  */
 aside > ul {
-  background-color:whitesmoke;
   margin-right:1em;
   border-collapse:collapse;
 }
 
 aside > ul li {
   /* Border bottom stretches across column at all levels */
-  border-bottom: 1px solid gray;
   margin-left:0;
   list-style-type:none;
 }
@@ -226,9 +224,7 @@ aside > ul li a {
   line-height:1em;
 }
 
-aside > ul li a:active, aside > ul li a:hover {
-  color:yellow;
-}
+
 
 /* Special case: h1 for table of contents
  * gets distinct look */
