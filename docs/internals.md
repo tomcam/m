@@ -2,14 +2,13 @@
 
 ## Utilities
 * errdoc 1234 creates a help file for error code 1234. Must be 4 digits.
-* mbtest deletes the directory foo where mb lives. It generates new 
+* mbtest deletes and recreates the directory .theme-test, and populates
+it with automatically generated pages to test themes visually
+* mbtodo brings up the todo list
 
 ## REMINDERS FOR TC:
-* mb alone builds in the current directory, 
-or in the specified directory if a directory name is supplied 
-on the command line
 * mb filename.md should generate an HTML file in .mb/pub
-* mb run starts a web server in the current directory 
+* mb run should start a web server in the current directory 
 or in the specified directory if a directory name is supplied 
 on the command line
 * `/cmd/mb` CLI app to compile projects in bulk

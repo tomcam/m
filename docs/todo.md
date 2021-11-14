@@ -1,8 +1,11 @@
 # To do
 
 ## Priority 1: Showstoppers--required for the next release
+* {{ Page.FrontMatter.Theme }} sometimes returning wrong value in mbtest
+* Bug: Right sidebar fails with Pillar in mbtests
 * Not returning errors when specified stylesheets aren't found
-some kind onf indicator in the theme. yaml 
+some kind onf indicator in the theme.yaml 
+* Code fences don't seem to work; see mbtest files
 * If a themefile has a defect, say somethinglike .FrontMatter.PageType (which no longer exists) you don't know exactly where the defect occurred. Or what source file was being processed at the time.
 * Add idea of post and specfiications like YYYY-MM-DD or y-m-d etc, using dirs or strings as needed . That way mb new post "/blog/avengers review" would expand to something like "/blog/2022/04/21/avengers-review.html" or "/blog/2022-March-1-avengers-review.html" and so on 
 * Mention in docs that should default to post
@@ -37,6 +40,9 @@ mb new theme test 0.2.0 from wide 1.1.0
 * Add to glossary: `command` means a command-line verb such as `new theme` or `new site`
 
 ### Testing
+* Should be able to create a project with a leading . in the name, but
+that project should not publish files inside one if its subdirectoris with
+a leading . in the name
 * Deformed YAML file
 
 ## Credits
