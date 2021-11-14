@@ -29,8 +29,10 @@ declare -a modes=(
 # Loop through the array
 for theme in "${themes[@]}";
 do
-  echo "<a name=\"${theme}\"></a><br/>" >> $LINKSECTION
-  echo "## Theme: ${theme}" >> $LINKSECTION
+  echo "<a name=\"${theme}\"></a> " >> $LINKSECTION
+  #echo "### Theme: ${theme}" >> $LINKSECTION
+  echo "<br />**${theme}** " >> $LINKSECTION
+  echo "[left sidebar](theme-${theme}-left-light.html) ([dark](theme-${theme}-left-dark.html)) [right sidebar](theme-${theme}-right-light.html) ([dark version](theme-${theme}-right-dark.html)) and [no sidebar](theme-${theme}-no-light.html) ([dark](theme-${theme}-no-dark.html)) " >> $LINKSECTION
   echo "[${theme}](#${theme}) " >> $THEMELIST
 
   for sidebar in "${sidebars[@]}";
@@ -48,26 +50,35 @@ Mode: ${mode}
 # Auto-generated test for ${theme} theme
 
 Here's what we know about the test.
-* Theme is **${theme}** Acording to frontmatter it's **{{ .Page.FrontMatter.Theme }}**
-* Sidebar should be on the **${sidebar}**.
+* Theme is **${theme}**. According to frontmatter it's **{{ .Page.FrontMatter.Theme }}**
+* Sidebar **${sidebar}**. According to frontmatter it's **{{ .Page.FrontMatter.Sidebar }}** 
 * Mode should be **${mode}**
 
 **Note**
 
-* Resize this to check for responsive versions
+* **Resize this** to check for responsive versions
 * Check in all browsers
 
 #### Code example
 ````
 print "hello, world."
 ````
+
+[Home](./index.html)
+
 EOM
-LINK="[${sidebar} sidebar, ${mode} mode](${FILENAME}.html)\n"
-echo $LINK >> $LINKSECTION
 
+#LINK="[${sidebar} sidebar, ${mode} mode](${FILENAME}.html)\n"
+#echo $LINK >> $LINKSECTION
 
+    # A single variation has been generated
     done
+    
   done
+# All variations on one theme have been generated
+  echo "[Home](./index.html)" >> $LINKSECTION
+
+# All test files have been generated
 done
 cat $THEMELIST >> $INDEX
 cat $LINKSECTION >> $INDEX

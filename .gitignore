@@ -17,6 +17,9 @@ foo.*
 *.so
 *.dylib
 cmd/mb/mb
+#
+# Test generator results
+cmd/mb/.theme-test/
 
 # Test binary, built with `go test -c`
 *.test
