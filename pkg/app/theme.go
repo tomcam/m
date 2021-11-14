@@ -69,7 +69,6 @@ type layoutElement struct {
 // doesn't exist at runtime.
 
 //go:embed themes/*
-// TODO: renamed from themeFiles to factoryThemeFiles
 var factoryThemeFiles embed.FS
 
 // Todo: changed name from embedDirCpy() to copyFactoryThemes

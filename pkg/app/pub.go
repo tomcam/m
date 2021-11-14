@@ -16,7 +16,6 @@ func (app *App) publish(filename string) error {
 		// TODO: Perhaps better error context
 		return ErrCode("PREVIOUS", err.Error())
 	}
-	// TODO: ??
 	app.Page.filePath = filename
 	dest := filepath.Join(app.Site.publishPath, rel, filepath.Base(filename))
 	//app.Note("publish(%v) to %v", filename, rel)
@@ -109,63 +108,6 @@ func (app *App) publishMarkdownFile(filename string) error {
 }
 
 
-
-// OLDnormalizeStylesheetList() normalizes the list of 
-// stylesheets given in the theme file, which are
-// now listed in app.Page.stylesheets. For example,
-// it ensures that theme-light.css or theme-dark.css
-// are included according to mode, and that 
-// responsive.css is the last to be include.
-// TODO: I hope this is now obsolete
-func (app *App) OLDnormalizeStylesheetList() {
-	app.Debug("\t\tOLDnormalizeStylesheetList()")
-	var tag string
-	responsive := false
-  darkMode := app.darkMode()
-	// Is this page light (system default) or dark mode?
-	// Get the list of stylesheets specified for this theme.
-	for _, stylesheet := range app.Page.stylesheets {
-		app.Debug("\t\t\t%v", stylesheet)
-
-		switch stylesheet {
-    case "sidebar-right.css":
-    case "sidebar-left.css":
-      stylesheet = ""
-		case "theme-dark.css":
-			if !darkMode {
-        stylesheet = "theme-light.css"
-      }
-		case "theme-light.css":
-			if darkMode {
-        stylesheet = "theme-dark.css"
-      }
-		case "responsive.css":
-			responsive = true
-      stylesheet = ""
-		default:
-			tag = stylesheetTag(stylesheet)
-		}
-		if stylesheet != "" {
-      app.Page.Theme.stylesheetList = append(app.Page.Theme.stylesheetList, tag)
-    }
-	}
-	// sidebar-right.css or sidebar-left.css must be
-	// penultimate, followed by responsive.css
-  sidebar := app.sidebarType()
-  app.Debug("\t\t\tsidebar type: %v", sidebar)
-	switch sidebar {
-	case "left", "right":
-		tag = stylesheetTag(filepath.Join(app.Page.Theme.publishPath,
-			"sidebar-"+strings.ToLower(sidebar)+".css"))
-		app.Page.Theme.stylesheetList = append(app.Page.Theme.stylesheetList, tag)
-	}
-	// responsive.css is the final stylesheet to add
-	if responsive == true {
-		app.Debug("\t\t\tadding responsive.css")
-		tag = stylesheetTag(filepath.Join(app.Page.Theme.publishPath, "responsive.css"))
-		app.Page.Theme.stylesheetList = append(app.Page.Theme.stylesheetList, tag)
-	}
-}// OLDnormalizeStylesheetList 
 
 // normalizeStylesheetList() transforms the raw list of
 // stylesheets needed by this theme in app.Page.Theme.Stylesheets
@@ -323,7 +265,6 @@ func (app *App) layoutElementToHTML(tag string) string {
 	switch tag {
 	default:
 		html = ""
-		// TODO: Consider logging this error or something.
 	case "header", "nav", "footer":
 		html = app.layoutElement(tag)
 		if html != "" {
@@ -456,7 +397,7 @@ func (app *App) darkMode() bool {
 // it assigns the sidebar value set in
 // Site.Sidebar.
 func (app *App) sidebarType() string {
-	// TODO: Maket this a cfg value, bcause like Theme it can also be
+	// TODO: Make this a cfg value, bcause like Theme it can also be
 	// set in other areas
   sidebar := strings.ToLower(app.Page.FrontMatter.Sidebar)
 	if sidebar != "left" && sidebar != "right" {
@@ -466,7 +407,6 @@ func (app *App) sidebarType() string {
   return sidebar
 }
 
-// TODO: Should return error
 func (app *App) publishStylesheet(source string, dest string) error {
 	app.Debug("\t\t\tpublishStylesheet(%v, %v)", source, dest)
 	// Keep list of stylesheets that got published
