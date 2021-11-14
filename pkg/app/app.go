@@ -182,7 +182,7 @@ func (app *App) initConfig() {
 // for a fresh Site object before it's writtne
 // to a site config file.
 func (app *App) setSiteDefaults() {
-	app.Debug("\tsetSiteDefaults()")
+	app.Debug("setSiteDefaults()")
 	app.Site.Language = defaults.Language
 	app.Site.HTMLStartFile = defaults.HTMLStartFile
 	app.Site.HTMLEndFile = defaults.HTMLEndFile
@@ -200,6 +200,7 @@ func (app *App) setSiteDefaults() {
 // This is based on App.SiteDefaults() in the previous
 // version of Metabuzz.
 func (app *App) setPaths() {
+	app.Debug("setPaths")
 	app.Site.name = filepath.Base(app.Site.path)
 	// Compute location of base directory used for all
 	// config info, which includes directories for
@@ -256,6 +257,7 @@ func (app *App) setPaths() {
 // setWorkingDir() changes to the specified
 // directory and sets app.site.path accordingly.
 func (app *App) setWorkingDir(dir string) error {
+	app.Debug("setWorkingDir()")
 	if dir == "." || dir == "" {
 	} else {
 		if err := os.Chdir(dir); err != nil {

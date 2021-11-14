@@ -59,7 +59,7 @@ func (app *App) addCommands() {
 		}
 
 		/*****************************************************
-		TOP LEVEL COMMAND: update 
+		TOP LEVEL COMMAND: update
 		*****************************************************/
 
 		cmdUpdate = &cobra.Command{
@@ -71,7 +71,7 @@ func (app *App) addCommands() {
 		}
 
 		/*****************************************************
-		    Subcommand: update themes 
+		    Subcommand: update themes
 		*****************************************************/
 
 		cmdUpdateThemes = &cobra.Command{
@@ -241,7 +241,7 @@ create theme based on an existing one.
 	app.RootCmd.AddCommand(cmdUpdate)
 	CmdNew.AddCommand(CmdNewSite)
 	CmdNew.AddCommand(CmdNewTheme)
-  cmdUpdate.AddCommand(cmdUpdateThemes)
+	cmdUpdate.AddCommand(cmdUpdateThemes)
 	app.RootCmd.AddCommand(cmdInfo)
 	app.RootCmd.AddCommand(cmdBuild)
 }

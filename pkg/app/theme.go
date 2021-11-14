@@ -31,8 +31,10 @@ type Theme struct {
 	// runtime
 	sourcePath string
 
-	// List of all stylesheet tags generated for this theme
-	stylesheetTags []string
+	// List of all stylesheet after being massaged, 
+  // for example, to ensure responive.css comes 
+  // last among other things.
+	stylesheetList []string
 
 	// Name is the name of the theme for this page,
 	// e.g. "wide"
@@ -268,9 +270,9 @@ func (app *App) loadTheme() error {
 		app.Page.Theme.nestingLevel = level
 		// Finds the theme specified for this page.
 		// Copy the required files to the theme publish directory.
-    if err := app.loadThemeLevel(source, dest, level); err != nil {
+		if err := app.loadThemeLevel(source, dest, level); err != nil {
 			return ErrCode("PREVIOUS", err.Error())
-    }
+		}
 	}
 	return nil
 } //loadTheme()
@@ -392,9 +394,9 @@ func (app *App) newTheme(from, to string, factory bool) error {
 	return nil
 }
 
-// updateThemes() replaces all factory themes for the 
-// project with the latest ones 
+// updateThemes() replaces all factory themes for the
+// project with the latest ones
 func (app *App) updateThemes() error {
-  app.Note("updateThemes()")
-  return nil
+	app.Note("updateThemes()")
+	return nil
 }

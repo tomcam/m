@@ -16,6 +16,8 @@ func (app *App) publish(filename string) error {
 		// TODO: Perhaps better error context
 		return ErrCode("PREVIOUS", err.Error())
 	}
+	// TODO: ??
+	app.Page.filePath = filename
 	dest := filepath.Join(app.Site.publishPath, rel, filepath.Base(filename))
 	//app.Note("publish(%v) to %v", filename, rel)
 	app.Debug("publish(%v) to %v", filename, dest)
@@ -27,7 +29,7 @@ func (app *App) publish(filename string) error {
 }
 
 func (app *App) publishMarkdownFile(filename string) error {
-	app.Note("publishFile(%#v)", filename)
+	app.Debug("publishMarkdownFile(%#v)", filename)
 	// Figure out this file's relative position in the output
 	// directory true. For example:
 	//   /Users/tom/code/m/cmd/mb -> /Users/tom/code/m/cmd/mb/test/test.md
@@ -64,6 +66,7 @@ func (app *App) publishMarkdownFile(filename string) error {
 		return err
 	}
 
+	app.Page.FrontMatter = FrontMatter{}
 	// Convert the FrontMatter map produced by Goldmark into
 	// the Page.FrontMatter struct.
 	app.frontMatterRawToStruct()
@@ -105,56 +108,136 @@ func (app *App) publishMarkdownFile(filename string) error {
 	return nil
 }
 
-// stylesheetTags generates all stylesheet tags at once.
-// Note that
-// - sidebar-left.css or sidebar-right.css must appear second to last
-// - responsive.css must appear appear last
-func (app *App) stylesheetTags() string {
+
+
+// OLDnormalizeStylesheetList() normalizes the list of 
+// stylesheets given in the theme file, which are
+// now listed in app.Page.stylesheets. For example,
+// it ensures that theme-light.css or theme-dark.css
+// are included according to mode, and that 
+// responsive.css is the last to be include.
+// TODO: I hope this is now obsolete
+func (app *App) OLDnormalizeStylesheetList() {
+	app.Debug("\t\tOLDnormalizeStylesheetList()")
 	var tag string
-	//app.Page.Theme.stylesheetTags = {}
-	//stylesheets := ""
 	responsive := false
-	filename := ""
+  darkMode := app.darkMode()
 	// Is this page light (system default) or dark mode?
-	mode := strings.ToLower(app.Page.FrontMatter.Mode)
 	// Get the list of stylesheets specified for this theme.
 	for _, stylesheet := range app.Page.stylesheets {
-		//app.Note("\t\tstylesheetTags(%v)", stylesheet)
-		filename = stylesheet
-		// theme-light.css is the system default. If user
-		// specified "Mode: dark" in (for example,
-		// in front matter), use the dark theme
-		// stylesheet instead.
+		app.Debug("\t\t\t%v", stylesheet)
 
-		if filename == "theme-light.css" && mode == "dark" {
-			stylesheet = "theme-dark.css"
-		}
-
-		// Always defer writing out the "responsive.css" tag until
-		// the end because it overrides defaults set in previous
-		// stylesheets.
-		if filename == "responsive.css" {
+		switch stylesheet {
+    case "sidebar-right.css":
+    case "sidebar-left.css":
+      stylesheet = ""
+		case "theme-dark.css":
+			if !darkMode {
+        stylesheet = "theme-light.css"
+      }
+		case "theme-light.css":
+			if darkMode {
+        stylesheet = "theme-dark.css"
+      }
+		case "responsive.css":
 			responsive = true
-		} else {
-			// Add stylesheet if it's NOT responsive.css
+      stylesheet = ""
+		default:
 			tag = stylesheetTag(stylesheet)
-			app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags, tag)
 		}
+		if stylesheet != "" {
+      app.Page.Theme.stylesheetList = append(app.Page.Theme.stylesheetList, tag)
+    }
 	}
-	// sidebar-right.css or sidebar-left.css must be penultimate
-	sidebar := app.Page.FrontMatter.Sidebar
+	// sidebar-right.css or sidebar-left.css must be
+	// penultimate, followed by responsive.css
+  sidebar := app.sidebarType()
+  app.Debug("\t\t\tsidebar type: %v", sidebar)
 	switch sidebar {
 	case "left", "right":
-		tag = stylesheetTag(filepath.Join(app.Page.Theme.publishPath, "sidebar-"+strings.ToLower(sidebar)+".css"))
-		app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags, tag)
+		tag = stylesheetTag(filepath.Join(app.Page.Theme.publishPath,
+			"sidebar-"+strings.ToLower(sidebar)+".css"))
+		app.Page.Theme.stylesheetList = append(app.Page.Theme.stylesheetList, tag)
 	}
 	// responsive.css is the final stylesheet to add
 	if responsive == true {
+		app.Debug("\t\t\tadding responsive.css")
 		tag = stylesheetTag(filepath.Join(app.Page.Theme.publishPath, "responsive.css"))
-		app.Page.Theme.stylesheetTags = append(app.Page.Theme.stylesheetTags, tag)
+		app.Page.Theme.stylesheetList = append(app.Page.Theme.stylesheetList, tag)
 	}
-	var stylesheets strings.Builder
-	for _, stylesheet := range app.Page.Theme.stylesheetTags {
+}// OLDnormalizeStylesheetList 
+
+// normalizeStylesheetList() transforms the raw list of
+// stylesheets needed by this theme in app.Page.Theme.Stylesheets
+// into app.Page.Theme.stylesheetList, by ensuring the correct
+// mode is chosen (theme-dark.css or theme-light.css), responsive.css
+// is at the end, etc.
+func (app *App) normalizeStylesheetList() {
+	app.Note("\t\tnormalizeStylesheetList()")
+	responsive := false
+  darkMode := app.darkMode()
+	if darkMode {
+    app.Note("\t\t\tDark mode")
+  }
+	// Is this page light (system default) or dark mode?
+	// Get the list of stylesheets specified for this theme.
+	for _, stylesheet := range app.Page.Theme.Stylesheets {
+	//for _, stylesheet := range app.Page.stylesheets {
+		app.Note("\t\t\t%v", stylesheet)
+
+		switch stylesheet {
+    case "sidebar-right.css":
+    case "sidebar-left.css":
+      stylesheet = ""
+		case "theme-dark.css":
+		  app.Note("\t\t\t\tConvert dark mode to light")
+			if !darkMode {
+        stylesheet = "theme-light.css"
+      }
+		case "theme-light.css":
+		  app.Note("\t\t\t\tConvert light mode to dark")
+			if darkMode {
+        stylesheet = "theme-dark.css"
+      }
+		case "responsive.css":
+		  app.Note("\t\t\t\tresponsive.css found")
+			responsive = true
+      stylesheet = ""
+		}
+		if stylesheet != "" {
+      app.Page.Theme.stylesheetList =
+        append(app.Page.Theme.stylesheetList, stylesheet)
+    }
+	}
+	// sidebar-right.css or sidebar-left.css must be
+	// penultimate, followed by responsive.css
+  sidebar := app.sidebarType()
+  app.Debug("\t\t\tsidebar type: %v", sidebar)
+  var stylesheet string
+	switch sidebar {
+	case "left", "right":
+		stylesheet = "sidebar-"+sidebar+".css"
+		app.Page.Theme.stylesheetList = 
+      append(app.Page.Theme.stylesheetList, stylesheet)
+	}
+	// responsive.css is the final stylesheet to add
+	if responsive == true {
+		app.Debug("\t\t\tadding responsive.css")
+		app.Page.Theme.stylesheetList = append(app.Page.Theme.stylesheetList, "responsive.css")
+	}
+}
+
+
+
+
+// stylesheetTags() returns the normalized list of 
+// stylesheets as a string.
+func (app *App) stylesheetTags() string {
+  //app.normalizeStylesheetList()
+  app.Note("NORMALIZED\n%#v", app.Page.Theme.stylesheetList)
+ 	var stylesheets strings.Builder
+	for _, stylesheet := range app.Page.Theme.stylesheetList {
+    stylesheet = stylesheetTag(filepath.Join(app.Page.Theme.publishPath,stylesheet))
 		stylesheets.WriteString(stylesheet)
 	}
 	return stylesheets.String()
@@ -271,6 +354,7 @@ func (app *App) layoutElement(tag string) string {
 	case "sidebar":
 		if app.Page.FrontMatter.Sidebar != "left" &&
 			app.Page.FrontMatter.Sidebar != "right" {
+			app.Note("Sidebar for %v is %v, not left or right", app.Page.filePath, app.Page.FrontMatter.Sidebar)
 			return ""
 		}
 		l = app.Page.Theme.Sidebar
@@ -355,6 +439,16 @@ func (app *App) footer() string {
 	return app.layoutElementToHTML("footer")
 }
 
+// darkMode() returns true if dark mode has been specified
+func (app *App) darkMode() bool {
+	// TODO: Maket this a cfg value, bcause like Theme it can also be
+	// set in other areas
+	if strings.ToLower(app.Page.FrontMatter.Mode) == "dark" {
+    return true
+  }
+  return false
+}
+
 // sidebarType() determines what sidebar to use,
 // if any. Returns either "left" or "right",
 // forced to lowercase
@@ -364,16 +458,12 @@ func (app *App) footer() string {
 func (app *App) sidebarType() string {
 	// TODO: Maket this a cfg value, bcause like Theme it can also be
 	// set in other areas
-	sidebar := app.Page.FrontMatter.Sidebar
-	if sidebar == "" {
-		sidebar = app.Site.Sidebar
+  sidebar := strings.ToLower(app.Page.FrontMatter.Sidebar)
+	if sidebar != "left" && sidebar != "right" {
+		sidebar = ""
 	}
-	if sidebar == "left" || sidebar == "right" {
-		sidebar = strings.ToLower(app.Site.Sidebar)
-	} else {
-		return ""
-	}
-	return ""
+  app.Debug("\t\t\tsidebarType(%v)", sidebar)
+  return sidebar
 }
 
 // TODO: Should return error
@@ -389,8 +479,9 @@ func (app *App) publishStylesheet(source string, dest string) error {
 }
 
 func (app *App) publishStylesheets() error {
-	app.Debug("\t\tpublishStylesheets()")
-	var source, dest, file string
+	app.Note("\t\tpublishStylesheets()")
+  app.normalizeStylesheetList() 
+		var source, dest string
 	// Go through the list of stylesheets for this theme.
 	// Copy stylesheets for this theme from the local
 	// theme directory to the publish
@@ -399,29 +490,13 @@ func (app *App) publishStylesheets() error {
 	// such as "theme-dark.css" and "theme-light.css",
 	// don't get copied until publish time because
 	// they depend on configuration options.
-	for _, stylesheet := range app.Page.Theme.Stylesheets {
-		// Check every stylesheet to see if it's
-		// a dark theme vs a light theme. If it
-		// is, change to dark if requested.
-		file = app.getMode(stylesheet)
-		if file == "theme-light.css" && app.Page.FrontMatter.Mode == "dark" {
-			file = "theme-dark.css"
-		}
-		source = filepath.Join(app.Page.Theme.sourcePath, file)
-		dest = filepath.Join(app.Page.Theme.publishPath, file)
+	//for _, stylesheet := range app.Page.Theme.Stylesheets {
+	for _, stylesheet := range app.Page.Theme.stylesheetList {
+		source = filepath.Join(app.Page.Theme.sourcePath, stylesheet)
+		dest = filepath.Join(app.Page.Theme.publishPath, stylesheet)
 		if err := app.publishStylesheet(source, dest); err != nil {
 			return ErrCode("1024", source)
 		}
-	}
-	sidebar := app.Page.FrontMatter.Sidebar
-	switch sidebar {
-	case "":
-		return nil
-	case "left", "right":
-		file = "sidebar-" + sidebar + ".css"
-	}
-	if err := app.publishStylesheet(source, dest); err != nil {
-		return ErrCode("1024", source)
 	}
 	return nil
 }

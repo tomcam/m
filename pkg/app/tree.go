@@ -27,8 +27,15 @@ func (app *App) visit(files *[]string) filepath.WalkFunc {
 		name := info.Name()
 
 		// Exclude this directory if it starts with "."
+		// UNLESS it's the project directory. This allows
+		// us to build a project where the name  starts
+		// with a dot, but its subdirectories that
+		// start with a dot will be skipped.
 		if strings.HasPrefix(name, ".") && isDir {
 			return filepath.SkipDir
+			if currDir() != app.Site.path {
+				return filepath.SkipDir
+			}
 		}
 
 		// Exclude this directory if found on the, ah, exclusion list.

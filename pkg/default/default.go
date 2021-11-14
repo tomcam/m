@@ -1,9 +1,11 @@
 package defaults
 
 import "github.com/tomcam/m/pkg/util"
+
 const (
 	Version = "0.4.0"
 )
+
 var (
 
 	// Directory configuration for a project--a new site.
@@ -163,10 +165,10 @@ Welcome to %s
 	// If this changes update CfgDir
 	ProductName = "metabuzz"
 
-  // Name of the product as it would appear in published copy.
-  // Capitalization, spaces, special characters, etc. 
-  // are respected
-	ProductBranding = "Metabuzz" +	"™ " + "v." + Version
+	// Name of the product as it would appear in published copy.
+	// Capitalization, spaces, special characters, etc.
+	// are respected
+	ProductBranding = "Metabuzz" + "™ " + "v." + Version
 
 	// Abbreviation, used for name command line program.
 	ProductShortName = "mb"

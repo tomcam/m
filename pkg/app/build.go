@@ -61,8 +61,10 @@ func (app *App) build(path string) error {
 		return ErrCode("1002", path)
 	}
 
-	// Create minimal directory structure: Publish directory,
-	// site directory, .themes, etc.
+	app.Debug("build %s", app.Site.path)
+	// Create minimal subdirectory structure:
+	// Publish directory, site directory,
+	// theme directory, etc.
 	if err = createDirStructure(&defaults.SitePaths); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
@@ -116,7 +118,7 @@ func (app *App) build(path string) error {
 					}
 					filename = filepath.Join(dir, file.Name())
 					//if err = app.publishFile(filepath.Join(dir, file.Name())); err != nil {
-					app.Note("Markdown file %v", filename)
+					app.Debug("\tmarkdown file %v", filename)
 					if err = app.publishMarkdownFile(filename); err != nil {
 						return ErrCode("PREVIOUS", err.Error())
 					}
@@ -125,7 +127,6 @@ func (app *App) build(path string) error {
 					// It's not a Markdown file. Copy if it's a graphic
 					// asset or something.
 					filename = filepath.Join(dir, file.Name())
-					app.Note("PUBLISH non-Markdown file %v", filename)
 					if err = app.publish(filename); err != nil {
 						return ErrCode("PREVIOUS", err.Error())
 					}
