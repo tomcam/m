@@ -1,14 +1,11 @@
 # To do
 
 ## Priority 1: Showstoppers--required for the next release
-* {{ Page.FrontMatter.Theme }} sometimes returning wrong value in mbtest
-* Bug: Right sidebar fails with Pillar in mbtests
-* Not returning errors when specified stylesheets aren't found
-some kind onf indicator in the theme.yaml 
 * Code fences don't seem to work; see mbtest files
+* Theme inheritance is failing
 * If a themefile has a defect, say somethinglike .FrontMatter.PageType (which no longer exists) you don't know exactly where the defect occurred. Or what source file was being processed at the time.
 * Add idea of post and specfiications like YYYY-MM-DD or y-m-d etc, using dirs or strings as needed . That way mb new post "/blog/avengers review" would expand to something like "/blog/2022/04/21/avengers-review.html" or "/blog/2022-March-1-avengers-review.html" and so on 
-* Mention in docs that should default to post
+* Mention in docs that one should default to post if one dones't know the difference between page and post
 * Search for "TODO:" in source
 * Documenting themes:
   Image properties are likely based on adjancent headers, which can be added empty (without text for the header)

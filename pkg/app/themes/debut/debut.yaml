@@ -3,7 +3,7 @@ Description: ''
 Stylesheets:
   - reset.css
   - fonts.css
-#  - bind.css
+  - bind.css
   - sizes.css
   - theme-light.css
   - layout.css

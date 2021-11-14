@@ -47,9 +47,9 @@ Location of this file: {{ path }}
 			"one",
 			embedded{filename: "", contents: ""},
 			`
-+++
-theme: marlow
-+++
+---
+Theme: pillar 
+---
 # Page 1
 This page is 1 level deep.
 The time is {{ ftime }}
@@ -60,11 +60,11 @@ The time is {{ ftime }}
 			"one",
 			embedded{filename: "", contents: ""},
 			`
-+++
-pagetype: home
-+++
+---
+Theme: debut/gallery
+---
 # PageType test
-This uses the pagetype named {{ .FrontMatter.PageType }}
+This uses the theme named {{ .Page.FrontMatter.Theme }}
 The time is {{ ftime }}
 `,
 		},

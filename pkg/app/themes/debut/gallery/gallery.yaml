@@ -1,7 +1,6 @@
 Branding: 'Debut/Gallery Theme'
 Description: ''
 Stylesheets:
-#  - bind.css
   - gallery.css
 PathName: ''
 Version: 1.2.3

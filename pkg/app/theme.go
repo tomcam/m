@@ -31,9 +31,9 @@ type Theme struct {
 	// runtime
 	sourcePath string
 
-	// List of all stylesheet after being massaged, 
-  // for example, to ensure responive.css comes 
-  // last among other things.
+	// List of all stylesheet after being massaged,
+	// for example, to ensure responive.css comes
+	// last among other things.
 	stylesheetList []string
 
 	// Name is the name of the theme for this page,
@@ -338,6 +338,7 @@ func (app *App) loadThemeConfig(path string) error {
 		return err
 	}
 
+	// XXX
 	if err := app.publishStylesheets(); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
