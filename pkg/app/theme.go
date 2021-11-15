@@ -264,7 +264,8 @@ func (app *App) loadTheme() error {
 		// Get the next level of directory and append
 		// to the previous directory
 		source = filepath.Join(source, theme)
-		dest = filepath.Join(dest, theme)
+    // xxx
+    dest = app.themePublishDir(theme)
 		app.Page.Theme.sourcePath = source
 		app.Page.Theme.nestingLevel = level
 		// Finds the theme specified for this page.
@@ -276,12 +277,20 @@ func (app *App) loadTheme() error {
 	return nil
 } //loadTheme()
 
+// themePublishDir() returns the name of the directory
+// needed to publish style sheets for the theme
+func (app *App) themePublishDir(theme string) string {
+	//return filepath.Join(app.Site.cssPublishPath, defaults.ThemesDir, app.Page.FrontMatter.Theme)
+	return filepath.Join(app.Site.publishPath, defaults.ThemesDir, app.Page.FrontMatter.Theme)
+}
+
 func (app *App) createStylesheetsPublishDir(dest string) error {
 	// If no style sheets don't waste time here
 	app.Debug("\t\t\tcreateStylesheetsPublishDir(%v)", dest)
 	// TODO: Track this to make sure it's not repeated unnecessarily
-	path := filepath.Join(app.Site.cssPublishPath, defaults.ThemesDir, app.Page.FrontMatter.Theme)
-	path = dest
+	//path := filepath.Join(app.Site.cssPublishPath, defaults.ThemesDir, app.Page.FrontMatter.Theme)
+	//path = dest
+  path := app.themePublishDir(app.Page.FrontMatter.Theme)
 	err := os.MkdirAll(path, defaults.PublicFilePermissions)
 	if err != nil {
 		app.Debug("\t\t\t\tcreateStyleSheetsPublishDir: couldn't create %v", path)

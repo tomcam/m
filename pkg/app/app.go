@@ -221,9 +221,12 @@ func (app *App) setPaths() {
 
 	// Compute the directory location for CSS files
 	// to be published for this theme.
+  // TODO: I actually create the directory for this 
+  // in buildPublishDirs(). May need to revisit this...
+  // maybe generate more dirs, maybe refactor it.
 	app.Site.cssPublishPath = filepath.Join(app.Site.assetPath,
 		defaults.DefaultPublishCssPath)
-    app.Note("app.Site.cssPublishPath: %v", app.Site.cssPublishPath)
+
 	// Compute the directory location for image files
 	app.Site.imagePath = filepath.Join(app.Site.assetPath,
 		defaults.DefaultPublishImgPath)

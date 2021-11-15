@@ -3,6 +3,7 @@
 ## Priority 1: Showstoppers--required for the next release
 * Code fences don't seem to work; see mbtest files
 * Theme inheritance is failing
+* Theme that's named as a number doesn't seem to work well
 * If a themefile has a defect, say somethinglike .FrontMatter.PageType (which no longer exists) you don't know exactly where the defect occurred. Or what source file was being processed at the time.
 * Add idea of post and specfiications like YYYY-MM-DD or y-m-d etc, using dirs or strings as needed . That way mb new post "/blog/avengers review" would expand to something like "/blog/2022/04/21/avengers-review.html" or "/blog/2022-March-1-avengers-review.html" and so on 
 * Mention in docs that one should default to post if one dones't know the difference between page and post

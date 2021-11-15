@@ -1,4 +1,6 @@
 #!/bin/zsh
+# Exit if an error occurs
+set -e
 DIR=~/code/m/cmd/mb/theme-test
 rm -rf $DIR
 mb new site $DIR
@@ -8,6 +10,8 @@ THEMELIST=$DIR/themelist.tmp
 
 # Create an array of filenames
 declare -a themes=(
+  'debut/gallery'
+  'w'
 	'wide'
 	'pillar'
   'tradesman'

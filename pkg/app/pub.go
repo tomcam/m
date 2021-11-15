@@ -181,7 +181,7 @@ func (app *App) stylesheetTags() string {
 	var stylesheets strings.Builder
 	for _, stylesheet := range app.Page.Theme.stylesheetList {
     // TODO: Hinky. This duplicates work done in publishStylesheets()
-		stylesheet = stylesheetTag(filepath.Join(app.Site.cssPublishPath, stylesheet))
+		stylesheet = stylesheetTag(filepath.Join(app.themePublishDir(app.Page.FrontMatter.Theme), stylesheet))
 		stylesheets.WriteString(stylesheet)
 	}
 	return stylesheets.String()
@@ -234,7 +234,7 @@ func (app *App) buildPublishDirs() error {
 		}
 	}
   // XXX
-  app.Note("About to create %v",app.Site.cssPublishPath)
+  //app.Note("About to create %v",app.Site.cssPublishPath)
   if err := os.MkdirAll(app.Site.cssPublishPath, defaults.PublicFilePermissions); err != nil {
     app.QuitError(err)
   }
@@ -458,7 +458,9 @@ func (app *App) publishStylesheets() error {
 	// CSS directory for stylesheets.
 	for _, stylesheet := range app.Page.Theme.stylesheetList {
 		source = filepath.Join(app.Page.Theme.sourcePath, stylesheet)
-		dest = filepath.Join(app.Site.cssPublishPath, stylesheet)
+		//dest = filepath.Join(app.Site.cssPublishPath, stylesheet)
+	  dest = filepath.Join(app.themePublishDir(app.Page.FrontMatter.Theme), stylesheet)
+
 		if err := app.publishStylesheet(source, dest); err != nil {
 		  return ErrCode("PREVIOUS", err.Error())
 			//return ErrCode("1024", source)
