@@ -62,7 +62,8 @@ var errMsgs = map[string]string{
 	"0112": "Unable to copy file",        // filename
 
 	// 0200	- Error creating file
-	"0216": "Error publishing theme file", // filename
+  "0209": "Unable to copy file to", // filename
+  "0217": "Can't publish stylesheet to same location", // filename
 
 	// 0250 - Error closing file
 	// 0300	- Error deleting file
@@ -103,6 +104,8 @@ var errMsgs = map[string]string{
 	"1101": "Unable to",                       // chdir to bad dir name
 	"1102": "Unable to",                       // chdir to bad dir name during showInfo()
 	"1103": "Unable to",                       // chdir to bad dir name during createSite()
+  "1004": "Trying to publish nonexistent stylesheet",
+  "1005": "No publish directory specified for",
 
 	// 1200 - Syntax error!
 	"1204": "Unknown dot value in Go template function ", //

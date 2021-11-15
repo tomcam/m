@@ -1,7 +1,7 @@
 Branding = ""
 Description = ""
-RootStylesheets = ["reset.css", "fonts.css", "bind.css"]
-Stylesheets = ["sizes.css", "theme-light.css", "0.css"]
+Stylesheets = ["sizes.css", "theme-light.css", "wide.css", "responsive.css"]
+RootStylesheets = ["reset.css", "fonts.css", "layout.css"]
 PathName = ""
 
 [Nav]

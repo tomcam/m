@@ -145,7 +145,7 @@ func (app *App) copyFactoryThemes() error {
 // - If none is there, use Viper
 // - If no theme is specified, use the default theme
 func (app *App) themeNameToLower() string {
-	app.Debug("\t\tthemeName(): Checking front matter")
+	//app.Debug("\t\tthemeName(): Checking front matter")
 	// See if anything's in the front matter
 	// regarding the theme.
 	theme := app.Page.FrontMatter.Theme
@@ -168,7 +168,7 @@ func (app *App) themeNameToLower() string {
 // fully qualified directory source to the fully qualified
 // directory dest.
 func (app *App) copyTheme(source string, dest string) error {
-	app.Debug("\t\t\tcopyTheme(%v, %v)", source, dest)
+	app.Debug("\t\t\t\tcopyTheme(%v, %v)", source, dest)
 	err := os.MkdirAll(dest, defaults.PublicFilePermissions)
 	if err != nil {
 		// TODO: Handle error properly & and document error code
@@ -199,7 +199,7 @@ func (app *App) copyTheme(source string, dest string) error {
 // overrides whatever is in debut.yaml.
 // Called from loadTheme() once per level.
 func (app *App) loadThemeLevel(source string, dest string, level int) error {
-	app.Debug("\t\tloadThemeLevel(%v, %v, %v)", source, dest, level)
+	app.Debug("\t\t\tloadThemeLevel(%v, %v, %v)", source, dest, level)
 	// See if this theme has already been published.
 	_, ok := app.Site.publishedThemes[dest]
 	if !ok {
@@ -216,7 +216,7 @@ func (app *App) loadThemeLevel(source string, dest string, level int) error {
 
 	// Theme directory is known. Load its config
 	// (e.g. .yaml) file
-	if err := app.loadThemeConfig(dest); err != nil {
+	if err := app.loadThemeConfig(source); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	return nil
@@ -244,7 +244,7 @@ func (app *App) loadTheme() error {
 	// can be something "debut" or it can go down deper,
 	// for example, "debut/gallery/item"
 	fullTheme := strings.ToLower(app.Page.FrontMatter.Theme)
-	app.Debug("\tloadTheme %v", fullTheme)
+	app.Debug("\t\tloadTheme %v", fullTheme)
 	// If it's something like debut/gallery, loop around and load from root to branch.
 	// That way styles are overridden the way
 	// CSS expects.
@@ -323,25 +323,21 @@ func (app *App) loadThemeConfig(path string) error {
 	// base of the filename. Then add the rest to the
 	// filename, which is the theme name + ".yaml"
 	filename := filepath.Join(path, filepath.Base(path)+"."+defaults.ConfigFileDefaultExt)
-	app.Debug("\t\tloadThemeConfig(%v)", filename)
+	app.Debug("\t\t\t\tloadThemeConfig(%v)", filename)
 	b, err := ioutil.ReadFile(filename)
 	if err != nil {
-		app.Debug("\t\t\tloadThemeConfig() failed to read %v", filename)
+		app.Debug("\t\t\t\tloadThemeConfig() failed to read %v", filename)
 		// TODO: Handle error properly & and document error code
 		return err
 	}
 
 	err = yaml.Unmarshal(b, &app.Page.Theme)
 	if err != nil {
-		app.Debug("\tloadThemeConfig() Unable to marshal YAML from %v", filename)
+		app.Debug("\t\t\t\tloadThemeConfig() Unable to marshal YAML from %v", filename)
 		// TODO: Handle error properly & and document error code
 		return err
 	}
 
-	// XXX
-	if err := app.publishStylesheets(); err != nil {
-		return ErrCode("PREVIOUS", err.Error())
-	}
 	// TODO: Start using this to prevent multiple copies of the theme
 	// Save the current theme. Force to lowercase because
 	// it's  filename

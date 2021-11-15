@@ -49,6 +49,8 @@ func (app *App) mdToHTML(source []byte) ([]byte, error) {
 // for situation such as mb build ~/foo
 // when you happen to be in
 // directory ~/something/else/bar
+// Pre: 
+//  setPaths()
 func (app *App) build(path string) error {
 	var err error
 	// Change to specified directory.
@@ -118,7 +120,7 @@ func (app *App) build(path string) error {
 					}
 					filename = filepath.Join(dir, file.Name())
 					//if err = app.publishFile(filepath.Join(dir, file.Name())); err != nil {
-					app.Debug("\tmarkdown file %v", filename)
+					//app.Debug("\tmarkdown file %v", filename)
 					if err = app.publishMarkdownFile(filename); err != nil {
 						return ErrCode("PREVIOUS", err.Error())
 					}

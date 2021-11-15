@@ -223,7 +223,7 @@ func (app *App) setPaths() {
 	// to be published for this theme.
 	app.Site.cssPublishPath = filepath.Join(app.Site.assetPath,
 		defaults.DefaultPublishCssPath)
-
+    app.Note("app.Site.cssPublishPath: %v", app.Site.cssPublishPath)
 	// Compute the directory location for image files
 	app.Site.imagePath = filepath.Join(app.Site.assetPath,
 		defaults.DefaultPublishImgPath)

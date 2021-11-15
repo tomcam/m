@@ -1,10 +1,9 @@
-article{float:right;}
-
-/* This is the header and footer width minus sidebar width */
-article {width:var(--alt-article-column-width);}
-/* With sidebar to left no article margin is needed  */
-article{margin-left:0;margin-right:12.5%;padding-left:5%;}
-/* Which means the sidebar needs that margin. */
-aside{margin-left:var(--left-margin);padding-right:2em;padding-left:2.5%;}
-
+/* Put sidebar on the left side of the page. Article area floats to the right. */
+:root 
+{
+  --max-article-width:80%;
+  --max-aside-width:15%;
+}
+article, aside {float:right}
+/*article {margin-left:0;} */
 
