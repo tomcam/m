@@ -37,7 +37,7 @@ func main() {
 		Handler:  mux,
 	}
 
-	infoLog.Printf("Running on port %s. Press Ctrl+C to stop", *port)
+	infoLog.Printf("Browse to http://localhost:%s/. Press Ctrl+C at the command line to stop", *port)
 	err := site.ListenAndServe()
 	errLog.Fatal(err)
 }

@@ -18,9 +18,8 @@ func (app *app) root(w http.ResponseWriter, r *http.Request) {
 	}
 
 	tmpl, err := template.ParseFiles(paths...)
-	//tmpl, err := template.ParseFiles("./ui/html/page.tmpl")
 	if err != nil {
-		// TC: Use my error handling style
+		// TODO: Use my error handling style
 		app.errLog.Println(err.Error())
 		http.Error(w, "Internal server error parsing templates", 500)
 		return
@@ -28,7 +27,7 @@ func (app *app) root(w http.ResponseWriter, r *http.Request) {
 
 	err = tmpl.Execute(w, nil)
 	if err != nil {
-		// TC: Use my error handling style
+		// TODO: Use my error handling style
 		app.errLog.Println(err.Error())
 		http.Error(w, "Internal server error executing templates", 500)
 		return
