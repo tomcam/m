@@ -264,8 +264,8 @@ func (app *App) loadTheme() error {
 		// Get the next level of directory and append
 		// to the previous directory
 		source = filepath.Join(source, theme)
-    // xxx
-    dest = app.themePublishDir(theme)
+		// xxx
+		dest = app.themePublishDir(theme)
 		app.Page.Theme.sourcePath = source
 		app.Page.Theme.nestingLevel = level
 		// Finds the theme specified for this page.
@@ -290,7 +290,7 @@ func (app *App) createStylesheetsPublishDir(dest string) error {
 	// TODO: Track this to make sure it's not repeated unnecessarily
 	//path := filepath.Join(app.Site.cssPublishPath, defaults.ThemesDir, app.Page.FrontMatter.Theme)
 	//path = dest
-  path := app.themePublishDir(app.Page.FrontMatter.Theme)
+	path := app.themePublishDir(app.Page.FrontMatter.Theme)
 	err := os.MkdirAll(path, defaults.PublicFilePermissions)
 	if err != nil {
 		app.Debug("\t\t\t\tcreateStyleSheetsPublishDir: couldn't create %v", path)
@@ -384,7 +384,9 @@ func readThemeConfig(filename string) (*Theme, error) {
 // e.g. "debut" or "pillar".
 // TODO: Validate new name so it works as a slug/directory name
 func (app *App) newTheme(from, to string, factory bool) error {
-	app.readSiteConfig()
+	if err := app.readSiteConfig(); err != nil {
+		return ErrCode("PREVIOUS", err.Error())
+	}
 	app.Debug("newTheme(%v, %v, %v)", from, to, factory)
 	// Get directory from which themes will be copied
 	//source := filepath.Join(app.Site.siteThemesPath, defaults.SiteThemesDir, from)

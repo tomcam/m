@@ -13,7 +13,9 @@
         by the theme. You can just replace it with
         whatever text or Markdown you please.
 */ -}}
-
+{{- if .Site.Company.HeaderLogo -}}
+* ![Logo]({{ .Site.Company.HeaderLogo }})
+{{- end -}}
 {{- if .Site.Company.Name -}}
 {{- $name := .Site.Company.Name -}}
 * [{{ $name -}}](/)

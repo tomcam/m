@@ -49,7 +49,7 @@ func (app *App) mdToHTML(source []byte) ([]byte, error) {
 // for situation such as mb build ~/foo
 // when you happen to be in
 // directory ~/something/else/bar
-// Pre: 
+// Pre:
 //  setPaths()
 func (app *App) build(path string) error {
 	var err error
@@ -81,6 +81,11 @@ func (app *App) build(path string) error {
 		return ErrCode("0302", app.Site.publishPath)
 	}
 
+	// xxx
+	if err := app.readSiteConfig(); err != nil {
+		app.Note("siteConfig filename: %v", app.Site.siteFilePath)
+		return ErrCode("PREVIOUS", err.Error())
+	}
 	// Build the target publish dir so there should be
 	// no trouble copying files over
 	app.buildPublishDirs()

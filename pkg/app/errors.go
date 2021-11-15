@@ -58,12 +58,14 @@ var errMsgs = map[string]string{
 	"PREVIOUS": " ",
 
 	// 0100	- Error reading file
-	"0101": "Error reading front matter", // filename
-	"0112": "Unable to copy file",        // filename
+	"0101": "Error reading front matter",            // filename
+	"0112": "Unable to copy file",                   // filename
+	"0113": "Error reading site configuration file", // filename
+	"0114": "No site configuration file specified",
 
 	// 0200	- Error creating file
-  "0209": "Unable to copy file to", // filename
-  "0217": "Can't publish stylesheet to same location", // filename
+	"0209": "Unable to copy file to",                    // filename
+	"0217": "Can't publish stylesheet to same location", // filename
 
 	// 0250 - Error closing file
 	// 0300	- Error deleting file
@@ -73,7 +75,7 @@ var errMsgs = map[string]string{
 	"0401": "Unable to create project directory", // filename
 	"0403": "Unable to create publish directory",
 	"0406": "Unable to copy site directory",
-	"0409": "Error creating theme directory for theme", // Fully qualified pathname
+	"0409": "Error creating directory for theme", // Fully qualified pathname
 
 	// 0500	- Error determining directory name
 	"0501": "Couldn't get relative directory name", // custom message I think
@@ -104,8 +106,8 @@ var errMsgs = map[string]string{
 	"1101": "Unable to",                       // chdir to bad dir name
 	"1102": "Unable to",                       // chdir to bad dir name during showInfo()
 	"1103": "Unable to",                       // chdir to bad dir name during createSite()
-  "1004": "Trying to publish nonexistent stylesheet",
-  "1005": "No publish directory specified for",
+	"1004": "Trying to publish nonexistent stylesheet",
+	"1005": "No publish directory specified for",
 
 	// 1200 - Syntax error!
 	"1204": "Unknown dot value in Go template function ", //

@@ -166,7 +166,7 @@ create theme based on an existing one.
 				if err != nil {
 					app.QuitError(err)
 				}
-				app.Note("Created site %v", app.Site.path)
+				app.Debug("Created site %v", app.Site.path)
 				if app.Flags.Info == true {
 					app.ShowInfo(pathname)
 				}

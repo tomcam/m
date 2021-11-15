@@ -178,6 +178,46 @@ func dirExists(path string) bool {
 	}
 }
 
+// exists() is a helper utility that simply displays a filename and
+// shows if it's actually present
+
+func exists(description, filename string) string{
+	found := false
+	if isDirectory(filename) {
+		found = true
+	}
+  r := fmt.Sprint(description, " ", filename)
+	if fileExists(filename) {
+		found = true
+	}
+
+	if found {
+		r = r + ": (present)"
+	} else {
+		r = r + ": (Not present)"
+	}
+  return r
+}
+
+
+
+func Oldexists(description, filename string) {
+	found := false
+	if isDirectory(filename) {
+		found = true
+	}
+	fmt.Print(description, " ", filename)
+	if fileExists(filename) {
+		found = true
+	}
+
+	if found {
+		fmt.Println(": (present)")
+	} else {
+		fmt.Println(": (Not present)")
+	}
+}
+
 // fieldIsStringType() determines whether the struct passed in the
 // argument has a field named in the second argument of type string.
 func fieldIsStringType(obj interface{}, key string) bool {
@@ -260,6 +300,16 @@ func inputString() string {
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 	return scanner.Text()
+}
+
+// isDirectory() returns true if the specified
+// path name is a directory.
+func isDirectory(pathName string) bool {
+	f, err := os.Stat(pathName)
+	if err != nil {
+		return false
+	}
+	return f.Mode().IsDir()
 }
 
 // isMarkdownFile() returns true of the specified filename has one of

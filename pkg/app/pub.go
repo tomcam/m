@@ -76,8 +76,8 @@ func (app *App) publishMarkdownFile(filename string) error {
 		return err
 	}
 
-  // Copy out stylesheets, graphics, and other assets
-  // required for this page.
+	// Copy out stylesheets, graphics, and other assets
+	// required for this page.
 	if err := app.publishPageAssets(); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
@@ -115,13 +115,13 @@ func (app *App) publishMarkdownFile(filename string) error {
 }
 
 // normalizeStylesheetList() builds the list of stylesheets
-// required to publish this theme in the correct order 
+// required to publish this theme in the correct order
 // and with the right filenames. It transforms the raw list of
 // stylesheets needed by this theme from the raw
 // collection of filesheets from the theme config file
-// (and stored in app.Page.Theme.Stylesheets), 
+// (and stored in app.Page.Theme.Stylesheets),
 // into app.Page.Theme.stylesheetList.
-func (app *App)normalizeStylesheetList() {
+func (app *App) normalizeStylesheetList() {
 	app.Debug("\t\t\tnormalizeStylesheetList()")
 	responsive := false
 	darkMode := app.darkMode()
@@ -181,7 +181,7 @@ func (app *App)normalizeStylesheetList() {
 func (app *App) stylesheetTags() string {
 	var stylesheets strings.Builder
 	for _, stylesheet := range app.Page.Theme.stylesheetList {
-    // TODO: Hinky. This duplicates work done in publishStylesheets()
+		// TODO: Hinky. This duplicates work done in publishStylesheets()
 		stylesheet = stylesheetTag(filepath.Join(app.themePublishDir(app.Page.FrontMatter.Theme), stylesheet))
 		stylesheets.WriteString(stylesheet)
 	}
@@ -213,10 +213,9 @@ func (app *App) MdFileToHTML(filename string) ([]byte, error) {
 // directory in the publish directory and also adds
 // paths defined at at startup.
 func (app *App) buildPublishDirs() error {
-  // Some directories are determined at startup, so add those now
-  // xxx
-  //defaults.SitePaths = append(defaults.SitePaths, []string{defaults.CfgDir,"foo"})
-
+	// Some directories are determined at startup, so add those now
+	// xxx
+	//defaults.SitePaths = append(defaults.SitePaths, []string{defaults.CfgDir,"foo"})
 
 	for dir := range app.Site.dirs {
 		// Get the relative path.
@@ -230,16 +229,13 @@ func (app *App) buildPublishDirs() error {
 		if err := os.MkdirAll(full, defaults.PublicFilePermissions); err != nil {
 			app.Verbose("buildPublishDirs(): Unable to create path %v", full)
 			// TODO: Check error handling here
-			//return ErrCode("0403", app.Site.publishPath,"" )
 			return ErrCode("PREVIOUS", err.Error())
 		}
 	}
-  // XXX
-  //app.Note("About to create %v",app.Site.cssPublishPath)
-  if err := os.MkdirAll(app.Site.cssPublishPath, defaults.PublicFilePermissions); err != nil {
-    app.QuitError(err)
-  }
-
+	//app.Note("About to create %v",app.Site.cssPublishPath)
+	if err := os.MkdirAll(app.Site.cssPublishPath, defaults.PublicFilePermissions); err != nil {
+		app.QuitError(err)
+	}
 
 	return nil
 }
@@ -416,8 +412,8 @@ func (app *App) darkMode() bool {
 func (app *App) sidebarType() string {
 	// TODO: Make this a cfg value, bcause like Theme it can also be
 	// set in other areas
-	sidebar := strings.ToLower(app.Page.FrontMatter.Sidebar) 
-  if sidebar != "left" && sidebar != "right" {
+	sidebar := strings.ToLower(app.Page.FrontMatter.Sidebar)
+	if sidebar != "left" && sidebar != "right" {
 		sidebar = "none"
 	}
 	//app.Debug("\t\t\t\tsidebarType(%v)", sidebar)
@@ -427,15 +423,15 @@ func (app *App) sidebarType() string {
 
 func (app *App) publishStylesheet(source string, dest string) error {
 	app.Debug("\t\t\t\tpublishStylesheet(%v, %v)", source, dest)
-  if source == dest {
-    return ErrCode("0217", source)
-  }
-  if source == "" {
-    return ErrCode("1004", "")
-  }
-  if dest == "" {
-    return ErrCode("1005", source)
-  }
+	if source == dest {
+		return ErrCode("0217", source)
+	}
+	if source == "" {
+		return ErrCode("1004", "")
+	}
+	if dest == "" {
+		return ErrCode("1005", source)
+	}
 	err := Copy(source, dest)
 	if err != nil {
 		return ErrCode("PREVIOUS", err.Error())
@@ -452,7 +448,7 @@ func (app *App) publishStylesheet(source string, dest string) error {
 // after normalizeStylesheetList().
 func (app *App) publishStylesheets() error {
 	app.Debug("\t\t\tpublishStylesheets()")
-		var source, dest string
+	var source, dest string
 	// Go through the list of stylesheets for this theme.
 	// Copy stylesheets for this theme from the local
 	// theme directory to the publish
@@ -460,10 +456,10 @@ func (app *App) publishStylesheets() error {
 	for _, stylesheet := range app.Page.Theme.stylesheetList {
 		source = filepath.Join(app.Page.Theme.sourcePath, stylesheet)
 		//dest = filepath.Join(app.Site.cssPublishPath, stylesheet)
-	  dest = filepath.Join(app.themePublishDir(app.Page.FrontMatter.Theme), stylesheet)
+		dest = filepath.Join(app.themePublishDir(app.Page.FrontMatter.Theme), stylesheet)
 
 		if err := app.publishStylesheet(source, dest); err != nil {
-		  return ErrCode("PREVIOUS", err.Error())
+			return ErrCode("PREVIOUS", err.Error())
 			//return ErrCode("1024", source)
 		}
 	}
@@ -474,15 +470,12 @@ func (app *App) publishStylesheets() error {
 // graphics files, and other assets required to
 // publish this page.
 func (app *App) publishPageAssets() error {
-  app.Debug("\t\tpublishPageAssets()")
-  // Take raw list of stylesheets from theme and ensure
-  // they're in the right order, right 
+	app.Debug("\t\tpublishPageAssets()")
+	// Take raw list of stylesheets from theme and ensure
+	// they're in the right order, right
 	app.normalizeStylesheetList()
 	if err := app.publishStylesheets(); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
-  return nil
+	return nil
 }
-
-
-

@@ -84,7 +84,7 @@
     --a-article-active:var(--a);
 
         
-    /* Default foreground (text) and background colors in aside */
+   /* Default foreground (text) and background colors in aside */
     --sidebar-fg:var(--fg);
     --sidebar-bg:var(--bg);
     /* Link colors specific to sidebar */
@@ -117,7 +117,7 @@ header > ul > li > a:active
 	{color:var(--header-fg);}
 
 header > ul > li:first-child > a {color:var(--header-fg);}
-
+header {border-bottom:1px solid lightgray;}
 /* NAVBAR */
 nav > p {background-color:var(--nav-bg); }
 nav > ul > li > a,

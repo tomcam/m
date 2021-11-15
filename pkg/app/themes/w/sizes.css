@@ -31,14 +31,21 @@
 	--right-end:5%;
 
 	/* Adjusts header height and keeps it vertically centered */
-	--header-height:2rem;
+	--header-height:5rem;
 
 	/* Size of the main text in the header. */
-	--branding-height:1.5rem;
+	--branding-height:2rem;
+
+  /* Weight of the branded text, usually the first item in the header */
+  --branding-weight:700;
 
 	/* Adjusts navbar height and keeps it vertically centered */
 	--nav-height:5rem;
 
+  --article-padding-top:4rem;
+  --article-padding-bottom:2rem;
+  --article-margin-top:0rem;
+  --article-margin-top:0rem;
   --h1-font-size:2.5rem;
   --h2-font-size:2rem;
   --h3-font-size:1.5rem;

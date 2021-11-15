@@ -93,11 +93,8 @@ func NewApp() *App {
 		applicationDataPath: userConfigPath(),
 	}
 	// TODO: This didn't help newTheme()
-	app.Debug("newApp()")
 	app.Site.Starters = make(map[string]Starter)
 	app.Site.publishedThemes = make(map[string]bool)
-	// Obtain site configuration from site.yaml
-	app.readSiteConfig()
 	return &app
 }
 
@@ -117,7 +114,7 @@ func (app *App) loadConfigs() {
 // This is called by main.main(). It only needs to happen once to the RootCmd.
 func (app *App) Execute() {
 	app = NewApp()
-	app.Verbose("app.Execute()")
+	app.Debug("app.Execute()")
 	app.initCobra()
 	cobra.CheckErr(app.RootCmd.Execute())
 	//app.Note("About to generate site")
@@ -221,9 +218,9 @@ func (app *App) setPaths() {
 
 	// Compute the directory location for CSS files
 	// to be published for this theme.
-  // TODO: I actually create the directory for this 
-  // in buildPublishDirs(). May need to revisit this...
-  // maybe generate more dirs, maybe refactor it.
+	// TODO: I actually create the directory for this
+	// in buildPublishDirs(). May need to revisit this...
+	// maybe generate more dirs, maybe refactor it.
 	app.Site.cssPublishPath = filepath.Join(app.Site.assetPath,
 		defaults.DefaultPublishCssPath)
 

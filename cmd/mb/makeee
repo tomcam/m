@@ -1,0 +1,25 @@
+#!/bin/zsh
+# Exit if an error occurs
+set -e
+DIR=~/code/m/cmd/mb/ee
+rm -rf $DIR
+mb new site $DIR
+cat <<-EOM > $DIR/index.md
+---
+Theme: w
+Sidebar: None
+---
+# Super Chris' site using the ${theme} theme
+
+There should be a logo file named {{ .Site.Company.HeaderLogo }}
+
+The Company: {{ .Site.Company }}
+
+[Home](./index.html)
+
+EOM
+
+cp ./site.yaml $DIR/.mb
+mb build $DIR
+o $DIR
+

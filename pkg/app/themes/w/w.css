@@ -7,22 +7,24 @@ blockquote {font-style:italic;margin: 2rem 2rem 2rem 2rem;}
 /* ****************************/
 
 header {overflow:hidden;}
+/* Make it sticky */
+header {position: fixed;top:0;width:100%;text-align:left;} 
+header > img {display:inline;} 
 /*
  * --------------------------------------------------
  * Simplest case: Branded name, nothing else
  * Doesn't act like a link.
  * --------------------------------------------------
  */
-header > p {font-size:var(--branding-height);font-weight:900;display:inline;} 
+header > p {font-size:var(--branding-height);font-weight:700;display:inline;} 
 
  
 /*
  * --------------------------------------------------
  * If you have more than one item, use an unordered list. 
- * These styles show the first item with branding applied,
- * any number of links following, still slightly
- * larger than body text, and a last link that
- * looks like a button.
+ * These styles show the first item with branding applied
+ * and any number of links following, still slightly
+ * larger than body text.
  * --------------------------------------------------
  */
 header > ul {line-height:var(--header-height);}
@@ -42,7 +44,7 @@ header > ul > li > a:active
  * branding
  * --------------------------------------------------
  */
-header > ul > li:first-child > a {font-size:var(--branding-height);font-weight:900;padding-right:1rem;}
+header > ul > li:first-child > a {color:red;margin-right:3rem;font-size:var(--branding-height);font-weight:var(--branding-weight);padding-right:1rem;}
 
 /* ******************************/
 /*  NAVBAR                      */

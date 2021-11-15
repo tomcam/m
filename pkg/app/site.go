@@ -195,7 +195,7 @@ type company struct {
 	URL  string `yaml:"URL"`
 
 	// Logo file for the header
-	HeaderLogo string
+	HeaderLogo string `yaml:"HeaderLogo"`
 }
 type author struct {
 	FullName string `yaml:"Full-Name"`
@@ -340,7 +340,6 @@ func (app *App) createSite(pathname string) error {
 		return ErrCode("PREVIOUS", err.Error())
 
 	}
-	app.Note("Copied factory themes")
 
 	// TODO: Populate
 	if err := app.writeSiteConfig(); err != nil {
@@ -357,9 +356,13 @@ func (app *App) createSite(pathname string) error {
 func (app *App) readSiteConfig() error {
 	var err error
 	var b []byte
+	if app.Site.siteFilePath == "" {
+		return ErrCode("0114", app.Site.siteFilePath)
+	}
 	if b, err = ioutil.ReadFile(app.Site.siteFilePath); err != nil {
 		// TODO: Handle error properly & and document error code
-		return err
+		//return ErrCode("PREVIOUS", err.Error(), app.Site.siteFilePath)
+		return ErrCode("0113", err.Error(), app.Site.siteFilePath)
 	}
 
 	err = yaml.Unmarshal(b, &app.Site)
@@ -367,12 +370,8 @@ func (app *App) readSiteConfig() error {
 		// TODO: Handle error properly & and document error code
 		return err
 	}
+	app.Debug("readSiteConfig(%v): Site is %#v", app.Site.siteFilePath, app.Site)
 
-	err = yaml.Unmarshal(b, &app.Site)
-	if err != nil {
-		// TODO: Handle error properly & and document error code
-		return err
-	}
 	return nil
 }
 
@@ -394,7 +393,9 @@ func (app *App) writeSiteConfig() error {
 func (app *App) generate() error {
 	return nil
 	pathname := app.Site.path
-	app.readSiteConfig()
+	if err := app.readSiteConfig(); err != nil {
+		return ErrCode("PREVIOUS", err.Error())
+	}
 	app.Note("\tgenerate(%v)", pathname)
 	app.Note("\tSite %#v\n\n", app.Site)
 	app.Note("\tSite.Starters: %#v\n\n", app.Site.Starters)
