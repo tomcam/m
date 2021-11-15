@@ -19,7 +19,7 @@ foo.*
 cmd/mb/mb
 #
 # Test generator results
-cmd/mb/.theme-test/
+cmd/mb/theme-test/
 
 # Test binary, built with `go test -c`
 *.test
