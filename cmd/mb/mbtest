@@ -10,7 +10,6 @@ THEMELIST=$DIR/themelist.tmp
 
 # Create an array of filenames
 declare -a themes=(
-  'debut/gallery'
   'w'
 	'wide'
 	'pillar'

@@ -1,8 +1,5 @@
-# THIS IS 
-# THE REAL ONE
-# BE CAREFUL
-Branding: "0 by Metabuzz"
-Description: "Starter wide theme"
+Branding: "W by Metabuzz"
+Description: "Wide theme blank slate"
 Stylesheets: 
 - "reset.css"
 - "fonts.css"

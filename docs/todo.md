@@ -2,6 +2,7 @@
 
 ## Priority 1: Showstoppers--required for the next release
 * Code fences don't seem to work; see mbtest files
+* mbtest fails on nested themes like debut/gallery
 * Theme inheritance is failing
 * Theme that's named as a number doesn't seem to work well
 * If a themefile has a defect, say somethinglike .FrontMatter.PageType (which no longer exists) you don't know exactly where the defect occurred. Or what source file was being processed at the time.

@@ -92,6 +92,7 @@ func (app *App) publishMarkdownFile(filename string) error {
 		metatag("generator", defaults.ProductBranding) +
 		app.stylesheetTags() +
 		app.header() +
+		app.nav() +
 		app.article(body, "article") +
 		app.sidebar() +
 		app.footer() +

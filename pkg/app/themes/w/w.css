@@ -1,10 +1,3 @@
-h1{ font-size:2.5em;margin-top:2rem; }
-h2{ font-size:2em;margin-top:1.5rem; }
-h3{ font-size:1.5em;margin-top:1.5rem; }
-h4{ font-size:.9em;margin-top:1rem;}
-h5{ font-size:.8em; }
-h6{ font-size:0.9em; }
-
 table > thead > tr > th  {margin-top:4rem;}
 blockquote {font-style:italic;margin: 2rem 2rem 2rem 2rem;}
 
@@ -51,20 +44,6 @@ header > ul > li > a:active
  */
 header > ul > li:first-child > a {font-size:var(--branding-height);font-weight:900;padding-right:1rem;}
 
-/*
- * --------------------------------------------------
- * Special feature: Last item in list is styled like 
- * a button. Just leave omit text after the
- * bullet character (asterisk) in your Markdown 
- * if you don't want the effect. (Or just remove
- * these lines of CSS.)
- * --------------------------------------------------
- */
-/* Make the last item look and act like a button */
-header > ul > li:last-child > a {border: 2px solid var(--header-fg);border-radius:.25rem;padding: .25rem;padding: .5rem .75rem;text-decoration: none;text-transform: uppercase;font-weight:bold;}
-
-header > ul > li:last-child > a:hover {cursor: pointer;}
-
 /* ******************************/
 /*  NAVBAR                      */
 /* ******************************/
@@ -94,8 +73,8 @@ nav > p > a:active {text-decoration:underline;}
 /*  ARTICLE-MAIN PORTION OF TEXT*/
 /* ******************************/
 
-article > h1,article > h2 {font-weight:900;}
-article > h1 {font-size:4rem;margin-top:0;margin-bottom:3rem;}
+article > h1,article > h2 {font-weight:700;}
+article > h1 {margin-top:0;margin-bottom:3rem;}
 article > li {margin-left:1rem;}
 article > h2 {margin-top:4rem;}
 article > h4 {font-weight:normal;font-size:1em;margin-bottom:1rem; } /* Byline */
@@ -134,105 +113,21 @@ article > p >  a:hover,
 article > p >  a:active
 	{text-decoration:none;}
 
-article > img, article > p > img {
-  width:100%;
-  box-shadow: rgb(128,128,128) 1px 1px 3px 0px;
-  display:block;
-}
-
-
 article > table {width:var(--full-page);margin-top:2rem;margin-bottom:3rem;}
 article > table > td,th {padding:1rem;}
 article > table > tbody > tr > td {padding:1rem;}
 
 
-
-article > h2 {margin-top:4rem;clear:left;}
-article > h2 + ul {
-	padding:0;
-	margin:0;
-	list-style-type:none;
-}
-
-/* Leave some room on the right side of each image */
-article > h2 + ul li > img {
-	width:95%;
-  box-shadow: rgb(128,128,128) 1px 1px 3px 0px;
-  margin-bottom:.75rem;
-}
-
-/* Each li is 1/2 as wide as the container. */
-article > h2 + ul li {
-	font-family:var(--informal);
-	max-width:50%;
-	width:50%;
-	float:left;
-	line-height:1em;
-  font-size:.8em;
-  margin-bottom:2rem;
-  margin-top:2rem;
-}
-
-/* Start a new line after the 2nd column */
-article > h2 + ul li:nth-child(2) {
-	display:block;
-}
-
-article > h3 {font-weight:bold;margin-bottom:0;}
-
 /* ******************************/
 /*  SIDEBAR (ASIDE TAG)         */
 /* ******************************/
 
-aside {height:100vh;}
 aside {border-bottom:none;}
 
 aside > h2 {padding:1em;text-align:center;font-size:1.2rem;font-weight:700;}
 aside > h3 {font-size:.75em;font-weight:bold;margin-bottom:2rem;}
-/*
-aside > ul {text-align:right;margin-right:1rem;line-height:1.5em;}
-aside > ul > li {list-style-type:none;} 
-aside > ul > li > a,
-aside > ul > li > a:link,
-aside > ul > li > a:visited {text-decoration:none;font-size:1rem;line-height:2.5rem;font-weight:normal;margin-right:1em;} 
-aside > ul > li > a:hover,
-aside > ul > li > a:active {font-weight:bold;} 
-*/
 aside > p > img {margin-top:1rem;width:100%;padding:0;}
 aside > p {font-size:1.2rem;margin-bottom:0em;}
-
-/*
- * --------------------------------------------------
- * Sidebar unordered list shows as boxes, without
- * indentation--it's for table of contents
- * --------------------------------------------------
- */
-aside > ul {
-  margin-right:1em;
-  border-collapse:collapse;
-}
-
-aside > ul li {
-  /* Border bottom stretches across column at all levels */
-  margin-left:0;
-  list-style-type:none;
-}
-
-aside > ul li a {
-  padding-left:.5em;padding-right:.5em;
-  text-decoration:none;
-  line-height:1em;
-}
-
-
-
-/* Special case: h1 for table of contents
- * gets distinct look */
-aside > ul > li > a {
-  font-weight:bold;
-}
-
-
 
 /* ******************************/
 /*  FOOTER                      */
