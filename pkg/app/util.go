@@ -181,12 +181,12 @@ func dirExists(path string) bool {
 // exists() is a helper utility that simply displays a filename and
 // shows if it's actually present
 
-func exists(description, filename string) string{
+func exists(description, filename string) string {
 	found := false
 	if isDirectory(filename) {
 		found = true
 	}
-  r := fmt.Sprint(description, " ", filename)
+	r := fmt.Sprint(description, " ", filename)
 	if fileExists(filename) {
 		found = true
 	}
@@ -196,10 +196,8 @@ func exists(description, filename string) string{
 	} else {
 		r = r + ": (Not present)"
 	}
-  return r
+	return r
 }
-
-
 
 func Oldexists(description, filename string) {
 	found := false

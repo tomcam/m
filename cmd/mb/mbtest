@@ -8,6 +8,8 @@ INDEX=$DIR/index.md
 LINKSECTION=$DIR/links.tmp
 THEMELIST=$DIR/themelist.tmp
 
+cp site.yaml $DIR/.mb
+cp eastside-emerald-64x64.png $DIR
 # Create an array of filenames
 declare -a themes=(
   'w'
@@ -57,6 +59,8 @@ Here's what we know about the test.
 * Sidebar **${sidebar}**. According to frontmatter it's **{{ .Page.FrontMatter.Sidebar }}** 
 * Mode should be **${mode}**
 
+### Wait'll they get a load of this
+![Logo](eastside-emerald-64x64.png)
 **Note**
 
 * **Resize this** to check for responsive versions

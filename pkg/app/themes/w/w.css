@@ -6,7 +6,13 @@ blockquote {font-style:italic;margin: 2rem 2rem 2rem 2rem;}
 /*  HEADER BRANDING AND LINKS */
 /* ****************************/
 
-header {overflow:hidden;}
+/*
+ * --------------------------------------------------
+ * Colors are set in theme-light.css & theme-dark.css
+ * --------------------------------------------------
+ */
+header {overflow:hidden}
+header > a {text-decoration:none;}
 /* Make it sticky */
 header {position: fixed;top:0;width:100%;text-align:left;} 
 header > img {display:inline;} 
@@ -44,7 +50,7 @@ header > ul > li > a:active
  * branding
  * --------------------------------------------------
  */
-header > ul > li:first-child > a {color:red;margin-right:3rem;font-size:var(--branding-height);font-weight:var(--branding-weight);padding-right:1rem;}
+header > ul > li:first-child > a {color:var(--branding-fg);margin-right:3rem;font-size:var(--branding-height);font-weight:var(--branding-weight);padding-right:1rem;text-decoration:none;}
 
 /* ******************************/
 /*  NAVBAR                      */

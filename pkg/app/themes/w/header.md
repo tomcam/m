@@ -13,9 +13,6 @@
         by the theme. You can just replace it with
         whatever text or Markdown you please.
 */ -}}
-{{- if .Site.Company.HeaderLogo -}}
-* ![Logo]({{ .Site.Company.HeaderLogo }})
-{{- end -}}
 {{- if .Site.Company.Name -}}
 {{- $name := .Site.Company.Name -}}
 * [{{ $name -}}](/)
@@ -26,7 +23,7 @@
 {{- $name := .Page.Theme.Branding -}}
 * [{{ $name -}}](/)
 {{- else }}
-* [{{.FrontMatter.Theme}} {{.FrontMatter.PageType}}](/)
+* [{{- .Page.FrontMatter.Theme -}}](/)
 {{- end }} 
 * [Events](/)
 * [Podcast](/)

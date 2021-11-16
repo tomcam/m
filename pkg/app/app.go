@@ -93,7 +93,7 @@ func NewApp() *App {
 		applicationDataPath: userConfigPath(),
 	}
 	// TODO: This didn't help newTheme()
-	app.Site.Starters = make(map[string]Starter)
+	//app.Site.Starters = make(map[string]Starter)
 	app.Site.publishedThemes = make(map[string]bool)
 	return &app
 }
@@ -117,8 +117,8 @@ func (app *App) Execute() {
 	app.Debug("app.Execute()")
 	app.initCobra()
 	cobra.CheckErr(app.RootCmd.Execute())
-	//app.Note("About to generate site")
-	//app.generate()
+	app.Note("About to generate site")
+	app.generate()
 }
 
 func (app *App) initCobra() {
@@ -207,6 +207,9 @@ func (app *App) setPaths() {
 	// Compute full pathname of the site file.
 	app.Site.siteFilePath = filepath.Join(app.cfgPath,
 		defaults.SiteConfigFilename)
+	// Make a read-only public version for use in
+	// templates: {{ Site.Filename }}
+	app.Site.Filename = app.Site.siteFilePath
 
 	// Compute the publish directory  (aka WWW directory)
 	app.Site.publishPath = filepath.Join(app.cfgPath,
@@ -255,7 +258,7 @@ func (app *App) setPaths() {
 } // setPaths()
 
 // setWorkingDir() changes to the specified
-// directory and sets app.site.path accordingly.
+// directory and sets app.Site.path accordingly.
 func (app *App) setWorkingDir(dir string) error {
 	app.Debug("setWorkingDir()")
 	if dir == "." || dir == "" {

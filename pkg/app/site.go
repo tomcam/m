@@ -5,6 +5,7 @@ import (
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 )
 
 // Site contains configuration specific to each site, such as
@@ -65,6 +66,11 @@ type Site struct {
 	// Number of markdown files processed
 	fileCount uint
 
+	// Full pathname of site file so it can be read
+	// using {{ Site.Filename }}.
+	// READ ONLY
+	Filename string
+
 	// Google Analytics tracking ID specified in site.toml
 	Ganalytics string `yaml:"Ganalytics"`
 
@@ -106,6 +112,7 @@ type Site struct {
 	// If you just run:
 	//   mb new site
 	// It's initialized to the name of the current directory.
+	// Site.Filename is generated from this.
 	path string
 
 	// Directory for finished site--rendered HTML & asset output
@@ -154,7 +161,7 @@ type Site struct {
 	webPages map[string]WebPage
 
 	// Pages to generate when site is created
-	Starters map[string]Starter `yaml:"Starters"`
+	//Starters map[string]Starter `yaml:"Starters"`
 
 	// IMPORTANT
 	// LIST ALWAYS GOES AT THE END OF THE FILE/DATA STRUCTURE
@@ -162,10 +169,38 @@ type Site struct {
 	List interface{} `yaml:"List"`
 }
 
+// Description makes up what you need for a Description metatag.
+// The Tag field is the most important, but if you want to
+// append something like "| blog" you'd use After for that.
+// Likewise for Before, but it creates a suffix.
+type Description struct {
+	Before      string `yaml:"Before"`
+	Tag         string `yaml:"Description"`
+	After       string `yaml:"After"`
+}
+
+// Generate a list of pages, posts, galleries, or categories
+// to avoid copy pasta.
+type Starter struct {
+	Type string `yaml:"Type"` // Page, Posts, Gallery, Category
+	//Name string `yaml:"Name"`
+	Folder         string         `yaml:"Folder"`
+	Sort           string         `yaml:"Sort"`
+	Title          string         `yaml:"Title"`
+	Description    Description    `yaml:"DescriptionTag"`
+	Theme          string         `yaml:"Theme"`
+	Sidebar        string         `yaml:"Sidebar"`
+	Article        string         `yaml:"Article"`
+}
+
+type StarterConfig struct {
+	Starters map[string]Starter
+}
+
 // Starter type is used to generate a stub page when
 // the site is created (or later, but it makes most
 // sense upon site creation).
-type Starter struct {
+type OldStarter struct {
 	// For title tag
 	Title string `yaml:"Title"`
 
@@ -391,21 +426,29 @@ func (app *App) writeSiteConfig() error {
 // via createSite() and that we're in the
 // project site specified in app.Site.path
 func (app *App) generate() error {
-	return nil
+	/*
+			if err := app.readSiteConfig(); err != nil {
+		    app.Note("Quitting")
+				return ErrCode("PREVIOUS", err.Error())
+			}
+			app.Note("\tgenerate(%v)", pathname)
+			app.Note("\tSite %#v\n\n", app.Site)
+			app.Note("\tSite.Starters: %#v\n\n", app.Site.Starters)
+	*/
+	//var err error
+	//var starter Starter
+	// Pages to generate when site is created
 	pathname := app.Site.path
-	if err := app.readSiteConfig(); err != nil {
+	var starter StarterConfig
+	pathname = filepath.Join(app.Site.path, "starter.yaml")
+
+	if err := readYAMLFile(pathname, &starter); err != nil {
+		app.QuitError(ErrCode("0115", pathname))
 		return ErrCode("PREVIOUS", err.Error())
 	}
-	app.Note("\tgenerate(%v)", pathname)
-	app.Note("\tSite %#v\n\n", app.Site)
-	app.Note("\tSite.Starters: %#v\n\n", app.Site.Starters)
-	//var err error
-
-	// Exit if there's already a project at specified location.
-	if !isProject(pathname) {
-		return ErrCode("1026", pathname)
-	}
-	for k, v := range app.Site.Starters {
+	//jjapp.Note("\t\tStarter: %#v", starters)
+	//app.Note("\t\t\tItem 1: %#v", starters["Item 1"])
+	for k, v := range starter.Starters {
 		app.Note("%v: %v", k, v)
 	}
 

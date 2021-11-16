@@ -62,7 +62,7 @@ var errMsgs = map[string]string{
 	"0112": "Unable to copy file",                   // filename
 	"0113": "Error reading site configuration file", // filename
 	"0114": "No site configuration file specified",
-
+	"0115": "Unable to find starter file", // filename
 	// 0200	- Error creating file
 	"0209": "Unable to copy file to",                    // filename
 	"0217": "Can't publish stylesheet to same location", // filename

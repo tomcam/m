@@ -6,9 +6,9 @@ Authors: []
 Base-Path: ""
 Branding: ""
 Company:
-    Name: "Eastside Emerald Something"
+    Name: "Eastside Emerald Home Repair"
     URL: ""
-    HeaderLogo: "eastside-emerald-100x100.png"
+      #HeaderLogo: "eastside-emerald-64x64.png"
 Exclude-Dirs: []
 Exclude-Extensions: []
 Ganalytics: ""

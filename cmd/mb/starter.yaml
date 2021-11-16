@@ -1,0 +1,24 @@
+About:
+  Type: page
+  Folder: /
+  Sort: ignored
+  Title: About Eastside Emerald
+  Description:
+    Before: 
+    Tag: "Redmond handyman and general contractor" 
+    After: 
+  Theme: w
+  Sidebar: none
+  Article: "We specialize in some crazy shit" 
+Blog:
+  Type: posts
+  Folder: /blog/
+  Sort: Date
+  Title: Our Crazy Blog
+  Description:
+    Before: "! "
+    Tag: "blog description tag for SEO"
+    After: "| Redmond handyman and general contractor"
+  Theme: w
+  Sidebar: Ignored
+  Article: Ignored
