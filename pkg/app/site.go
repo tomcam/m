@@ -5,8 +5,7 @@ import (
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"os"
-	"path/filepath"
-)
+ )
 
 // Site contains configuration specific to each site, such as
 // its directory location, title, publish directory,
@@ -169,60 +168,7 @@ type Site struct {
 	List interface{} `yaml:"List"`
 }
 
-// Description makes up what you need for a Description metatag.
-// The Tag field is the most important, but if you want to
-// append something like "| blog" you'd use After for that.
-// Likewise for Before, but it creates a suffix.
-type Description struct {
-	Before      string `yaml:"Before"`
-	Tag         string `yaml:"Description"`
-	After       string `yaml:"After"`
-}
 
-// Generate a list of pages, posts, galleries, or categories
-// to avoid copy pasta.
-type Starter struct {
-	Type string `yaml:"Type"` // Page, Posts, Gallery, Category
-	//Name string `yaml:"Name"`
-	Folder         string         `yaml:"Folder"`
-	Sort           string         `yaml:"Sort"`
-	Title          string         `yaml:"Title"`
-	Description    Description    `yaml:"DescriptionTag"`
-	Theme          string         `yaml:"Theme"`
-	Sidebar        string         `yaml:"Sidebar"`
-	Article        string         `yaml:"Article"`
-}
-
-type StarterConfig struct {
-	Starters map[string]Starter
-}
-
-// Starter type is used to generate a stub page when
-// the site is created (or later, but it makes most
-// sense upon site creation).
-type OldStarter struct {
-	// For title tag
-	Title string `yaml:"Title"`
-
-	// Derived from the map key name if not given here
-	Filename string `yaml:"Filename"`
-
-	// For description meta tag
-	Description string `yaml:"Description"`
-
-	// If specified, the Permalink template makes it post
-	// and not a page
-	Permalink string `yaml:"Permalink"`
-
-	// Name of theme
-	Theme string `yaml:"Theme"`
-
-	// Specify sidebar direction, if any
-	Sidebar string `yaml:"Sidebar"`
-
-	// Text of the article portion, if desired
-	Article string `yaml:"Article"`
-}
 
 type company struct {
 	// Company name, like "Metabuzz" or "Example Inc."
@@ -382,6 +328,14 @@ func (app *App) createSite(pathname string) error {
 		app.Debug("Error writing site file %v", app.Site.siteFilePath)
 		return ErrCode("PREVIOUS", err.Error())
 	}
+
+  // Generate stub pages/sections if specified
+  if app.Flags.Starters != "" {
+    //if err := app.generate(filepath.Join(currDir(),app.Flags.Starters)); err != nil {
+    if err := app.generate(app.Flags.Starters); err != nil {
+		  return ErrCode("PREVIOUS", err.Error())
+    }
+ }
 	return nil
 }
 
@@ -421,36 +375,3 @@ func (app *App) writeSiteConfig() error {
 	return writeYamlFile(app.Site.siteFilePath, app.Site)
 }
 
-// generate() creates files specified in the
-// site file. It assumes a site has been created
-// via createSite() and that we're in the
-// project site specified in app.Site.path
-func (app *App) generate() error {
-	/*
-			if err := app.readSiteConfig(); err != nil {
-		    app.Note("Quitting")
-				return ErrCode("PREVIOUS", err.Error())
-			}
-			app.Note("\tgenerate(%v)", pathname)
-			app.Note("\tSite %#v\n\n", app.Site)
-			app.Note("\tSite.Starters: %#v\n\n", app.Site.Starters)
-	*/
-	//var err error
-	//var starter Starter
-	// Pages to generate when site is created
-	pathname := app.Site.path
-	var starter StarterConfig
-	pathname = filepath.Join(app.Site.path, "starter.yaml")
-
-	if err := readYAMLFile(pathname, &starter); err != nil {
-		app.QuitError(ErrCode("0115", pathname))
-		return ErrCode("PREVIOUS", err.Error())
-	}
-	//jjapp.Note("\t\tStarter: %#v", starters)
-	//app.Note("\t\t\tItem 1: %#v", starters["Item 1"])
-	for k, v := range starter.Starters {
-		app.Note("%v: %v", k, v)
-	}
-
-	return nil
-}

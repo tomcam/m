@@ -63,9 +63,11 @@ var errMsgs = map[string]string{
 	"0113": "Error reading site configuration file", // filename
 	"0114": "No site configuration file specified",
 	"0115": "Unable to find starter file", // filename
+
 	// 0200	- Error creating file
 	"0209": "Unable to copy file to",                    // filename
 	"0217": "Can't publish stylesheet to same location", // filename
+  "0218": "Can't create starter file", // filename
 
 	// 0250 - Error closing file
 	// 0300	- Error deleting file
@@ -76,6 +78,7 @@ var errMsgs = map[string]string{
 	"0403": "Unable to create publish directory",
 	"0406": "Unable to copy site directory",
 	"0409": "Error creating directory for theme", // Fully qualified pathname
+  "0410": "Error creating directory for starter", // directory
 
 	// 0500	- Error determining directory name
 	"0501": "Couldn't get relative directory name", // custom message I think
@@ -99,6 +102,8 @@ var errMsgs = map[string]string{
 	// 1000	- Something's missing that should be there
 	"1001": "Missing front matter and markdown", // filename
 	"1002": "This isn't a project directory:",   // directoryname
+	"1004": "Trying to publish nonexistent stylesheet",
+	"1005": "No publish directory specified for",
 	"1013": "Please specify a site name",
 	"1024": "Couldn't find stylesheet",        //filename
 	"1025": "This isn't a project directory:", // directoryname
@@ -106,8 +111,7 @@ var errMsgs = map[string]string{
 	"1101": "Unable to",                       // chdir to bad dir name
 	"1102": "Unable to",                       // chdir to bad dir name during showInfo()
 	"1103": "Unable to",                       // chdir to bad dir name during createSite()
-	"1004": "Trying to publish nonexistent stylesheet",
-	"1005": "No publish directory specified for",
+  "1104": "Missing name for starter page",
 
 	// 1200 - Syntax error!
 	"1204": "Unknown dot value in Go template function ", //

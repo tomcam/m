@@ -4,7 +4,6 @@ import (
 	"github.com/tomcam/m/pkg/default"
 	"os"
 	"path/filepath"
-	//"github.com/spf13/cobra"
 )
 
 func (app *App) addFlags() {

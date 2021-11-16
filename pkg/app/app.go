@@ -64,6 +64,10 @@ type Flags struct {
 	// instead.
 	Factory bool
 
+  // Name of starters file to generate pages when
+  // site is created (or later)
+  Starters string
+
 	// Global verbose mode
 	Verbose bool
 
@@ -117,8 +121,6 @@ func (app *App) Execute() {
 	app.Debug("app.Execute()")
 	app.initCobra()
 	cobra.CheckErr(app.RootCmd.Execute())
-	app.Note("About to generate site")
-	app.generate()
 }
 
 func (app *App) initCobra() {

@@ -375,6 +375,22 @@ func promptYes(prompt string) bool {
 	return strings.HasPrefix(strings.ToLower(answer), "y")
 }
 
+/*
+// TODO: Kill, it's a failure
+func readStarterConfig(filename string, s *StarterConfig) error {
+	b, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return err
+	}
+	err = yaml.Unmarshal(b, &s)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+*/
+
+
 func readYAMLFile(filename string, target interface{}) (err error) {
 	b, err := ioutil.ReadFile(filename)
 	if err != nil {
@@ -384,7 +400,7 @@ func readYAMLFile(filename string, target interface{}) (err error) {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("readYAMLFile: \n%#v\n", string(b))
+  //fmt.Printf("readYAMLFile(): %#v", string(b))
 	return nil
 }
 

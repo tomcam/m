@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/spf13/cobra"
-	//"os"
+	"github.com/tomcam/m/pkg/default"
 )
 
 func (app *App) addCommands() {
@@ -11,9 +11,6 @@ func (app *App) addCommands() {
 	var (
 		pathname string
 		err      error
-
-		// Declare command to build a hardcoded test site
-		//cmdKitchenSink = flag.NewFlagSet("kitchen", flag.ExitOnError)
 
 		/*****************************************************
 		  TOP LEVEL COMMAND: kitchen
@@ -231,8 +228,12 @@ create theme based on an existing one.
 	  GLOBAL FLAGS COULD BE CREATED HERE
 		*****************************************************/
 
-	// Example:
+	// See also flgs.go 
 	CmdNewTheme.PersistentFlags().BoolVarP(&app.Flags.Factory, "factory", "y", false, "use factory theme, not from local project")
+	CmdNewSite.PersistentFlags().StringVar(&app.Flags.Starters, "starters", "s", "config file (default is "+ defaults.ConfigStartersFilename + ")")
+
+
+
 	/*****************************************************
 	  AddCommand()
 		*****************************************************/

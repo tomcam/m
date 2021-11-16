@@ -9,6 +9,7 @@ require (
 	github.com/coreos/go-etcd v2.0.0+incompatible // indirect
 	github.com/cpuguy83/go-md2man v1.0.10 // indirect
 	github.com/google/go-cmp v0.5.5
+	github.com/gosimple/slug v1.11.2 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/plus3it/gorecurcopy v0.0.1 // indirect
 	github.com/rodaine/table v1.0.1 // indirect
