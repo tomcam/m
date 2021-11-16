@@ -225,14 +225,13 @@ create theme based on an existing one.
 	*****************************************************/
 
 	/*****************************************************
-	  GLOBAL FLAGS COULD BE CREATED HERE
+	  GLOBAL FLAGS CREATED HERE
 		*****************************************************/
 
-	// See also flgs.go 
-	CmdNewTheme.PersistentFlags().BoolVarP(&app.Flags.Factory, "factory", "y", false, "use factory theme, not from local project")
-	CmdNewSite.PersistentFlags().StringVar(&app.Flags.Starters, "starters", "s", "config file (default is "+ defaults.ConfigStartersFilename + ")")
-
-
+	// See also flgs.go
+	CmdNewTheme.PersistentFlags().BoolVarP(&app.Flags.Factory, "factory", "", false, "use factory theme, not from local project")
+	CmdNewSite.PersistentFlags().StringVar(&app.Flags.Starters, "starters", "", "config file (default is "+defaults.ConfigStartersFilename+")")
+	CmdNewSite.PersistentFlags().StringVar(&app.Flags.Site, "site", "", "site config file (default is "+defaults.SiteConfigFilename+")")
 
 	/*****************************************************
 	  AddCommand()

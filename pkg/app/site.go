@@ -5,7 +5,7 @@ import (
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"os"
- )
+)
 
 // Site contains configuration specific to each site, such as
 // its directory location, title, publish directory,
@@ -168,8 +168,6 @@ type Site struct {
 	List interface{} `yaml:"List"`
 }
 
-
-
 type company struct {
 	// Company name, like "Metabuzz" or "Example Inc."
 	Name string `yaml:"Name"`
@@ -322,20 +320,29 @@ func (app *App) createSite(pathname string) error {
 
 	}
 
+	filename := ""
+	// If user supplied a site configuration file, use it
+	if app.Flags.Site != "" {
+		app.Note("Use site file %v", app.Flags.Site)
+		//app.Site.siteFilePath = app.Flags.Site
+		filename = app.Flags.Site
+	}
 	// TODO: Populate
-	if err := app.writeSiteConfig(); err != nil {
+	if err := app.writeSiteConfig(filename); err != nil {
+    app.Note("error after app.writeSiteConfig(%v)", filename)
 		// TODO: Handle error properly & and document error code
-		app.Debug("Error writing site file %v", app.Site.siteFilePath)
-		return ErrCode("PREVIOUS", err.Error())
+		return ErrCode("0220", err.Error(), filename)
+		//return ErrCode("PREVIOUS", err.Error(), filename)
+		//return ErrCode("0220", filename, err.Error())
 	}
 
-  // Generate stub pages/sections if specified
-  if app.Flags.Starters != "" {
-    //if err := app.generate(filepath.Join(currDir(),app.Flags.Starters)); err != nil {
-    if err := app.generate(app.Flags.Starters); err != nil {
-		  return ErrCode("PREVIOUS", err.Error())
-    }
- }
+	// Generate stub pages/sections if specified
+	if app.Flags.Starters != "" {
+		//if err := app.generate(filepath.Join(currDir(),app.Flags.Starters)); err != nil {
+		if err := app.generate(app.Flags.Starters); err != nil {
+			return ErrCode("PREVIOUS", err.Error())
+		}
+	}
 	return nil
 }
 
@@ -366,12 +373,57 @@ func (app *App) readSiteConfig() error {
 
 // writeSiteConfig() writes the contents of App.Site
 // to .mb/site.yaml.
-// and creates or replaces a TOML file in the
-// project's site subdirectory.
-// Assumes you're in the project directory.
-func (app *App) writeSiteConfig() error {
-	// Populate site with default values from config info.
+func (app *App) writeSiteConfig(filename string) error {
+	app.Note("writeSiteConfig(%v)", filename)
+	// Populate the site data structure with
+	// default values.
 	app.setSiteDefaults()
-	return writeYamlFile(app.Site.siteFilePath, app.Site)
+	//var site Site
+	if filename != "" {
+    // Override the initialized site data structure
+    // with anything passed in
+		var err error
+		var b []byte
+		if b, err = ioutil.ReadFile(filename); err != nil {
+			// TODO: Handle error properly & and document error code
+			app.Note("trouble reading file %v", filename)
+			return ErrCode("0113", err.Error(), filename)
+		}
+		//err = yaml.Unmarshal(b, &site)
+		err = yaml.Unmarshal(b, &app.Site)
+		if err != nil {
+			// TODO: Document error code
+			return ErrCode("0117", filename, err.Error())
+		}
+    //app.Site = site
+    app.Note("Wrting %#v to user supplied %v", app.Site, filename)
+    //app.Note("Writing site to %v", app.Site.siteFilePath)
+	  //return (writeYamlFile(filename, app.Site))
+	  return (writeYamlFile(app.Site.siteFilePath, app.Site))
+	} else {
+    //filename = app.Site.siteFilePath
+  }
+	//app.Note("XXX Site looks like this:\n %#v", site)
+	app.Note("XXX Site looks like this:\n %#v", app.Site)
+	//if err := writeYamlFile(app.Site.siteFilePath, site); err != nil {
+	if err := writeYamlFile(app.Site.siteFilePath, app.Site); err != nil {
+	//if err := writeYamlFile(filename, app.Site); err != nil {
+    app.Note("Error writing Yaml file %v: %v", filename, err.Error())
+		//return ErrCode("0219", err.Error(), filename)
+		//return ErrCode("0219", filename, err.Error()) }
+		return ErrCode("PREVIOUS", filename, err.Error()) 
+  }
+	return nil
 }
 
+// setSiteDefaults() obtains starting values
+// for a fresh Site object before it's written
+// to a site config file, or initialized
+// by another site config file.
+func (app *App) setSiteDefaults() {
+	app.Debug("setSiteDefaults()")
+	app.Site.Language = defaults.Language
+	app.Site.HTMLStartFile = defaults.HTMLStartFile
+	app.Site.HTMLEndFile = defaults.HTMLEndFile
+	app.setPaths()
+}

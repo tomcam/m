@@ -1,13 +1,13 @@
 package app
 
 import (
-  "github.com/gosimple/slug"
+	"github.com/gosimple/slug"
 	"github.com/tomcam/m/pkg/default"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"os"
-  "strings"
 	"path/filepath"
+	"strings"
 )
 
 // Description makes up what you need for a Description metatag.
@@ -15,9 +15,9 @@ import (
 // append something like "| blog" you'd use After for that.
 // Likewise for Before, but it creates a suffix.
 type Description struct {
-	Before      string `yaml:"Before"`
-	Tag         string `yaml:"Description"`
-	After       string `yaml:"After"`
+	Before string `yaml:"Before"`
+	Tag    string `yaml:"Description"`
+	After  string `yaml:"After"`
 }
 
 // Generate a list of pages, posts, galleries, or categories
@@ -31,31 +31,32 @@ type Starter struct {
 	// Derived from the map key name if not given here
 	Filename string `yaml:"Filename"`
 
-  // Directory this should appear in 
-	Folder         string         `yaml:"Folder"`
+	// Directory this should appear in
+	Folder string `yaml:"Folder"`
 
-  // Sort order if gallery, category, or posts
-	Sort           string         `yaml:"Sort"`
+	// Sort order if gallery, category, or posts
+	Sort string `yaml:"Sort"`
 
 	// If specified, the Permalink template makes it post
 	// and not a page
 	Permalink string `yaml:"Permalink"`
 
 	// For title tag
-	Title          string         `yaml:"Title"`
+	Title string `yaml:"Title"`
 
 	// For description meta tag
-	Description    Description    `yaml:"Description"`
+	Description Description `yaml:"Description"`
 
-  // Name of theme to use for this page/section
-	Theme          string         `yaml:"Theme"`
+	// Name of theme to use for this page/section
+	Theme string `yaml:"Theme"`
 
 	// Specify sidebar direction, if any
-	Sidebar        string         `yaml:"Sidebar"`
+	Sidebar string `yaml:"Sidebar"`
 
 	// Text of the article portion, if desired
-	Article        string         `yaml:"Article"`
+	Article string `yaml:"Article"`
 }
+
 // generate() creates files specified in the
 
 // via createSite() and that we're in the
@@ -85,25 +86,25 @@ func (app *App) generate(pathname string) error {
 	if err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
- /* why? Just why?
-	if err = readStarterConfig(pathname, &starter); err != nil {
-		app.QuitError(ErrCode("0115", pathname))
-		return ErrCode("PREVIOUS", err.Error())
-	}
-	if err := readYAMLFile(pathname, starters); err != nil {
- 		app.QuitError(ErrCode("0115", pathname))
-		return ErrCode("PREVIOUS", err.Error())
-	}
-  */
-  //app.Note("starter: %#v", starter.Starters["Blog"])
+	/* why? Just why?
+		if err = readStarterConfig(pathname, &starter); err != nil {
+			app.QuitError(ErrCode("0115", pathname))
+			return ErrCode("PREVIOUS", err.Error())
+		}
+		if err := readYAMLFile(pathname, starters); err != nil {
+	 		app.QuitError(ErrCode("0115", pathname))
+			return ErrCode("PREVIOUS", err.Error())
+		}
+	*/
+	//app.Note("starter: %#v", starter.Starters["Blog"])
 	for k, v := range starters {
 		//app.Note("%v: %v", k, v)
-    switch strings.ToLower(v.Type) {
-    case "page":
-      if err = app.starterPage(k, v); err != nil {
-		    return ErrCode("PREVIOUS", err.Error())
-      }
-    }
+		switch strings.ToLower(v.Type) {
+		case "page":
+			if err = app.starterPage(k, v); err != nil {
+				return ErrCode("PREVIOUS", err.Error())
+			}
+		}
 	}
 	return nil
 }
@@ -111,72 +112,70 @@ func (app *App) generate(pathname string) error {
 // starterPage() creates a stub page from a description
 // in a YAML file with startup pages
 func (app *App) starterPage(name string, starter Starter) error {
-  app.Note("starterPage(%v). Folder: %v", name, starter.Folder) 
-  dir := starter.Folder
-  if name == "" {
- 		return ErrCode("1104", dir)
- }
-  // If no folder is given, assume project root.
-  // Remember Go uses Unix folder conventions even 
-  // under Windows
-  if dir == "" {
-    dir = "/"
-  }
-  // Create the specified folder as a subdirectory
-  // of the current project.
-  dir = filepath.Join(app.Site.path, dir)
-  err := os.MkdirAll(dir, defaults.ProjectFilePermissions)
+	app.Note("starterPage(%v). Folder: %v", name, starter.Folder)
+	dir := starter.Folder
+	if name == "" {
+		return ErrCode("1104", dir)
+	}
+	// If no folder is given, assume project root.
+	// Remember Go uses Unix folder conventions even
+	// under Windows
+	if dir == "" {
+		dir = "/"
+	}
+	// Create the specified folder as a subdirectory
+	// of the current project.
+	dir = filepath.Join(app.Site.path, dir)
+	err := os.MkdirAll(dir, defaults.ProjectFilePermissions)
 	if err != nil {
 		return ErrCode("0410", dir)
 	}
-  app.Note("Dir: %v", dir)
+	app.Note("Dir: %v", dir)
 
-  var filename string
-  // Convert the name to a filename.
-  if starter.Filename == "" {
-    filename = slug.Make(name)
-  } else {
-    filename = starter.Filename
-  }
+	var filename string
+	// Convert the name to a filename.
+	if starter.Filename == "" {
+		filename = slug.Make(name)
+	} else {
+		filename = starter.Filename
+	}
 
-  // Get the fully qualified filename to generate
-  filename = filepath.Join(dir, filename)
+	// Get the fully qualified filename to generate
+	filename = filepath.Join(dir, filename)
 
+	// Create the front matterl
+	theme := ""
+	if starter.Theme != "" {
+		theme = "Theme: " + starter.Theme + "\n"
+	}
+	title := ""
 
-  // Create the front matterl
-  theme := ""
-  if starter.Theme != "" {
-    theme = "Theme: " + starter.Theme + "\n"
-  }
-  title := ""
+	if starter.Title != "" {
+		title = "Title: " + starter.Title + "\n"
+	}
 
-  if starter.Title != "" {
-    title = "Title: " + starter.Title+ "\n"
-  }
+	description := ""
+	if starter.Description.Tag != "" {
+		title = "Description: " + starter.Description.Tag + "\n"
+	}
 
-  description := ""
-  if starter.Description.Tag != "" {
-    title = "Description: " + starter.Description.Tag + "\n"
-  }
+	frontMatter :=
+		"---\n" +
+			theme +
+			title +
+			description +
+			"---\n"
 
+	// See if the filename has a Markdown extension
+	if !isMarkdownFile(filename) {
+		filename = filename + ".md"
+	}
+	article := frontMatter + starter.Article
 
-  frontMatter :=
-    "---\n" +
-    theme +
-    title +
-    description +
-    "---\n"
-
-  // See if the filename has a Markdown extension
-  if !isMarkdownFile(filename) {
-    filename = filename +".md"
-  }
-  article := frontMatter + starter.Article
-
-  if err := writeTextFile(filename, article); err != nil {
+	if err := writeTextFile(filename, article); err != nil {
 		return ErrCode("0410", filename)
-  }
-  return nil
+	}
+	return nil
 }
 
 /*
@@ -211,11 +210,10 @@ About:
   Sort: ignored
   Title: About Eastside Emerald
   Description:
-    Before: 
-    Tag: "Redmond handyman and general contractor" 
-    After: 
+    Before:
+    Tag: "Redmond handyman and general contractor"
+    After:
   Theme: w
   Sidebar: none
-  Article: "We specialize in some crazy shit" 
+  Article: "We specialize in some crazy shit"
 */
-

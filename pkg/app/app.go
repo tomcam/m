@@ -64,9 +64,13 @@ type Flags struct {
 	// instead.
 	Factory bool
 
-  // Name of starters file to generate pages when
-  // site is created (or later)
-  Starters string
+	// Name of starters file to generate pages when
+	// site is created (or later)
+	Starters string
+
+	// Name of site config file to use when
+	// site is created
+	Site string
 
 	// Global verbose mode
 	Verbose bool
@@ -175,17 +179,6 @@ func (app *App) initConfig() {
 	// Add snazzy Go template functions like ftime() etc.
 	app.addTemplateFunctions()
 
-}
-
-// setSiteDefaults() obtains starting values
-// for a fresh Site object before it's writtne
-// to a site config file.
-func (app *App) setSiteDefaults() {
-	app.Debug("setSiteDefaults()")
-	app.Site.Language = defaults.Language
-	app.Site.HTMLStartFile = defaults.HTMLStartFile
-	app.Site.HTMLEndFile = defaults.HTMLEndFile
-	app.setPaths()
 }
 
 // setPaths computes values for location of site

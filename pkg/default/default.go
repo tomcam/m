@@ -143,7 +143,7 @@ Welcome to %s
 	// A starters configuration file passed to the command line.
 	ConfigStartersFilename = "starters" + "." + ConfigFileDefaultExt
 
-		// By default, the published site gets its theme from a local copy
+	// By default, the published site gets its theme from a local copy
 	// within the site directory--this directory.
 	// It then copies from that copy to
 	// generate pages in the Publish directory. Helps prevent unintended changes

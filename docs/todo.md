@@ -1,6 +1,7 @@
 # To do
 
 ## Priority 1: Showstoppers--required for the next release
+* Need to start using relative paths that start at / for stylesheets, etc. It's sort of a security risk to use the full ones.
 * Code fences don't seem to work; see mbtest files
 * mbtest fails on nested themes like debut/gallery
 * Theme inheritance is failing

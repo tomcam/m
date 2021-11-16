@@ -62,12 +62,16 @@ var errMsgs = map[string]string{
 	"0112": "Unable to copy file",                   // filename
 	"0113": "Error reading site configuration file", // filename
 	"0114": "No site configuration file specified",
-	"0115": "Unable to find starter file", // filename
+	"0115": "Unable to find starter file",                          // filename
+	"0116": "Error reading site configuration file",                // filename
+	"0117": "Error unmarshalling YAML for site configuration file", // filename
 
 	// 0200	- Error creating file
 	"0209": "Unable to copy file to",                    // filename
 	"0217": "Can't publish stylesheet to same location", // filename
-  "0218": "Can't create starter file", // filename
+	"0218": "Can't create starter file",                 // filename
+	"0219": "Can't create site file",                    // filename
+	"0220": "Can't create site file",                    // filename
 
 	// 0250 - Error closing file
 	// 0300	- Error deleting file
@@ -77,8 +81,8 @@ var errMsgs = map[string]string{
 	"0401": "Unable to create project directory", // filename
 	"0403": "Unable to create publish directory",
 	"0406": "Unable to copy site directory",
-	"0409": "Error creating directory for theme", // Fully qualified pathname
-  "0410": "Error creating directory for starter", // directory
+	"0409": "Error creating directory for theme",   // Fully qualified pathname
+	"0410": "Error creating directory for starter", // directory
 
 	// 0500	- Error determining directory name
 	"0501": "Couldn't get relative directory name", // custom message I think
@@ -111,7 +115,7 @@ var errMsgs = map[string]string{
 	"1101": "Unable to",                       // chdir to bad dir name
 	"1102": "Unable to",                       // chdir to bad dir name during showInfo()
 	"1103": "Unable to",                       // chdir to bad dir name during createSite()
-  "1104": "Missing name for starter page",
+	"1104": "Missing name for starter page",
 
 	// 1200 - Syntax error!
 	"1204": "Unknown dot value in Go template function ", //

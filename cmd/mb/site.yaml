@@ -1,16 +1,17 @@
 Author:
-    Full-Name: ""
+    Full-Name: Tom Campbell
     URL: ""
     Role: ""
 Authors: []
 Base-Path: ""
-Branding: ""
+Branding: Yo mama
 Company:
-    Name: "Eastside Emerald Home Repair"
+    Name: Eastside Emerald Home Repair
     URL: ""
-      #HeaderLogo: "eastside-emerald-64x64.png"
+    HeaderLogo: ""
 Exclude-Dirs: []
 Exclude-Extensions: []
+filename: ""
 Ganalytics: ""
 Head-Tags: []
 HTML-start-file: <!DOCTYPE html><HTML lang=
@@ -33,6 +34,5 @@ Social:
     Weibo: ""
     YouTube: ""
 Sidebar: ""
-Theme: ""
-Starters: {}
+Theme: w
 List: null

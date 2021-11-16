@@ -390,7 +390,6 @@ func readStarterConfig(filename string, s *StarterConfig) error {
 }
 */
 
-
 func readYAMLFile(filename string, target interface{}) (err error) {
 	b, err := ioutil.ReadFile(filename)
 	if err != nil {
@@ -400,7 +399,7 @@ func readYAMLFile(filename string, target interface{}) (err error) {
 	if err != nil {
 		return err
 	}
-  //fmt.Printf("readYAMLFile(): %#v", string(b))
+	//fmt.Printf("readYAMLFile(): %#v", string(b))
 	return nil
 }
 
