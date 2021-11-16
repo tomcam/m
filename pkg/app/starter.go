@@ -45,7 +45,7 @@ type Starter struct {
 	Title          string         `yaml:"Title"`
 
 	// For description meta tag
-	Description    Description    `yaml:"DescriptionTag"`
+	Description    Description    `yaml:"Description"`
 
   // Name of theme to use for this page/section
 	Theme          string         `yaml:"Theme"`
@@ -143,12 +143,37 @@ func (app *App) starterPage(name string, starter Starter) error {
   filename = filepath.Join(dir, filename)
 
 
+  // Create the front matterl
+  theme := ""
+  if starter.Theme != "" {
+    theme = "Theme: " + starter.Theme + "\n"
+  }
+  title := ""
+
+  if starter.Title != "" {
+    title = "Title: " + starter.Title+ "\n"
+  }
+
+  description := ""
+  if starter.Description.Tag != "" {
+    title = "Description: " + starter.Description.Tag + "\n"
+  }
+
+
+  frontMatter :=
+    "---\n" +
+    theme +
+    title +
+    description +
+    "---\n"
+
   // See if the filename has a Markdown extension
   if !isMarkdownFile(filename) {
     filename = filename +".md"
   }
-  app.Note("About to writeTextFile(%v,%v)", filename, starter.Article)
-  if err := writeTextFile(filename, starter.Article); err != nil {
+  article := frontMatter + starter.Article
+
+  if err := writeTextFile(filename, article); err != nil {
 		return ErrCode("0410", filename)
   }
   return nil
