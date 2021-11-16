@@ -386,32 +386,17 @@ func (app *App) writeSiteConfig(filename string) error {
 		var b []byte
 		if b, err = ioutil.ReadFile(filename); err != nil {
 			// TODO: Handle error properly & and document error code
-			app.Note("trouble reading file %v", filename)
 			return ErrCode("0113", err.Error(), filename)
 		}
-		//err = yaml.Unmarshal(b, &site)
 		err = yaml.Unmarshal(b, &app.Site)
 		if err != nil {
 			// TODO: Document error code
 			return ErrCode("0117", filename, err.Error())
 		}
-    //app.Site = site
-    app.Note("Wrting %#v to user supplied %v", app.Site, filename)
-    //app.Note("Writing site to %v", app.Site.siteFilePath)
-	  //return (writeYamlFile(filename, app.Site))
-	  return (writeYamlFile(app.Site.siteFilePath, app.Site))
-	} else {
-    //filename = app.Site.siteFilePath
-  }
-	//app.Note("XXX Site looks like this:\n %#v", site)
-	app.Note("XXX Site looks like this:\n %#v", app.Site)
-	//if err := writeYamlFile(app.Site.siteFilePath, site); err != nil {
+	  //return writeYamlFile(app.Site.siteFilePath, app.Site)
+	}
 	if err := writeYamlFile(app.Site.siteFilePath, app.Site); err != nil {
-	//if err := writeYamlFile(filename, app.Site); err != nil {
-    app.Note("Error writing Yaml file %v: %v", filename, err.Error())
-		//return ErrCode("0219", err.Error(), filename)
-		//return ErrCode("0219", filename, err.Error()) }
-		return ErrCode("PREVIOUS", filename, err.Error()) 
+		return ErrCode("PREVIOUS", filename, err.Error())
   }
 	return nil
 }

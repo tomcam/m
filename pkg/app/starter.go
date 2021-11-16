@@ -178,16 +178,6 @@ func (app *App) starterPage(name string, starter Starter) error {
 	return nil
 }
 
-/*
-// Description makes up what you need for a Description metatag.
-// The Tag field is the most important, but if you want to
-// append something like "| blog" you'd use After for that.
-// Likewise for Before, but it creates a suffix.
-type Description struct {
-	Before      string `yaml:"Before"`
-	Tag         string `yaml:"Description"`
-	After       string `yaml:"After"`
-}
 
 // Generate a list of pages, posts, galleries, or categories
 // to avoid copy pasta.
@@ -197,7 +187,7 @@ type Starter struct {
 	Folder         string         `yaml:"Folder"`
 	Sort           string         `yaml:"Sort"`
 	Title          string         `yaml:"Title"`
-	Description    Description    `yaml:"DescriptionTag"`
+	Description    string         `yaml:"Description"`
 	Theme          string         `yaml:"Theme"`
 	Sidebar        string         `yaml:"Sidebar"`
 	Article        string         `yaml:"Article"`
