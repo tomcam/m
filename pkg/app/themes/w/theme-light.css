@@ -141,7 +141,7 @@ article > p >  a:hover,
 article > p >  a:active
 	{color:var(--trim-bg);background-color:var(--trim-fg);}
 article > h4 {color:gray;} 
-article > h4 > strong {color:black; } 
+article > h4 > strong {color:var(--fg); } 
 article > table > thead > tr > th {color:var(--header-bg);background-color:var(--header-fg);}
 article > table > tbody > tr > td {border-bottom:.1px solid gray;}
 
@@ -156,6 +156,9 @@ aside > ul li {border-bottom: 1px solid gray;}
 aside > ul li a:active, aside > ul li a:hover {
   color:var(--(bg);
 }
+
+/* FOOTER */
+footer {border-top: 1px solid var(--trim-fg);padding-bottom:1rem;} 
 footer > table > thead > tr > th {color:var(--trim-fg);background-color:var(--footer-bg);}
 /* Color of links in main rows (body) of table */
 footer > table > tbody > tr > td > a:link,

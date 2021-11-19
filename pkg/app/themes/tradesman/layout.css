@@ -30,6 +30,4 @@ footer {margin-top:var(--footer-margin-top);margin-bottom:var(--footer-margin-bo
 footer {margin-left:var(--left-gap);margin-right:var(--right-gap);}
 footer {padding-left:var(--left-start);}
 footer {padding-top:var(--footer-padding-top);padding-bottom:var(--footer-padding-bottom);}
-footer {clear:both;}    
-
-
+footer {clear:both;}   

@@ -2,6 +2,7 @@
         this manually. Just fill in the 
         appropriate parts of the site configuration file
         (probably found in .mb/site/site.yaml).
+        ![Eastside Emerald Logo](eastside-emerald-64x64.png)
 
         Automatically name first item in header    
         based on company name, then author name.
@@ -13,7 +14,6 @@
         by the theme. You can just replace it with
         whatever text or Markdown you please.
 */ -}}
-
 {{- if .Site.Company.Name -}}
 {{- $name := .Site.Company.Name -}}
 * [{{ $name -}}](/)
@@ -23,10 +23,9 @@
 {{- else if .Page.Theme.Branding -}}
 {{- $name := .Page.Theme.Branding -}}
 * [{{ $name -}}](/)
-{{- else }}
-* [{{.FrontMatter.Theme}} {{.FrontMatter.PageType}}](/)
 {{- end }} 
-* [Events](/)
-* [Podcast](/)
-* [Subscribe](/)
+* [Services](services.html)
+* [Rates](rates.html)
+* [Contact](contact.html)
+* [About](about.html)
 

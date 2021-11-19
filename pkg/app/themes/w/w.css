@@ -22,7 +22,7 @@ header > img {display:inline;}
  * Doesn't act like a link.
  * --------------------------------------------------
  */
-header > p {font-size:var(--branding-height);font-weight:700;display:inline;} 
+header > p {font-size:var(--branding-height);font-weight:var(--branding-weight);display:inline;} 
 
  
 /*
@@ -39,7 +39,7 @@ header > ul > li{display:inline;padding-right:1.5rem;font-size:1.25rem;}
 header > ul > li > a,
 header > ul > li > a:link,
 header > ul > li > a:visited
-	{font-weight:400;text-decoration:none;}
+	{font-weight:bold;text-decoration:none;}
 header > ul > li > a:hover,
 header > ul > li > a:active
 	{text-decoration:underline;}
@@ -50,13 +50,13 @@ header > ul > li > a:active
  * branding
  * --------------------------------------------------
  */
-header > ul > li:first-child > a {color:var(--branding-fg);margin-right:3rem;font-size:var(--branding-height);font-weight:var(--branding-weight);padding-right:1rem;text-decoration:none;}
+header > ul > li:first-child > a {margin-right:3rem;font-size:var(--branding-height);font-weight:var(--branding-weight);padding-right:1rem;text-decoration:none;}
 
 /* ******************************/
 /*  NAVBAR                      */
 /* ******************************/
 
-nav > p > a {font-size:1.25em;margin-right:1em;font-weight:700;}
+nav > p > a {font-size:1.25em;margin-right:1em;font-weight:var(--branding-weight);}
 nav > p {margin-top:0;line-height:var(--nav-height);}
 nav > img {display:inline;}
 nav > p > a {font-style:normal;}
@@ -81,7 +81,7 @@ nav > p > a:active {text-decoration:underline;}
 /*  ARTICLE-MAIN PORTION OF TEXT*/
 /* ******************************/
 
-article > h1,article > h2 {font-weight:700;}
+article > h1,article > h2 {font-weight:var(--branding-weight);}
 article > h1 {margin-top:0;margin-bottom:3rem;}
 article > li {margin-left:1rem;}
 article > h2 {margin-top:4rem;}
@@ -102,7 +102,7 @@ article > p,
 }
 
 article > ul, article > ol {margin-top:.5em;padding-left:1em;}
-article > p > strong {font-family:var(--informal);font-weight:700;}
+article > p > strong {font-family:var(--informal);font-weight:var(--branding-weight);}
 /* Override font rule for code */
 article > p > code, article > code, article > pre, article > pre > code {
 		font-family:var(--code);
@@ -132,7 +132,7 @@ article > table > tbody > tr > td {padding:1rem;}
 
 aside {border-bottom:none;}
 
-aside > h2 {padding:1em;text-align:center;font-size:1.2rem;font-weight:700;}
+aside > h2 {padding:1em;text-align:center;font-size:1.2rem;font-weight:var(--branding-weight);}
 aside > h3 {font-size:.75em;font-weight:bold;margin-bottom:2rem;}
 aside > p > img {margin-top:1rem;width:100%;padding:0;}
 aside > p {font-size:1.2rem;margin-bottom:0em;}
@@ -141,7 +141,6 @@ aside > p {font-size:1.2rem;margin-bottom:0em;}
 /*  FOOTER                      */
 /* ******************************/
 
-footer {border-top: 1px solid var(--trim-fg);padding-bottom:1rem;} 
 footer > h2 {text-align:center;}
 footer > table {font-size:calc(80%);}
 /* Give table columns to get some breathing room */
