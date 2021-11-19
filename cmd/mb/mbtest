@@ -31,6 +31,8 @@ declare -a modes=(
   'light'
 )
 
+L=\<
+R=\>
 # Loop through the array
 for theme in "${themes[@]}";
 do
@@ -71,12 +73,27 @@ Here's what we know about the test.
 print "hello, world."
 ````
 
+| Page element   | HTML tag        |
+|--------------- | --------------- |
+| header         | &lt;header&gt;  |
+| navbar         | &lt;nav&gt;     |
+| article        | &lt;article&gt; |
+| sidebar        | &lt;aside&gt;   |
+| header         | &lt;header&gt;  |
+
+
+#### HTML form test: Search reddit.com
+<form action="https://www.google.com/search" class="searchform" method="get" name="searchform" target="_blank">
+<input name="sitesearch" type="hidden" value="reddit.com">
+<input autocomplete="on" name="q" placeholder="Search reddit.com" required="required"  type="text">
+<button class="button" type="submit">Search</button>
+</form>
+
+
+
 [Home](./index.html)
 
 EOM
-
-#LINK="[${sidebar} sidebar, ${mode} mode](${FILENAME}.html)\n"
-#echo $LINK >> $LINKSECTION
 
     # A single variation has been generated
     done
