@@ -2,9 +2,9 @@ Index:
   Type: page
   Folder: /
   Title: Eastside Emerald Home Repair
-  Theme: w
+  Theme: tradesman
   Article: |
-    # See what needs to be added to the following pages:
+    # CHECK TEXT AND LINKS on the following pages:
     * [Services](services.html) 
     * [Kitchen remodeling](remodeling/kitchen-remodeling.html) 
     * [Bathroom remodeling](remodeling/bathroom-remodeling.html) 
@@ -22,14 +22,18 @@ Index:
     * [Call for Quote](call-for-quote.html)
     * [Contact](contact.html) 
     * [About](about.html)  
+    * [Rates](rates.html)  
     * [Privacy policy](privacy-policy.html)
     * [Terms and Conditions](terms-and-conditions.html)
+
 About:
   Type: page
   Folder: /
   Title: About Eastside Emerald Home Repair
-  Theme: w
+  Theme: tradesman
   Article: |
+    # About Christ Foster and Eastside Emerald Home Repair
+    
     My name is Chris and I've been doing general contractor and auto mechanic work
     since I was a kid. My father owned rental properties and taught me how to
     fix pretty much anything, from installing toilets, lighting, outlet, and water heaters to
@@ -43,9 +47,12 @@ About:
     cars contain thousands of parts in a very confined space and require immense precision. 
     Fixing things around the house is a lot less challenging.
     
+    Call or text [(206) 887-3920](tel:1-206-887-3920)
+      
     ## Days and Hours of Service
+    
     | Day        | Hours |
-    | :--        | :--    |
+    | :---       | :---    |
     | Sunday     | Closed |
     | Monday     | 9:30am - 4:30pm |
     | Tuesday    | 9:30am - 4:30pm |
@@ -54,11 +61,35 @@ About:
     | Friday     | 9:30am - 4:30pm |
     | Saturday   | Closed |
 
+    ## Qualifications
+    * Washington State Contractor License #EASTSEH795D9,
+    * 12,000 Surety Bond
+    * A/C 609 Refrigerant License
+
+    ## Service areas (state of WA, in the Seattle area) 
+    * Redmond
+    * Duvall
+    * Kirkland
+    * Bellevue
+    * Samammish
+
+Rates:
+  Type: page
+  Folder: /
+  Title: Eastside Emerald Home Repair  Rates
+  Theme: tradesman
+  Article: |
+    # Rates
+    * Estimates over the phone are free if they take less than 10 minutes
+    * In-person estimates are $99, refundable if you accept the job
+    * Hourly rate: $150 if not estimated as a job (minimum 2 hours)
+    * Rates do not include 10% King County tax
+
 Service area:
   Type: page
   Folder: /
   Title: Areas Served by Eastside Emerald Home Repair 
-  Theme: w
+  Theme: tradesman
   Article: |
     # Eastside Emerald Repair service the following communities here in State of Washington
     * Redmond
@@ -71,11 +102,18 @@ Contact:
   Type: page
   Folder: /
   Title: Contact Eastside Emerald
-  Theme: w
+  Theme: tradesman
   Article: |
-    <form action="mailto:tomcampbell@gmail.com" method="GET" name="searchform" target="_blank"><br />
-    <input autocomplete="on" name="subject"  required="required"  type="text"><br />
-    <textarea name="body"</textarea><br />
+    # Contact Eastside Emerald Home Repair 
+    **Call or text** [(206) 887-3920](tel:1-206-887-3920)
+
+    ## Email
+    You can email at [eastsideemeraldhomerepair@gmail.com](eastsideemeraldhomerepair@gmail.com?subject=Priority%20Message%20for%20Eastside%20Emerald) or fill out this form
+
+    ## Email form
+    <form action="mailto:eastsideemeraldhomerepair@gmail.com?subject=Priority%20Message%20for%20Eastside%20Emerald" method="POST" name="contact" enctype="text/plain" target="_blank"><br />
+    <label for="subject">How can we help you?</label><br />
+    <textarea name="body" id="body"   enctype="text/plain" type="hidden"></textarea><br />
     <input type="submit" value="Send"/><br />
     </form>
 
@@ -84,7 +122,7 @@ Services:
   Type: page
   Folder: /
   Title: Eastside Emerald Home Repair Handyman Services
-  Theme: w
+  Theme: tradesman
   Article: |
     # Here are some of the home repair and services we've performed over the last 15 years.
     
@@ -114,7 +152,7 @@ Kitchen Remodeling:
   Type: page
   Folder: /remodeling
   Title: Kitchen remodeling
-  Theme: w
+  Theme: tradesman
   Article: |
     # Here's some of the kitchen remodeling we've done
     * Install dishwashers 
@@ -130,7 +168,7 @@ Bathroom Remodeling:
   Type: page
   Folder: /remodeling
   Title: Bathroom remodeling
-  Theme: w
+  Theme: tradesman
   Article: |
     # Bathroom remodeling we've done
     * Install and repair toilets
@@ -151,7 +189,7 @@ Floor repairs and installation:
   Title: Floor repairs and installation
   Type: page
   Folder: /
-  Theme: w
+  Theme: tradesman
   Article: |
     # We've done just about everything you can do with a floor, including
     * Repair water damage
@@ -168,7 +206,7 @@ Painting:
   Type: page
   Folder: /
   Title: Painting
-  Theme: w
+  Theme: tradesman
   Article: |
     # Painting services
     * Paint house exterior
@@ -180,7 +218,7 @@ Fencing:
   Type: page
   Folder: /
   Title: Fence Repair and installation
-  Theme: w
+  Theme: tradesman
   Article: |
     # Fence repair and installation
     * Concrete pilings 
@@ -193,7 +231,7 @@ Wall:
   Type: page
   Folder: /repairs
   Title: Wall repair
-  Theme: w
+  Theme: tradesman
   Article: |
     # Wall repairs
     * Floor control on exterior siding
@@ -204,7 +242,7 @@ Deck:
   Type: page
   Folder: / 
   Title: Deck repair and installation
-  Theme: w
+  Theme: tradesman
   Article: |
     # Deck repair and installation we've done over the years
     * Create decks
@@ -215,7 +253,7 @@ Patio:
   Type: page
   Folder: /
   Title: Patio repair and installation
-  Theme: w
+  Theme: tradesman
   Article: |
     # Patio repair and installation 
     * Roof repair
@@ -226,7 +264,7 @@ Concrete:
   Type: page
   Folder: /
   Title: Concrete repair and installation
-  Theme: w
+  Theme: tradesman
   Article: |
     # Concrete repair and installation services
     * Install concrete driveway
@@ -238,7 +276,7 @@ Repairs:
   Type: page
   Folder: /repairs
   Title: General repair work
-  Theme: w
+  Theme: tradesman
   Article: |
     # Some of the things we've repaired over the last 15 years
     * [Toilets](../remodeling/bathroom-remodeling.html)
@@ -263,7 +301,7 @@ Assemble:
   Type: page
   Folder: /
   Title: Assemble 
-  Theme: w
+  Theme: tradesman
   Article: |
     # We have installed and assembled almost anything you can think of
     * Hobby equipment
@@ -280,14 +318,14 @@ Reviews:
   Type: page
   Folder: /
   Title: Reviews
-  Theme: w
+  Theme: tradesman
   Article: ""
 
 Gallery:
   Type: page
   Folder: /
   Title: Gallery 
-  Theme: w
+  Theme: tradesman
   Article: ""
 
 
@@ -295,7 +333,7 @@ General Contracting:
   Type: page
   Folder: /
   Title: General Contracting
-  Theme: w
+  Theme: tradesman
   Article: ""
 
 
@@ -303,7 +341,7 @@ Call for Quote:
   Type: page
   Folder: /
   Title: Call for quote
-  Theme: w
+  Theme: tradesman
   Article: ""
 
 
@@ -311,7 +349,7 @@ Privacy Policy:
   Type: page
   Folder: /
   Title: Privacy Policy
-  Theme: w
+  Theme: tradesman
   Article: | 
     # Privacy Policy
     ## What information do we collect?
@@ -333,7 +371,7 @@ Terms and Conditions:
   Type: page
   Folder: /
   Title: Terms and Conditions
-  Theme: w
+  Theme: tradesman
   Article: |
     Welcome to Eastside Emerald Home Repair, hereinafter referred to as This Site. 
     By visiting it, you are agreeing to the following terms, 
@@ -394,7 +432,7 @@ Sitemap:
   Type: page
   Folder: /
   Title: Sitemap
-  Theme: w
+  Theme: tradesman
   Article: ""
 
 

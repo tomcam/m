@@ -171,6 +171,11 @@ type Site struct {
 type company struct {
 	// Company name, like "Metabuzz" or "Example Inc."
 	Name string `yaml:"Name"`
+  Address string `yaml:Address1`
+  Address2 string `yaml:Address2`
+  City string `yaml:City`
+  Country string `yaml:Country`
+  PostalCode string `yaml:PostalCode`
 	URL  string `yaml:"URL"`
 
 	// Logo file for the header

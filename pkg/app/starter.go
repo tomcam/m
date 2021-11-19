@@ -154,6 +154,7 @@ func (app *App) starterPage(name string, starter Starter) error {
 		title = "Title: " + starter.Title + "\n"
 	}
 
+  // TODO: Stuff these things into a read FrontMatter to get it right
 	description := ""
 	if starter.Description.Tag != "" {
 		title = "Description: " + starter.Description.Tag + "\n"
@@ -179,31 +180,4 @@ func (app *App) starterPage(name string, starter Starter) error {
 }
 
 
-// Generate a list of pages, posts, galleries, or categories
-// to avoid copy pasta.
-type Starter struct {
-	Type string `yaml:"Type"` // Page, Posts, Gallery, Category
-	//Name string `yaml:"Name"`
-	Folder         string         `yaml:"Folder"`
-	Sort           string         `yaml:"Sort"`
-	Title          string         `yaml:"Title"`
-	Description    string         `yaml:"Description"`
-	Theme          string         `yaml:"Theme"`
-	Sidebar        string         `yaml:"Sidebar"`
-	Article        string         `yaml:"Article"`
-}
-//Starters map[string]Starter `yaml:"Starters"`
 
-About:
-  Type: page
-  Folder: /
-  Sort: ignored
-  Title: About Eastside Emerald
-  Description:
-    Before:
-    Tag: "Redmond handyman and general contractor"
-    After:
-  Theme: w
-  Sidebar: none
-  Article: "We specialize in some crazy shit"
-*/
