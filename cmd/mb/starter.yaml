@@ -3,22 +3,137 @@ Index:
   Folder: /
   Title: Eastside Emerald Home Repair
   Theme: w
-  Article: "Time: {{ ftime }}<br/>[About](about.html) [Contact](contact.html)" 
+  Article: "[About](about.html) [Contact](contact.html)" 
+
 About:
   Type: page
   Folder: /
   Title: About Eastside Emerald
   Theme: w
-  Article: | 
-    We've seen some crazy shit
-    # h1 right here
-    List right here
-    * Item 1
-    * Item 2
-    * Item 3
+  Article: "We've seen some crazy shit" 
+
 Contact:
   Type: page
   Folder: /
   Title: Contact Eastside Emerald
   Theme: w
-  Article: "Phone: (555) 555-122" 
+  Article: "Phone: (555) 555-122" I Folder: /remodeling
+  Title: Kitchen Remodeling
+  Theme: w
+  Article: ""
+
+
+Bathroom Remodeling:
+  Type: page
+  Folder: /remodeling
+  Title: Bathroom remodeling
+  Theme: w
+  Article: ""
+
+
+Flooring:
+  Type: page
+  Folder: /
+  Title: Flooring 
+  Theme: w
+  Article: ""
+
+
+Painting:
+  Type: page
+  Folder: /
+  Title: Painting
+  Theme: w
+  Article: ""
+
+
+Fencing:
+  Type: page
+  Folder: /
+  Title: Fence Repair and installation
+  Theme: w
+  Article: ""
+
+Wall:
+  Type: page
+  Folder: /repair
+  Title: Wall repair
+  Theme: w
+  Article: ""
+
+Deck:
+  Type: page
+  Folder:/ 
+  Title: Deck repair and installation
+  Theme: w
+  Article: ""
+
+Patio:
+  Type: page
+  Folder: /
+  Title: Patio repair and installation
+  Theme: w
+  Article: ""
+
+Concrete:
+  Type: page
+  Folder: /
+  Title: Concrete repair and installation
+  Theme: w
+  Article: ""
+
+Floor repairs and installation:
+  Type: page
+  Folder: /
+  Title: Floor repairs and installation
+  Theme: w
+  Article: ""
+
+
+Reviews:
+  Type: page
+  Folder: /
+  Title: Reviews
+  Theme: w
+  Article: ""
+
+
+General Contracting:
+  Type: page
+  Folder: /
+  Title: General Contracting
+  Theme: w
+  Article: ""
+
+
+Call for Quote:
+  Type: page
+  Folder: /
+  Title: Call for quote
+  Theme: w
+  Article: ""
+
+
+Privacy Policy:
+  Type: page
+  Folder: /
+  Title: Privacy Policy
+  Theme: w
+  Article: ""
+
+Terms and Conditions:
+  Type: page
+  Folder: /
+  Title: Terms and Conditions
+  Theme: w
+  Article: ""
+
+
+Sitemap:
+  Type: page
+  Folder: /
+  Title: Sitemap
+  Theme: w
+  Article: ""
+
+
