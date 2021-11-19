@@ -16,13 +16,14 @@ Index:
     * [Deck](deck.html)
     * [Patio](patio.html)
     * [Concrete](concrete.html)
-    * [Assemble](assemble.html)  **Did I exaggerate or miss anything? **
+    * [Assemble](assemble.html)  **Did I exaggerate or miss anything?**
     * [Gallery](gallery.html)
     * [General Contracting](general-contracting.html)
     * [Call for Quote](call-for-quote.html)
     * [Contact](contact.html) 
     * [About](about.html)  
-
+    * [Privacy policy](privacy-policy.html)
+    * [Terms and Conditions](terms-and-conditions.html)
 About:
   Type: page
   Folder: /
@@ -39,8 +40,32 @@ About:
     do all those same tasks fixing advanced engines. It turns out that the principles
     of electricity and fluid mechanics are the same whether you're dealing with a
     leaky water heater or fixing the transmission on a $1 million Ford GT. But
-    cars are in a very confined space and require immense precision, so fixing things
-    around the house is usually pretty easy for me.
+    cars contain thousands of parts in a very confined space and require immense precision. 
+    Fixing things around the house is a lot less challenging.
+    
+    ## Days and Hours of Service
+    | Day        | Hours |
+    | :--        | :--    |
+    | Sunday     | Closed |
+    | Monday     | 9:30am - 4:30pm |
+    | Tuesday    | 9:30am - 4:30pm |
+    | Wednesday  | 9:30am - 4:30pm |
+    | Thursday   | 9:30am - 4:30pm |
+    | Friday     | 9:30am - 4:30pm |
+    | Saturday   | Closed |
+
+Service area:
+  Type: page
+  Folder: /
+  Title: Areas Served by Eastside Emerald Home Repair 
+  Theme: w
+  Article: |
+    # Eastside Emerald Repair service the following communities here in State of Washington
+    * Redmond
+    * Duvall
+    * Kirkland
+    * Bellevue
+    * Samammish
 
 Contact:
   Type: page
@@ -223,7 +248,6 @@ Repairs:
     * Exterior walls
     * [Bathroom Sinks](remodeling/bathroom-remodeling.html) and [Kitchen sinks](remodeling/bathroom-remodeling.html) 
     * [Kitchen](remodeling/bathroom-remodeling.html) and [bathroom](remodeling/bathroom-remodeling.html) faucets
-    * Wooden Floors
     * [Wooden floors](../floor-repairs-and-installation.html)
     * [Concrete floors](../floor-repairs-and-installation.html)
     * [Tile floors](../floor-repairs-and-installation.html)
@@ -288,14 +312,82 @@ Privacy Policy:
   Folder: /
   Title: Privacy Policy
   Theme: w
-  Article: ""
+  Article: | 
+    # Privacy Policy
+    ## What information do we collect?
+    If you choose to give us any personal information such as your email address, 
+    we will use it for transactional purposes based on your requests for service or for an estimate. 
+    We will not sell or give any of this transactional information to a third barty, 
+    unless it is required for bill collection purposes.
+
+    ## How are changes to the privacy policy communicated?
+    From time to time we update this page with changes to our privacy policy.
+
+    ## Still have questions?
+    We realize everyone has a different view on privacy. 
+    We take your privacy very seriously. 
+    If you still have concerns, or are unclear about any aspect of our privacy policy, 
+    please visit our [Contact](/contact.html) page and we will be happy to accept feedback.
 
 Terms and Conditions:
   Type: page
   Folder: /
   Title: Terms and Conditions
   Theme: w
-  Article: ""
+  Article: |
+    Welcome to Eastside Emerald Home Repair, hereinafter referred to as This Site. 
+    By visiting it, you are agreeing to the following terms, 
+    which are designed to make sure that this site works as well as possible for everyone. 
+    This policy is effective November 1, 2021.
+
+    ## 1. Content
+    This Site is protected by copyright laws and international treaties. 
+    Content displayed on or via This Site may be protected as a 
+    collective work and/or compilation, pursuant to copyright laws and international conventions. 
+    By using This Site, you agree not to copy, distribute or modify content from This Site without our express written consent. 
+
+    **Just so we're clear:** you agree not to reproduce, copy, sell, resell, 
+    or exploit for any purposes any aspect of This Site.
+
+    ## 2. Personal Information.
+    Your use of the This Site website signifies acknowledgement of and agreement to our [Privacy Policy](privacy-policy.html) 
+    You further acknowledge and agree that This Site may 
+    preserve or disclose your content, as well as your information, such as email addresses, 
+    IP addresses, timestamps, and other user information, 
+    if required to do so by law or in the good faith belief that such preservation or disclosure is reasonably necessary.
+
+    ## 3. General Disclaimer.
+    These terms and the other policies posted on This Site constitute the entire agreement between This Site and you, 
+    superseding any prior agreements. These terms of use shall be governed in all respects by the internal substantive laws 
+    of the State of Washington as they apply to agreements entered into and to be performed entirely 
+    within Washington between Washington residents, without regard to conflict of law provisions. 
+    You agree that any claim or dispute you may have against This Site must be resolved by a court located in 
+    King County, Washington. You agree to submit to the personal jurisdiction of the courts located 
+    within King County, Washington for the purpose of litigating all such claims or disputes. 
+    If we don't enforce any particular provision, we are not waiving our right to do so later. 
+    If a court strikes down any of these terms, the remaining terms will survive. 
+
+    We will send notices to you via the email address you provide.
+    We may update this agreement at any time, with updates taking effect when you next post or after 30 days, 
+    whichever is sooner. No other amendment to this agreement will be effective 
+    unless made in writing, signed by users and by us.
+    Remember, in agreeing to these terms, you agree that your use of our site is at your own risk. 
+    We make no warranties of any kind, and in fact we disclaim all warranties for the reliability of our site. 
+
+    ## 4. Termination of Use.
+    You understand that This Site, in its sole discretion, may, but is not required to, block your email or IP address, 
+    or otherwise terminate your access to or use of our site (or any part thereof), 
+    immediately and without notice, and remove and discard any posting or any content on our site, 
+    for any reason, including, without limitation, if This Site believes that you have acted inconsistently 
+    with our terms of use or with the law governing our business. 
+    Further, you agree that This Site shall not be liable to you or any third-party for any termination of your access to our site.
+    When we ask you to leave, please do so.
+
+    ## 5. This Site.
+    This Site, name and all aspects of the company are protected to the maximum extent permitted by copyright laws and international treaties. 
+    Any reproduction, modification, creation of derivative works from or redistribution of the site or any portion thereof 
+    to any other server or location for further reproduction or redistribution is prohibited without the express written consent of This Site. 
+    Do not copy content from This Site without our express written consent, and please abide by all copyright notices posted on the site, 
 
 
 Sitemap:
