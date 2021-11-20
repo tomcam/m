@@ -154,7 +154,7 @@ func (app *App) starterPage(name string, starter Starter) error {
 		title = "Title: " + starter.Title + "\n"
 	}
 
-  // TODO: Stuff these things into a read FrontMatter to get it right
+	// TODO: Stuff these things into a read FrontMatter to get it right
 	description := ""
 	if starter.Description.Tag != "" {
 		title = "Description: " + starter.Description.Tag + "\n"
@@ -178,6 +178,3 @@ func (app *App) starterPage(name string, starter Starter) error {
 	}
 	return nil
 }
-
-
-

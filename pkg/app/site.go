@@ -170,13 +170,13 @@ type Site struct {
 
 type company struct {
 	// Company name, like "Metabuzz" or "Example Inc."
-	Name string `yaml:"Name"`
-  Address string `yaml:Address1`
-  Address2 string `yaml:Address2`
-  City string `yaml:City`
-  Country string `yaml:Country`
-  PostalCode string `yaml:PostalCode`
-	URL  string `yaml:"URL"`
+	Name       string `yaml:"Name"`
+	Address    string `yaml:Address1`
+	Address2   string `yaml:Address2`
+	City       string `yaml:City`
+	Country    string `yaml:Country`
+	PostalCode string `yaml:PostalCode`
+	URL        string `yaml:"URL"`
 
 	// Logo file for the header
 	HeaderLogo string `yaml:"HeaderLogo"`
@@ -334,7 +334,7 @@ func (app *App) createSite(pathname string) error {
 	}
 	// TODO: Populate
 	if err := app.writeSiteConfig(filename); err != nil {
-    app.Note("error after app.writeSiteConfig(%v)", filename)
+		app.Note("error after app.writeSiteConfig(%v)", filename)
 		// TODO: Handle error properly & and document error code
 		return ErrCode("0220", err.Error(), filename)
 		//return ErrCode("PREVIOUS", err.Error(), filename)
@@ -385,8 +385,8 @@ func (app *App) writeSiteConfig(filename string) error {
 	app.setSiteDefaults()
 	//var site Site
 	if filename != "" {
-    // Override the initialized site data structure
-    // with anything passed in
+		// Override the initialized site data structure
+		// with anything passed in
 		var err error
 		var b []byte
 		if b, err = ioutil.ReadFile(filename); err != nil {
@@ -398,11 +398,11 @@ func (app *App) writeSiteConfig(filename string) error {
 			// TODO: Document error code
 			return ErrCode("0117", filename, err.Error())
 		}
-	  //return writeYamlFile(app.Site.siteFilePath, app.Site)
+		//return writeYamlFile(app.Site.siteFilePath, app.Site)
 	}
 	if err := writeYamlFile(app.Site.siteFilePath, app.Site); err != nil {
 		return ErrCode("PREVIOUS", filename, err.Error())
-  }
+	}
 	return nil
 }
 
