@@ -1,43 +1,86 @@
-#!/bin/zsh
-# Exit if an error occurs
-set -e
-DIR=~/code/m/cmd/mb/theme-test
-rm -rf $DIR
-mb new site $DIR
-INDEX=$DIR/index.md
-LINKSECTION=$DIR/links.tmp
-THEMELIST=$DIR/themelist.tmp
-
-cp site.yaml $DIR/.mb
-cp eastside-emerald-64x64.png $DIR
+#!/bin/zsh 
 # Create an array of filenames
 declare -a themes=(
-  'w'
-	'wide'
-	'pillar'
-  'tradesman'
+#	'wide'
+#  'debut'
+  'debut/gallery'
+#	'pillar'
+#  'tradesman'
 	)
 
-# Create an array of variations
+# Create an array of sidebar variations
 declare -a sidebars=(
   'left'
   'right'
   'no'
   )
 
-# Array of modes
+# Light/dark modes
 declare -a modes=(
   'dark'
   'light'
 )
 
-L=\<
-R=\>
-# Loop through the array
+
+DIR=~/code/m/cmd/mb/theme-test2
+LINKSECTION=$DIR/links.tmp
+THEMELIST=$DIR/themelist.tmp
+TMPFILE=$DIR/foobar.txt
+
+
+
+# Delete the previous dir if present
+[ -d $DIR ] && rm -rf $DIR
+mb new site $DIR
+#
+# Create temporary filenames
+THEMENAMES=$DIR/themenames.tmp
+FILENAMES=$DIR/themefilenames.tmp
+
+# Delete the previous temp files if present
+[ -f $THEMENAMES ] && rm $THEMENAMES
+[ -f $FILENAMES ] && rm $FILENAMES
+INDEX=$DIR/index.md
+
+# Convert the array into a file containing one name per line.
 for theme in "${themes[@]}";
 do
+  echo $theme >> $THEMENAMES
+done
+
+# Preserve the unchanged theme names
+cp $THEMENAMES $FILENAMES 
+
+# Search and replace theme names in the file to
+# become valid filenames, e.g. 'debut/gallery'
+# is transformed to 'debut-gallery'
+sed -i '' 's/\//\-/' $FILENAMES
+
+# Reinitialize the arrays
+themenames=()
+themefilenames=()
+
+# Read the contents of the array of names
+# from the file, one by one, and concatenate
+# to the array.
+while IFS= read -r line; do
+  themenames+=("$line")
+done < $THEMENAMES
+
+# Same for the file names, which are derived
+# from the theme names
+while IFS= read -r line; do
+  themefilenames+=("$line")
+done < $FILENAMES
+
+# Loop through all themes named origingally in the $themes
+# array.
+for ((i = 1; i <= $#themenames; i++))
+do
+  theme=$themenames[$i] 
+  base=$themefilenames[$i] 
+  for sidebar in "${sidebars[@]}";
   echo "<a name=\"${theme}\"></a> " >> $LINKSECTION
-  #echo "### Theme: ${theme}" >> $LINKSECTION
   echo "<br />**${theme}** " >> $LINKSECTION
   echo "[left sidebar](theme-${theme}-left-light.html) ([dark](theme-${theme}-left-dark.html)) [right sidebar](theme-${theme}-right-light.html) ([dark version](theme-${theme}-right-dark.html)) and [no sidebar](theme-${theme}-no-light.html) ([dark](theme-${theme}-no-dark.html)) " >> $LINKSECTION
   echo "[${theme}](#${theme}) " >> $THEMELIST
@@ -46,8 +89,9 @@ do
   do
     for mode in "${modes[@]}";
     do
-      FILENAME=theme-${theme}-${sidebar}-${mode}
-      echo ${FILENAME}.md
+      FILENAME=theme-${base}-${sidebar}-${mode}
+        echo "${theme}  ${FILENAME}"
+
 cat <<-EOM > $DIR/$FILENAME.md
 ---
 Theme: ${theme}
@@ -56,45 +100,7 @@ Mode: ${mode}
 ---
 # Auto-generated test for ${theme} theme
 
-Here's what we know about the test.
-* Theme is **${theme}**. According to frontmatter it's **{{ .Page.FrontMatter.Theme }}**
-* Sidebar **${sidebar}**. According to frontmatter it's **{{ .Page.FrontMatter.Sidebar }}** 
-* Mode should be **${mode}**
-
-### Wait'll they get a load of this
-![Logo](eastside-emerald-64x64.png)
-**Note**
-
-* **Resize this** to check for responsive versions
-* Check in all browsers
-
-#### Code example
-````
-print "hello, world."
-````
-
-| Page element   | HTML tag        |
-|--------------- | --------------- |
-| header         | &lt;header&gt;  |
-| navbar         | &lt;nav&gt;     |
-| article        | &lt;article&gt; |
-| sidebar        | &lt;aside&gt;   |
-| header         | &lt;header&gt;  |
-
-
-#### HTML form test: Search reddit.com
-<form action="https://www.google.com/search" class="searchform" method="get" name="searchform" target="_blank">
-<input name="sitesearch" type="hidden" value="reddit.com">
-<input autocomplete="on" name="q" placeholder="Search reddit.com" required="required"  type="text">
-<button class="button" type="submit">Search</button>
-</form>
-
-
-
-[Home](./index.html)
-
 EOM
-
     # A single variation has been generated
     done
     
@@ -108,4 +114,10 @@ cat $THEMELIST >> $INDEX
 cat $LINKSECTION >> $INDEX
 mb build $DIR
 open $DIR/.mb/pub/index.html
+
+
+
+
+
+
 
