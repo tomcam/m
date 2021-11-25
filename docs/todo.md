@@ -1,9 +1,11 @@
 # To do
 
 ## Priority 1: Showstoppers--required for the next release
+* Theme inheritance is failing. If you specify debut/gallery:
+  - Debut theme isn't published, just its directory
+  - Style tags for debut aren't generated
 * Publising a source file is broken. Check old code. Among onter things:
   - markdown file is getting published
-* Theme inheritance is failing
 * Test site is showing the reverse mode
 * Theme that's named as a number doesn't seem to work well
 * Add idea of post and specfiications like YYYY-MM-DD or y-m-d etc, using dirs or strings as needed . That way mb new post "/blog/avengers review" would expand to something like "/blog/2022/04/21/avengers-review.html" or "/blog/2022-March-1-avengers-review.html" and so on 
