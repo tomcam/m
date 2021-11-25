@@ -58,8 +58,11 @@ func (app *App) publishMarkdownFile(filename string) error {
 	target = filepath.Join(app.Site.publishPath, rel, filepath.Base(target))
 
 	var body []byte
-  // TODO: this may be the better place todo thse initializations
+  // TODO: this looks like the right place for these initializations
   app.Page.Theme.stylesheetsAllLevels = make(map[string][]string)
+  app.Page.publishedStylesheetsAllLevels = make(map[string][]string)
+  app.Page.allThemes = make(map[string]Theme)
+
 	// Convert Markdown file to a byte slice of HTML
 	// Return with YAML front matter in app.Page.frontMatter
 	if body, err = app.MdFileToHTML(filename); err != nil {
@@ -142,6 +145,33 @@ func (app *App) normalizeStylesheet(stylesheet string, responsive *bool) {
 		}
 }
 
+// TODO: I think I need to change "level" to something else. It begins
+// life as an array index but later in the program, as here, it's a 
+// map key.
+func (app *App) addPublishedStylesheet(level string, stylesheet string, responsive *bool) {
+	  darkMode := app.darkMode()
+		switch stylesheet {
+		case "sidebar-right.css":
+		case "sidebar-left.css":
+			stylesheet = ""
+		case "theme-dark.css":
+			if !darkMode {
+				stylesheet = "theme-light.css"
+			}
+		case "theme-light.css":
+			if darkMode {
+				stylesheet = "theme-dark.css"
+			}
+		case "responsive.css":
+			*responsive = true
+			stylesheet = ""
+		}
+		if stylesheet != "" {
+      app.Page.publishedStylesheetsAllLevels[level] =
+      append(app.Page.publishedStylesheetsAllLevels[level], stylesheet)
+		}
+}
+
 // normalizeStylesheetList() builds the list of stylesheets
 // required to publish this theme in the correct order
 // and with the right filenames. It transforms the raw list of
@@ -151,14 +181,34 @@ func (app *App) normalizeStylesheet(stylesheet string, responsive *bool) {
 // into app.Page.Theme.stylesheetList.
 func (app *App) normalizeStylesheetList() {
   app.Note("\t\t\tnormalizeStylesheetList(): %v", app.Page.Theme.stylesheetsAllLevels)
+	responsive := false
   for _, level := range app.Page.Theme.levels {
     app.Note("\t\t\t\t%v", level)
     for _, stylesheet := range app.Page.Theme.stylesheetsAllLevels[level] {
+      app.addPublishedStylesheet(level, stylesheet, &responsive)
       app.Note("\t\t\t\t\t%v", stylesheet)
     }
     // xxx
+    // sidebar-right.css or sidebar-left.css must be
+    // penultimate, followed by responsive.css
+    sidebar := app.Page.FrontMatter.Sidebar
+    var stylesheet string
+    switch sidebar {
+    case "left", "right":
+      stylesheet = "sidebar-" + sidebar + ".css"
+      app.Page.publishedStylesheetsAllLevels[level] =
+        append(app.Page.publishedStylesheetsAllLevels[level], stylesheet)
+    }
+    // responsive.css is the final stylesheet to add
+    if responsive == true {
+      app.Page.publishedStylesheetsAllLevels[level] =
+        append(app.Page.publishedStylesheetsAllLevels[level], stylesheet)
+    }
   }
-	responsive := false
+  return
+
+  // TODO: Lose all this
+
 	// Is this page light (system default) or dark mode?
 	// Get the list of stylesheets specified for this theme.
 	for _, stylesheet := range app.Page.Theme.Stylesheets {

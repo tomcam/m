@@ -11,8 +11,16 @@ type Page struct {
 	FrontMatter    FrontMatter
 	Theme          Theme
 
+  // In case of a nested stylesheet like debut/gallery, this 
+  // contains all of them.
+  allThemes map[string]Theme
+
 	// Fully qualified filename of this source file
 	filePath string
+
+  // Derived from Theme.stylesheetsAllLevels but contains
+  // only the subset of stylesheets required to publish this page.
+  publishedStylesheetsAllLevels map[string][]string
 }
 
 type FrontMatter struct {

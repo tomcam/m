@@ -35,9 +35,19 @@ type Theme struct {
   // This is different from Stylesheets, which is
   // list of all stylesheets listed in the theme config file.
 	stylesheetList []string
+
 	// Themes can be nested, e.g. debut/gallery/item.
 	// Each level get its own entry here.
+  // So in the case of debut/gallery/item,
+  // levels[0] is 'debut', levels[1] is 'galery' 
+  // and levels[2] is 'item'
 	levels []string
+
+  // List of all levels of nested stylesheets as read in from 
+  // config file. So if the stylesheet is 'debut/gallery', then
+  // you might have something like this:
+  //   stylesheetsAllLevels['debut'] might be ['reset.css', 'fonts.css', 'bind.css', 'sizes.css', 'theme-light.css', 'theme-dark.css', 'layout.css', 'debut.css', 'responsive.css'
+  //   stylesheetsAllLevels['gallery'] could be only  ['gallery.css'] if that's all you want changed
   stylesheetsAllLevels map[string][]string
 
   // List of all stylesheets mentioned in the theme config
@@ -244,6 +254,9 @@ func (app *App) loadThemeLevel(source string, dest string, level int) error {
   app.Note("\t\t\t\t%v", app.Page.Theme.levels[level])
   app.Note("\t\t\t\t\t%v", app.Page.Theme.Stylesheets)
   app.Page.Theme.stylesheetsAllLevels[app.Page.Theme.levels[level]] = app.Page.Theme.Stylesheets
+  themeName := app.Page.Theme.levels[level]
+  app.Page.allThemes[themeName] = app.Page.Theme
+
 	return nil
 } // loadThemeLevel()
 
