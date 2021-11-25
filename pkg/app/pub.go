@@ -58,6 +58,8 @@ func (app *App) publishMarkdownFile(filename string) error {
 	target = filepath.Join(app.Site.publishPath, rel, filepath.Base(target))
 
 	var body []byte
+  // TODO: this may be the better place todo thse initializations
+  app.Page.Theme.stylesheetsAllLevels = make(map[string][]string)
 	// Convert Markdown file to a byte slice of HTML
 	// Return with YAML front matter in app.Page.frontMatter
 	if body, err = app.MdFileToHTML(filename); err != nil {
@@ -159,7 +161,7 @@ func (app *App) normalizeStylesheetList() {
 	}
 	// sidebar-right.css or sidebar-left.css must be
 	// penultimate, followed by responsive.css
-	sidebar := app.sidebarType()
+	sidebar := app.Page.FrontMatter.Sidebar
 	app.Debug("\t\t\t\tsidebar type: %v", sidebar)
 	var stylesheet string
 	switch sidebar {
@@ -304,7 +306,7 @@ func (app *App) layoutElement(tag string) string {
 	case "nav":
 		l = app.Page.Theme.Nav
 	case "sidebar":
-		sidebar := app.sidebarType()
+	  sidebar := app.Page.FrontMatter.Sidebar
 		if sidebar != "left" && sidebar != "right" {
 			return ""
 		}
@@ -408,7 +410,7 @@ func (app *App) darkMode() bool {
 // TODO: If no value has been set for this page,
 // it assigns the sidebar value set in
 // Site.Sidebar.
-func (app *App) sidebarType() string {
+func (app *App) isidebarType() string {
 	// TODO: Make this a cfg value, bcause like Theme it can also be
 	// set in other areas
 	sidebar := strings.ToLower(app.Page.FrontMatter.Sidebar)

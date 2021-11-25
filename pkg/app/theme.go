@@ -235,6 +235,12 @@ func (app *App) loadThemeLevel(source string, dest string, level int) error {
 	if err := app.loadThemeConfig(source, level); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
+	sidebar := strings.ToLower(app.Page.FrontMatter.Sidebar)
+	if sidebar != "left" && sidebar != "right" {
+		sidebar = "none"
+	}
+	app.Page.FrontMatter.Sidebar = sidebar
+	app.Note("\t\t\t\tsidebarType(%v)", app.Page.FrontMatter.Sidebar)
   app.Note("\t\t\t\t%v", app.Page.Theme.levels[level])
   app.Note("\t\t\t\t\t%v", app.Page.Theme.Stylesheets)
   app.Page.Theme.stylesheetsAllLevels[app.Page.Theme.levels[level]] = app.Page.Theme.Stylesheets

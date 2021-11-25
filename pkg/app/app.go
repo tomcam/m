@@ -104,7 +104,7 @@ func NewApp() *App {
 	//app.Site.Starters = make(map[string]Starter)
 	app.Site.publishedThemes = make(map[string]bool)
   // TODO: Nost sure if this is the right place to initialize
-  app.Page.Theme.stylesheetsAllLevels = make(map[string][]string)
+  //app.Page.Theme.stylesheetsAllLevels = make(map[string][]string)
 	return &app
 }
 
