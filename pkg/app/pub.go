@@ -442,9 +442,8 @@ func (app *App) publishStylesheet(source string, dest string) error {
 }
 
 // publishStylesheets() copies the stylesheets required
-// by this theme to be published, omitting those it
-// doesn't need (for example, "theme-light.css" if
-// Mode has been set to "dark"). It must be called
+// by this theme to be published.
+// It must be called
 // after normalizeStylesheetList().
 func (app *App) publishStylesheets() error {
 	app.Debug("\t\t\tpublishStylesheets()")

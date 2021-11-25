@@ -168,7 +168,7 @@ func (app *App) themeNameToLower() string {
 // fully qualified directory source to the fully qualified
 // directory dest.
 func (app *App) copyTheme(source string, dest string) error {
-	app.Debug("\t\t\t\tcopyTheme(%v, %v)", source, dest)
+	app.Note("\t\t\t\tcopyTheme(%v, %v)", source, dest)
 	err := os.MkdirAll(dest, defaults.PublicFilePermissions)
 	if err != nil {
 		// TODO: Handle error properly & and document error code
@@ -199,7 +199,7 @@ func (app *App) copyTheme(source string, dest string) error {
 // overrides whatever is in debut.yaml.
 // Called from loadTheme() once per level.
 func (app *App) loadThemeLevel(source string, dest string, level int) error {
-	app.Debug("\t\t\tloadThemeLevel(%v, %v, %v)", source, dest, level)
+	app.Note("\t\t\tloadThemeLevel(%v, %v, %v)", source, dest, level)
 	// See if this theme has already been published.
 	_, ok := app.Site.publishedThemes[dest]
 	if !ok {
@@ -244,7 +244,7 @@ func (app *App) loadTheme() error {
 	// can be something "debut" or it can go down deper,
 	// for example, "debut/gallery/item"
 	fullTheme := strings.ToLower(app.Page.FrontMatter.Theme)
-	app.Debug("\t\tloadTheme %v", fullTheme)
+	app.Note("\t\tloadTheme %v", fullTheme)
 	// If it's something like debut/gallery, loop around and load from root to branch.
 	// That way styles are overridden the way
 	// CSS expects.
@@ -281,19 +281,19 @@ func (app *App) loadTheme() error {
 // needed to publish style sheets for the theme
 func (app *App) themePublishDir(theme string) string {
 	//return filepath.Join(app.Site.cssPublishPath, defaults.ThemesDir, app.Page.FrontMatter.Theme)
-	return filepath.Join(app.Site.publishPath, defaults.ThemesDir, app.Page.FrontMatter.Theme)
+	return filepath.Join(app.Site.publishPath, defaults.ThemesDir, theme)
 }
 
 func (app *App) createStylesheetsPublishDir(dest string) error {
 	// If no style sheets don't waste time here
-	app.Debug("\t\t\tcreateStylesheetsPublishDir(%v)", dest)
+	app.Note("\t\t\tcreateStylesheetsPublishDir(%v)", dest)
 	// TODO: Track this to make sure it's not repeated unnecessarily
 	//path := filepath.Join(app.Site.cssPublishPath, defaults.ThemesDir, app.Page.FrontMatter.Theme)
 	//path = dest
 	path := app.themePublishDir(app.Page.FrontMatter.Theme)
 	err := os.MkdirAll(path, defaults.PublicFilePermissions)
 	if err != nil {
-		app.Debug("\t\t\t\tcreateStyleSheetsPublishDir: couldn't create %v", path)
+		app.Note("\t\t\t\tcreateStyleSheetsPublishDir: couldn't create %v", path)
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	return nil
