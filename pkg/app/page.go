@@ -13,11 +13,6 @@ type Page struct {
 
 	// Fully qualified filename of this source file
 	filePath string
-
-	// List of stylesheets actually published
-	// (for example, only sidebar-left.css
-	// or sidebar-right.css will be published)
-	stylesheets []string
 }
 
 type FrontMatter struct {

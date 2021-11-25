@@ -13,10 +13,6 @@ import (
 )
 
 type Theme struct {
-	// Themes can be nested, e.g. debut/gallery/item.
-	// Each level get its own entry here.
-	levels []string
-
 	// Tracks level of nesting for this theme. So if
 	// the theme is specified as debut/gallery/item,
 	// debut is 0, gallery is 1, and item is 2.
@@ -31,17 +27,37 @@ type Theme struct {
 	// runtime
 	sourcePath string
 
-	// List of all stylesheet after being massaged,
+	// List of all stylesheets needed to publish
+  // this page after being massaged,
 	// for example, to ensure responive.css comes
-	// last among other things.
+	// last among other things, and that only one of
+  // theme-light.css or theme-dark.css are chosen.
+  // This is different from Stylesheets, which is
+  // list of all stylesheets listed in the theme config file.
 	stylesheetList []string
+	// Themes can be nested, e.g. debut/gallery/item.
+	// Each level get its own entry here.
+	levels []string
+  stylesheetsAllLevels map[string][]string
+
+  // List of all stylesheets mentioned in the theme config
+  // file, whether they are needed to publish this page or
+  // not. So it would contain things like theme-light.css
+  // and theme-dark.css, even though only one is needed.
+  // It doesn't assume stylesheets are in the corrected order
+  // to be published. For example, in the published page
+  // responsive.css needs to come list. It may not
+  // appear list in this list. stylesheetList contains
+  // only the subset of stylsheets needed to publish the page.
+	Stylesheets []string      `yaml:"Stylesheets"`
 
 	// Name is the name of the theme for this page,
 	// e.g. "wide"
 	Name        string        `yaml:"Name"`
 	Branding    string        `yaml:"Branding"`
 	Description string        `yaml:"Description"`
-	Stylesheets []string      `yaml:"Stylesheets"`
+
+
 	Nav         layoutElement `yaml:"Nav"`
 	Header      layoutElement `yaml:"Header"`
 	Article     layoutElement `yaml:"Article"`
@@ -167,7 +183,7 @@ func (app *App) themeNameToLower() string {
 // copyTheme() Directly a copies all files in a theme from the
 // fully qualified directory source to the fully qualified
 // directory dest.
-func (app *App) copyTheme(source string, dest string) error {
+func (app *App) copyTheme(source string, dest string, level int) error {
 	app.Note("\t\t\t\tcopyTheme(%v, %v)", source, dest)
 	err := os.MkdirAll(dest, defaults.PublicFilePermissions)
 	if err != nil {
@@ -203,7 +219,7 @@ func (app *App) loadThemeLevel(source string, dest string, level int) error {
 	// See if this theme has already been published.
 	_, ok := app.Site.publishedThemes[dest]
 	if !ok {
-		err := app.copyTheme(source, dest)
+		err := app.copyTheme(source, dest, level)
 		// TODO: May want to improve error handling
 		if err != nil {
 			return ErrCode("PREVIOUS", err.Error())
@@ -216,9 +232,12 @@ func (app *App) loadThemeLevel(source string, dest string, level int) error {
 
 	// Theme directory is known. Load its config
 	// (e.g. .yaml) file
-	if err := app.loadThemeConfig(source); err != nil {
+	if err := app.loadThemeConfig(source, level); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
+  app.Note("\t\t\t\t%v", app.Page.Theme.levels[level])
+  app.Note("\t\t\t\t\t%v", app.Page.Theme.Stylesheets)
+  app.Page.Theme.stylesheetsAllLevels[app.Page.Theme.levels[level]] = app.Page.Theme.Stylesheets
 	return nil
 } // loadThemeLevel()
 
@@ -326,13 +345,13 @@ func (app *App) getMode(stylesheet string) string {
 //   /foo/.mb/pub/themes/wide/
 // and it gets converted to:
 //   Users/tom/mb/foo/.mb/pub/themes/wide/wide.yaml
-func (app *App) loadThemeConfig(path string) error {
+func (app *App) loadThemeConfig(path string, level int) error {
 
 	// Add YAML or whatver to the base directory because that's the
 	// base of the filename. Then add the rest to the
 	// filename, which is the theme name + ".yaml"
 	filename := filepath.Join(path, filepath.Base(path)+"."+defaults.ConfigFileDefaultExt)
-	app.Debug("\t\t\t\tloadThemeConfig(%v)", filename)
+	app.Note("\t\t\t\tloadThemeConfig(%v, %v)", filename, level)
 	b, err := ioutil.ReadFile(filename)
 	if err != nil {
 		app.Debug("\t\t\t\tloadThemeConfig() failed to read %v", filename)
@@ -356,7 +375,8 @@ func (app *App) loadThemeConfig(path string) error {
 
 	app.Page.Theme.publishPath = path
 	app.Site.publishedThemes[path] = true
-
+  //app.Page.Theme.slist[app.Page.Theme.levels[level]] = app.Page.Theme.Stylesheets
+  // xxx
 	return nil
 
 }

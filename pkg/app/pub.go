@@ -107,33 +107,17 @@ func (app *App) publishMarkdownFile(filename string) error {
 	// TODO: If  you have a lot of source files in the directory,
 	// you'd be copying them all mulitple times. That's a perf issue.
 
-	app.Page.stylesheets = []string{}
-	// TODO: May be unnecessary
+	//app.Page.stylesheets = []string{}
+	// TODO: May these reinitializations may be unnecessary
 	app.Page.Theme = Theme{}
+  //app.Page.Theme.stylesheetsAllLevels= map[string][]string{}
 	app.Site.publishedThemes = map[string]bool{}
 	return nil
 }
 
-// normalizeStylesheetList() builds the list of stylesheets
-// required to publish this theme in the correct order
-// and with the right filenames. It transforms the raw list of
-// stylesheets needed by this theme from the raw
-// collection of filesheets from the theme config file
-// (and stored in app.Page.Theme.Stylesheets),
-// into app.Page.Theme.stylesheetList.
-func (app *App) normalizeStylesheetList() {
-	app.Debug("\t\t\tnormalizeStylesheetList()")
-	responsive := false
-	darkMode := app.darkMode()
-	if darkMode {
-		app.Debug("\t\t\t\tDark mode")
-	}
-	// Is this page light (system default) or dark mode?
-	// Get the list of stylesheets specified for this theme.
-	for _, stylesheet := range app.Page.Theme.Stylesheets {
-		//for _, stylesheet := range app.Page.stylesheets {
-		app.Debug("\t\t\t\t%v", stylesheet)
 
+func (app *App) normalizeStylesheet(stylesheet string, responsive *bool) {
+	  darkMode := app.darkMode()
 		switch stylesheet {
 		case "sidebar-right.css":
 		case "sidebar-left.css":
@@ -144,19 +128,34 @@ func (app *App) normalizeStylesheetList() {
 				stylesheet = "theme-light.css"
 			}
 		case "theme-light.css":
-			app.Debug("\t\t\t\t\tConvert light mode to dark")
 			if darkMode {
 				stylesheet = "theme-dark.css"
 			}
 		case "responsive.css":
-			app.Debug("\t\t\t\tresponsive.css found")
-			responsive = true
+			*responsive = true
 			stylesheet = ""
 		}
 		if stylesheet != "" {
 			app.Page.Theme.stylesheetList =
 				append(app.Page.Theme.stylesheetList, stylesheet)
 		}
+}
+
+// normalizeStylesheetList() builds the list of stylesheets
+// required to publish this theme in the correct order
+// and with the right filenames. It transforms the raw list of
+// stylesheets needed by this theme from the raw
+// collection of filesheets from the theme config file
+// (and stored in app.Page.Theme.Stylesheets),
+// into app.Page.Theme.stylesheetList.
+func (app *App) normalizeStylesheetList() {
+  app.Note("\t\t\tnormalizeStylesheetList(): %v", app.Page.Theme.stylesheetsAllLevels)
+	responsive := false
+	// Is this page light (system default) or dark mode?
+	// Get the list of stylesheets specified for this theme.
+	for _, stylesheet := range app.Page.Theme.Stylesheets {
+    // stylesheetsAllLevels 
+    app.normalizeStylesheet(stylesheet, &responsive)
 	}
 	// sidebar-right.css or sidebar-left.css must be
 	// penultimate, followed by responsive.css
@@ -436,8 +435,6 @@ func (app *App) publishStylesheet(source string, dest string) error {
 	if err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
-	// Keep list of stylesheets that got published
-	app.Page.stylesheets = append(app.Page.stylesheets, dest)
 	return nil
 }
 
@@ -448,22 +445,28 @@ func (app *App) publishStylesheet(source string, dest string) error {
 func (app *App) publishStylesheets() error {
 	app.Debug("\t\t\tpublishStylesheets()")
 	var source, dest string
+  // xxx
+	//app.Site.publishedThemes[path] = true
+
 	// Go through the list of stylesheets for this theme.
 	// Copy stylesheets for this theme from the local
 	// theme directory to the publish
 	// CSS directory for stylesheets.
-	for _, stylesheet := range app.Page.Theme.stylesheetList {
-		source = filepath.Join(app.Page.Theme.sourcePath, stylesheet)
-		//dest = filepath.Join(app.Site.cssPublishPath, stylesheet)
-		dest = filepath.Join(app.themePublishDir(app.Page.FrontMatter.Theme), stylesheet)
+  //for _, level := range app.Page.Theme.levels {
+    //stylesheetsAllLevels 
+    for _, stylesheet := range app.Page.Theme.stylesheetList {
+      source = filepath.Join(app.Page.Theme.sourcePath, stylesheet)
+      //dest = filepath.Join(app.Site.cssPublishPath, stylesheet)
+      dest = filepath.Join(app.themePublishDir(app.Page.FrontMatter.Theme), stylesheet)
 
-		if err := app.publishStylesheet(source, dest); err != nil {
-			return ErrCode("PREVIOUS", err.Error())
-			//return ErrCode("1024", source)
-		}
-	}
+      if err := app.publishStylesheet(source, dest); err != nil {
+        return ErrCode("PREVIOUS", err.Error())
+        //return ErrCode("1024", source)
+      }
+    }
+  //}
 	return nil
-}
+}// publishStylesheets
 
 // publishPageAssets() makes copies of stylesheets,
 // graphics files, and other assets required to
