@@ -12,6 +12,7 @@ blockquote {font-style:italic;margin: 2rem 2rem 2rem 2rem;}
  * --------------------------------------------------
  */
 header {overflow:hidden}
+header > ul > li > a > em {color:red;}
 header > a {text-decoration:none;}
 /* Make it sticky */
 header {position: fixed;top:0;width:100%;text-align:left;} 
@@ -50,6 +51,8 @@ header > ul > li > a:active
  * branding
  * --------------------------------------------------
  */
+header > img > p:first-child > a:first-child  {margin-right:3rem;font-size:var(--branding-height);font-weight:var(--branding-weight);padding-right:1rem;text-decoration:none;}
+
 header > ul > li:first-child > a {margin-right:3rem;font-size:var(--branding-height);font-weight:var(--branding-weight);padding-right:1rem;text-decoration:none;}
 
 /* ******************************/

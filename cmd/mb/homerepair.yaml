@@ -1,7 +1,7 @@
 Index:
   Type: page
   Folder: /
-  Title: Eastside Emerald Home Repair
+  Title: 
   Theme: tradesman
   Article: |
     # CHECK TEXT AND LINKS on the following pages:
@@ -126,26 +126,70 @@ Services:
   Article: |
     # Here are some of the home repair and services we've performed over the last 15 years.
     
-    | Remodel                    | Repair                           | Install                     | Create                                |
-    | :---                       | :---                             | :---                        | :--                                   |
-    | [Kitchens](remodeling/kitchen-remodeling.html)  | Sinks       | Sinks                       | Finish carpentry                      |
-    | [Bathrooms](remodeling/bathroom-remodeling.html)  | Faucets, toilets     | Faucets, toilets   | Paint interior rooms |
-    | Decks                      | Water heaters                    | Water heaters               | Paint exterior walls |
-    | Bedrooms                   | Air conditioners                 | Air conditioners            |                       |
-    | Patios                     | Wooden floors                    | Wooden floors               |                       |
-    | Painting                   |                                  |                             | Interior & exterior paint jobs    |                |
-    |                            | Dishwashers      | Dishwashers |                       |
-    |                            | Interior and exterior doors      | Interior and exterior doors |                       |
-    |                            | Tile floors                      | Tile floors                 |                       | |
-    |                            | Vinyl floors                     | Vinyl floors                |                       |
-    |                            | Many car repairs                 | Car backup cameras, car window motors, engines   |  |
-    |                            | Fences (set in concrete or soil) | All kinds of fences         |                       |
-    |                            | Minor electrical                 | Electrical rough-ins        | Electrical rough-ins  |                |
-    |                            | Walls, interior and exterior     | Walls, interior and exterior|                       |                |
-    |                            | Drywall and sheetrock            | Drywall and sheetrock       |                       |                |
-    |                            |             | [Assemble Furniture](assemble.html)       |                       |                |
-    |                            |             | [Assemble BBQ](assemble.html)       |                       |                |
+    | Remodel                    | 
+    | :---                       |
+    | [Kitchens](remodeling/kitchen-remodeling.html)  |
+    | [Bathrooms](remodeling/bathroom-remodeling.html)  |
+    | Decks                      | 
+    | Bedrooms                   |
+    | Patios                     |
+    | Painting                   |
+    |                            |
+    |                            |
+    |                            |
+     
+    
+    | Repair                           | 
+    | :---                             |
+    | Sinks                            | 
+    | Faucets, toilets                 |
+    | Water heaters                    | 
+    | Air conditioners                 | 
+    | Wooden floors                    |
+    | Interior & exterior paint jobs   |
+    | Dishwashers                      |    
+    | Finish carpentry                 |
+    | Interior and exterior doors      | 
+    | Tile floors                      | 
+    | Vinyl floors                     | 
+    | Many car repairs                 |
+    | Fences (set in concrete or soil) |
+    | Minor electrical                 | 
+    | Walls, interior and exterior     | 
+    | Drywall and sheetrock            |
   
+     
+    | Install                     |
+    | :---                        |
+    | Water heaters               | 
+    | Interior and exterior doors | 
+    | Sinks                       |
+    | Toilets                     |
+    | Faucets                     |
+    | Drywall & sheetrock         |
+    | Wooden fences               | 
+    | Metal fences                | 
+    | Air conditioners            | 
+    | Wooden floors               | 
+    | Tile floors                 | 
+    | Vinyl & composite floors    | 
+    | Car cameras                 | 
+    | Car engines, parts          | 
+    | Electrical rough-ins        | 
+  
+     
+    | Assemble                                               |
+    | :---                                                   |
+    | [Hobby equipment](assemble.html)                       |
+    | [Entertainment units](assemble.html)                   | 
+    | [Every piece of IKEA known to humanity](assemble.html) | 
+    | [Unreasonably complicated toys](assemble.html)         | 
+    | [Musical instrument displays](assemble.html)           | 
+    | [Retail displays](assemble.html)                       | 
+    | [Restaurant equipment](assemble.html)                  | 
+    | [Shop equipment](assemble.html)                        | 
+
+ 
     [Home](index.html)
 
 Kitchen Remodeling:

@@ -37,7 +37,7 @@
 	--branding-height:2rem;
 
   /* Weight of the branded text, usually the first item in the header */
-  --branding-weight:700;
+  --branding-weight:00;
 
 	/* Adjusts navbar height and keeps it vertically centered */
 	--nav-height:5rem;

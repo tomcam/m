@@ -336,9 +336,8 @@ func (app *App) createSite(pathname string) error {
 	if err := app.writeSiteConfig(filename); err != nil {
 		app.Note("error after app.writeSiteConfig(%v)", filename)
 		// TODO: Handle error properly & and document error code
-		return ErrCode("0220", err.Error(), filename)
-		//return ErrCode("PREVIOUS", err.Error(), filename)
-		//return ErrCode("0220", filename, err.Error())
+		//return ErrCode("0220", err.Error(), filename)
+		return ErrCode("PREVIOUS", err.Error(), filename)
 	}
 
 	// Generate stub pages/sections if specified
@@ -362,8 +361,8 @@ func (app *App) readSiteConfig() error {
 	}
 	if b, err = ioutil.ReadFile(app.Site.siteFilePath); err != nil {
 		// TODO: Handle error properly & and document error code
-		//return ErrCode("PREVIOUS", err.Error(), app.Site.siteFilePath)
-		return ErrCode("0113", err.Error(), app.Site.siteFilePath)
+		return ErrCode("PREVIOUS", err.Error(), app.Site.siteFilePath)
+		//return ErrCode("0113", err.Error(), app.Site.siteFilePath)
 	}
 
 	err = yaml.Unmarshal(b, &app.Site)

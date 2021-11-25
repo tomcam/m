@@ -1,10 +1,10 @@
 # To do
 
 ## Priority 1: Showstoppers--required for the next release
-* Need to start using relative paths that start at / for stylesheets, etc. It's sort of a security risk to use the full ones.
-* Code fences don't seem to work; see mbtest files. Not even generating the right HTML
-* mbtest fails on nested themes like debut/gallery
+* Publising a source file is broken. Check old code. Among onter things:
+  - markdown file is getting published
 * Theme inheritance is failing
+* Test site is showing the reverse mode
 * Theme that's named as a number doesn't seem to work well
 * Add idea of post and specfiications like YYYY-MM-DD or y-m-d etc, using dirs or strings as needed . That way mb new post "/blog/avengers review" would expand to something like "/blog/2022/04/21/avengers-review.html" or "/blog/2022-March-1-avengers-review.html" and so on 
 * Mention in docs that one should default to post if one dones't know the difference between page and post
@@ -53,6 +53,7 @@ a leading . in the name
 source file directory structure remains sacrosanct: a tree of Markdown files
 
 ## Priority 2: Desired but not required for the next release
+* Documente that Inhereted themes still need (empty) sidebar-left.css, sidebar-right.css, theme-light.css, theme-dark.css for the test suite only. Or maybe test suite should generate them.
 * wide theme using to have {{ toc }} in the sidebar. Hve to revivi that aftermaking parser options more detailed
 * The test used to show all features of a theme should include
   - HTML forms
