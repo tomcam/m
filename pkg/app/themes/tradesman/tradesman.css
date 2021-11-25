@@ -12,7 +12,7 @@ blockquote {font-style:italic;margin: 2rem 2rem 2rem 2rem;}
  * --------------------------------------------------
  */
 header {overflow:hidden}
-header > ul > li > a > em {color:red;}
+header > ul > li > a > strong {color:red;font-weight:900;}
 header > a {text-decoration:none;}
 /* Make it sticky */
 header {position: fixed;top:0;width:100%;text-align:left;} 
@@ -124,10 +124,13 @@ article > p >  a:hover,
 article > p >  a:active
 	{text-decoration:none;}
 
-article > table {width:var(--full-page);margin-top:2rem;margin-bottom:3rem;}
+/* article > table {width:var(--full-page);margin-top:2rem;margin-bottom:3rem;} */
+article > table {width:25%;max-width:25%;margin-top:float:left;display:inline;2rem;margin-bottom:3rem;}
 article > table > td,th {padding:1rem;}
-article > table > tbody > tr > td {padding:1rem;}
-
+/* Start a new line after the 4th column */
+article > table > td, article > table > th nth-child(4) {
+	display:block;
+}
 
 /* ******************************/
 /*  SIDEBAR (ASIDE TAG)         */
