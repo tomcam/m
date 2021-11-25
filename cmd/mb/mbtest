@@ -27,7 +27,6 @@ declare -a required=(
   'homerepair.yaml'
 	)
 
-
 # Create an array of sidebar variations
 declare -a sidebars=(
   'left'
