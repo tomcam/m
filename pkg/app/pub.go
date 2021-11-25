@@ -125,7 +125,6 @@ func (app *App) normalizeStylesheet(stylesheet string, responsive *bool) {
 		case "sidebar-left.css":
 			stylesheet = ""
 		case "theme-dark.css":
-			app.Debug("\t\t\t\tConvert dark mode to light")
 			if !darkMode {
 				stylesheet = "theme-light.css"
 			}
@@ -152,6 +151,13 @@ func (app *App) normalizeStylesheet(stylesheet string, responsive *bool) {
 // into app.Page.Theme.stylesheetList.
 func (app *App) normalizeStylesheetList() {
   app.Note("\t\t\tnormalizeStylesheetList(): %v", app.Page.Theme.stylesheetsAllLevels)
+  for _, level := range app.Page.Theme.levels {
+    app.Note("\t\t\t\t%v", level)
+    for _, stylesheet := range app.Page.Theme.stylesheetsAllLevels[level] {
+      app.Note("\t\t\t\t\t%v", stylesheet)
+    }
+    // xxx
+  }
 	responsive := false
 	// Is this page light (system default) or dark mode?
 	// Get the list of stylesheets specified for this theme.
