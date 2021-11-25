@@ -1,0 +1,126 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <style>
+    article > table {width:25%;max-width:25%;float:left;display:inline;}
+    /* Start a new line after the 4th column */
+    article > table:nth-of-type(4n) {display:block;}
+    /* This also works:
+    article > table:nth-child(4) {display:block;}
+    */
+    @media (max-width: 1024px) {
+      article > table, 
+      article > table > thead,
+      article > table > thead > tr, 
+      article > table > thead > tr > th,
+      article > table > tbody
+        {width:100%;max-width:100%;display:block;} 
+    }
+      </style>
+</head>
+<body>
+  <article>
+    <table>
+      <thead>
+        <tr>
+          <th>Table 1</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Item 1</td>
+        </tr>
+        <tr>
+          <td>Item 2</td>
+        </tr>
+        <tr>
+          <td>Item 3</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Table 2</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Item 1</td>
+        </tr>
+        <tr>
+          <td>Item 2</td>
+        </tr>
+        <tr>
+          <td>Item 3</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Table 3</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Item 1</td>
+        </tr>
+        <tr>
+          <td>Item 2</td>
+        </tr>
+        <tr>
+          <td>Item 3</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Table 4</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Item 1</td>
+        </tr>
+        <tr>
+          <td>Item 2</td>
+        </tr>
+        <tr>
+          <td>Item 3</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><a href="#">Home</a></p>
+    <p><a href="#">Home</a></p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Table 5</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Item 1</td>
+        </tr>
+        <tr>
+          <td>Item 2</td>
+        </tr>
+        <tr>
+          <td>Item 3</td>
+        </tr>
+      </tbody>
+    </table>
+
+
+
+
+  </article>
+</body>

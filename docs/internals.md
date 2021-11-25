@@ -232,3 +232,15 @@ e.g., `app.Page.frontMatterMust("Description")`
 to get some value without throwing an error if
 for example that key doesn't exist.
 
+## CSS
+
+### 4 column tables (1 column responsive mode)
+
+```
+article > table {width:25%;max-width:25%;margin-top:float:left;display:inline;2rem;margin-bottom:3rem;}
+article > table > td,th {padding:1rem;}
+/* Start a new line after the 4th column */
+article > table > td, article > table > th nth-child(4) {display:block;}
+```
+
+

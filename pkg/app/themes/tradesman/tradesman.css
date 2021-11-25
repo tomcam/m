@@ -124,13 +124,16 @@ article > p >  a:hover,
 article > p >  a:active
 	{text-decoration:none;}
 
-/* article > table {width:var(--full-page);margin-top:2rem;margin-bottom:3rem;} */
-article > table {width:25%;max-width:25%;margin-top:float:left;display:inline;2rem;margin-bottom:3rem;}
-article > table > td,th {padding:1rem;}
+/* Works????? Note margin-top:float???
+ * article > table {max-width:25%;margin-top:float:left;display:inline;}
+ */
+
+article > table {width:25%;max-width:25%;float:left;display:inline;}
 /* Start a new line after the 4th column */
-article > table > td, article > table > th nth-child(4) {
-	display:block;
-}
+article > table:nth-child(4) {display:block;}
+article > table > thead > tr > th { font-weight:900;color:var(--fg); background-color:var(--bg); }
+
+
 
 /* ******************************/
 /*  SIDEBAR (ASIDE TAG)         */

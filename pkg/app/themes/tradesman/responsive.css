@@ -9,5 +9,7 @@ article > table,
   article > table > thead > tr, 
   article > table > thead > tr > th,
   article > table > tbody
-    {max-width:100%;width:100%;display:block;} 
+    {width:100%;max-width:100%;display:block;} 
+article > table {padding:0;margin;10%;margin-top:0;margin-bottom:0;padding-right:10;padding-left:10%;}
+ article > table > thead > tr > th {margin-top:2em;}
 }
