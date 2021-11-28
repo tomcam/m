@@ -58,10 +58,10 @@ func (app *App) publishMarkdownFile(filename string) error {
 	target = filepath.Join(app.Site.publishPath, rel, filepath.Base(target))
 
 	var body []byte
-  // TODO: this looks like the right place for these initializations
-  app.Page.Theme.stylesheetsAllLevels = make(map[string][]string)
-  app.Page.publishedStylesheetsAllLevels = make(map[string][]string)
-  app.Page.allThemes = make(map[string]Theme)
+	// TODO: this looks like the right place for these initializations
+	app.Page.Theme.stylesheetsAllLevels = make(map[string][]string)
+	app.Page.stylesheets = make(map[string][]string)
+	app.Page.allThemes = make(map[string]Theme)
 
 	// Convert Markdown file to a byte slice of HTML
 	// Return with YAML front matter in app.Page.frontMatter
@@ -115,61 +115,60 @@ func (app *App) publishMarkdownFile(filename string) error {
 	//app.Page.stylesheets = []string{}
 	// TODO: May these reinitializations may be unnecessary
 	app.Page.Theme = Theme{}
-  //app.Page.Theme.stylesheetsAllLevels= map[string][]string{}
+	//app.Page.Theme.stylesheetsAllLevels= map[string][]string{}
 	app.Site.publishedThemes = map[string]bool{}
 	return nil
 }
 
-
 func (app *App) normalizeStylesheet(stylesheet string, responsive *bool) {
-	  darkMode := app.darkMode()
-		switch stylesheet {
-		case "sidebar-right.css":
-		case "sidebar-left.css":
-			stylesheet = ""
-		case "theme-dark.css":
-			if !darkMode {
-				stylesheet = "theme-light.css"
-			}
-		case "theme-light.css":
-			if darkMode {
-				stylesheet = "theme-dark.css"
-			}
-		case "responsive.css":
-			*responsive = true
-			stylesheet = ""
+	darkMode := app.darkMode()
+	switch stylesheet {
+	case "sidebar-right.css":
+	case "sidebar-left.css":
+		stylesheet = ""
+	case "theme-dark.css":
+		if !darkMode {
+			stylesheet = "theme-light.css"
 		}
-		if stylesheet != "" {
-			app.Page.Theme.stylesheetList =
-				append(app.Page.Theme.stylesheetList, stylesheet)
+	case "theme-light.css":
+		if darkMode {
+			stylesheet = "theme-dark.css"
 		}
+	case "responsive.css":
+		*responsive = true
+		stylesheet = ""
+	}
+	if stylesheet != "" {
+		app.Page.Theme.stylesheetList =
+			append(app.Page.Theme.stylesheetList, stylesheet)
+	}
 }
 
 // TODO: I think I need to change "level" to something else. It begins
-// life as an array index but later in the program, as here, it's a 
+// life as an array index but later in the program, as here, it's a
 // map key.
 func (app *App) addPublishedStylesheet(level string, stylesheet string, responsive *bool) {
-	  darkMode := app.darkMode()
-		switch stylesheet {
-		case "sidebar-right.css":
-		case "sidebar-left.css":
-			stylesheet = ""
-		case "theme-dark.css":
-			if !darkMode {
-				stylesheet = "theme-light.css"
-			}
-		case "theme-light.css":
-			if darkMode {
-				stylesheet = "theme-dark.css"
-			}
-		case "responsive.css":
-			*responsive = true
-			stylesheet = ""
+	darkMode := app.darkMode()
+	switch stylesheet {
+	case "sidebar-right.css":
+	case "sidebar-left.css":
+		stylesheet = ""
+	case "theme-dark.css":
+		if !darkMode {
+			stylesheet = "theme-light.css"
 		}
-		if stylesheet != "" {
-      app.Page.publishedStylesheetsAllLevels[level] =
-      append(app.Page.publishedStylesheetsAllLevels[level], stylesheet)
+	case "theme-light.css":
+		if darkMode {
+			stylesheet = "theme-dark.css"
 		}
+	case "responsive.css":
+		*responsive = true
+		stylesheet = ""
+	}
+	if stylesheet != "" {
+		app.Page.stylesheets[level] =
+			append(app.Page.stylesheets[level], stylesheet)
+	}
 }
 
 // normalizeStylesheetList() builds the list of stylesheets
@@ -177,60 +176,33 @@ func (app *App) addPublishedStylesheet(level string, stylesheet string, responsi
 // and with the right filenames. It transforms the raw list of
 // stylesheets needed by this theme from the raw
 // collection of filesheets from the theme config file
-// (and stored in app.Page.Theme.Stylesheets),
-// into app.Page.Theme.stylesheetList.
+// into app.Page.stylesheets.
 func (app *App) normalizeStylesheetList() {
-  app.Note("\t\t\tnormalizeStylesheetList(): %v", app.Page.Theme.stylesheetsAllLevels)
-	responsive := false
-  for _, level := range app.Page.Theme.levels {
-    app.Note("\t\t\t\t%v", level)
-    for _, stylesheet := range app.Page.Theme.stylesheetsAllLevels[level] {
-      app.addPublishedStylesheet(level, stylesheet, &responsive)
-      app.Note("\t\t\t\t\t%v", stylesheet)
-    }
-    // xxx
-    // sidebar-right.css or sidebar-left.css must be
-    // penultimate, followed by responsive.css
-    sidebar := app.Page.FrontMatter.Sidebar
-    var stylesheet string
-    switch sidebar {
-    case "left", "right":
-      stylesheet = "sidebar-" + sidebar + ".css"
-      app.Page.publishedStylesheetsAllLevels[level] =
-        append(app.Page.publishedStylesheetsAllLevels[level], stylesheet)
-    }
-    // responsive.css is the final stylesheet to add
-    if responsive == true {
-      app.Page.publishedStylesheetsAllLevels[level] =
-        append(app.Page.publishedStylesheetsAllLevels[level], stylesheet)
-    }
-  }
-  return
-
-  // TODO: Lose all this
-
-	// Is this page light (system default) or dark mode?
-	// Get the list of stylesheets specified for this theme.
-	for _, stylesheet := range app.Page.Theme.Stylesheets {
-    // stylesheetsAllLevels 
-    app.normalizeStylesheet(stylesheet, &responsive)
+	app.Note("\t\t\tnormalizeStylesheetList(): %v", app.Page.Theme.stylesheetsAllLevels)
+	for _, level := range app.Page.Theme.levels {
+		responsive := false
+		app.Note("\t\t\t\t%v", level)
+		for _, stylesheet := range app.Page.Theme.stylesheetsAllLevels[level] {
+			app.addPublishedStylesheet(level, stylesheet, &responsive)
+			app.Note("\t\t\t\t\t%v", stylesheet)
+		}
+		// sidebar-right.css or sidebar-left.css must be
+		// penultimate, followed by responsive.css
+		sidebar := app.Page.FrontMatter.Sidebar
+		var stylesheet string
+		switch sidebar {
+		case "left", "right":
+			stylesheet = "sidebar-" + sidebar + ".css"
+			app.Page.stylesheets[level] =
+				append(app.Page.stylesheets[level], stylesheet)
+		}
+		// responsive.css is the final stylesheet to add
+		if responsive == true {
+			app.Page.stylesheets[level] =
+				append(app.Page.stylesheets[level], "responsive.css")
+		}
 	}
-	// sidebar-right.css or sidebar-left.css must be
-	// penultimate, followed by responsive.css
-	sidebar := app.Page.FrontMatter.Sidebar
-	app.Debug("\t\t\t\tsidebar type: %v", sidebar)
-	var stylesheet string
-	switch sidebar {
-	case "left", "right":
-		stylesheet = "sidebar-" + sidebar + ".css"
-		app.Page.Theme.stylesheetList =
-			append(app.Page.Theme.stylesheetList, stylesheet)
-	}
-	// responsive.css is the final stylesheet to add
-	if responsive == true {
-		app.Debug("\t\t\t\tadding responsive.css")
-		app.Page.Theme.stylesheetList = append(app.Page.Theme.stylesheetList, "responsive.css")
-	}
+	app.Note("\t\t\t\tPage stylesheets: %v", app.Page.stylesheets)
 }
 
 // stylesheetTags() returns the normalized list of
@@ -271,8 +243,6 @@ func (app *App) MdFileToHTML(filename string) ([]byte, error) {
 // paths defined at at startup.
 func (app *App) buildPublishDirs() error {
 	// Some directories are determined at startup, so add those now
-	// xxx
-	//defaults.SitePaths = append(defaults.SitePaths, []string{defaults.CfgDir,"foo"})
 
 	for dir := range app.Site.dirs {
 		// Get the relative path.
@@ -362,7 +332,7 @@ func (app *App) layoutElement(tag string) string {
 	case "nav":
 		l = app.Page.Theme.Nav
 	case "sidebar":
-	  sidebar := app.Page.FrontMatter.Sidebar
+		sidebar := app.Page.FrontMatter.Sidebar
 		if sidebar != "left" && sidebar != "right" {
 			return ""
 		}
@@ -387,7 +357,7 @@ func (app *App) layoutEl(l layoutElement) string {
 	filename := l.File
 
 	// Locate it in the theme directory
-	filename = filepath.Join(app.siteThemesPath(), filename)
+	filename = filepath.Join(app.Site.siteThemesPath, filename)
 
 	// TODO: Should probably return an error
 	// Quit silently if file can't be found
@@ -501,41 +471,54 @@ func (app *App) publishStylesheet(source string, dest string) error {
 // It must be called
 // after normalizeStylesheetList().
 func (app *App) publishStylesheets() error {
-	app.Debug("\t\t\tpublishStylesheets()")
+	app.Print("\t\t\tpublishStylesheets()")
 	var source, dest string
   // xxx
-	//app.Site.publishedThemes[path] = true
+	for name, theme := range app.Page.allThemes {
+    app.Print("\t\t\t\t%#v", name)
+		for _, stylesheet := range theme.Stylesheets {
+	    dest = filepath.Join(app.themePublishDir(name), stylesheet)
+      app.Print("\t\t\t\t\t%v", dest)
 
-	// Go through the list of stylesheets for this theme.
-	// Copy stylesheets for this theme from the local
-	// theme directory to the publish
-	// CSS directory for stylesheets.
-  //for _, level := range app.Page.Theme.levels {
-    //stylesheetsAllLevels 
-    for _, stylesheet := range app.Page.Theme.stylesheetList {
-      source = filepath.Join(app.Page.Theme.sourcePath, stylesheet)
-      //dest = filepath.Join(app.Site.cssPublishPath, stylesheet)
-      dest = filepath.Join(app.themePublishDir(app.Page.FrontMatter.Theme), stylesheet)
-
-      if err := app.publishStylesheet(source, dest); err != nil {
-        return ErrCode("PREVIOUS", err.Error())
-        //return ErrCode("1024", source)
-      }
     }
-  //}
+	}
+
+  return nil
+
+
+
+	for _, level := range app.Page.Theme.levels {
+		for _, stylesheet := range app.Page.Theme.stylesheetsAllLevels[level] {
+			source = app.siteThemesPath(filepath.Join(level, stylesheet))
+			source = filepath.Join(app.Site.siteThemesPath, app.Page.allThemes[level].Name, stylesheet)
+ 			//source = app.Page.allThemes[level].Name
+     //source = filepath.Join(app.Page.Theme.sourcePath
+			dest = filepath.Join(app.themePublishDir(app.Page.allThemes[level].Name), stylesheet)
+			app.Print("\t\t\tsource: %v", source)
+			app.Print("\t\t\tdest: %v", dest)
+			//app.Print("\t\t\t\t%v/%v", level, stylesheet)
+      /*
+			if err := app.publishStylesheet(source, dest); err != nil {
+				return ErrCode("PREVIOUS", err.Error())
+			}
+      */
+		}
+	}
 	return nil
-}// publishStylesheets
+} // publishStylesheets
 
 // publishPageAssets() makes copies of stylesheets,
 // graphics files, and other assets required to
 // publish this page.
 func (app *App) publishPageAssets() error {
 	app.Debug("\t\tpublishPageAssets()")
-	// Take raw list of stylesheets from theme and ensure
-	// they're in the right order, right
+	// Take raw list of stylesheets from theme and obtain
+	// a list of only those that need to be published,
+	// in the correct sequence.
 	app.normalizeStylesheetList()
 	if err := app.publishStylesheets(); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	return nil
+  
 }

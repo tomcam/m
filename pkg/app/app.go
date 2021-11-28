@@ -103,8 +103,8 @@ func NewApp() *App {
 	// TODO: This didn't help newTheme()
 	//app.Site.Starters = make(map[string]Starter)
 	app.Site.publishedThemes = make(map[string]bool)
-  // TODO: Nost sure if this is the right place to initialize
-  //app.Page.Theme.stylesheetsAllLevels = make(map[string][]string)
+	// TODO: Nost sure if this is the right place to initialize
+	//app.Page.Theme.stylesheetsAllLevels = make(map[string][]string)
 	return &app
 }
 
@@ -240,7 +240,9 @@ func (app *App) setPaths() {
 	// Compute the directory location of themes
 	// that get copied over selectively for a
 	// particular site.
-	app.Site.siteThemesPath = filepath.Join(app.Site.publishPath,
+	//app.Site.siteThemesPath = filepath.Join(app.Site.publishPath,
+	//app.Site.siteThemesPath = filepath.Join(app.Site.path,
+	app.Site.siteThemesPath = filepath.Join(app.cfgPath,
 		defaults.SiteThemesDir)
 
 	// Compute the directory location for tags
@@ -361,9 +363,9 @@ func (app *App) frontMatterMustLower(key string) string {
 }
 
 // siteThemesPath() determines the directory the
-// theme file is found in.
-func (app *App) siteThemesPath() string {
-	return filepath.Join(app.Site.siteThemesPath, app.Page.Theme.Name)
+// specified theme file is found in.
+func (app *App) siteThemesPath(theme string) string {
+	return filepath.Join(app.Site.siteThemesPath, theme)
 }
 
 // frontMatterRawToStruct() takes the generic map of front
@@ -371,7 +373,6 @@ func (app *App) siteThemesPath() string {
 // and copies it to the FrontMatter struct.
 // The *Must functions are used because its structure
 // is known so why check for errors.
-// I'll probably regret this but what the hay.
 func (app *App) frontMatterRawToStruct() {
 	for k, v := range app.Page.frontMatterRaw {
 		setFieldMust(&app.Page.FrontMatter, k, v)
@@ -422,7 +423,5 @@ func setFieldMust(obj interface{}, name string, value interface{}) {
 	if structFieldType != val.Type() {
 		return
 	}
-
 	structFieldValue.Set(val)
-	return
 }

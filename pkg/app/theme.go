@@ -28,51 +28,50 @@ type Theme struct {
 	sourcePath string
 
 	// List of all stylesheets needed to publish
-  // this page after being massaged,
+	// this page after being massaged,
 	// for example, to ensure responive.css comes
 	// last among other things, and that only one of
-  // theme-light.css or theme-dark.css are chosen.
-  // This is different from Stylesheets, which is
-  // list of all stylesheets listed in the theme config file.
+	// theme-light.css or theme-dark.css are chosen.
+	// This is different from Stylesheets, which is
+	// list of all stylesheets listed in the theme config file.
 	stylesheetList []string
 
 	// Themes can be nested, e.g. debut/gallery/item.
 	// Each level get its own entry here.
-  // So in the case of debut/gallery/item,
-  // levels[0] is 'debut', levels[1] is 'galery' 
-  // and levels[2] is 'item'
+	// So in the case of debut/gallery/item,
+	// levels[0] is 'debut', levels[1] is 'galery'
+	// and levels[2] is 'item'
 	levels []string
 
-  // List of all levels of nested stylesheets as read in from 
-  // config file. So if the stylesheet is 'debut/gallery', then
-  // you might have something like this:
-  //   stylesheetsAllLevels['debut'] might be ['reset.css', 'fonts.css', 'bind.css', 'sizes.css', 'theme-light.css', 'theme-dark.css', 'layout.css', 'debut.css', 'responsive.css'
-  //   stylesheetsAllLevels['gallery'] could be only  ['gallery.css'] if that's all you want changed
-  stylesheetsAllLevels map[string][]string
+	// List of all levels of nested stylesheets as read in from
+	// config file. So if the stylesheet is 'debut/gallery', then
+	// you might have something like this:
+	//   stylesheetsAllLevels['debut'] might be ['reset.css', 'fonts.css', 'bind.css', 'sizes.css', 'theme-light.css', 'theme-dark.css', 'layout.css', 'debut.css', 'responsive.css'
+	//   stylesheetsAllLevels['gallery'] could be only  ['gallery.css'] if that's all you want changed
+	stylesheetsAllLevels map[string][]string
 
-  // List of all stylesheets mentioned in the theme config
-  // file, whether they are needed to publish this page or
-  // not. So it would contain things like theme-light.css
-  // and theme-dark.css, even though only one is needed.
-  // It doesn't assume stylesheets are in the corrected order
-  // to be published. For example, in the published page
-  // responsive.css needs to come list. It may not
-  // appear list in this list. stylesheetList contains
-  // only the subset of stylsheets needed to publish the page.
-	Stylesheets []string      `yaml:"Stylesheets"`
+	// List of all stylesheets mentioned in the theme config
+	// file, whether they are needed to publish this page or
+	// not. So it would contain things like theme-light.css
+	// and theme-dark.css, even though only one is needed.
+	// It doesn't assume stylesheets are in the corrected order
+	// to be published. For example, in the published page
+	// responsive.css needs to come list. It may not
+	// appear list in this list. stylesheetList contains
+	// only the subset of stylsheets needed to publish the page.
+	Stylesheets []string `yaml:"Stylesheets"`
 
 	// Name is the name of the theme for this page,
 	// e.g. "wide"
-	Name        string        `yaml:"Name"`
-	Branding    string        `yaml:"Branding"`
-	Description string        `yaml:"Description"`
+	Name        string `yaml:"Name"`
+	Branding    string `yaml:"Branding"`
+	Description string `yaml:"Description"`
 
-
-	Nav         layoutElement `yaml:"Nav"`
-	Header      layoutElement `yaml:"Header"`
-	Article     layoutElement `yaml:"Article"`
-	Footer      layoutElement `yaml:"Footer"`
-	Sidebar     layoutElement `yaml:"Sidebar"`
+	Nav     layoutElement `yaml:"Nav"`
+	Header  layoutElement `yaml:"Header"`
+	Article layoutElement `yaml:"Article"`
+	Footer  layoutElement `yaml:"Footer"`
+	Sidebar layoutElement `yaml:"Sidebar"`
 } // type Theme
 
 type layoutElement struct {
@@ -251,11 +250,12 @@ func (app *App) loadThemeLevel(source string, dest string, level int) error {
 	}
 	app.Page.FrontMatter.Sidebar = sidebar
 	app.Note("\t\t\t\tsidebarType(%v)", app.Page.FrontMatter.Sidebar)
-  app.Note("\t\t\t\t%v", app.Page.Theme.levels[level])
-  app.Note("\t\t\t\t\t%v", app.Page.Theme.Stylesheets)
-  app.Page.Theme.stylesheetsAllLevels[app.Page.Theme.levels[level]] = app.Page.Theme.Stylesheets
-  themeName := app.Page.Theme.levels[level]
-  app.Page.allThemes[themeName] = app.Page.Theme
+	app.Note("\t\t\t\t%v", app.Page.Theme.levels[level])
+	app.Note("\t\t\t\t\t%v", app.Page.Theme.Stylesheets)
+	app.Page.Theme.stylesheetsAllLevels[app.Page.Theme.levels[level]] = app.Page.Theme.Stylesheets
+	themeName := app.Page.Theme.levels[level]
+	app.Note("\t\t\t\t\tthemeName:\n%v", themeName)
+	//app.Note("\t\t\t\t\tallThemes:\n%#v", app.Page.allThemes)
 
 	return nil
 } // loadThemeLevel()
@@ -289,21 +289,26 @@ func (app *App) loadTheme() error {
 	// They've all been forced to lowercase, so "Debut/gallery/image"
 	// becomes "debut/gallery/image"
 	app.Page.Theme.levels = strings.Split(fullTheme, "/")
-	theme := ""
-
+	app.Page.Theme.Name = fullTheme
+	//theme := ""
 	// Get directory from which themes will be copied
 	source := filepath.Join(app.Site.factoryThemesPath, defaults.SiteThemesDir)
 
-	// Get directory to which the theme will be copied for this site
-	dest := app.Site.siteThemesPath
-
+  // Start building up the nested theme name, if any. So if it's 
+  // debut/gallery/item, it starts as debut, then is debut/gallery,
+  // then is debut/gallery/item
+  name := ""
 	for level := 0; level < len(app.Page.Theme.levels); level++ {
-		theme = app.Page.Theme.levels[level]
+    theme := app.Page.Theme.levels[level]
+    name = filepath.Join(name, theme)
+	  app.Print("\t\t\tloadTheme name = %v", name)
+
 		// Get the next level of directory and append
 		// to the previous directory
-		source = filepath.Join(source, theme)
+    source = filepath.Join(source, theme)
 		// xxx
-		dest = app.themePublishDir(theme)
+	// Get directory to which the theme will be copied for this site
+    dest := app.themePublishDir(theme)
 		app.Page.Theme.sourcePath = source
 		app.Page.Theme.nestingLevel = level
 		// Finds the theme specified for this page.
@@ -311,6 +316,7 @@ func (app *App) loadTheme() error {
 		if err := app.loadThemeLevel(source, dest, level); err != nil {
 			return ErrCode("PREVIOUS", err.Error())
 		}
+	  app.Page.allThemes[name] = app.Page.Theme
 	}
 	return nil
 } //loadTheme()
@@ -390,12 +396,11 @@ func (app *App) loadThemeConfig(path string, level int) error {
 	// it's  filename
 	theme := strings.ToLower(app.Page.FrontMatter.Theme)
 	app.Page.FrontMatter.Theme = theme
-	app.Page.Theme.Name = theme
 
 	app.Page.Theme.publishPath = path
 	app.Site.publishedThemes[path] = true
-  //app.Page.Theme.slist[app.Page.Theme.levels[level]] = app.Page.Theme.Stylesheets
-  // xxx
+	//app.Page.Theme.slist[app.Page.Theme.levels[level]] = app.Page.Theme.Stylesheets
+	// xxx
 	return nil
 
 }
