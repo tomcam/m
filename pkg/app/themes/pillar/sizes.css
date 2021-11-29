@@ -188,20 +188,10 @@
   --left-margin:10%;
   --right-margin:10%;
 
-/*
- * --------------------------------------------------
- * --text-start and --article-pad-text-end are
- * an attempt to keep this framework indepedent
- * of text direction. Not sure how successful yet.
- * --------------------------------------------------
- */
-
   /* --text-start is a padding value not a margin */
   --text-start:8%; 
 
-  /* Trying to keep this independent of text direction. Otherwise
-   * I'd just call it padding-right. */
-  --article-pad-text-end:5%;
+  --text-end:5%;
 
 
 }
