@@ -111,7 +111,7 @@ article > p,
 		font-size:1.5rem;
 		line-height:2rem;
 		margin-top:1em;
-    padding-right:var(--right-end);
+    padding-right:var(--text-end);
 }
 
 article > ul, article > ol {margin-top:.5em;padding-left:1em;}
