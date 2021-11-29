@@ -1,7 +1,7 @@
 header {width:var(--full-page);} 
 header {margin-top:var(--header-margin-top);margin-bottom:var(--header-margin-bottom);}
 header {padding-top:var(--header-padding-top);padding-bottom:var(--header-padding-bottom);}
-header {padding-left:var(--text-start);padding-right:var(--header-padding-right);}
+header {padding-left:var(--text-start);}
 header {height:var(--header-height);line-height:var(--header-height);}
 header {white-space:nowrap;}
 header {margin-left:var(--left-margin);margin-right:var(--right-margin);}
@@ -28,7 +28,7 @@ aside{padding-left:var(--text-start);}
 footer {width:var(--full-page);} 
 footer {margin-top:var(--footer-margin-top);margin-bottom:var(--footer-margin-bottom);}
 footer {margin-left:var(--left-margin);margin-right:var(--right-margin);}
-footer {padding-left:var(--text-start);padding-right:var(--footer-padding-right);}
+footer {padding-left:var(--text-start);}
 footer {padding-top:var(--footer-padding-top);padding-bottom:var(--footer-padding-bottom);}
 footer {clear:both;}    
  
