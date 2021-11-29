@@ -2,7 +2,7 @@
 :root 
 {
 	--max-article-width:70%;
-	--max-aside-width:25%;
+	--sidebar-width:25%;
 }
 article, aside {float:left}
 

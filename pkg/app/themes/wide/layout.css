@@ -22,7 +22,7 @@ article {margin-left:var(--left-gap);margin-right:var(--right-gap);}
 article {padding-top:var(--article-padding-top);padding-bottom:var(--article-padding-bottom);}
 article {padding-left:var(--left-start);padding-right:var(--right-end);}
 article {clear:left;}
-aside {width:var(--max-aside-width);}
+aside {width:var(--sidebar-width);}
 aside {height:100vh;}
 aside{float:left;}
 footer {width:var(--full-page);}
