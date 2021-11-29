@@ -12,7 +12,7 @@ nav {margin-top:var(--nav-margin-top);margin-bottom:var(--nav-margin-bottom);}
 nav {margin-left:var(--left-margin);margin-right:var(--right-margin);}
 nav {padding-top:var(--nav-padding-top);padding-bottom:var(--nav-padding-bottom);}
 nav {padding-left:var(--text-start);}
-nav {height:var(--nav-height);width:var(--full-page);}
+nav {height:var(--nav-height);}
 nav {overflow:hidden;}
 nav {white-space:nowrap;}
 article {width:var(--article-width);}

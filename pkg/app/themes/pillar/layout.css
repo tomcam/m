@@ -1,4 +1,4 @@
-header {width:var(--header-footer-width);} 
+header {width:var(--full-page);} 
 header {margin-top:var(--header-margin-top);margin-bottom:var(--header-margin-bottom);}
 header {padding-top:var(--header-padding-top);padding-bottom:var(--header-padding-bottom);}
 header {padding-left:var(--text-start);padding-right:var(--header-padding-right);}
@@ -6,13 +6,13 @@ header {height:var(--header-height);line-height:var(--header-height);}
 header {white-space:nowrap;}
 header {margin-left:var(--left-margin);margin-right:var(--right-margin);}
 header {overflow:hidden;}
-nav {width:var(--header-footer-width);} 
+nav {width:var(--full-page);} 
 nav {height:var(--nav-height);line-height:var(--nav-height);}
 nav {margin-top:var(--nav-margin-top);margin-bottom:var(--nav-margin-bottom);}
 nav {margin-left:var(--left-margin);margin-right:var(--right-margin);}
 nav {padding-top:var(--nav-padding-top);padding-bottom:var(--nav-padding-bottom);}
 nav {padding-left:var(--text-start);}
-nav {height:var(--nav-height);width:var(--header-footer-width);}
+nav {height:var(--nav-height);}
 nav {overflow:hidden;}
 nav {white-space:nowrap;}
 article {width:var(--article-width);}                       
@@ -25,7 +25,7 @@ aside {width:var(--sidebar-width);}
 aside {height:100vh;}
 aside{float:left;}
 aside{padding-left:var(--text-start);}
-footer {width:var(--header-footer-width);} 
+footer {width:var(--full-page);} 
 footer {margin-top:var(--footer-margin-top);margin-bottom:var(--footer-margin-bottom);}
 footer {margin-left:var(--left-margin);margin-right:var(--right-margin);}
 footer {padding-left:var(--text-start);padding-right:var(--footer-padding-right);}

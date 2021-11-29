@@ -183,7 +183,7 @@
   /* --header-footer-width should normally be the same
    * as --article-width That's because they 
    * stretch out with botht the article and the sidebar. */
-  --header-footer-width:var(--article-width);
+  --full-page:var(--article-width);
 
   --left-margin:10%;
   --right-margin:10%;
