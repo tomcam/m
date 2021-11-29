@@ -23,10 +23,8 @@
 	--right-margin:0%;
 
 	/* Starting point from left where text (and by default headers) appears */
-	--text-start:10%;
-
-	/* Only for Pillar-style themes: Space between the right edge of the article and the right edge of text */
-	--right-end:5%;
+	--text-start:2.5%;
+	--text-end:2.5%;
 
 	/* Adjusts header height and keeps it vertically centered */
 	--header-height:8rem;

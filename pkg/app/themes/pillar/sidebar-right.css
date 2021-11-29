@@ -1,4 +1,2 @@
 article {width:var(--alt-article-width);margin-right:0;}
-aside{width:var(--sidebar-width);padding-right:var(--sidebar-padding-right);}
-article, aside {float:left}
 

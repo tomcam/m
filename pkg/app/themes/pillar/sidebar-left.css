@@ -1,4 +1,4 @@
-article {float:right;width:var(--alt-article-width);margin-left:0;}
-aside{margin-left:var(--left-margin);padding-right:2em;padding-left:2em;}
+article {width:var(--alt-article-width);margin-left:0;float:right}
+aside {margin-left:var(--left-margin);}
 
 
