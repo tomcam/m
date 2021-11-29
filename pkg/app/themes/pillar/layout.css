@@ -3,7 +3,6 @@ header {margin-top:var(--header-margin-top);margin-bottom:var(--header-margin-bo
 header {padding-top:var(--header-padding-top);padding-bottom:var(--header-padding-bottom);}
 header {padding-left:var(--text-start);padding-right:var(--header-padding-right);}
 header {height:var(--header-height);line-height:var(--header-height);}
-header {width:var(--header-footer-width);}
 header {white-space:nowrap;}
 header {margin-left:var(--left-margin);margin-right:var(--right-margin);}
 header {overflow:hidden;}

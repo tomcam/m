@@ -3,7 +3,7 @@
 
 	/* Maximum characters on a line in an article. 
 	 * Has no effect on the width of the column itself. */
-	--max-article-width:100%; 
+	--article-width:100%; 
 
 	/* Widest the sidebar should be */
 	--sidebar-width:20%;    
