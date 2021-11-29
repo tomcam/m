@@ -1,4 +1,4 @@
-header {width:var(--full-page);}
+header {width:var(--article-width);}
 header {margin-top:var(--header-margin-top);margin-bottom:var(--header-margin-bottom);}
 header {padding-top:var(--header-padding-top);padding-bottom:var(--header-padding-bottom);}
 header {padding-left:var(--text-start);}
@@ -6,7 +6,7 @@ header {height:var(--header-height);line-height:var(--header-height);}
 header {white-space:nowrap;}
 header {margin-left:var(--left-margin);margin-right:var(--right-margin);}
 header {overflow:hidden;}
-nav {width:var(--full-page);}
+nav {width:var(--article-width);}
 nav {height:var(--nav-height);line-height:var(--nav-height);}
 nav {margin-top:var(--nav-margin-top);margin-bottom:var(--nav-margin-bottom);}
 nav {margin-left:var(--left-margin);margin-right:var(--right-margin);}
@@ -25,7 +25,7 @@ aside {width:var(--sidebar-width);}
 aside {height:100vh;}
 aside {float:left;}
 aside {padding-left:var(--text-start);}
-footer {width:var(--full-page);}
+footer {width:var(--article-width);}
 footer {margin-top:var(--footer-margin-top);margin-bottom:var(--footer-margin-bottom);}
 footer {margin-left:var(--left-margin);margin-right:var(--right-margin);}
 footer {padding-left:var(--text-start);}

@@ -9,15 +9,11 @@
 	/* Widest the sidebar should be */
 	--sidebar-width:20%;    
 
-	/* Header, nav, and footer stretch all the way across
-	 * the screen at 100%.  */
-	--full-page:100%; 
-
-	/* Making these larger than 0 and --full-page < 100% creates
+	/* Making these larger than 0 and --article-width < 100% creates
 	 * a pillar theme, or one that doesn't stretch the header
 	 * and footer all the way across the page.
-	 * When --full-page is 100% these should be at 0.
-	 * When --full-page is less than 100% then these
+	 * When --article-width is 100% these should be at 0.
+	 * When --article-width is less than 100% then these
 	 * two should add up to the difference. */
 	--left-margin:0%;
 	--right-margin:0%;

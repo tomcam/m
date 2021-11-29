@@ -184,11 +184,6 @@
    */
   --sidebar-width:20%;
 
-  /* --header-footer-width should normally be the same
-   * as --article-width That's because they 
-   * stretch out with botht the article and the sidebar. */
-  --full-page:var(--article-width);
-
   /* --text-start is a padding value not a margin */
   --text-start:8%; 
 

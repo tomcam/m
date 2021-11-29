@@ -141,7 +141,7 @@ article > img, article > p > img {
 }
 
 
-article > table {width:var(--full-page);margin-top:2rem;margin-bottom:3rem;}
+article > table {width:var(--article-width);margin-top:2rem;margin-bottom:3rem;}
 article > table > td,th {padding:1rem;}
 article > table > tbody > tr > td {padding:1rem;}
 
