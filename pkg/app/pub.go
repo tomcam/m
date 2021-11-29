@@ -178,8 +178,9 @@ func (app *App) addPublishedStylesheet(level string, stylesheet string, responsi
 // collection of filesheets from the theme config file
 // into app.Page.stylesheets.
 func (app *App) normalizeStylesheetList() {
-	app.Debug("\t\t\tnormalizeStylesheetList(): %v", app.Page.Theme.stylesheetsAllLevels)
-	for _, level := range app.Page.Theme.levels {
+	app.Note("\t\t\tnormalizeStylesheetList(): %v", app.Page.Theme.stylesheetsAllLevels)
+	//for _, level := range app.Page.Theme.levels {
+  for level, _ := range app.Page.Theme.stylesheetsAllLevels {
 		responsive := false
 		app.Debug("\t\t\t\t%v", level)
 		for _, stylesheet := range app.Page.Theme.stylesheetsAllLevels[level] {
@@ -208,13 +209,17 @@ func (app *App) normalizeStylesheetList() {
 // stylesheetTags() returns the normalized list of
 // stylesheets as a string.
 func (app *App) stylesheetTags() string {
+	app.Print("\t\t\tstylesheetTags()")
 	var stylesheets strings.Builder
-	for _, stylesheet := range app.Page.Theme.stylesheetList {
-		// TODO: Hinky. This duplicates work done in publishStylesheets()
-		stylesheet = stylesheetTag(filepath.Join(app.themePublishDir(app.Page.FrontMatter.Theme), stylesheet))
-		stylesheets.WriteString(stylesheet)
-	}
-	return stylesheets.String()
+  // xxx
+  for name, _ := range app.Page.stylesheets {
+		for _, stylesheet := range app.Page.stylesheets[name] {
+		  stylesheet = stylesheetTag(filepath.Join(app.themePublishDir(name), stylesheet))
+		  stylesheets.WriteString(stylesheet)
+      //app.Note("\t\t\t\t\t%v", stylesheet)
+		}
+  }
+ 	return stylesheets.String()
 }
 
 // descriptionTag() reads Description from front matter
@@ -477,8 +482,8 @@ func (app *App) publishStylesheets() error {
 	var source, dest string
 	for name, theme := range app.Page.Themes {
 		for _, stylesheet := range theme.Stylesheets {
+			source = filepath.Join(app.siteThemesDir(name), stylesheet)
 			dest = filepath.Join(app.themePublishDir(name), stylesheet)
-			source = filepath.Join(app.siteThemesPath(name), stylesheet)
 			app.Debug("\t\t\t\t\t%v", source)
 			app.Debug("\t\t\t\t\t%v", dest)
 			if err := app.publishStylesheet(source, dest); err != nil {

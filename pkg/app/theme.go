@@ -13,10 +13,6 @@ import (
 )
 
 type Theme struct {
-	// Tracks level of nesting for this theme. So if
-	// the theme is specified as debut/gallery/item,
-	// debut is 0, gallery is 1, and item is 2.
-	nestingLevel int
 
 	// Location of theme files after they have been
 	// copied to the publish directory for themes
@@ -223,10 +219,10 @@ func (app *App) copyTheme(source string, dest string) error {
 // gallery.yaml that's identical to something in debut.yaml
 // overrides whatever is in debut.yaml.
 // Called from loadTheme() once per level.
-//func (app *App) loadThemeLevel(source string, dest string, level int) error {
 func (app *App) loadThemeLevel(source string, dest string, name string) error {
-	app.Print("\t\t\tloadThemeLevel(%v, %v, %v)", source, dest, name)
+	app.Debug("\t\t\tloadThemeLevel(%v, %v, %v)", source, dest, name)
 	// See if this theme has already been published.
+  // TODO: Add test to see if this works
 	_, ok := app.Site.publishedThemes[dest]
 	if !ok {
 		err := app.copyTheme(source, dest)
@@ -236,6 +232,7 @@ func (app *App) loadThemeLevel(source string, dest string, name string) error {
 		}
 	} else {
 		// Theme already loaded
+    app.Print("Good news! %v theme already loaded", dest)
 		return nil
 	}
 	app.Page.Theme.publishPath = dest
@@ -245,13 +242,7 @@ func (app *App) loadThemeLevel(source string, dest string, name string) error {
 	if err := app.loadThemeConfig(source); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
-	sidebar := strings.ToLower(app.Page.FrontMatter.Sidebar)
-	if sidebar != "left" && sidebar != "right" {
-		sidebar = "none"
-	}
-	app.Page.FrontMatter.Sidebar = sidebar
-	app.Note("\t\t\t\tsidebarType(%v)", app.Page.FrontMatter.Sidebar)
-	app.Note("\t\t\t\t\t%v", app.Page.Theme.Stylesheets)
+	//app.Print("\t\t\t\t\t%v", app.Page.Theme.Stylesheets)
 	app.Page.Theme.stylesheetsAllLevels[name] = app.Page.Theme.Stylesheets
 
 	return nil
@@ -279,7 +270,7 @@ func (app *App) loadTheme() error {
 	// can be something "debut" or it can go down deper,
 	// for example, "debut/gallery/item"
 	fullTheme := strings.ToLower(app.Page.FrontMatter.Theme)
-	app.Print("\t\tloadTheme %v", fullTheme)
+	app.Debug("\t\tloadTheme %v", fullTheme)
 	// If it's something like debut/gallery, loop around and load from root to branch.
 	// That way styles are overridden the way
 	// CSS expects.
@@ -289,35 +280,33 @@ func (app *App) loadTheme() error {
 	app.Page.Theme.Name = fullTheme
 	// Get fully qualified directory from which themes will be copied
   // TODO: Isn't there an established way to do this?
-	source := filepath.Join(app.Site.factoryThemesPath, defaults.SiteThemesDir)
+	//source := filepath.Join(app.Site.factoryThemesPath, defaults.SiteThemesDir)
 
 	// Start building up the nested theme name, if any. So if it's
-	// debut/gallery/item, it starts as debut, then is debut/gallery,
-	// then is debut/gallery/item
+	// debut/gallery/item, it starts as debut, then 
+  // it's debut/gallery, then it's debut/gallery/item
   name := ""
 	for level := 0; level < len(app.Page.Theme.levels); level++ {
     name = filepath.Join(name,app.Page.Theme.levels[level])
-    app.Print("\t\t\tName: %v", name)
-		source = filepath.Join(app.Site.factoryThemesPath,defaults.SiteThemesDir,name)
+    source := filepath.Join(app.Site.factoryThemesPath,defaults.SiteThemesDir,name)
     dest := filepath.Join(app.themePublishDir(name))
 		// xxx
 		// Get directory to which the theme will be copied for this site
 		app.Page.Theme.sourcePath = source
-		app.Page.Theme.nestingLevel = level
-    app.Print("\t\t\tSource: %v", source)
-    app.Print("\t\t\tDest:   %v", dest)
+    //app.Print("\t\t\tSource: %v", source)
+    //app.Print("\t\t\tDest:   %v", dest)
 
-    app.Print("\t\t\t\tload theme level: %v", source)
 		// Finds the theme specified for this page.
 		// Copy the required files to the theme publish directory.
-		//if err := app.loadThemeLevel(source, dest, level); err != nil {
 		if err := app.loadThemeLevel(source, dest, name); err != nil {
 			return ErrCode("PREVIOUS", err.Error())
 		}
 		app.Page.Themes[name] = app.Page.Theme
     //name = filepath.Join(name,app.Page.Theme.levels[level])
   }
-  return nil
+  app.Note("\t\t\tapp.Page.Theme.stylesheetsAllLevels: %#v", app.Page.Theme.stylesheetsAllLevels)
+
+ return nil
 
 } //loadTheme()
 

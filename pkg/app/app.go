@@ -362,12 +362,6 @@ func (app *App) frontMatterMustLower(key string) string {
 	return strings.ToLower(app.frontMatterMust(key))
 }
 
-// siteThemesPath() determines the directory the
-// specified theme file is found in.
-func (app *App) siteThemesPath(theme string) string {
-	return filepath.Join(app.Site.siteThemesPath, theme)
-}
-
 // frontMatterRawToStruct() takes the generic map of front
 // matter produced by Goldmark's YAML parser
 // and copies it to the FrontMatter struct.
