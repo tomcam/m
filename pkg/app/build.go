@@ -54,7 +54,6 @@ func (app *App) mdToHTML(source []byte) ([]byte, error) {
 func (app *App) build(path string) error {
 	var err error
 	// Change to specified directory.
-	// Update app.Site.path and build all related directories
 	if err := app.setWorkingDir(path); err != nil {
 		return err
 	}
@@ -64,13 +63,14 @@ func (app *App) build(path string) error {
 	}
 
 	app.Debug("build %s", app.Site.path)
-	// Create minimal subdirectory structure:
-	// Publish directory, site directory,
-	// theme directory, etc.
-	if err = createDirStructure(&defaults.SitePaths); err != nil {
-		return ErrCode("PREVIOUS", err.Error())
-	}
-
+	/*
+		// Create minimal subdirectory structure:
+		// Publish directory, site directory,
+		// theme directory, etc.
+		if err = createDirStructure(&defaults.SitePaths); err != nil {
+			return ErrCode("PREVIOUS", err.Error())
+		}
+	*/
 	// Get a list of all files & directories in the site.
 	if _, err = app.getProjectTree(app.Site.path); err != nil {
 		return ErrCode("0913", app.Site.path)
@@ -81,9 +81,15 @@ func (app *App) build(path string) error {
 		return ErrCode("0302", app.Site.publishPath)
 	}
 
-	// xxx
+	// Create minimal subdirectory structure:
+	// Publish directory, site directory,
+	// theme directory, etc.
+	if err = createDirStructure(&defaults.SitePaths); err != nil {
+		return ErrCode("PREVIOUS", err.Error())
+	}
+
 	if err := app.readSiteConfig(); err != nil {
-		app.Note("siteConfig filename: %v", app.Site.siteFilePath)
+		app.Debug("\tsiteConfig filename: %v", app.Site.siteFilePath)
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	// Build the target publish dir so there should be

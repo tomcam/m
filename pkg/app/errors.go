@@ -66,9 +66,11 @@ var errMsgs = map[string]string{
 	"0116": "Error reading site configuration file",                // filename
 	"0117": "Error unmarshalling YAML for site configuration file", // filename
 	"0132": "Unable to open layout element file",                   // filename
+	"0133": "Couldn't open",                                        // filename
+	"0134": "Error copying file",                                   //
 
 	// 0200	- Error creating file
-	"0209": "Unable to copy file to",                    // filename
+	"0209": "Unable to copy file",                       // Custom message
 	"0217": "Can't publish stylesheet to same location", // filename
 	"0218": "Can't create starter file",                 // filename
 	"0219": "Can't create site file",                    // filename

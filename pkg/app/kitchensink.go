@@ -33,7 +33,10 @@ var (
 		{"index.md",
 			"",
 			embedded{filename: "box-100x100.svg", contents: svgFile},
-			`# Home
+			`---
+Sidebar: left
+---
+# Home
 Go [one level deep](one/index.html), [two levels deep](two/three/index.html)
 * Host: {{ hostname }}
 * Time: {{ ftime }}
@@ -50,6 +53,7 @@ Go [one level deep](one/index.html), [two levels deep](two/three/index.html)
 			`
 ---
 Theme: pillar 
+Sidebar: left
 ---
 # Page 1
 This page is 1 level deep.
@@ -73,7 +77,9 @@ The time is {{ ftime }}
 		{"index.md",
 			"two/three",
 			embedded{filename: "box-100x100.svg", contents: svgFile},
-			`
+			`---
+Sidebar: right
+---
 # Page 2
 This page is 2 levels deep.
 Location of this file: {{ path }}
@@ -128,7 +134,13 @@ func writeSiteFromArray(sitename string, site []description) error {
 // a path to that filename, and the markdown
 // text itself.
 func (app *App) kitchenSink(pathname string) error {
-
+  if pathname == "" {
+    pathname = promptStringDefault("Name of site to create? Any existing site in that location will be deleted without warning", "foo")
+    if pathname == "" {
+      app.Print("No site specified.")
+      return nil
+    }
+  }
 	var err error
 	// Create a project at the specified path
 	err = os.MkdirAll(pathname, defaults.ProjectFilePermissions)

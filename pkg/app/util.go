@@ -38,13 +38,15 @@ func Copy(src, dest string) error {
 	source, err := os.Open(src)
 	if err != nil {
 		// TODO: document error code and add to errors.go
-		return ErrCode("0114", src)
+		return ErrCode("0133", src)
 	}
 	destination, err := os.Create(dest)
 	if err != nil {
 		// TODO: document error code and add to errors.go
-		return ErrCode("0209", dest)
+		msg := fmt.Sprintf("%s to %s", src, dest)
+		return ErrCode("0209", msg)
 	}
+
 	defer destination.Close()
 	_, err = io.Copy(destination, source)
 	if err != nil {
@@ -475,9 +477,9 @@ func userConfigPath() string {
 // If block is true then it simply adds a newline for
 // clarity.
 func wrapTag(tag string, contents string, block bool) string {
-  if contents == "" {
-    return ""
-  }
+	if contents == "" {
+		return ""
+	}
 	var newline string
 	if block {
 		newline = "\n"

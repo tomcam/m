@@ -204,7 +204,7 @@ func (app *App) copyTheme(source string, dest string) error {
 	return nil
 }
 
-// loadThemeLevel() finds the theme specified for this page.
+// loadNestedTheme() finds the theme specified for this page.
 // It then copies the required files to the theme publihs
 // directory.
 //  A Theme designation can something like:
@@ -219,10 +219,10 @@ func (app *App) copyTheme(source string, dest string) error {
 // gallery.yaml that's identical to something in debut.yaml
 // overrides whatever is in debut.yaml.
 // Called from loadTheme() once per level.
-func (app *App) loadThemeLevel(source string, dest string, name string) error {
-	app.Debug("\t\t\tloadThemeLevel(%v, %v, %v)", source, dest, name)
+func (app *App) loadNestedTheme(source string, dest string, name string) error {
+	app.Debug("\t\t\tloadNestedThemeLevel(%v, %v, %v)", source, dest, name)
+
 	// See if this theme has already been published.
-	// TODO: Add test to see if this works
 	_, ok := app.Site.publishedThemes[dest]
 	if !ok {
 		err := app.copyTheme(source, dest)
@@ -235,6 +235,7 @@ func (app *App) loadThemeLevel(source string, dest string, name string) error {
 		app.Print("Good news! %v theme already loaded", dest)
 		return nil
 	}
+
 	app.Page.Theme.publishPath = dest
 
 	// Theme directory is known. Load its config
@@ -246,7 +247,7 @@ func (app *App) loadThemeLevel(source string, dest string, name string) error {
 	app.Page.Theme.stylesheetsAllLevels[name] = app.Page.Theme.Stylesheets
 
 	return nil
-} // loadThemeLevel()
+} // loadNestedTheme()
 
 // loadTheme() finds the theme specified for this page.
 // Load the theme and all its descendants, because
@@ -295,7 +296,7 @@ func (app *App) loadTheme() error {
 
 		// Finds the theme specified for this page.
 		// Copy the required files to the theme publish directory.
-		if err := app.loadThemeLevel(source, dest, name); err != nil {
+		if err := app.loadNestedTheme(source, dest, name); err != nil {
 			return ErrCode("PREVIOUS", err.Error())
 		}
 		app.Page.Themes[name] = app.Page.Theme

@@ -11,6 +11,7 @@ import (
 // publish() copies the specified file to the publish directory,
 // as long as it's not excluded.
 func (app *App) publish(filename string) error {
+	app.Debug("publish(%v)", filename)
 	rel, err := filepath.Rel(app.Site.path, filepath.Dir(filename))
 	if err != nil {
 		// TODO: Perhaps better error context
@@ -19,9 +20,10 @@ func (app *App) publish(filename string) error {
 	app.Page.filePath = filename
 	dest := filepath.Join(app.Site.publishPath, rel, filepath.Base(filename))
 	//app.Debug("\tpublish(%v) to %v", filename, dest)
-	app.Debug("\tpublish(%v) to %v", filename, rel)
+	app.Debug("\tpublish(%v) to %v", filename, dest)
 	err = Copy(filename, dest)
 	if err != nil {
+		//return ErrCode("0134", err.Error(),)
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	return nil
@@ -70,11 +72,11 @@ func (app *App) publishMarkdownFile(filename string) error {
 		return err
 	}
 
-	app.Page.FrontMatter = FrontMatter{}
+	//app.Page.FrontMatter = FrontMatter{}
 	// Convert the FrontMatter map produced by Goldmark into
 	// the Page.FrontMatter struct.
 	app.frontMatterRawToStruct()
-
+  app.Debug("\t\tFrontMatter: %#v", app.Page.FrontMatter)
 	// Theme has been named in Page.FrontMatter so load it.
 	if err = app.loadTheme(); err != nil {
 		// TODO: Handle error properly & and document error code
@@ -270,7 +272,9 @@ func (app *App) MdFileToHTML(filename string) ([]byte, error) {
 // paths defined at at startup.
 // TODO: Not using this yet?
 func (app *App) buildPublishDirs() error {
-	return nil
+	app.Debug("buildPublishDirs()")
+	app.Debug("\tsite directoies:\n", app.Site.dirs)
+	//return nil
 	// Some directories are determined at startup, so add those now
 
 	for dir := range app.Site.dirs {
@@ -282,13 +286,14 @@ func (app *App) buildPublishDirs() error {
 
 		// Join it with the publish directory.
 		full := filepath.Join(app.Site.publishPath, rel)
+		app.Debug("\tmkdir(%v)", full)
 		if err := os.MkdirAll(full, defaults.PublicFilePermissions); err != nil {
-			app.Verbose("buildPublishDirs(): Unable to create path %v", full)
+			app.Verbose("\tUnable to create path %v", full)
 			// TODO: Check error handling here
 			return ErrCode("PREVIOUS", err.Error())
 		}
 	}
-	app.Note("buildPublishDirs(): About to create %v", app.Site.cssPublishPath)
+	app.Debug("\tAbout to create %v", app.Site.cssPublishPath)
 	if err := os.MkdirAll(app.Site.cssPublishPath, defaults.PublicFilePermissions); err != nil {
 		app.QuitError(err)
 	}
@@ -345,8 +350,9 @@ func (app *App) layoutElementToHTML(tag string) (string, error) {
 	case "sidebar":
 		html, err = app.layoutElement(tag)
 		if err != nil {
-			return wrapTag("<aside id='sidebar'>", html, true), nil
+			return "", ErrCode("PREVIOUS", err.Error())
 		}
+	  return wrapTag("<aside id='sidebar'>", html, true), nil
 	}
 	return html, nil
 }
@@ -371,6 +377,7 @@ func (app *App) layoutElement(tag string) (string, error) {
 			return "", nil
 		}
 		l = app.Page.Theme.Sidebar
+
 	case "footer":
 		l = app.Page.Theme.Footer
 	}
