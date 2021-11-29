@@ -4,6 +4,7 @@
 	/* Maximum characters on a line in an article. 
 	 * Has no effect on the width of the column itself. */
 	--article-width:100%; 
+  --alt-article-width:80%;
 
 	/* Widest the sidebar should be */
 	--sidebar-width:20%;    

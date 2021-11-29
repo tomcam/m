@@ -24,6 +24,7 @@ article {clear:left;}
 aside {width:var(--sidebar-width);}
 aside {height:100vh;}
 aside{float:left;}
+aside{padding-left:var(--text-start);}
 footer {width:var(--full-page);}
 footer {margin-top:var(--footer-margin-top);margin-bottom:var(--footer-margin-bottom);}
 footer {margin-left:var(--left-margin);margin-right:var(--right-margin);}
