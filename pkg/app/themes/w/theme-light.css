@@ -114,7 +114,7 @@
 header > ul > li > a,
 header > ul > li > a:link,
 header > ul > li > a:visited
-	{color:var(--header-fg;)}
+	{color:var(--header-fg);}
 header > ul > li > a:hover,
 header > ul > li > a:active
 	{color:var(--header-fg);}
@@ -154,7 +154,7 @@ aside > h5 {color:red;}
 aside > ul {background-color:var(--bg);}
 aside > ul li {border-bottom: 1px solid gray;}
 aside > ul li a:active, aside > ul li a:hover {
-  color:var(--(bg);
+  color:var(--bg);
 }
 
 /* FOOTER */

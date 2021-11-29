@@ -411,6 +411,8 @@ func (app *App) writeSiteConfig(filename string) error {
 func (app *App) setSiteDefaults() {
 	app.Debug("setSiteDefaults()")
 	app.Site.Language = defaults.Language
+  // See https://xyproto.github.io/splash/docs/
+  app.Site.markdownOptions.HighlightStyle = "github"
 	app.Site.HTMLStartFile = defaults.HTMLStartFile
 	app.Site.HTMLEndFile = defaults.HTMLEndFile
 	app.setPaths()
