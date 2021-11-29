@@ -19,7 +19,6 @@ func (app *App) publish(filename string) error {
 	}
 	app.Page.filePath = filename
 	dest := filepath.Join(app.Site.publishPath, rel, filepath.Base(filename))
-	//app.Debug("\tpublish(%v) to %v", filename, dest)
 	app.Debug("\tpublish(%v) to %v", filename, dest)
 	err = Copy(filename, dest)
 	if err != nil {
@@ -112,18 +111,15 @@ func (app *App) publishMarkdownFile(filename string) error {
 		"\"" + app.Site.Language + "\"" + ">" + "\n" +
 		"<meta charset=\"utf-8\">" + "\n" +
 		"<head>" +
+    app.titleTag() +
 		metatag("description", app.descriptionTag()) +
 		metatag("viewport", "width=device-width,initial-scale=1") +
 		metatag("generator", defaults.ProductBranding) +
 		app.stylesheetTags() +
-		//app.header() +
 		header +
-		//app.nav() +
 		nav +
 		app.article(body, "article") +
-		//app.sidebar() +
 		sidebar +
-		//app.footer() +
 		footer +
 		app.Site.HTMLEndFile
 
@@ -246,15 +242,6 @@ func (app *App) stylesheetTags() string {
 	return stylesheets.String()
 }
 
-// descriptionTag() reads Description from front matter
-// and returns as the full
-// TODO: Get as []byte and also soee FullDescriptionTag
-func (app *App) descriptionTag() string {
-	description := app.frontMatterMust("Description")
-	// TODO: Incorporiate logic from FullDescriptionTag
-	return description
-}
-
 // mdFileToHTML converts the markdown file in filename to HTML.
 // It may include optional front matter.
 // TODO: Document that it also runs interps, which perhaps
@@ -299,24 +286,6 @@ func (app *App) buildPublishDirs() error {
 	}
 
 	return nil
-}
-
-// descriptionTag() does everything it can to
-// generate a Description metatag for the file.
-// TODO: Add this my ghetto description function
-func (a *App) FulldescriptionTag() {
-	/*
-		// Best case: user supplied the description in the front matter.
-		if a.FrontMatter.Description != "" {
-			a.Page.descriptionTag = a.FrontMatter.Description
-		} else if a.Site.Branding != "" {
-			a.Page.descriptionTag = a.Site.Branding
-		} else if a.Site.Name != "" {
-			a.Page.descriptionTag = a.Site.Name
-		} else {
-			a.Page.descriptionTag = "Powered by " + defaults.ProductName
-		}
-	*/
 }
 
 // stylesheetTag() produces just that.
@@ -545,3 +514,41 @@ func (app *App) publishPageAssets() error {
 	return nil
 
 }
+
+// descriptionTag() reads Description from front matter and
+// if it can't find any, does whatever it can to come up
+// with a worthwhile description
+func (app *App) descriptionTag() string {
+	description := app.frontMatterMust("Description")
+  if description != "" {
+	  return description
+  }
+
+  // TODO: Create test case for this
+  if app.Site.Branding != "" {
+    return app.Site.Branding 
+  }
+  // TODO: Create test case for this
+  if app.Site.Company.Name != "" {
+    return app.Site.Company.Name
+  }
+  // TODO: Create test case for this
+  if app.Site.name != "" {
+    return app.Site.name
+  }
+		return "Powered by " + defaults.ProductName
+
+}
+
+// titleTag() uses the tag specified in the front matter.
+// If it can't find one it tries other ideas.
+// TODO: Restore inferTitle
+func (app *App) titleTag() string {
+    title := app.Page.FrontMatter.Title
+    if title == "" {
+      title = defaults.ProductName + ": Title needed here, squib"
+    }
+		return wrapTag("<title>", title, true)
+}
+
+

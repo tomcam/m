@@ -1,22 +1,18 @@
 # To do
 
 ## Priority 1: Showstoppers--required for the next release
-* Theme inheritance is failing. If you specify debut/gallery:
-  - Debut theme isn't published, just its directory
-  - Style tags for debut aren't generated
-* Publising a source file is broken. Check old code. Among onter things:
-  - markdown file is getting published
-* Test site is showing the reverse mode
-* Theme that's named as a number doesn't seem to work well
+* mbtest and ilk don't work with nested theme names.
+* DOCUMENT Theme that's named as a number doesn't seem to work well
 * Add idea of post and specfiications like YYYY-MM-DD or y-m-d etc, using dirs or strings as needed . That way mb new post "/blog/avengers review" would expand to something like "/blog/2022/04/21/avengers-review.html" or "/blog/2022-March-1-avengers-review.html" and so on 
 * Mention in docs that one should default to post if one dones't know the difference between page and post
 * Search for "TODO:" in source
 * Documenting themes:
-  Image properties are likely based on adjancent headers, which can be added empty (without text for the header)
+  - Theme name must be alphabetical, starting with a letter (I think) nd they are case sensitive
+  - Image properties are likely based on adjancent headers, which can be added empty (without text for the header)
 * Document how Frontmatter Mode determines whether
 theme-light.css or theme-dark.css is used.
 * Incomplete list of things that need to be handled once I start accepting
-options other than the front matter:
+configuration options from sources other than the front matter:
   - Site.Mode sets default for FrontMatter.Mode
   - Site.Language sets default for front Theme.Language
 * Document all error codes
@@ -26,7 +22,7 @@ options other than the front matter:
 * Look for occurrences of App.Note(), which is only meant for prerelease usage
 * Understand whether I should create empty index.html files for dirs
 that don't have anything else to oprevent directory traversla attacks
-* Search and replqce almost all QuitError calls because
+* Search and replace almost all QuitError calls because
 everything should return errors, displaying to stdout at the last
 possible moment.
 That'll be important for the interactive website version
@@ -55,6 +51,9 @@ a leading . in the name
 source file directory structure remains sacrosanct: a tree of Markdown files
 
 ## Priority 2: Desired but not required for the next release
+* loadNestedTheme() checks to see if a theme has already been loaded, but it fails. I think because when you load
+a new page the list of loaded themes is forgotten. Sould probably just check for the directory, or depending on
+circumstances, a nonempty directory
 * Documente that Inhereted themes still need (empty) sidebar-left.css, sidebar-right.css, theme-light.css, theme-dark.css for the test suite only. Or maybe test suite should generate them.
 * wide theme using to have {{ toc }} in the sidebar. Hve to revivi that aftermaking parser options more detailed
 * The test used to show all features of a theme should include
