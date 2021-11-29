@@ -156,34 +156,34 @@
 
   /*  IMPORTANT
       The following should always add up to 100%: 
-      --article-column-width 
+      --article-width 
       --left-margin
       --right-margin
 
 
       IMPORTANT
-      --alt-article-column-width and  --sidebar-width 
-      should always sum up to --article-column-width 
+      --alt-article-width and  --sidebar-width 
+      should always sum up to --article-width 
    
   */
 
-  /* --article-column-width is width of article plus sidebar */
-  --article-column-width:80%;
+  /* --article-width is width of article plus sidebar */
+  --article-width:80%;
 
-  /* --alt-article-column-width is width of article WITHOUT sidebar 
+  /* --alt-article-width is width of article WITHOUT sidebar 
    * Added to --sidebar-width it should always sum up to
-   * --article-column-width */
-  --alt-article-column-width:60%;
+   * --article-width */
+  --alt-article-width:60%;
 
   /* --sidebar-width must be the same as
-   * --article-column-width MINUS --alt-article-column-width
+   * --article-width MINUS --alt-article-width
    */
   --sidebar-width:20%;
 
   /* --header-footer-width should normally be the same
-   * as --article-column-width That's because they 
+   * as --article-width That's because they 
    * stretch out with botht the article and the sidebar. */
-  --header-footer-width:var(--article-column-width);
+  --header-footer-width:var(--article-width);
 
   --left-margin:10%;
   --right-margin:10%;

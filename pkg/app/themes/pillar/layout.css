@@ -15,7 +15,7 @@ nav {padding-left:var(--text-start);}
 nav {height:var(--nav-height);width:var(--header-footer-width);}
 nav {overflow:hidden;}
 nav {white-space:nowrap;}
-article {width:var(--article-column-width);}                       
+article {width:var(--article-width);}                       
 article {margin-top:var(--article-margin-top);margin-bottom:var(--article-margin-bottom);}
 article {margin-left:var(--left-margin);margin-right:var(--right-margin);}
 article {padding-top:var(--article-padding-top);padding-bottom:var(--article-padding-bottom);}
