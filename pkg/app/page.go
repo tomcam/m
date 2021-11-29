@@ -13,8 +13,8 @@ type Page struct {
 
 	// In case of a nested stylesheet like debut/gallery, this
 	// contains all of them. They are indexed in order, for
-  // example "debut", then "debut/gallery", then "debut/gallery/item"
-	allThemes map[string]Theme
+	// example "debut", then "debut/gallery", then "debut/gallery/item"
+	Themes map[string]Theme
 
 	// Fully qualified filename of this source file
 	filePath string

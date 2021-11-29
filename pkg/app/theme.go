@@ -192,8 +192,8 @@ func (app *App) themeNameToLower() string {
 // copyTheme() Directly a copies all files in a theme from the
 // fully qualified directory source to the fully qualified
 // directory dest.
-func (app *App) copyTheme(source string, dest string, level int) error {
-	app.Note("\t\t\t\tcopyTheme(%v, %v)", source, dest)
+func (app *App) copyTheme(source string, dest string) error {
+	app.Print("\t\t\t\tcopyTheme(%v, %v)", source, dest)
 	err := os.MkdirAll(dest, defaults.PublicFilePermissions)
 	if err != nil {
 		// TODO: Handle error properly & and document error code
@@ -223,12 +223,13 @@ func (app *App) copyTheme(source string, dest string, level int) error {
 // gallery.yaml that's identical to something in debut.yaml
 // overrides whatever is in debut.yaml.
 // Called from loadTheme() once per level.
-func (app *App) loadThemeLevel(source string, dest string, level int) error {
-	app.Note("\t\t\tloadThemeLevel(%v, %v, %v)", source, dest, level)
+//func (app *App) loadThemeLevel(source string, dest string, level int) error {
+func (app *App) loadThemeLevel(source string, dest string, name string) error {
+	app.Print("\t\t\tloadThemeLevel(%v, %v, %v)", source, dest, name)
 	// See if this theme has already been published.
 	_, ok := app.Site.publishedThemes[dest]
 	if !ok {
-		err := app.copyTheme(source, dest, level)
+		err := app.copyTheme(source, dest)
 		// TODO: May want to improve error handling
 		if err != nil {
 			return ErrCode("PREVIOUS", err.Error())
@@ -241,7 +242,7 @@ func (app *App) loadThemeLevel(source string, dest string, level int) error {
 
 	// Theme directory is known. Load its config
 	// (e.g. .yaml) file
-	if err := app.loadThemeConfig(source, level); err != nil {
+	if err := app.loadThemeConfig(source); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	sidebar := strings.ToLower(app.Page.FrontMatter.Sidebar)
@@ -250,12 +251,8 @@ func (app *App) loadThemeLevel(source string, dest string, level int) error {
 	}
 	app.Page.FrontMatter.Sidebar = sidebar
 	app.Note("\t\t\t\tsidebarType(%v)", app.Page.FrontMatter.Sidebar)
-	app.Note("\t\t\t\t%v", app.Page.Theme.levels[level])
 	app.Note("\t\t\t\t\t%v", app.Page.Theme.Stylesheets)
-	app.Page.Theme.stylesheetsAllLevels[app.Page.Theme.levels[level]] = app.Page.Theme.Stylesheets
-	themeName := app.Page.Theme.levels[level]
-	app.Note("\t\t\t\t\tthemeName:\n%v", themeName)
-	//app.Note("\t\t\t\t\tallThemes:\n%#v", app.Page.allThemes)
+	app.Page.Theme.stylesheetsAllLevels[name] = app.Page.Theme.Stylesheets
 
 	return nil
 } // loadThemeLevel()
@@ -282,7 +279,7 @@ func (app *App) loadTheme() error {
 	// can be something "debut" or it can go down deper,
 	// for example, "debut/gallery/item"
 	fullTheme := strings.ToLower(app.Page.FrontMatter.Theme)
-	app.Note("\t\tloadTheme %v", fullTheme)
+	app.Print("\t\tloadTheme %v", fullTheme)
 	// If it's something like debut/gallery, loop around and load from root to branch.
 	// That way styles are overridden the way
 	// CSS expects.
@@ -290,35 +287,38 @@ func (app *App) loadTheme() error {
 	// becomes "debut/gallery/image"
 	app.Page.Theme.levels = strings.Split(fullTheme, "/")
 	app.Page.Theme.Name = fullTheme
-	//theme := ""
-	// Get directory from which themes will be copied
+	// Get fully qualified directory from which themes will be copied
+  // TODO: Isn't there an established way to do this?
 	source := filepath.Join(app.Site.factoryThemesPath, defaults.SiteThemesDir)
 
-  // Start building up the nested theme name, if any. So if it's 
-  // debut/gallery/item, it starts as debut, then is debut/gallery,
-  // then is debut/gallery/item
+	// Start building up the nested theme name, if any. So if it's
+	// debut/gallery/item, it starts as debut, then is debut/gallery,
+	// then is debut/gallery/item
   name := ""
 	for level := 0; level < len(app.Page.Theme.levels); level++ {
-    theme := app.Page.Theme.levels[level]
-    name = filepath.Join(name, theme)
-	  app.Print("\t\t\tloadTheme name = %v", name)
-
-		// Get the next level of directory and append
-		// to the previous directory
-    source = filepath.Join(source, theme)
+    name = filepath.Join(name,app.Page.Theme.levels[level])
+    app.Print("\t\t\tName: %v", name)
+		source = filepath.Join(app.Site.factoryThemesPath,defaults.SiteThemesDir,name)
+    dest := filepath.Join(app.themePublishDir(name))
 		// xxx
-	// Get directory to which the theme will be copied for this site
-    dest := app.themePublishDir(theme)
+		// Get directory to which the theme will be copied for this site
 		app.Page.Theme.sourcePath = source
 		app.Page.Theme.nestingLevel = level
+    app.Print("\t\t\tSource: %v", source)
+    app.Print("\t\t\tDest:   %v", dest)
+
+    app.Print("\t\t\t\tload theme level: %v", source)
 		// Finds the theme specified for this page.
 		// Copy the required files to the theme publish directory.
-		if err := app.loadThemeLevel(source, dest, level); err != nil {
+		//if err := app.loadThemeLevel(source, dest, level); err != nil {
+		if err := app.loadThemeLevel(source, dest, name); err != nil {
 			return ErrCode("PREVIOUS", err.Error())
 		}
-	  app.Page.allThemes[name] = app.Page.Theme
-	}
-	return nil
+		app.Page.Themes[name] = app.Page.Theme
+    //name = filepath.Join(name,app.Page.Theme.levels[level])
+  }
+  return nil
+
 } //loadTheme()
 
 // themePublishDir() returns the name of the directory
@@ -370,13 +370,13 @@ func (app *App) getMode(stylesheet string) string {
 //   /foo/.mb/pub/themes/wide/
 // and it gets converted to:
 //   Users/tom/mb/foo/.mb/pub/themes/wide/wide.yaml
-func (app *App) loadThemeConfig(path string, level int) error {
+func (app *App) loadThemeConfig(path string) error {
 
 	// Add YAML or whatver to the base directory because that's the
 	// base of the filename. Then add the rest to the
 	// filename, which is the theme name + ".yaml"
 	filename := filepath.Join(path, filepath.Base(path)+"."+defaults.ConfigFileDefaultExt)
-	app.Note("\t\t\t\tloadThemeConfig(%v, %v)", filename, level)
+	app.Debug("\t\t\t\tloadThemeConfig(%v)", filename)
 	b, err := ioutil.ReadFile(filename)
 	if err != nil {
 		app.Debug("\t\t\t\tloadThemeConfig() failed to read %v", filename)
@@ -399,8 +399,6 @@ func (app *App) loadThemeConfig(path string, level int) error {
 
 	app.Page.Theme.publishPath = path
 	app.Site.publishedThemes[path] = true
-	//app.Page.Theme.slist[app.Page.Theme.levels[level]] = app.Page.Theme.Stylesheets
-	// xxx
 	return nil
 
 }
@@ -431,7 +429,7 @@ func (app *App) newTheme(from, to string, factory bool) error {
 	if err := app.readSiteConfig(); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
-	app.Debug("newTheme(%v, %v, %v)", from, to, factory)
+	app.Note("newTheme(%v, %v, %v)", from, to, factory)
 	// Get directory from which themes will be copied
 	//source := filepath.Join(app.Site.siteThemesPath, defaults.SiteThemesDir, from)
 	source := filepath.Join(app.Site.siteThemesPath, from)

@@ -61,7 +61,7 @@ func (app *App) publishMarkdownFile(filename string) error {
 	// TODO: this looks like the right place for these initializations
 	app.Page.Theme.stylesheetsAllLevels = make(map[string][]string)
 	app.Page.stylesheets = make(map[string][]string)
-	app.Page.allThemes = make(map[string]Theme)
+	app.Page.Themes = make(map[string]Theme)
 
 	// Convert Markdown file to a byte slice of HTML
 	// Return with YAML front matter in app.Page.frontMatter
@@ -178,13 +178,13 @@ func (app *App) addPublishedStylesheet(level string, stylesheet string, responsi
 // collection of filesheets from the theme config file
 // into app.Page.stylesheets.
 func (app *App) normalizeStylesheetList() {
-	app.Note("\t\t\tnormalizeStylesheetList(): %v", app.Page.Theme.stylesheetsAllLevels)
+	app.Debug("\t\t\tnormalizeStylesheetList(): %v", app.Page.Theme.stylesheetsAllLevels)
 	for _, level := range app.Page.Theme.levels {
 		responsive := false
-		app.Note("\t\t\t\t%v", level)
+		app.Debug("\t\t\t\t%v", level)
 		for _, stylesheet := range app.Page.Theme.stylesheetsAllLevels[level] {
 			app.addPublishedStylesheet(level, stylesheet, &responsive)
-			app.Note("\t\t\t\t\t%v", stylesheet)
+			app.Debug("\t\t\t\t\t%v", stylesheet)
 		}
 		// sidebar-right.css or sidebar-left.css must be
 		// penultimate, followed by responsive.css
@@ -241,7 +241,9 @@ func (app *App) MdFileToHTML(filename string) ([]byte, error) {
 // buildPublishDirs() creates a mirror of the source
 // directory in the publish directory and also adds
 // paths defined at at startup.
+// TODO: Not using this yet?
 func (app *App) buildPublishDirs() error {
+  return nil
 	// Some directories are determined at startup, so add those now
 
 	for dir := range app.Site.dirs {
@@ -259,7 +261,7 @@ func (app *App) buildPublishDirs() error {
 			return ErrCode("PREVIOUS", err.Error())
 		}
 	}
-	//app.Note("About to create %v",app.Site.cssPublishPath)
+  app.Note("buildPublishDirs(): About to create %v",app.Site.cssPublishPath)
 	if err := os.MkdirAll(app.Site.cssPublishPath, defaults.PublicFilePermissions); err != nil {
 		app.QuitError(err)
 	}
@@ -471,37 +473,17 @@ func (app *App) publishStylesheet(source string, dest string) error {
 // It must be called
 // after normalizeStylesheetList().
 func (app *App) publishStylesheets() error {
-	app.Print("\t\t\tpublishStylesheets()")
+	app.Debug("\t\t\tpublishStylesheets()")
 	var source, dest string
-  // xxx
-	for name, theme := range app.Page.allThemes {
-    app.Print("\t\t\t\t%#v", name)
+	for name, theme := range app.Page.Themes {
 		for _, stylesheet := range theme.Stylesheets {
-	    dest = filepath.Join(app.themePublishDir(name), stylesheet)
-      app.Print("\t\t\t\t\t%v", dest)
-
-    }
-	}
-
-  return nil
-
-
-
-	for _, level := range app.Page.Theme.levels {
-		for _, stylesheet := range app.Page.Theme.stylesheetsAllLevels[level] {
-			source = app.siteThemesPath(filepath.Join(level, stylesheet))
-			source = filepath.Join(app.Site.siteThemesPath, app.Page.allThemes[level].Name, stylesheet)
- 			//source = app.Page.allThemes[level].Name
-     //source = filepath.Join(app.Page.Theme.sourcePath
-			dest = filepath.Join(app.themePublishDir(app.Page.allThemes[level].Name), stylesheet)
-			app.Print("\t\t\tsource: %v", source)
-			app.Print("\t\t\tdest: %v", dest)
-			//app.Print("\t\t\t\t%v/%v", level, stylesheet)
-      /*
+			dest = filepath.Join(app.themePublishDir(name), stylesheet)
+			source = filepath.Join(app.siteThemesPath(name), stylesheet)
+			app.Debug("\t\t\t\t\t%v", source)
+			app.Debug("\t\t\t\t\t%v", dest)
 			if err := app.publishStylesheet(source, dest); err != nil {
 				return ErrCode("PREVIOUS", err.Error())
 			}
-      */
 		}
 	}
 	return nil
@@ -520,5 +502,5 @@ func (app *App) publishPageAssets() error {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	return nil
-  
+
 }
