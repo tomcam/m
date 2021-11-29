@@ -65,6 +65,7 @@ var errMsgs = map[string]string{
 	"0115": "Unable to find starter file",                          // filename
 	"0116": "Error reading site configuration file",                // filename
 	"0117": "Error unmarshalling YAML for site configuration file", // filename
+  "0132": "Unable to open layout element file", // filename
 
 	// 0200	- Error creating file
 	"0209": "Unable to copy file to",                    // filename
@@ -99,6 +100,7 @@ var errMsgs = map[string]string{
 	"0920": "Error generating Markdown",
 	"0921": "Unable to build project", // filename
 	"0922": "No project found at",     // message
+	"0924": "Error generating Markdown", // filename
 
 	// 0950 - Something's already there
 	"0951": "Site already exists at", // sitename
@@ -119,6 +121,7 @@ var errMsgs = map[string]string{
 
 	// 1200 - Syntax error!
 	"1204": "Unknown dot value in Go template function ", //
+  "1207": "Unknown error TODO: XXX", 
 }
 
 type ErrMsg struct {

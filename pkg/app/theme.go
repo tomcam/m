@@ -189,7 +189,7 @@ func (app *App) themeNameToLower() string {
 // fully qualified directory source to the fully qualified
 // directory dest.
 func (app *App) copyTheme(source string, dest string) error {
-	app.Print("\t\t\t\tcopyTheme(%v, %v)", source, dest)
+	app.Debug("\t\t\t\tcopyTheme(%v, %v)", source, dest)
 	err := os.MkdirAll(dest, defaults.PublicFilePermissions)
 	if err != nil {
 		// TODO: Handle error properly & and document error code
@@ -278,9 +278,6 @@ func (app *App) loadTheme() error {
 	// becomes "debut/gallery/image"
 	app.Page.Theme.levels = strings.Split(fullTheme, "/")
 	app.Page.Theme.Name = fullTheme
-	// Get fully qualified directory from which themes will be copied
-  // TODO: Isn't there an established way to do this?
-	//source := filepath.Join(app.Site.factoryThemesPath, defaults.SiteThemesDir)
 
 	// Start building up the nested theme name, if any. So if it's
 	// debut/gallery/item, it starts as debut, then 
@@ -288,13 +285,13 @@ func (app *App) loadTheme() error {
   name := ""
 	for level := 0; level < len(app.Page.Theme.levels); level++ {
     name = filepath.Join(name,app.Page.Theme.levels[level])
+	  // Get fully qualified directory from which themes will be copied
+    // TODO: Isn't there an established way to do this?
     source := filepath.Join(app.Site.factoryThemesPath,defaults.SiteThemesDir,name)
     dest := filepath.Join(app.themePublishDir(name))
 		// xxx
 		// Get directory to which the theme will be copied for this site
 		app.Page.Theme.sourcePath = source
-    //app.Print("\t\t\tSource: %v", source)
-    //app.Print("\t\t\tDest:   %v", dest)
 
 		// Finds the theme specified for this page.
 		// Copy the required files to the theme publish directory.
@@ -302,9 +299,7 @@ func (app *App) loadTheme() error {
 			return ErrCode("PREVIOUS", err.Error())
 		}
 		app.Page.Themes[name] = app.Page.Theme
-    //name = filepath.Join(name,app.Page.Theme.levels[level])
   }
-  app.Note("\t\t\tapp.Page.Theme.stylesheetsAllLevels: %#v", app.Page.Theme.stylesheetsAllLevels)
 
  return nil
 
@@ -316,21 +311,6 @@ func (app *App) themePublishDir(theme string) string {
 	//return filepath.Join(app.Site.cssPublishPath, defaults.ThemesDir, app.Page.FrontMatter.Theme)
 	return filepath.Join(app.Site.publishPath, defaults.ThemesDir, theme)
 }
-
-func (app *App) createStylesheetsPublishDir(dest string) error {
-	// If no style sheets don't waste time here
-	app.Note("\t\t\tcreateStylesheetsPublishDir(%v)", dest)
-	// TODO: Track this to make sure it's not repeated unnecessarily
-	//path := filepath.Join(app.Site.cssPublishPath, defaults.ThemesDir, app.Page.FrontMatter.Theme)
-	//path = dest
-	path := app.themePublishDir(app.Page.FrontMatter.Theme)
-	err := os.MkdirAll(path, defaults.PublicFilePermissions)
-	if err != nil {
-		app.Note("\t\t\t\tcreateStyleSheetsPublishDir: couldn't create %v", path)
-		return ErrCode("PREVIOUS", err.Error())
-	}
-	return nil
-} // createStylesheetsPublishDir()
 
 // getMode() checks if the stylesheet is dark or light
 // and adjusts as needed.
