@@ -157,7 +157,12 @@ func (app *App) starterPage(name string, starter Starter) error {
 	// TODO: Stuff these things into a read FrontMatter to get it right
 	description := ""
 	if starter.Description.Tag != "" {
-		title = "Description: " + starter.Description.Tag + "\n"
+		description = "Description: " + starter.Description.Tag + "\n"
+	}
+
+	sidebar := ""
+	if starter.Sidebar != "" {
+		sidebar = "Sidebar: " + starter.Sidebar + "\n"
 	}
 
 	frontMatter :=
@@ -165,7 +170,8 @@ func (app *App) starterPage(name string, starter Starter) error {
 			theme +
 			title +
 			description +
-			"---\n"
+			sidebar +
+    "---\n"
 
 	// See if the filename has a Markdown extension
 	if !isMarkdownFile(filename) {
