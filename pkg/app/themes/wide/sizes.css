@@ -6,7 +6,7 @@
 	--max-article-width:100%; 
 
 	/* Widest the sidebar should be */
-	--max-aside-width:20%;    
+	--sidebar-width:20%;    
 
 	/* Header, nav, and footer stretch all the way across
 	 * the screen at 100%. To create a pillar-style theme
