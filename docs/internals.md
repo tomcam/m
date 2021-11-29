@@ -5,6 +5,8 @@
 * mbtest deletes and recreates the directory .theme-test, and populates
 it with automatically generated pages to test themes visually
 * mbtodo brings up the todo list
+* ffs searches through theme css files
+* ff searches through project files
 
 ## REMINDERS FOR TC:
 * mb filename.md should generate an HTML file in .mb/pub
