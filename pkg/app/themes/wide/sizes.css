@@ -25,7 +25,7 @@
 	--right-gap:0%;
 
 	/* Starting point from left where text (and by default headers) appears */
-	--left-start:10%;
+	--text-start:10%;
 
 	/* Only for Pillar-style themes: Space between the right edge of the article and the right edge of text */
 	--right-end:5%;
