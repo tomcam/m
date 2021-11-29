@@ -5,7 +5,7 @@ import (
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"os"
-  "path/filepath"
+	"path/filepath"
 )
 
 // Site contains configuration specific to each site, such as
@@ -418,11 +418,8 @@ func (app *App) setSiteDefaults() {
 	app.setPaths()
 }
 
-
 // siteThemesDir() determines the directory the
 // specified theme file is found in.
 func (app *App) siteThemesDir(theme string) string {
 	return filepath.Join(app.Site.siteThemesPath, theme)
 }
-
-

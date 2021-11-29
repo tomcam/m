@@ -475,6 +475,9 @@ func userConfigPath() string {
 // If block is true then it simply adds a newline for
 // clarity.
 func wrapTag(tag string, contents string, block bool) string {
+  if contents == "" {
+    return ""
+  }
 	var newline string
 	if block {
 		newline = "\n"

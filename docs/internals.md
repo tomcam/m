@@ -29,7 +29,31 @@ fred.css
 file or a theme in .mb/themes to the generated project directory,
 where everything is expected to have read permissions to the world
 upon publication
+* In the case of nested stylesheets such as "debut/gallery/item", a page stores every level.
+Here's how to load all theme levels in order:
+```
+	var source, dest string
+	for name, theme := range app.Page.Themes {
+		for _, stylesheet := range theme.Stylesheets {
+			dest = filepath.Join(app.themePublishDir(name), stylesheet)
+			source = filepath.Join(app.siteThemesPath(name), stylesheet)
+			if err := app.publishStylesheet(source, dest); err != nil {
+				return ErrCode("PREVIOUS", err.Error())
+			}
+		}
+	}
+```
+* Page.stylesheets has all the massaged stylesheets for all nested themes after pub.go normalizeStyleSheetList()
+* pub.go stylesheetTags shows how to traverse all levels of stylesheets required for publishing on a page:
 
+ var stylesheets strings.Builder         
+  for name, _ := range app.Page.stylesheets {
+    for _, stylesheet := range app.Page.stylesheets[name] {
+      stylesheet = stylesheetTag(filepath.Join(app.themePublishDir(name), stylesheet))
+      stylesheets.WriteString(stylesheet)
+      //app.Note("\t\t\t\t\t%v", stylesheet)
+    }
+  }
 
 # Theme
 * Site.FactoryThemesPath is where the source themes are

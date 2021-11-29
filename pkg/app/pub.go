@@ -88,7 +88,7 @@ func (app *App) publishMarkdownFile(filename string) error {
 	}
 
 	// Write HTML text of the body
-  var header, nav, sidebar, footer string
+	var header, nav, sidebar, footer string
 	if header, err = app.header(); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
@@ -105,7 +105,7 @@ func (app *App) publishMarkdownFile(filename string) error {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 
-  // xxx
+	// xxx
 	fullPage := app.Site.HTMLStartFile +
 		"\"" + app.Site.Language + "\"" + ">" + "\n" +
 		"<meta charset=\"utf-8\">" + "\n" +
@@ -115,14 +115,14 @@ func (app *App) publishMarkdownFile(filename string) error {
 		metatag("generator", defaults.ProductBranding) +
 		app.stylesheetTags() +
 		//app.header() +
-    header +
+		header +
 		//app.nav() +
-    nav +
+		nav +
 		app.article(body, "article") +
 		//app.sidebar() +
-    sidebar +
+		sidebar +
 		//app.footer() +
-    footer + 
+		footer +
 		app.Site.HTMLEndFile
 
 	if err = os.WriteFile(target, []byte(fullPage), defaults.PublicFilePermissions); err != nil {
@@ -202,7 +202,7 @@ func (app *App) addPublishedStylesheet(level string, stylesheet string, responsi
 func (app *App) normalizeStylesheetList() {
 	app.Debug("\t\t\tnormalizeStylesheetList(): %v", app.Page.Theme.stylesheetsAllLevels)
 	//for _, level := range app.Page.Theme.levels {
-  for level, _ := range app.Page.Theme.stylesheetsAllLevels {
+	for level := range app.Page.Theme.stylesheetsAllLevels {
 		responsive := false
 		app.Debug("\t\t\t\t%v", level)
 		for _, stylesheet := range app.Page.Theme.stylesheetsAllLevels[level] {
@@ -230,17 +230,17 @@ func (app *App) normalizeStylesheetList() {
 
 // stylesheetTags() returns the normalized list of
 // stylesheets as a string. Must be called after
-// normalizeStyleSheetList()  
+// normalizeStyleSheetList()
 func (app *App) stylesheetTags() string {
 	app.Debug("\t\t\tstylesheetTags()")
 	var stylesheets strings.Builder
-  for name, _ := range app.Page.stylesheets {
+	for name := range app.Page.stylesheets {
 		for _, stylesheet := range app.Page.stylesheets[name] {
-		  stylesheet = stylesheetTag(filepath.Join(app.themePublishDir(name), stylesheet))
-		  stylesheets.WriteString(stylesheet)
-      app.Debug("\t\t\t\t\t%v", stylesheet)
+			stylesheet = stylesheetTag(filepath.Join(app.themePublishDir(name), stylesheet))
+			stylesheets.WriteString(stylesheet)
+			app.Debug("\t\t\t\t\t%v", stylesheet)
 		}
-  }
+	}
 	return stylesheets.String()
 }
 
@@ -270,7 +270,7 @@ func (app *App) MdFileToHTML(filename string) ([]byte, error) {
 // paths defined at at startup.
 // TODO: Not using this yet?
 func (app *App) buildPublishDirs() error {
-  return nil
+	return nil
 	// Some directories are determined at startup, so add those now
 
 	for dir := range app.Site.dirs {
@@ -288,7 +288,7 @@ func (app *App) buildPublishDirs() error {
 			return ErrCode("PREVIOUS", err.Error())
 		}
 	}
-  app.Note("buildPublishDirs(): About to create %v",app.Site.cssPublishPath)
+	app.Note("buildPublishDirs(): About to create %v", app.Site.cssPublishPath)
 	if err := os.MkdirAll(app.Site.cssPublishPath, defaults.PublicFilePermissions); err != nil {
 		app.QuitError(err)
 	}
@@ -329,21 +329,18 @@ func stylesheetTag(stylesheet string) string {
 // and converts it to HTML. All we know is that it's been specified
 // but we don't know whether's a Markdown file, inline HTML, whatever.
 func (app *App) layoutElementToHTML(tag string) (string, error) {
-  app.Print("layoutElementToHTML(%v)", tag)
-  var err error
+	app.Debug("layoutElementToHTML(%v)", tag)
+	var err error
 	html := ""
 	switch tag {
 	default:
 		html = ""
 	case "header", "nav", "footer":
 		html, err = app.layoutElement(tag)
-    // xxx
 		if err != nil {
-      app.Print("then called layoutElement(%v)", tag)
-      return "", ErrCode("PREVIOUS", err.Error())
-		} else  {
-			return wrapTag("<"+tag+">", html, true), nil
-    }
+			return "", ErrCode("PREVIOUS", err.Error())
+		}
+		return wrapTag("<"+tag+">", html, true), nil
 
 	case "sidebar":
 		html, err = app.layoutElement(tag)
@@ -361,7 +358,7 @@ func (app *App) layoutElementToHTML(tag string) (string, error) {
 // config file, or it may be a file containing either
 // markdown or HTML.
 func (app *App) layoutElement(tag string) (string, error) {
-  app.Note("\tlayoutElement(%v)", tag)
+	app.Debug("\tlayoutElement(%v)", tag)
 	var l layoutElement
 	switch tag {
 	case "header":
@@ -377,25 +374,23 @@ func (app *App) layoutElement(tag string) (string, error) {
 	case "footer":
 		l = app.Page.Theme.Footer
 	}
-  var s string
-  var err error
-  if s, err = app.layoutEl(l); err != nil {
-    //app.Print("\t\tlayoutElement(%v)", tag)
+	var s string
+	var err error
+	if s, err = app.layoutEl(l); err != nil {
 		return "", ErrCode("1207", tag)
-    // xxx
-  }
-  return s, nil
+	}
+	return s, nil
 }
 
 // TODO: Probably want to return a byte slice
 func (app *App) layoutEl(l layoutElement) (string, error) {
-	app.Print("\t\tlayoutEl(%#v)", l)
+	app.Debug("\t\tlayoutEl(%#v)", l)
 	var err error
 	var html []byte
 	// Inline HTML is top priority
 	if l.HTML != "" {
 		html = []byte(l.HTML)
-  }
+	}
 
 	// No inline HTML. Get filename.
 	filename := l.File
@@ -404,7 +399,7 @@ func (app *App) layoutEl(l layoutElement) (string, error) {
 	filename = filepath.Join(app.Site.siteThemesPath, app.Page.Theme.Name, filename)
 
 	if !fileExists(filename) {
-    app.Print("\t\t\tCouldn't find %v", filename)
+		app.Debug("\t\t\tCouldn't find %v", filename)
 		// TODO: Handle error properly & and document error code
 		return "", ErrCode("0132", filename)
 	}
@@ -412,18 +407,13 @@ func (app *App) layoutEl(l layoutElement) (string, error) {
 	// Convert file contents to a byte slice of HTML
 	if isMarkdownFile(filename) {
 		if html, err = app.MdFileToHTML(filename); err != nil {
-      app.Print("\t\t\tCouldn't convert markdown file %v to HTML", filename)
-		  return "", ErrCode("0132", filename)
-		} 
-    //app.Print("\t\t\tSomething something converted to HTML %v", string(html))
-    app.Print("\t\t\tSomething something converted to HTML")
+			return "", ErrCode("0132", filename)
+		}
 		return string(html), nil
-    app.Print("\t\t\tfiletoBuf(%v)", filename)
-		html = fileToBuf(filename)
 	}
 	// Handle the case where pure HTML was specified. First
 	// handle any Go template values.
-  app.Print("\t\t\tPure HTML(%v)", string(html))
+	app.Debug("\t\t\t%v is Pure HTML", filename)
 	return app.interps(filename, string(html)), nil
 }
 
@@ -432,7 +422,6 @@ func (app *App) layoutEl(l layoutElement) (string, error) {
 // You can optionally include an id tag with it.
 func (app *App) article(body []byte, params ...string) string {
 	// interps runs custom Go template functions like ftime
-	//html := app.interps(app.Page.filePath, string(body) + app.sidebar())
 	html := app.interps(app.Page.filePath, string(body))
 	if len(params) < 1 {
 		// Optional ID tag was not supplied
@@ -446,23 +435,23 @@ func (app *App) article(body []byte, params ...string) string {
 }
 
 func (app *App) header() (string, error) {
-  s, err := app.layoutElementToHTML("header")
-  return s, err
+	s, err := app.layoutElementToHTML("header")
+	return s, err
 }
 
 func (app *App) nav() (string, error) {
-	s, err :=  app.layoutElementToHTML("nav")
-  return s, err
+	s, err := app.layoutElementToHTML("nav")
+	return s, err
 }
 
 func (app *App) sidebar() (string, error) {
-  s, err := app.layoutElementToHTML("sidebar")
-  return s, err
+	s, err := app.layoutElementToHTML("sidebar")
+	return s, err
 }
 
 func (app *App) footer() (string, error) {
-  s, err := app.layoutElementToHTML("footer")
-  return s, err
+	s, err := app.layoutElementToHTML("footer")
+	return s, err
 }
 
 // darkMode() returns true if dark mode has been specified

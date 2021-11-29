@@ -222,7 +222,7 @@ func (app *App) copyTheme(source string, dest string) error {
 func (app *App) loadThemeLevel(source string, dest string, name string) error {
 	app.Debug("\t\t\tloadThemeLevel(%v, %v, %v)", source, dest, name)
 	// See if this theme has already been published.
-  // TODO: Add test to see if this works
+	// TODO: Add test to see if this works
 	_, ok := app.Site.publishedThemes[dest]
 	if !ok {
 		err := app.copyTheme(source, dest)
@@ -232,7 +232,7 @@ func (app *App) loadThemeLevel(source string, dest string, name string) error {
 		}
 	} else {
 		// Theme already loaded
-    app.Print("Good news! %v theme already loaded", dest)
+		app.Print("Good news! %v theme already loaded", dest)
 		return nil
 	}
 	app.Page.Theme.publishPath = dest
@@ -280,15 +280,15 @@ func (app *App) loadTheme() error {
 	app.Page.Theme.Name = fullTheme
 
 	// Start building up the nested theme name, if any. So if it's
-	// debut/gallery/item, it starts as debut, then 
-  // it's debut/gallery, then it's debut/gallery/item
-  name := ""
+	// debut/gallery/item, it starts as debut, then
+	// it's debut/gallery, then it's debut/gallery/item
+	name := ""
 	for level := 0; level < len(app.Page.Theme.levels); level++ {
-    name = filepath.Join(name,app.Page.Theme.levels[level])
-	  // Get fully qualified directory from which themes will be copied
-    // TODO: Isn't there an established way to do this?
-    source := filepath.Join(app.Site.factoryThemesPath,defaults.SiteThemesDir,name)
-    dest := filepath.Join(app.themePublishDir(name))
+		name = filepath.Join(name, app.Page.Theme.levels[level])
+		// Get fully qualified directory from which themes will be copied
+		// TODO: Isn't there an established way to do this?
+		source := filepath.Join(app.Site.factoryThemesPath, defaults.SiteThemesDir, name)
+		dest := filepath.Join(app.themePublishDir(name))
 		// xxx
 		// Get directory to which the theme will be copied for this site
 		app.Page.Theme.sourcePath = source
@@ -299,9 +299,9 @@ func (app *App) loadTheme() error {
 			return ErrCode("PREVIOUS", err.Error())
 		}
 		app.Page.Themes[name] = app.Page.Theme
-  }
+	}
 
- return nil
+	return nil
 
 } //loadTheme()
 
