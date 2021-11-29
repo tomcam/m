@@ -1,5 +1,5 @@
 #!/bin/zsh
-OUTFILE="VNU_CHECK.HTML"
+OUTFILE="VNU_CHECK.TMP.HTML"
 # Read the file named on the command line, which is $1, 
 # into the variable $INFILE.
 INFILE=$(<$1)
@@ -14,4 +14,5 @@ EOM
 echo "$CONTENTS" > $OUTFILE
 echo $1:
 vnu $OUTFILE
+rm $OUTFILE
 
