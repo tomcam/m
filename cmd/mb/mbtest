@@ -10,11 +10,11 @@ set -e
 
 # Create an array of theme names
 declare -a themes=(
-	#'wide'
-  #'debut'
-  'debut/gallery'
-	#'pillar'
-  #'tradesman'
+	'wide'
+  'debut'
+  #'debut/gallery'
+	'pillar'
+  'tradesman'
 	)
 
 # Create an array of files required for this test
@@ -60,6 +60,7 @@ done
 
 
 mb new site --starters homerepair.yaml --site mbsite.yaml  $DIR
+#mb new site  --site mbsite.yaml  $DIR
 cp mbtest.inc $DIR
 #
 # Create temporary filenames

@@ -15,9 +15,8 @@ cp eastside-emerald-64x64.png $DIR
 declare -a themes=(
   'w'
   'debut'
-#  'debut/gallery'
-	'wide'
-	'pillar'
+  'wide'
+  'pillar'
   'tradesman'
 	)
 rawthemes=$themes
