@@ -150,11 +150,11 @@ cat $LINKSECTION >> $INDEX
 #mb build  $DIR 
 mb build  $DIR 
 ls -lat $DIR
-echo "Press a key to view the site"
-read answer
+#echo "Press a key to view the site"
+#read answer
 
 open $DIR/.mb/pub/index.html
-ls -lat $DIR
+#ls -lat $DIR
 echo "Created theme tests in ${DIR}"
 exit 0
 
