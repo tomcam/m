@@ -313,14 +313,14 @@ func (app *App) createSite(pathname string) error {
 	// Get factory themes and copy to project. They will then
 	// be copied on demand to the publish directory as needed.
 	// This makes it easy to find themes and modify theme.
-	app.Debug("About to copy factory themes")
+	app.Debug("\t\tAbout to copy factory themes")
 	//if err = app.copyFactoryThemes(); err != nil {
 	err = app.copyFactoryThemes()
-	app.Debug("\terr after calling app.copyFactoryThemes(): %v", err)
+	app.Debug("\t\t\tError after calling app.copyFactoryThemes(): %v", err)
 	if err != nil {
 		// TODO: Improve error handling?
 		app.Note("TODO: DUDE!!!")
-		app.Debug("\t\tcopyFactoryThemes() failed during createSite()")
+		app.Debug("\t\t\tcopyFactoryThemes() failed during createSite()")
 		return ErrCode("PREVIOUS", err.Error())
 
 	}
@@ -328,13 +328,12 @@ func (app *App) createSite(pathname string) error {
 	filename := ""
 	// If user supplied a site configuration file, use it
 	if app.Flags.Site != "" {
-		app.Note("Use site file %v", app.Flags.Site)
-		//app.Site.siteFilePath = app.Flags.Site
+		app.Debug("\t\tUse site file %v", app.Flags.Site)
 		filename = app.Flags.Site
 	}
 	// TODO: Populate
 	if err := app.writeSiteConfig(filename); err != nil {
-		app.Note("error after app.writeSiteConfig(%v)", filename)
+		app.Debug("\t\tError after app.writeSiteConfig(%v)", filename)
 		// TODO: Handle error properly & and document error code
 		//return ErrCode("0220", err.Error(), filename)
 		return ErrCode("PREVIOUS", err.Error(), filename)
@@ -342,7 +341,6 @@ func (app *App) createSite(pathname string) error {
 
 	// Generate stub pages/sections if specified
 	if app.Flags.Starters != "" {
-		//if err := app.generate(filepath.Join(currDir(),app.Flags.Starters)); err != nil {
 		if err := app.generate(app.Flags.Starters); err != nil {
 			return ErrCode("PREVIOUS", err.Error())
 		}

@@ -7,13 +7,10 @@ import (
 	"github.com/spf13/viper"
 	"github.com/tomcam/m/pkg/default"
 	"github.com/yuin/goldmark"
-	"io"
 	"os"
 	"path/filepath"
 	"reflect"
 	"strings"
-	//"sync"
-	//"context"
 	"github.com/yuin/goldmark/parser"
 )
 
@@ -265,37 +262,6 @@ func (app *App) setWorkingDir(dir string) error {
 	app.Site.path = currDir()
 	app.setSiteDefaults()
 	return nil
-}
-
-// CopyMust() copies a single file named source to
-// the file named in dest but doesn't return an
-// error if something goes wrong.
-// If a file got copied, returns its
-// destination name
-func (app *App) copyMust(src, dest string) string {
-	sourceFileStat, err := os.Stat(src)
-	if err != nil {
-		return ""
-	}
-
-	if !sourceFileStat.Mode().IsRegular() {
-		return ""
-	}
-	source, err := os.Open(src)
-	if err != nil {
-		return ""
-	}
-	destination, err := os.Create(dest)
-	if err != nil {
-		return ""
-	}
-	defer destination.Close()
-	_, err = io.Copy(destination, source)
-	if err != nil {
-		return ""
-	}
-	// Success
-	return dest
 }
 
 // cfgLower() reads a string value specified in

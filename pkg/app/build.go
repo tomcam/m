@@ -56,7 +56,7 @@ func (app *App) build(path string) error {
 	// Change to specified directory.
 	// Update app.Site.path and build all related directories
 	if err := app.setWorkingDir(path); err != nil {
-		return err
+		return ErrCode("1107", path)
 	}
 
 	if !isProject(app.Site.path) {
