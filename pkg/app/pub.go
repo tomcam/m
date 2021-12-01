@@ -87,6 +87,7 @@ func (app *App) publishMarkdownFile(filename string) error {
 		"\"" + app.Site.Language + "\"" + ">" + "\n" +
 		"<meta charset=\"utf-8\">" + "\n" +
 		"<head>" +
+		app.titleTag() +
 		metatag("description", app.descriptionTag()) +
 		metatag("viewport", "width=device-width,initial-scale=1") +
 		metatag("generator", defaults.ProductBranding) +
@@ -191,10 +192,28 @@ func (app *App) stylesheetTags() string {
 // descriptionTag() reads Description from front matter
 // and returns as the full
 // TODO: Get as []byte and also soee FullDescriptionTag
+// descriptionTag() reads Description from front matter and
+// if it can't find any, does whatever it can to come up
+// with a worthwhile description
 func (app *App) descriptionTag() string {
 	description := app.frontMatterMust("Description")
-	// TODO: Incorporiate logic from FullDescriptionTag
-	return description
+	if description != "" {
+		return description
+	}
+
+	// TODO: Create test case for this
+	if app.Site.Branding != "" {
+		return app.Site.Branding
+	}
+	// TODO: Create test case for this
+	if app.Site.Company.Name != "" {
+		return app.Site.Company.Name
+	}
+	// TODO: Create test case for this
+	if app.Site.name != "" {
+		return app.Site.name
+	}
+	return "Powered by " + defaults.ProductName
 }
 
 // mdFileToHTML converts the markdown file in filename to HTML.
@@ -480,3 +499,15 @@ func (app *App) publishPageAssets() error {
 	}
 	return nil
 }
+
+// titleTag() uses the tag specified in the front matter.
+// If it can't find one it tries other ideas.
+// TODO: Restore inferTitle
+func (app *App) titleTag() string {
+	title := app.Page.FrontMatter.Title
+	if title == "" {
+		title = defaults.ProductName + ": Title needed here, squib"
+	}
+	return wrapTag("<title>", title, true)
+}
+

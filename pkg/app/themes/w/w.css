@@ -11,6 +11,8 @@ header {overflow:hidden;}
  */
 header > p {font-size:var(--branding-height);font-weight:bold;display:inline;} 
 
+/* Special treatment if use emphasis */
+header > ul > li > a > em {font-style:normal;position:relative;top:-.25rem;left:-.5rem;color:red;}
  
 /*
  * --------------------------------------------------
@@ -43,23 +45,24 @@ header > ul > li:first-child > a {font-size:var(--branding-height);font-weight:b
 /*  NAVBAR                      */
 /* ******************************/
 
+nav {font-weight:bold;}
 nav > p {line-height:var(--nav-height);}
 nav > img {display:inline;}
 
 nav > ul > li {list-style-type:none;} 
 nav > ul > li > a,
 nav > ul > li > a:link,
-nav > ul > li > a:visited {display:inline;text-decoration:none;;} 
+nav > ul > li > a:visited {display:inline;text-decoration:none;} 
 /* For accessibility purposes show visual distinction when hovering or active */
 nav > ul > li > a:hover,
-nav > ul > li > a:active {text-decoration:underline;} 
+nav > ul > li > a:active {text-decoration:underline;padding-right:2em;} 
 
 nav > p > a,
 nav > p > a:link,
-nav > p > a:visited {display:inline;text-decoration:none;;} 
+nav > p > a:visited {display:inline;text-decoration:none;padding-right:2em;} 
 /* For accessibility purposes show visual distinction when hovering or active */
 nav > p > a:hover,
-nav > p > a:active {text-decoration:underline;} 
+nav > p > a:active {text-decoration:underline;padding-right:2em;} 
 
 
 /* ******************************/
@@ -69,6 +72,8 @@ nav > p > a:active {text-decoration:underline;}
 table > thead > tr > th  {margin-top:2rem;}
 blockquote {font-style:italic;margin: 2rem 2rem 2rem 2rem;}
 
+
+article > ul {list-style-position:inside;}
 article > p, 
   article > ul, 
   article > ol, 
@@ -87,7 +92,10 @@ article > p > code, article > code, article > pre, article > pre > code {
 		font-family:var(--code);
 		font-size:var(--p-font-size);
 		overflow:auto;
-		}
+}
+
+article > h1, article > h2, article > h3 {font-weight:700;)
+
 
 /* ******************************/
 /*  SIDEBAR (ASIDE TAG)         */

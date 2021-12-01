@@ -109,17 +109,17 @@ var errMsgs = map[string]string{
 	"1004": "Trying to publish nonexistent stylesheet",
 	"1005": "No publish directory specified for",
 	"1013": "Please specify a site name",
-	"1024": "Couldn't find stylesheet",        //filename
-	"1025": "This isn't a project directory:", // directoryname
-	"1026": "This isn't a project directory:", // directoryname
-  "1027": "File specified in theme configuration file is missing:", // filename
+	"1024": "Couldn't find stylesheet",                               //filename
+	"1025": "This isn't a project directory:",                        // directoryname
+	"1026": "This isn't a project directory:",                        // directoryname
+	"1027": "File specified in theme configuration file is missing:", // filename
 
-  //	1100	- Problem changing to a directory
-	"1101": "Unable to",                       // chdir to bad dir name
-	"1102": "Unable to",                       // chdir to bad dir name during showInfo()
-	"1103": "Unable to",                       // chdir to bad dir name during createSite()
+	//	1100	- Problem changing to a directory
+	"1101": "Unable to", // chdir to bad dir name
+	"1102": "Unable to", // chdir to bad dir name during showInfo()
+	"1103": "Unable to", // chdir to bad dir name during createSite()
 	"1104": "Missing name for starter page",
-  "1107": "Can't change to site directory",   // project name
+	"1107": "Can't change to site directory", // project name
 
 	// 1200 - Syntax error!
 	"1204": "Unknown dot value in Go template function ", //

@@ -7,11 +7,11 @@ import (
 	"github.com/spf13/viper"
 	"github.com/tomcam/m/pkg/default"
 	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/parser"
 	"os"
 	"path/filepath"
 	"reflect"
 	"strings"
-	"github.com/yuin/goldmark/parser"
 )
 
 // App contains all runtime options required to convert a markdown

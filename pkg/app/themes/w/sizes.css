@@ -88,7 +88,7 @@
 
   /* Same as article > p {font-size}, p {padding}, p {margin} */
   --p-font-size:1rem;
-  --p-line-height:2.5rem;
+  --p-line-height:1.5rem;
   --p-padding-top:.5rem;
   --p-padding-bottom:0rem;
   --p-padding-right:var(--text-end);
@@ -112,18 +112,18 @@
 
   /* Same as article > h2 {font-size}, h2 {padding}, h2 {margin} */
   --h2-font-size:1.5rem;
-  --h2-margin-top:1.5rem;
+  --h2-margin-top:.5rem;
   --h2-margin-bottom:0rem;
   --h2-margin-right:0rem;
   --h2-margin-left:0rem;
-  --h2-padding-top:1.5em;
+  --h2-padding-top:.5em;
   --h2-padding-bottom:0rem;
   --h2-padding-right:0rem;
   --h2-padding-left:0rem;
 
 
   /* Same as article > h3 {font-size}, h3 {padding}, h3 {margin} */
-  --h3-font-size:1.5rem;
+  --h3-font-size:1rem;
   --h3-margin-top:1.5rem;
   --h3-margin-bottom:0rem;
   --h2-margin-right:0rem;
@@ -251,17 +251,17 @@
   /* --alt-article-width is width of article WITHOUT sidebar 
    * Added to --sidebar-width it should always sum up to
    * --article-width */
-  --alt-article-width:80%;
+  --alt-article-width:70%;
 
   /* --sidebar-width must be the same as
    * --article-width MINUS --alt-article-width
    */
-  --sidebar-width:20%;
+  --sidebar-width:30%;
 
   /* --text-start is a padding value not a margin */
   --text-start:5%; 
 
-  --text-end:0%;
+  --text-end:10%;
 
 }
 
