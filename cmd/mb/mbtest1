@@ -76,14 +76,49 @@ Theme: ${theme}
 Sidebar: ${sidebar}
 Mode: ${mode}
 ---
-# Auto-generated test for ${theme} theme
+# About Metabuzz
 
-Here's what we know about the test.
 * Theme is **${theme}**. According to frontmatter it's **{{ .Page.FrontMatter.Theme }}**
 * Sidebar **${sidebar}**. According to frontmatter it's **{{ .Page.FrontMatter.Sidebar }}** 
 * Mode should be **${mode}**
 
-### Wait'll they get a load of this
+Metabuzz is the best static site generator for creators who want to 
+start a documentation project with no special knowledge up front.
+There is absolutely no configuration or setup required. 
+
+
+## How it works
+
+You install a single
+executable file, create pages with a text editor, and Metabuzz does the rest.
+It's designed so that you don't need to know anything but how to write in Markdown
+format--and even that's optional. You can start knowing nothing at all about Markdown. 
+When you need to learn more, it comes tutorials designed to get you
+going at any level.
+Just install it, run **mb new site** and enter the name of a folder to create when prompted.
+(You can also give a full path to the on the command line, for example, 
+
+
+
+**mb new site ~/code/mysite**.)
+
+## Features for agencies
+
+Metabuzz produces beautiful, SEO-enabled informational sites by starting
+with words, then letting you "reskin" the site using themes.
+
+* All sites require certain pages to start with. For example, you'd typically want an
+About page, a Terms of Service page, and  Privacy Policy page. *Starter files* let you describe these
+pages in a simple YAML format. That means when you create a new site you can generate starter versions
+of all those pages too. It's also good for book series or periodicals where you frequently
+create new publications with a standard format.
+* The included themes are all mobile-friendly: try them yourself at Google's [Mobile-Friendly Test](https://search.google.com/test/mobile-friendly) site.
+* The factory themes are built using standard CSS and work with browsers going back to 2016. All factory themes support
+a sidebar (either right or left), light mode and dark mode, a header section, a nav section, and a footer.
+
+
+## Wait'll they get a load of this
+
 ![Logo](eastside-emerald-64x64.png)
 **Note**
 
@@ -91,8 +126,9 @@ Here's what we know about the test.
 * Check in all browsers
 
 #### Code example
+
 ````
-print "hello, world."
+writeln("hello, world.")
 ````
 
 | Page element   | HTML tag        |
