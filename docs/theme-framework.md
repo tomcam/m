@@ -1,6 +1,45 @@
 # Metabuzz theme framework 
 
 ## TODO: Things to cover
+* Here's how I handeld TOFC a whie back.
+
+```
+aside > ul {text-align:right;margin-right:1rem;line-height:1.5em;}
+aside > ul > li {list-style-type:none;} 
+aside > ul > li > a,
+aside > ul > li > a:link,
+aside > ul > li > a:visited {text-decoration:none;font-size:1rem;line-height:2.5rem;font-weight:normal;margin-right:1em;} 
+aside > ul > li > a:hover,
+aside > ul > li > a:active {font-weight:bold;} 
+aside > p > img {margin-top:1rem;width:100%;padding:0;}
+aside > p {font-size:1.2rem;margin-bottom:0em;}
+
+/*
+ * --------------------------------------------------
+ * Sidebar unordered list shows as boxes, without
+ * indentation--it's for table of contents
+ * --------------------------------------------------
+ */
+aside > ul {
+  margin-right:1em;
+  border-collapse:collapse;
+}
+
+aside > ul li {
+  /* Border bottom stretches across column at all levels */
+  margin-left:0;
+  list-style-type:none;
+}
+
+aside > ul li a {
+  padding-left:.5em;padding-right:.5em;
+  text-decoration:none;
+  line-height:1em;
+}
+```
+
+
+
 * May want to mention in wide themes that aside uses text-start for padding with left sidebar but --sidebar-paddingetc for right. 
 ```
 aside {padding-right:var(--sidebar-padding-right);padding-left:var(--sidebar-padding-left);}
