@@ -376,7 +376,7 @@ func (app *App) readSiteConfig() error {
 // writeSiteConfig() writes the contents of App.Site
 // to .mb/site.yaml.
 func (app *App) writeSiteConfig(filename string) error {
-	app.Note("writeSiteConfig(%v)", filename)
+	app.Debug("writeSiteConfig(%v)", filename)
 	// Populate the site data structure with
 	// default values.
 	app.setSiteDefaults()
