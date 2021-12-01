@@ -73,7 +73,7 @@ table > thead > tr > th  {margin-top:2rem;}
 blockquote {font-style:italic;margin: 2rem 2rem 2rem 2rem;}
 
 
-article > ul {list-style-position:inside;}
+article > ul {padding-left:1rem;}
 article > p, 
   article > ul, 
   article > ol, 
@@ -86,7 +86,7 @@ article > p,
     line-height:var(--p-line-height);
 }
 
-article > p > img {display:block;}
+article > p > img {display:block;width:var(--article-width);}
 /* Override font rule for code */
 article > p > code, article > code, article > pre, article > pre > code {
 		font-family:var(--code);
