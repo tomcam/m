@@ -61,7 +61,7 @@ type layoutElement struct {
 // from the themes subdirectory of this package into
 // the executable. That subdirectory contains all
 // the factory themes--the base set that always
-// gets distributed with Metabuz.
+// gets distributed with Metabuzz.
 // So have the subdirectory available from within this
 // subdirectory at compile time. Then you can run the finished
 // executable anywhere and it will display the
