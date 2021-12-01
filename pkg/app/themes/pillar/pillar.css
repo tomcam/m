@@ -192,9 +192,8 @@ article > table > tbody > tr > td {padding:1rem;}
 /*  SIDEBAR (ASIDE TAG)         */
 /* ******************************/
 
-aside, aside > p, aside > h2, aside > h3, aside > h4 {margin-left:0;padding-left:0;padding-right:0rem;} 
-aside > p {margin-bottom:1rem;font-size:.8rem;padding-left:.75em;padding-right:.75em;}
-aside > h2 {margin:0;padding:1rem;font-size:1.75rem;font-weight:bold;white-space:nowrap;}
+aside > p {margin-bottom:1rem;font-size:.8rem;padding-left:var(--text-start);padding-right:.75em;}
+aside > h2 {padding:1rem;font-size:1.75rem;font-weight:bold;white-space:nowrap;}
 aside > h3 {font-size:1em;font-weight:bold;padding-bottom:1rem;}
 aside > h5 {text-align:center;font-weight:bold;margin-left:0;padding-left:0;padding-top:2rem;padding-bottom:1rem;}
 aside > h6  {font-weight:normal;font-style:italic;}

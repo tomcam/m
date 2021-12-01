@@ -1,10 +1,10 @@
 header {width:var(--article-width);}
 header {margin-top:var(--header-margin-top);margin-bottom:var(--header-margin-bottom);}
+header {margin-left:var(--left-margin);margin-right:var(--right-margin);}
 header {padding-top:var(--header-padding-top);padding-bottom:var(--header-padding-bottom);}
 header {padding-left:var(--text-start);}
 header {height:var(--header-height);line-height:var(--header-height);}
 header {white-space:nowrap;}
-header {margin-left:var(--left-margin);margin-right:var(--right-margin);}
 header {overflow:hidden;}
 nav {width:var(--article-width);}
 nav {height:var(--nav-height);line-height:var(--nav-height);}
@@ -24,7 +24,7 @@ article {float:left;clear:left;}
 aside {width:var(--sidebar-width);}
 aside {height:100vh;}
 aside {float:left;}
-aside {padding-left:var(--sidebar-padding-left);}
+aside {padding-left:var(--text-start);}
 footer {width:var(--article-width);}
 footer {margin-top:var(--footer-margin-top);margin-bottom:var(--footer-margin-bottom);}
 footer {margin-left:var(--left-margin);margin-right:var(--right-margin);}

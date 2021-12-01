@@ -1,6 +1,10 @@
 # Metabuzz theme framework 
 
 ## TODO: Things to cover
+* May want to mention in wide themes that aside uses text-start for padding with left sidebar but --sidebar-paddingetc for right. 
+```
+aside {padding-right:var(--sidebar-padding-right);padding-left:var(--sidebar-padding-left);}
+```
 * Publishing themes is different from copying.
 Publishing means copying out all assets necessary
 to generating an HTML page for publication. That means

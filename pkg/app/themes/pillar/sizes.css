@@ -115,8 +115,8 @@
    * ******************************/
 
   --sidebar-padding-top:4rem;
-  --sidebar-padding-left:3em;
-  --sidebar-padding-right:1em;
+  --sidebar-padding-left:1rem;
+  --sidebar-padding-right:1rem;
 
 
   /* ******************************
@@ -185,7 +185,7 @@
   --sidebar-width:20%;
 
   /* --text-start is a padding value not a margin */
-  --text-start:8%; 
+  --text-start:3%; 
 
   --text-end:5%;
 

@@ -4,7 +4,7 @@ header > p {color:var(--header-fg);background-color:var(--header-bg);}
 nav {color:var(--nav-fg);background-color:var(--nav-bg);}
 article {color:var(--article-fg);background-color:var(--article-bg);} 
 article {a:var(--article-a);} 
-aside {color:var(--sidebar-fg);background-color:var(--sidebar-bg);}
+aside {color:var(--sidebar-fg);background-color:var(--sidebar-bg);padding-left:var(--text-start);}
 footer {color:var(--footer-fg);background-color:var(--footer-bg);}
 article > h1{color:var(--article-h1-fg);background-color:var(--article-h1-bg);} 
 article > h2{color:var(--article-h2-fg);background-color:var(--article-h2-bg);}

@@ -1,2 +1,4 @@
 article {width:var(--alt-article-width);margin-right:0;}
+/*aside {padding-right:var(--sidebar-padding-right);padding-left:1rem;margin-left:0;}*/
+aside {padding-right:var(--sidebar-padding-right);margin-left:0;}
 
