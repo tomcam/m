@@ -112,6 +112,7 @@ var errMsgs = map[string]string{
 	"1024": "Couldn't find stylesheet",        //filename
 	"1025": "This isn't a project directory:", // directoryname
 	"1026": "This isn't a project directory:", // directoryname
+  "1027": "File specified in theme configuration file is missing:", // filename
 
   //	1100	- Problem changing to a directory
 	"1101": "Unable to",                       // chdir to bad dir name

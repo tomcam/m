@@ -13,6 +13,7 @@
         by the theme. You can just replace it with
         whatever text or Markdown you please.
 */ -}}
+
 {{- if .Site.Company.Name -}}
 {{- $name := .Site.Company.Name -}}
 * [{{ $name -}}](/)
@@ -23,9 +24,8 @@
 {{- $name := .Page.Theme.Branding -}}
 * [{{ $name -}}](/)
 {{- else }}
-* [{{- .Page.FrontMatter.Theme -}}](/)
+* [Metabuzz](/)
 {{- end }} 
-* [Events](/)
-* [Podcast](/)
-* [Subscribe](/)
+* [About](/)
+* [Contact](/)
 

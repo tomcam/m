@@ -434,7 +434,8 @@ func (app *App) publishStylesheet(source string, dest string) error {
 	}
 	err := Copy(source, dest)
 	if err != nil {
-		return ErrCode("PREVIOUS", err.Error())
+		//return ErrCode("PREVIOUS", err.Error(), "Publishing stylesheet")
+		return ErrCode("1027", source)
 	}
 	// Keep list of stylesheets that got published
 	app.Page.stylesheets = append(app.Page.stylesheets, dest)

@@ -29,9 +29,9 @@
     --a-active:var(--a);
 
     
-    /* Secondary foreground (text) and background colors for accents. */
-    --trim-fg:darkblue; 
-    --trim-bg: white;
+    /* Secondary foreground (text) and background colors for branding. */
+    --branding-fg:darkblue; 
+    --branding-bg:white;
 
     
     /* Primary foreground (text) and background colors in header */

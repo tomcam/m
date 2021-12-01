@@ -28,26 +28,23 @@
     --a-hover:var(--a);
     --a-active:var(--a);
 
-    
-    /* Secondary foreground (text) and background colors for accents. */
-    --trim-fg:white; 
-    --trim-bg:darkblue;
+    /* Secondary foreground (text) and background colors for branding. */
+    --branding-fg:var(--fg); 
+    --branding-bg:var(--bg);
 
-    
     /* Primary foreground (text) and background colors in header */
     --header-fg:var(--fg);
     --header-bg:var(--bg);
     /* Link colors specific to header */
     --a-header: var(--header-fg); 
-    --a-header-link:  var(--header-fg);
-    --a-header-visited:  var(--header-fg);
-    --a-header-hover: var(--header-fg); 
-    --a-header-active:  var(--header-fg);
-
+    --a-header-link:var(--header-fg);
+    --a-header-visited:var(--header-fg);
+    --a-header-hover:var(--header-fg); 
+    --a-header-active:var(--header-fg);
 
     /* Primary foreground (text) and background colors in navbar */
     --nav-fg:black;
-    --nav-bg: var(--bg);
+    --nav-bg:var(--bg);
     /* Link colors specific to navbar */
     --a-nav: var(--a); 
     --a-nav-link:  var(--a);
