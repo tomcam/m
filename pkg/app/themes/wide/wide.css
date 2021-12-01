@@ -1,13 +1,3 @@
-h1{ font-size:2.5em;margin-top:2rem; }
-h2{ font-size:2em;margin-top:1.5rem; }
-h3{ font-size:1.5em;margin-top:1.5rem; }
-h4{ font-size:.9em;margin-top:1rem;}
-h5{ font-size:.8em; }
-h6{ font-size:0.9em; }
-
-table > thead > tr > th  {margin-top:4rem;}
-blockquote {font-style:italic;margin: 2rem 2rem 2rem 2rem;}
-
 
 /* ****************************/
 /*  HEADER BRANDING AND LINKS */
@@ -32,7 +22,6 @@ header > p {font-size:var(--branding-height);font-weight:900;display:inline;}
  * looks like a button.
  * --------------------------------------------------
  */
-header > ul {line-height:var(--header-height);}
 header > ul {margin-left:0;list-style-type:none;display:inline;}
 header > ul > li{display:inline;padding-right:1.5rem;font-size:1.25rem;} 
 header > ul > li > a,
@@ -70,7 +59,7 @@ header > ul > li:last-child > a:hover {cursor: pointer;}
 /* ******************************/
 
 nav > p > a {font-size:1.25em;margin-right:1em;font-weight:700;}
-nav > p {margin-top:0;line-height:var(--nav-height);}
+nav > p {line-height:var(--nav-height);}
 nav > img {display:inline;}
 nav > p > a {font-style:normal;}
 
@@ -94,6 +83,9 @@ nav > p > a:active {text-decoration:underline;}
 /*  ARTICLE-MAIN PORTION OF TEXT*/
 /* ******************************/
 
+table > thead > tr > th  {margin-top:4rem;}
+blockquote {font-style:italic;margin: 2rem 2rem 2rem 2rem;}
+
 article > h1,article > h2 {font-weight:900;}
 article > h1 {font-size:4rem;margin-top:0;margin-bottom:3rem;}
 article > li {margin-left:1rem;}
@@ -108,9 +100,8 @@ article > p,
   article > dd, 
   article > dl,
   article > hr {
-		font-size:1.5rem;
+		font-size:var(--p-font-size);
 		line-height:2rem;
-		margin-top:1em;
     padding-right:var(--text-end);
 }
 
@@ -119,10 +110,10 @@ article > p > strong {font-family:var(--informal);font-weight:700;}
 /* Override font rule for code */
 article > p > code, article > code, article > pre, article > pre > code {
 		font-family:var(--code);
-		font-size:1em;
+		font-size:var(--p-font-size);
 		overflow:auto;
     margin-bottom:0em;
-    line-height:1.15em;
+    line-height:var(1.5rem;)
 
 		}
 article > pre { padding-left: 1em;line-height:1.5em;}
