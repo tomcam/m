@@ -80,7 +80,17 @@ publish nothing. Right now I'm publishing empty tags.
 [Reddit RFP for TOML](https://www.reddit.com/r/golang/comments/pthh4p/paying_gig_for_foss_project_extending_the/)
 * Ability to handle links with `.md` files instead of `.html`,
 e.g. instead of
-
+* If you're missing s stylesheet in the themename.yaml this section of code in publishstylesheet doesn't give enough info:
+```
+	err := Copy(source, dest)
+	if err != nil {
+		return ErrCode("PREVIOUS", err.Error(), "Publishing stylesheet")
+	}
+```	
+The message is: Unable to copy file /Users/tom/code/m/cmd/mb/theme-test/.mb/themes/w/mw.css (error code mbz0112)
+It would be nice to be able return the previous error but have a specific error for this so the online help
+could point the user to this situation.  I think I may have 
+a way for that. Right now I'm obscuing the previous error cause.
 10/25/2021
 * Work on marshalling front matter to a FrontMatter struct
 * mb new foo does something, and it shouldn't
