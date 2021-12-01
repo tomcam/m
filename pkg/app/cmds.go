@@ -158,7 +158,7 @@ create theme based on an existing one.
 				if pathname == "" || pathname == "." {
 					pathname = currDir()
 				}
-				err := app.createSite(pathname)
+				err := app.newSite(pathname)
 				if err != nil {
 					app.QuitError(err)
 				}

@@ -39,7 +39,14 @@ Go [one level deep](one/index.html), [two levels deep](two/three/index.html)
 * Time: {{ ftime }}
 * Location of this file: {{ path }}
 * Theme {{ .Page.FrontMatter.Theme }}
-
+#### Code fence
+` +
+				"```" +
+				`
+print("hello, world.")
+` +
+				"```" +
+				`
 **SVG Box**
 ![100x100 SVG box](box-100x100.svg)
 `},

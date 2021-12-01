@@ -65,27 +65,26 @@ var errMsgs = map[string]string{
 	"0115": "Unable to find starter file",                          // filename
 	"0116": "Error reading site configuration file",                // filename
 	"0117": "Error unmarshalling YAML for site configuration file", // filename
-  // Old errors stopped at 0131
-  // TODO: Get rid of the line below
-  // https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
+	// Old errors stopped at 0131
+	// TODO: Get rid of the line below
+	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
 
 	// 0200	- Error creating file
-	"0209": "Unable to copy file to",                    // filename
-  // TODO: Get rid of the line below
-  // Old errors stopped at 0215
+	"0209": "Unable to copy file to", // filename
+	// TODO: Get rid of the line below
+	// Old errors stopped at 0215
 	"0217": "Can't publish stylesheet to same location", // filename
 	"0218": "Can't create starter file",                 // filename
 	"0219": "Can't create site file",                    // filename
 	"0220": "Can't create site file",                    // filename
 
 	// 0250 - Error closing file
-  // Old errors stopped at 0252
+	// Old errors stopped at 0252
 
 	// 0300	- Error deleting file
 	"0302": "Unable to delete publish directory",
-  // TODO: Get rid of the line below
-  // Old errors stopped at 0302
-
+	// TODO: Get rid of the line below
+	// Old errors stopped at 0302
 
 	// 0400	- Error creating directory
 	"0401": "Unable to create project directory", // filename
@@ -93,19 +92,18 @@ var errMsgs = map[string]string{
 	"0406": "Unable to copy site directory",
 	"0409": "Error creating directory for theme",   // Fully qualified pathname
 	"0410": "Error creating directory for starter", // directory
-  // TODO: Get rid of the line below
-  // Old errors stopped at 0410
+	// TODO: Get rid of the line below
+	// Old errors stopped at 0410
 
-
-  // TODO: Get rid of the line below
-  // https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
+	// TODO: Get rid of the line below
+	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
 
 	// 0500	- Error determining directory name
 	"0501": "Couldn't get relative directory name", // custom message I think
 
 	// 0600 - Error deleting directory
 	// 0700	- Error reading directory
-  // Old errors stopped at 0709
+	// Old errors stopped at 0709
 
 	// 0800	- Can't determine the name of something
 	"0801": "",
@@ -117,12 +115,11 @@ var errMsgs = map[string]string{
 	"0920": "Error generating Markdown",
 	"0921": "Unable to build project", // filename
 	"0922": "No project found at",     // message
-  // TODO: Get rid of the line below
-  // Old errors stopped at 0924
+	// TODO: Get rid of the line below
+	// Old errors stopped at 0924
 
-
-  // TODO: Get rid of the line below
-  // https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
+	// TODO: Get rid of the line below
+	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
 
 	// 0950 - Something's already there
 	"0951": "Site already exists at", // sitename
@@ -133,29 +130,29 @@ var errMsgs = map[string]string{
 	"1004": "Trying to publish nonexistent stylesheet",
 	"1005": "No publish directory specified for",
 	"1013": "Please specify a site name",
-  // TODO: Get rid of the line below
-  // Old errors stopped at 1023
+	// TODO: Get rid of the line below
+	// Old errors stopped at 1023
 	"1024": "Couldn't find stylesheet",                               //filename
 	"1025": "This isn't a project directory:",                        // directoryname
 	"1026": "This isn't a project directory:",                        // directoryname
 	"1027": "File specified in theme configuration file is missing:", // filename
 
-  // TODO: Get rid of the line below
-  // https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
+	// TODO: Get rid of the line below
+	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
 
 	//	1100	- Problem changing to a directory
 	"1101": "Unable to", // chdir to bad dir name
 	"1102": "Unable to", // chdir to bad dir name during showInfo()
-	"1103": "Unable to", // chdir to bad dir name during createSite()
+	"1103": "Unable to", // chdir to bad dir name during newSite()
 	"1104": "Missing name for starter page",
-  // Old errors stopped at 1106
-  // TODO: Get rid of the line below
+	// Old errors stopped at 1106
+	// TODO: Get rid of the line below
 	"1107": "Can't change to site directory", // project name
 
 	// 1200 - Syntax error!
 	"1204": "Unknown dot value in Go template function ", //
-  // TODO: Get rid of the line below
-  // Old errors stopped at 1206
+	// TODO: Get rid of the line below
+	// Old errors stopped at 1206
 }
 
 type ErrMsg struct {

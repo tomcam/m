@@ -510,4 +510,3 @@ func (app *App) titleTag() string {
 	}
 	return wrapTag("<title>", title, true)
 }
-

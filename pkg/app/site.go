@@ -281,10 +281,10 @@ func (m MdOptions) IsOptionSet(opt MdOptions) bool {
 	return m&opt != 0
 }
 
-// createSite() generates an empty site at
+// newSite() generates an empty site at
 // the directory specified in app.Site.path
-func (app *App) createSite(pathname string) error {
-	app.Debug("\tcreateSite(%v)", pathname)
+func (app *App) newSite(pathname string) error {
+	app.Debug("\tnewSite(%v)", pathname)
 	var err error
 	// Create a project at the specified path
 	err = os.MkdirAll(pathname, defaults.ProjectFilePermissions)
@@ -306,10 +306,13 @@ func (app *App) createSite(pathname string) error {
 
 	// Create minimal directory structure: Publish directory
 	// .site directory, .themes, etc.
+	// TODO: Some of this is repeated later with  xxx
+  /*
 	if err = createDirStructure(&defaults.SitePaths); err != nil {
-		app.Debug("\t\tcreateDirStructure() failed during createSite()")
+		app.Debug("\t\tcreateDirStructure() failed during newSite()")
 		return ErrCode("PREVIOUS", err.Error())
 	}
+  */
 	// Get factory themes and copy to project. They will then
 	// be copied on demand to the publish directory as needed.
 	// This makes it easy to find themes and modify theme.
@@ -320,9 +323,13 @@ func (app *App) createSite(pathname string) error {
 	if err != nil {
 		// TODO: Improve error handling?
 		app.Note("TODO: DUDE!!!")
-		app.Debug("\t\t\tcopyFactoryThemes() failed during createSite()")
+		app.Debug("\t\t\tcopyFactoryThemes() failed during newSite()")
 		return ErrCode("PREVIOUS", err.Error())
+	}
 
+	// Copy files that need to populate the .mb directory
+	if err = app.copyMbFiles(); err != nil {
+		return ErrCode("PREVIOUS", err.Error())
 	}
 
 	filename := ""
@@ -350,7 +357,7 @@ func (app *App) createSite(pathname string) error {
 
 // readSiteConfig() obtains site config info from the
 // site configuration file, i.e. site.yaml
-// Pre: call Site.newSite()
+// Probably need to call Site.newSite first.
 func (app *App) readSiteConfig() error {
 	var err error
 	var b []byte

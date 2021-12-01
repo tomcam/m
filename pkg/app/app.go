@@ -19,6 +19,9 @@ import (
 	"strings"
 )
 
+//go:embed .mb/*
+var mb embed.FS
+
 // App contains all runtime options required to convert a markdown
 // file or project to an HTML file or site.
 // Compound data structure for config example at
@@ -148,7 +151,6 @@ func (app *App) initCobra() {
 func (app *App) initConfig() {
 	if app.cfgPath != "" {
 		// Use config file from the flag.
-		// XXX
 		viper.SetConfigFile(app.cfgPath)
 	} else {
 		// Find home directory.
@@ -340,7 +342,7 @@ func (app *App) siteThemesPath() string {
 // and copies it to the FrontMatter struct.
 // The *Must functions are used because its structure
 // is known so why check for errors.
-// I'll probably regret this but what the hay.
+// I'll probably regret this.
 func (app *App) frontMatterRawToStruct() {
 	for k, v := range app.Page.frontMatterRaw {
 		setFieldMust(&app.Page.FrontMatter, k, v)
@@ -396,15 +398,22 @@ func setFieldMust(obj interface{}, name string, value interface{}) {
 	return
 }
 
-
+func (app *App) copyMbFiles() error {
+	app.Note("\tcopyMbFiles() to %v", app.Site.path)
+	//return app.embedDirCopy(mb, app.Site.path)
+  return nil
+}
 
 // TODO: This should probably replace copyFactoryThemes()
 // changed name from embedDirCopy() to copyFactoryThemes
 // source subdirectory to the target directory.
+// TODO: If I do not replace copyFactoryThemes() with this
+// then I need unique error codes
 func (app *App) embedDirCopy(source embed.FS, target string) error {
 	// TODO: Can this whole thing be replaced with a copyDirAll()?
 	// Is there a perf benefit either way?
 	app.Debug("\tembedDirCopy")
+	app.Note("\tembedDirCopy")
 
 	fs.WalkDir(source, ".", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -419,25 +428,29 @@ func (app *App) embedDirCopy(source embed.FS, target string) error {
 				return nil
 			}
 			// Get name of destination directory.
-			target = filepath.Join(app.cfgPath, path)
+			//target = filepath.Join(app.cfgPath, path)
 			// Create the destination directory.
+			app.Debug("\t\t1. attemping to create directory %v", target)
+			app.Note("\t\t1.attemping to create directory %v", target)
 			err := os.MkdirAll(target, defaults.PublicFilePermissions)
 			if err != nil {
 				// TODO: Handle error properly & and document error code
 				app.Debug("\t\tos.MkdirAll() error: %v", err.Error())
+				app.Note("\t\tos.MkdirAll() error: %v", err.Error())
 				return ErrCode("0409", target)
 			}
-			app.Debug("\t\tcreated directory %v", target)
+			app.Debug("\t\t\tcreated directory %v", target)
+			app.Note("\t\t\tcreated directory %v", target)
 			return nil
 		}
 		// It's a file, not a directory
-		app.Debug("\t\tCreated theme directory %v", target)
 		// Handle individual file
-		target = filepath.Join(app.Site.factoryThemesPath, path)
-		f, err := factoryThemeFiles.Open(path)
+		target = filepath.Join(app.Site.path, path)
+		f, err := source.Open(path)
 		if err != nil {
 			// TODO: Handle error properly & and document error code
 			app.Debug("\t\tFS.Open(%v) error: %v", path, err.Error())
+			app.Note("\t\tFS.Open(%v) error: %v", path, err.Error())
 			return err
 		}
 		// Read the file into a byte array.
@@ -448,9 +461,12 @@ func (app *App) embedDirCopy(source embed.FS, target string) error {
 			return err
 		}
 		// Copy the recently read file to its destination
+		app.Debug("\t\tembedDirCopy(): copying %#v", f)
+		app.Note("\t\tembedDirCopy(): copying %#v", path)
 		err = ioutil.WriteFile(target, b, defaults.ProjectFilePermissions)
 		if err != nil {
 			app.Debug("\t\tembedDirCopy(): err after WriteFile:  %#v", err)
+			app.Note("\t\tembedDirCopy(): err after WriteFile:  %#v", err)
 			// TODO: Handle error properly & and document error code
 			return ErrCode("0216", err.Error(), target)
 		}
@@ -458,5 +474,3 @@ func (app *App) embedDirCopy(source embed.FS, target string) error {
 	})
 	return nil
 }
-
-

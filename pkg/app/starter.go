@@ -59,7 +59,7 @@ type Starter struct {
 
 // generate() creates files specified in the
 
-// via createSite() and that we're in the
+// via newSite() and that we're in the
 // project site specified in app.Site.path
 func (app *App) generate(pathname string) error {
 	/*
