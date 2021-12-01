@@ -1,6 +1,9 @@
 # Name of the executable
 m
 
+# Annoying Mac system files
+.DS_Store
+
 # Often end up with sample config directories in project root
 .mb
 
