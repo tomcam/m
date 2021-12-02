@@ -398,7 +398,7 @@ func setFieldMust(obj interface{}, name string, value interface{}) {
 	return
 }
 
-// copyMbDir() copies the .mb directory to the new site. 
+// copyMbDir() copies the .mb directory to the new site.
 func (app *App) copyMbDir() error {
 	return app.embedDirCopy(mb, app.Site.path)
 }
@@ -422,7 +422,7 @@ func (app *App) embedDirCopy(source embed.FS, target string) error {
 		// path is the relative path of the file, for example,
 		// it might be /en/products or something like that
 		if d.IsDir() {
-      app.Debug("\t\tFound dir %v", path)
+			app.Debug("\t\tFound dir %v", path)
 			if path == "." {
 				return nil
 			}
@@ -457,7 +457,7 @@ func (app *App) embedDirCopy(source embed.FS, target string) error {
 			return err
 		}
 		// Copy the recently read file to its destination
-    target = filepath.Join(target, path)
+		target = filepath.Join(target, path)
 		app.Debug("\t\t\tcopying %#v", target)
 		err = ioutil.WriteFile(target, b, defaults.ProjectFilePermissions)
 		if err != nil {

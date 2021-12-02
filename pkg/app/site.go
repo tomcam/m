@@ -304,15 +304,6 @@ func (app *App) newSite(pathname string) error {
 		return ErrCode("0951", pathname)
 	}
 
-	// Create minimal directory structure: Publish directory
-	// .site directory, .themes, etc.
-	// TODO: Some of this is repeated later with  xxx
-  /*
-	if err = createDirStructure(&defaults.SitePaths); err != nil {
-		app.Debug("\t\tcreateDirStructure() failed during newSite()")
-		return ErrCode("PREVIOUS", err.Error())
-	}
-  */
 	// Get factory themes and copy to project. They will then
 	// be copied on demand to the publish directory as needed.
 	// This makes it easy to find themes and modify theme.
