@@ -3,6 +3,7 @@ package app
 import (
 	"github.com/tomcam/m/pkg/default"
 	"github.com/tomcam/m/pkg/util"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -82,13 +83,20 @@ func (app *App) publishMarkdownFile(filename string) error {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 
+	// Contents of all files to insert into <head> section
+	var h string
+	if h, err = app.headFiles(); err != nil {
+		return ErrCode("PREVIOUS", err.Error())
+	}
+
 	// Write HTML text of the body
 	fullPage := app.Site.HTMLStartFile +
 		"\"" + app.Site.Language + "\"" + ">" + "\n" +
-	/*	"<html>" + "\n" + */
+		/*	"<html>" + "\n" + */
 		"<head>" + "\n" +
 		app.titleTag() +
 		app.metatags() +
+		h + "\n" +
 		app.stylesheetTags() +
 		"</head>" + "\n" +
 		app.header() +
@@ -511,9 +519,23 @@ func (app *App) titleTag() string {
 }
 
 func (app *App) metatags() string {
-	return (
-		"<meta charset=\"utf-8\">" + "\n" +
-    metatag("description", app.descriptionTag()) +
+	return ("<meta charset=\"utf-8\">" + "\n" +
+		metatag("description", app.descriptionTag()) +
 		metatag("viewport", "width=device-width,initial-scale=1") +
 		metatag("generator", defaults.ProductBranding))
+}
+
+// headFiles() (formerly headerFiles) finds
+// all the files in the headers subdirectory
+// and copies them into the HMTL head section
+func (app *App) headFiles() (string, error) {
+	var h string
+	headers, err := ioutil.ReadDir(app.Site.headTagsPath)
+	if err != nil {
+		return "", ErrCode("0706", app.Site.headTagsPath)
+	}
+	for _, file := range headers {
+		h += fileToString(filepath.Join(app.Site.headTagsPath, file.Name()))
+	}
+	return h, nil
 }
