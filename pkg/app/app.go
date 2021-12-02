@@ -398,17 +398,6 @@ func setFieldMust(obj interface{}, name string, value interface{}) {
 	return
 }
 
-// copyMbDir() copies the .mb directory to the new site.
-func (app *App) copyMbDir() error {
-	return app.embedDirCopy(mb, app.Site.path)
-}
-func (app *App) copyFactoryThemes() error {
-	//return app.embedDirCopy(factoryThemeFiles, app.Site.factoryThemesPath)
-	//return app.embedDirCopy(factoryThemeFiles, app.cfgPath)
-	app.Note("copyFactoryThemes: Copying to %v", app.cfgPath)
-	return app.embedDirCopy(factoryThemeFiles, app.cfgPath)
-}
-
 // TODO: This should probably replace copyFactoryThemes()
 // changed name from embedDirCopy() to copyFactoryThemes
 // source subdirectory to the target directory.

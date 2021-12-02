@@ -313,10 +313,10 @@ func (app *App) newSite(pathname string) error {
 	// be copied on demand to the publish directory as needed.
 	// This makes it easy to find themes and modify theme.
 	app.Debug("\t\tAbout to copy factory themes")
-	if err = app.copyFactoryThemes(); err != nil {
-		app.Debug("\t\t\tError after calling app.copyFactoryThemes(): %v", err)
+	if err = app.copyFactoryThemesDir(); err != nil {
+		app.Debug("\t\t\tError after calling app.copyFactoryThemesDir(): %v", err)
 		// TODO: Improve error handling?
-		app.Debug("\t\t\tcopyFactoryThemes() failed during newSite()")
+		app.Debug("\t\t\tcopyFactoryThemesDir() failed during newSite()")
 		return ErrCode("PREVIOUS", err.Error())
 	}
 
@@ -408,4 +408,15 @@ func (app *App) setSiteDefaults() {
 	app.Site.HTMLStartFile = defaults.HTMLStartFile
 	app.Site.HTMLEndFile = defaults.HTMLEndFile
 	app.setPaths()
+}
+
+// copyMbDir() copies the .mb directory to the new site.
+func (app *App) copyMbDir() error {
+	return app.embedDirCopy(mb, app.Site.path)
+}
+
+// copyFactoryThemesDir() copies the theme files embedded in
+// the named file embed to the project's themes directory.
+func (app *App) copyFactoryThemesDir() error {
+	return app.embedDirCopy(factoryThemeFiles, app.cfgPath)
 }

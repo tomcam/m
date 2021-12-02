@@ -85,13 +85,12 @@ func (app *App) publishMarkdownFile(filename string) error {
 	// Write HTML text of the body
 	fullPage := app.Site.HTMLStartFile +
 		"\"" + app.Site.Language + "\"" + ">" + "\n" +
-		"<meta charset=\"utf-8\">" + "\n" +
-		"<head>" +
+	/*	"<html>" + "\n" + */
+		"<head>" + "\n" +
 		app.titleTag() +
-		metatag("description", app.descriptionTag()) +
-		metatag("viewport", "width=device-width,initial-scale=1") +
-		metatag("generator", defaults.ProductBranding) +
+		app.metatags() +
 		app.stylesheetTags() +
+		"</head>" + "\n" +
 		app.header() +
 		app.nav() +
 		app.article(body, "article") +
@@ -509,4 +508,12 @@ func (app *App) titleTag() string {
 		title = defaults.ProductName + ": Title needed here, squib"
 	}
 	return wrapTag("<title>", title, true)
+}
+
+func (app *App) metatags() string {
+	return (
+		"<meta charset=\"utf-8\">" + "\n" +
+    metatag("description", app.descriptionTag()) +
+		metatag("viewport", "width=device-width,initial-scale=1") +
+		metatag("generator", defaults.ProductBranding))
 }
