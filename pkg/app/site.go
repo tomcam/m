@@ -314,7 +314,7 @@ func (app *App) newSite(pathname string) error {
 	// This makes it easy to find themes and modify theme.
 	app.Debug("\t\tAbout to copy factory themes")
 	if err = app.copyFactoryThemes(); err != nil {
-	  app.Debug("\t\t\tError after calling app.copyFactoryThemes(): %v", err)
+		app.Debug("\t\t\tError after calling app.copyFactoryThemes(): %v", err)
 		// TODO: Improve error handling?
 		app.Debug("\t\t\tcopyFactoryThemes() failed during newSite()")
 		return ErrCode("PREVIOUS", err.Error())
