@@ -3,7 +3,7 @@ package app
 import (
 	"fmt"
 	"github.com/rodaine/table"
-	"github.com/tomcam/m/pkg/default"
+	//"github.com/tomcam/m/pkg/default"
 	//"os"
 	"strings"
 )
@@ -23,8 +23,6 @@ func (app *App) ShowInfo(pathname string) error {
 	}
 	if !isProject(pathname) {
 		app.QuitError(ErrCode("0922", pathname))
-		app.Print("%v doesn't have a %v project", pathname, defaults.ProductName)
-		app.QuitError(ErrCode("0000", "hey"))
 
 	}
 

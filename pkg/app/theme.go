@@ -76,7 +76,7 @@ var factoryThemeFiles embed.FS
 // this subdirectory to the project's themes directory.
 // In turn, when the site is published only the themes
 // it needs will be copied over.
-func (app *App) copyFactoryThemes() error {
+func (app *App) oldcopyFactoryThemes() error {
 	// TODO: Can this whole thing be replaced with a copyDirAll()?
 	// Is there a perf benefit either way?
 	app.Debug("\tcopyFactoryThemes")
