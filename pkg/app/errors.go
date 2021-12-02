@@ -103,6 +103,7 @@ var errMsgs = map[string]string{
 
 	// 0600 - Error deleting directory
 	// 0700	- Error reading directory
+	"0706": "Unable to read from headtags directory", // Expected pathname of headtags directory
 	// Old errors stopped at 0709
 
 	// 0800	- Can't determine the name of something
