@@ -328,7 +328,7 @@ func (app *App) newSite(pathname string) error {
 	}
 
 	// Copy files that need to populate the .mb directory
-	if err = app.copyMbFiles(); err != nil {
+	if err = app.copyMbDir(); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 

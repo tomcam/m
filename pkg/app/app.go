@@ -398,10 +398,9 @@ func setFieldMust(obj interface{}, name string, value interface{}) {
 	return
 }
 
-func (app *App) copyMbFiles() error {
-	app.Note("\tcopyMbFiles() to %v", app.Site.path)
-	//return app.embedDirCopy(mb, app.Site.path)
-  return nil
+// copyMbDir() copies the .mb directory to the new site. 
+func (app *App) copyMbDir() error {
+	return app.embedDirCopy(mb, app.Site.path)
 }
 
 // TODO: This should probably replace copyFactoryThemes()
@@ -412,8 +411,7 @@ func (app *App) copyMbFiles() error {
 func (app *App) embedDirCopy(source embed.FS, target string) error {
 	// TODO: Can this whole thing be replaced with a copyDirAll()?
 	// Is there a perf benefit either way?
-	app.Debug("\tembedDirCopy")
-	app.Note("\tembedDirCopy")
+	app.Debug("\tembedDirCopy(%#v, %v)", source, target)
 
 	fs.WalkDir(source, ".", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -424,33 +422,31 @@ func (app *App) embedDirCopy(source embed.FS, target string) error {
 		// path is the relative path of the file, for example,
 		// it might be /en/products or something like that
 		if d.IsDir() {
+      app.Debug("\t\tFound dir %v", path)
 			if path == "." {
 				return nil
 			}
 			// Get name of destination directory.
-			//target = filepath.Join(app.cfgPath, path)
+			target = filepath.Join(app.Site.path, path)
 			// Create the destination directory.
 			app.Debug("\t\t1. attemping to create directory %v", target)
-			app.Note("\t\t1.attemping to create directory %v", target)
 			err := os.MkdirAll(target, defaults.PublicFilePermissions)
 			if err != nil {
 				// TODO: Handle error properly & and document error code
 				app.Debug("\t\tos.MkdirAll() error: %v", err.Error())
-				app.Note("\t\tos.MkdirAll() error: %v", err.Error())
 				return ErrCode("0409", target)
 			}
 			app.Debug("\t\t\tcreated directory %v", target)
-			app.Note("\t\t\tcreated directory %v", target)
 			return nil
 		}
 		// It's a file, not a directory
 		// Handle individual file
-		target = filepath.Join(app.Site.path, path)
+		//target = filepath.Join(app.Site.path, path)
+		target = app.Site.path
 		f, err := source.Open(path)
 		if err != nil {
 			// TODO: Handle error properly & and document error code
 			app.Debug("\t\tFS.Open(%v) error: %v", path, err.Error())
-			app.Note("\t\tFS.Open(%v) error: %v", path, err.Error())
 			return err
 		}
 		// Read the file into a byte array.
@@ -461,12 +457,11 @@ func (app *App) embedDirCopy(source embed.FS, target string) error {
 			return err
 		}
 		// Copy the recently read file to its destination
-		app.Debug("\t\tembedDirCopy(): copying %#v", f)
-		app.Note("\t\tembedDirCopy(): copying %#v", path)
+    target = filepath.Join(target, path)
+		app.Debug("\t\t\tcopying %#v", target)
 		err = ioutil.WriteFile(target, b, defaults.ProjectFilePermissions)
 		if err != nil {
-			app.Debug("\t\tembedDirCopy(): err after WriteFile:  %#v", err)
-			app.Note("\t\tembedDirCopy(): err after WriteFile:  %#v", err)
+			app.Debug("\t\t\terr after WriteFile:  %#v", err)
 			// TODO: Handle error properly & and document error code
 			return ErrCode("0216", err.Error(), target)
 		}
