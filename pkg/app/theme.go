@@ -196,19 +196,23 @@ func (app *App) loadTheme() error {
 
 	// Get directory to which the theme will be copied for this site
 	dest := app.Site.siteThemesPath
-
+  t := ""
+  app.Print("\t\t\tsource: %v. dest: %v", source,dest)
 	for level := 0; level < len(app.Page.Theme.levels); level++ {
 		theme = app.Page.Theme.levels[level]
-		// Get the next level of directory and append
+    t = filepath.Join(t, theme)
+    app.Print("\t\t\tLEVEL %v", t)
+    // Get the next level of directory and append
 		// to the previous directory
-		source = filepath.Join(source, theme)
+    s := filepath.Join(source, t)
 		// xxx
-		dest = app.themePublishDir(theme)
-		app.Page.Theme.sourcePath = source
+    d := filepath.Join(dest, t)
+		app.Page.Theme.sourcePath = s
 		app.Page.Theme.nestingLevel = level
 		// Finds the theme specified for this page.
 		// Copy the required files to the theme publish directory.
-		if err := app.loadThemeLevel(source, dest, level); err != nil {
+	  app.Debug("\t\t\tloading theme(%v,%v,%v", s, d,level)
+		if err := app.loadThemeLevel(s, d, level); err != nil {
 			return ErrCode("PREVIOUS", err.Error())
 		}
 	}

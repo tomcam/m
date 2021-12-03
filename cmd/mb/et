@@ -1,0 +1,7 @@
+#!/bin/zsh 
+# Edit  theme file. First param is the theme.
+# Second param is the file in the theme. For 
+# example:
+# et w bind.css
+nvim /Users/tom/code/m/pkg/app/.mb/themes/$1/$2
+

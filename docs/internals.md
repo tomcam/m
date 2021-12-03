@@ -19,7 +19,7 @@ it with automatically generated pages to test themes visually
 * mbtodo brings up the todo list
 * ffs searches through theme css files
 * ff searches through project files
-
+* et edits a theme file, for example et w bind.css
 ## REMINDERS FOR TC:
 * mb filename.md should generate an HTML file in .mb/pub
 * mb run should start a web server in the current directory 
