@@ -77,6 +77,7 @@ var errMsgs = map[string]string{
 	"0218": "Can't create starter file",                 // filename
 	"0219": "Can't create site file",                    // filename
 	"0220": "Can't create site file",                    // filename
+	"0221": "Can't copy a file onto itself!",            // filename
 
 	// 0250 - Error closing file
 	// Old errors stopped at 0252
@@ -139,7 +140,9 @@ var errMsgs = map[string]string{
 	"1025": "This isn't a project directory:",                        // directoryname
 	"1026": "This isn't a project directory:",                        // directoryname
 	"1027": "File specified in theme configuration file is missing:", // filename
-  "1028": "Can't find a theme named", // filename
+	"1028": "Can't find a theme named",                               // filename
+	"1029": "Can't find the theme file",                              // filename
+	"1033": "Unable to read theme directory",                         // filename
 	// TODO: Get rid of the line below
 	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
 
@@ -166,7 +169,8 @@ type ErrMsg struct {
 	// message from an earlier action, typically a return from the
 	// Go runtime.
 	previous string
-	extra    []string
+	extra    string
+	system   string
 }
 
 // Error() looks up e.key, which is an error code number
@@ -202,12 +206,15 @@ func (e *ErrMsg) Error() string {
 	// ErrCode("1234", "PREVIOUS", something)
 	// This is the case where something like a Go system call
 	// returned an error, but I want to know where it occurred.
-	if e.previous == "PREVIOUS" {
-		msg = fmt.Errorf("%s (error code %s%s). Previous error was '%s'",
-			errMsgs[e.key], defaults.ErrorCodePrefix, e.key, e.extra)
-		//fmt.Printf("HEY %v", msg.Error())
-		return msg.Error()
-	}
+	// TODO: Revive this idea
+	/*
+		if e.previous == "PREVIOUS" {
+			msg = fmt.Errorf("%s (error code %s%s). Previous error was '%s'",
+				errMsgs[e.key], defaults.ErrorCodePrefix, e.key, e.extra)
+			//fmt.Printf("HEY %v", msg.Error())
+			return msg.Error()
+		}
+	*/
 	//xxx
 
 	// Error message from an earlier error return needs to be seen.
@@ -280,7 +287,15 @@ func ErrCode(key string, previous string, extra ...string) error {
 
 // add() allocates a map entry for errMsgs.
 func add(key string, previous string, extra ...string) error {
-	return &ErrMsg{key, previous, extra}
+	switch len(extra) {
+	case 1:
+		return &ErrMsg{key, previous, extra[0], ""}
+	case 2:
+		return &ErrMsg{key, previous, extra[0], extra[1]}
+	default:
+		return &ErrMsg{key, previous, "", ""}
+	}
+
 }
 
 // QuitError() displays the error passed to it and exits

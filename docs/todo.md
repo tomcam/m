@@ -88,6 +88,30 @@ publish nothing. Right now I'm publishing empty tags.
 [Reddit RFP for TOML](https://www.reddit.com/r/golang/comments/pthh4p/paying_gig_for_foss_project_extending_the/)
 * Ability to handle links with `.md` files instead of `.html`,
 e.g. instead of
+
+* I want to create an error convention that gives a clear indication of where an error happened, 
+but also the original Goo-provided system messae. The convention would b esomething like
+```
+if err != nil {
+  return(ErrCode("1033", "PREVIOUS", from, err.Error()))
+}
+```
+
+instead of:
+
+```
+if err != nil {
+  return(ErrCode("1023", from, err.Error()))
+}
+```
+
+Reason: This would allow the reader to know precisely where the error occurred (the 1033 part, which
+means that a theme config aka yaml file couldn't be opened), but also the exact nature of the
+system error that generated it. Probalby that would mean a fourth parameter as shown:
+
+The error message generated from it would be something like: "Unable to open theme file debut.yaml'. Cause: a system returned an error of "no permissions".
+
+
 * If you're missing s stylesheet in the themename.yaml this section of code in publishstylesheet doesn't give enough info:
 ```
 	err := Copy(source, dest)

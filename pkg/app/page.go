@@ -27,6 +27,9 @@ type FrontMatter struct {
 	// Generates a Description metatag on output
 	Description string `json:"description"`
 
+	// Filenames to skip when publishing a theme
+	ExcludeFiles []string `json:"exclude-files"`
+
 	// Generates a Title tag on output
 	Title string `json:"title"`
 

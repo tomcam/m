@@ -32,6 +32,10 @@ var (
 		".mdwn",
 		".mkd",
 		".mkdn",
+		".sidebar",
+		".navbar",
+		".header",
+		".footer",
 		".text"})
 
 	// ExcludedAssetExtensions are the extensions of files in the asset

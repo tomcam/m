@@ -46,6 +46,8 @@ upon publication
 
 
 # Theme
+* All  theme assets must be in a theme's "root" directory, beccause
+subdirectories contain child themes
 * Site.FactoryThemesPath is where the source themes are
 * loadThemeConfig() forces Page.FrontMatter.Theme to lowercase
 because it will be the name of a file. Could be like "debut" or

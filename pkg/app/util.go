@@ -23,8 +23,14 @@ func cfgBool(option string) bool {
 }
 
 // Copy() does just that. It copies a single file named source to
-// the file named in dest.
+// the file named in dest. There's a lot of erro checking,
+// for example, i won't copy a file onto itself.
+// Not that that happened to me, of course.
 func Copy(src, dest string) error {
+	if src == dest {
+		// Someone done screwed up
+		return ErrCode("0221", src)
+	}
 	sourceFileStat, err := os.Stat(src)
 	if err != nil {
 		// TODO: document error code and add to errors.go
