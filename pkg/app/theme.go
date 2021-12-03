@@ -138,6 +138,9 @@ func (app *App) copyTheme(source string, dest string) error {
 func (app *App) loadThemeLevel(source string, dest string, level int) error {
 	app.Debug("\t\t\tloadThemeLevel(%v, %v, %v)", source, dest, level)
 	// See if this theme has already been published.
+  if !dirExists(source) {
+    return ErrCode("1028", source)
+  }
 	_, ok := app.Site.publishedThemes[dest]
 	if !ok {
 		err := app.copyTheme(source, dest)

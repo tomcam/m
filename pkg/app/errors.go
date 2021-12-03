@@ -94,6 +94,7 @@ var errMsgs = map[string]string{
 	"0410": "Error creating directory for starter", // directory
 	// TODO: Get rid of the line below
 	// Old errors stopped at 0410
+	"0411": "Unable to copy theme directory",
 
 	// TODO: Get rid of the line below
 	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
@@ -138,7 +139,7 @@ var errMsgs = map[string]string{
 	"1025": "This isn't a project directory:",                        // directoryname
 	"1026": "This isn't a project directory:",                        // directoryname
 	"1027": "File specified in theme configuration file is missing:", // filename
-
+  "1028": "Can't find a theme named", // filename
 	// TODO: Get rid of the line below
 	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
 
