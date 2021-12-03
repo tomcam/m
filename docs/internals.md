@@ -1,6 +1,9 @@
 # Internals: How Metabuzz builds, starts, and runs
 
-## Publishing a project
+	for level := 0; level < len(app.Page.Theme.levels); level++ {
+    theme := app.Page.themes[level]
+  }
+ ## Publishing a project
 * Starts with build(path), where path is the name of a directory (which is assumed but not expected to contain a valid project)
   - It changes to the diretory specified by path
   - It checks that there is a site file

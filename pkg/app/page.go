@@ -10,14 +10,17 @@ type Page struct {
 	frontMatterRaw map[string]interface{}
 	FrontMatter    FrontMatter
 	Theme          Theme
-
+	// TODO: wtf. Did I lose all this? Anyway eventually
+	// I need to lose Theme
+	themes []Theme
 	// Fully qualified filename of this source file
 	filePath string
 
 	// List of stylesheets actually published
 	// (for example, only sidebar-left.css
 	// or sidebar-right.css will be published)
-	stylesheets []string
+	stylesheets    []string
+	stylesheetTags string
 }
 
 type FrontMatter struct {

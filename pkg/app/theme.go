@@ -17,6 +17,9 @@ type Theme struct {
 	// Each level get its own entry here.
 	levels []string
 
+	// TODO: Rename either this or levels
+	level string
+
 	// Tracks level of nesting for this theme. So if
 	// the theme is specified as debut/gallery/item,
 	// debut is 0, gallery is 1, and item is 2.
@@ -121,7 +124,7 @@ func (app *App) copyTheme(source string, dest string) error {
 }
 
 // publishThemeAssets() Reads the source theme directory
-// and chooses which non-stylesheet file get copied 
+// and chooses which non-stylesheet file get copied
 // to the published theme directory.
 // from is a fully qualified directory name for the theme to be copied.
 // to is a fully qualified directory name for it to be copied to
@@ -133,8 +136,8 @@ func (app *App) publishThemeAssets(from string, to string) error {
 		return (ErrCode("1033", from, err.Error()))
 	}
 	excludeFromDir := util.NewSearchInfo(app.Page.FrontMatter.ExcludeFiles)
-  //jlkapp.Note("\t\t\t\tpublishThemeAssets: exclude files %v",app.Page.FrontMatter.ExcludeFiles) 
-  //app.Note("\t\t\t\tpublishThemeAssets: FrontMatter: %#v",app.Page.FrontMatter) 
+	//jlkapp.Note("\t\t\t\tpublishThemeAssets: exclude files %v",app.Page.FrontMatter.ExcludeFiles)
+	//app.Note("\t\t\t\tpublishThemeAssets: FrontMatter: %#v",app.Page.FrontMatter)
 	for _, file := range candidates {
 		if file.IsDir() {
 			break
@@ -145,23 +148,22 @@ func (app *App) publishThemeAssets(from string, to string) error {
 			!excludeFromDir.Contains(filename) &&
 			!hasExtensionFrom(filename, defaults.MarkdownExtensions) {
 			copyFrom := filepath.Join(from, filename)
-      // TODO: should probably go to the page publish directory
+			// TODO: should probably go to the page publish directory
 			copyTo := filepath.Join(to, filename)
 			app.Debug("\t\t\t\t\tCopy(%v,%v)", copyFrom, copyTo)
-      if err := Copy(copyFrom, copyTo); err != nil {
-        // TODO. This should actually lok something like
-        //return ErrCode("1234", "PREVIOUS', copyFrom, err.Error())
-        return ErrCode("PREVIOUS", err.Error())
-      }
+			if err := Copy(copyFrom, copyTo); err != nil {
+				// TODO. This should actually lok something like
+				//return ErrCode("1234", "PREVIOUS', copyFrom, err.Error())
+				return ErrCode("PREVIOUS", err.Error())
+			}
 		}
 	}
 	return nil
-	// xxx
 
 } // publishThemeAssets()
 
 // loadThemeLevel() finds the theme specified for this page.
-// It then copies the required files to the theme publihs
+// It then copies the required files to the theme publish
 // directory.
 //  A Theme designation can something like:
 //  debut
@@ -177,6 +179,7 @@ func (app *App) publishThemeAssets(from string, to string) error {
 // Called from loadTheme() once per level.
 func (app *App) loadThemeLevel(source string, dest string, level int) error {
 	app.Debug("\t\t\tloadThemeLevel(%v, %v, %v)", source, dest, level)
+	app.Note("\t\t\tloadThemeLevel(%v, %v, %v)", source, dest, level)
 	// See if this theme has already been published.
 	// TODO: cache themes in app.Site.publishedThemes[dest]?
 	if !dirExists(source) {
@@ -201,10 +204,10 @@ func (app *App) loadThemeLevel(source string, dest string, level int) error {
 	if err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
+	app.Page.themes = append(app.Page.themes, app.Page.Theme)
 	return nil
 } // loadThemeLevel()
 
-// xxx
 // loadTheme() finds the theme specified for this page.
 // Load the theme and all its descendants, because
 // a theme could be as sample as "debut" or it could be
@@ -241,19 +244,22 @@ func (app *App) loadTheme() error {
 
 	// Get directory to which the theme will be copied for this site
 	to := app.Site.siteThemesPath
-	theme := ""
+	themeName := ""
 	//app.Print("\t\t\tfrom: %v. to: %v", from, to)
 	for level := 0; level < len(app.Page.Theme.levels); level++ {
 		// Build up each level of nested them: "debut",
 		// "debut/gallery", "debut/gallery/item"
-		theme = filepath.Join(theme, app.Page.Theme.levels[level])
+		themeName = filepath.Join(themeName, app.Page.Theme.levels[level])
 		// Get the next level of directory and append
 		// to the previous directory
-		source := filepath.Join(from, theme)
-		// xxx
-		dest := filepath.Join(to, theme)
+		source := filepath.Join(from, themeName)
+		dest := filepath.Join(to, themeName)
 		app.Page.Theme.sourcePath = source
+		// TODO: I can probably remove nestingLevel entirely, unless i need it
+		// to detect latest sidebar or mode
 		app.Page.Theme.nestingLevel = level
+		app.Page.Theme.level = themeName
+		// xxx
 		// Finds the theme specified for this page.
 		// Copy the required files to the theme publish directory.
 		app.Debug("\t\t\tloading theme(%v,%v,%v", source, dest, level)
@@ -268,7 +274,8 @@ func (app *App) loadTheme() error {
 // needed to publish style sheets for the theme
 func (app *App) themePublishDir(theme string) string {
 	//return filepath.Join(app.Site.cssPublishPath, defaults.ThemesDir, app.Page.FrontMatter.Theme)
-	return filepath.Join(app.Site.publishPath, defaults.ThemesDir, app.Page.FrontMatter.Theme)
+	//return filepath.Join(app.Site.publishPath, defaults.ThemesDir, app.Page.FrontMatter.Theme)
+	return filepath.Join(app.Site.publishPath, defaults.ThemesDir, theme)
 }
 
 // getMode() checks if the stylesheet is dark or light
