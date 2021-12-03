@@ -1,0 +1,91 @@
+// TODO: Delete this
+// Todo: changed name from embedDirCpy() to copyFactoryThemes
+// copyFactoryThemes() copies the theme files embedded in
+// this subdirectory to the project's themes directory.
+// In turn, when the site is published only the themes
+// it needs will be copied over.
+func (app *App) TODODELETEoldcopyFactoryThemes() error {
+	// TODO: Can this whole thing be replaced with a copyDirAll()?
+	// Is there a perf benefit either way?
+	app.Debug("\tcopyFactoryThemes")
+	var target string
+	fs.WalkDir(factoryThemeFiles, ".", func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			// TODO: Handle error properly & and document error code
+			return err
+		}
+		// Handle subdirectory.
+		// path is the relative path of the file, for example,
+		// it might be /en/products or something like that
+		if d.IsDir() {
+			if path == "." {
+				return nil
+			}
+			// Get name of destination directory.
+			target = filepath.Join(app.cfgPath, path)
+			// Create the destination directory.
+			err := os.MkdirAll(target, defaults.PublicFilePermissions)
+			if err != nil {
+				// TODO: Handle error properly & and document error code
+				app.Debug("\tos.MkdirAll() error: %v", err.Error())
+				return ErrCode("0409", target)
+			}
+			app.Debug("\t\tcreated directory %v", target)
+			return nil
+		}
+		// It's a file, not a directory
+		app.Debug("\t\tCreated theme directory %v", target)
+		// Handle individual file
+		target = filepath.Join(app.Site.factoryThemesPath, path)
+		f, err := factoryThemeFiles.Open(path)
+		if err != nil {
+			// TODO: Handle error properly & and document error code
+			app.Debug("\tFS.Open(%v) error: %v", path, err.Error())
+			return err
+		}
+		// Read the file into a byte array.
+		b, err := io.ReadAll(f)
+		if err != nil {
+			// TODO: Handle error properly & and document error code
+			app.Debug("\tio.ReadAll(%v) error: %v", f, err.Error())
+			return err
+		}
+		// Copy the recently read file to its destination
+		err = ioutil.WriteFile(target, b, defaults.ProjectFilePermissions)
+		if err != nil {
+			app.Debug("\t\tcopyFactoryThemes(): err after WriteFile:  %#v", err)
+			// TODO: Handle error properly & and document error code
+			return ErrCode("0216", err.Error(), target)
+		}
+		return nil
+	})
+	return nil
+}
+
+Metabuzz is the best static site generator for creators who want to 
+start a documentation project with no special knowledge up front.
+There is absolutely no configuration or setup required. You install a single
+executable file, create pages with a text editor, and Metabuzz does the rest.
+It's designed so that you don't need to know anything but how to write in Markdown
+format--and even that's optional. You can start knowing nothing at all about Markdown. 
+When you need to learn more, it comes tutorials designed to get you
+going at any level.
+Just install it, run `mb new site` and enter the name of a folder to create when prompted.
+(You can also give a full path to the on the command line, for example, `mb new site ~/code/mysite`.)
+
+### Features for agencies
+
+Metabuzz produces beautiful, SEO-enabled informational sites by starting
+with words, then letting you "reskin" the site using themes.
+
+* All sites require certain pages to start with. For example, you'd typically want an
+About page, a Terms of Service page, and  Privacy Policy page. *Starter files* let you describe these
+pages in a simple YAML format. That means when you create a new site you can generate starter versions
+of all those pages too. It's also good for book series or periodicals where you frequently
+create new publications with a standard format.
+* The included themes are all mobile-friendly: try them yourself at Google's [Mobile-Friendly Test](https://search.google.com/test/mobile-friendly) site.
+* The factory themes are built using standard CSS and work with browsers going back to 2016. All factory themes support
+a sidebar (either right or left), light mode and dark mode, a header section, a nav section, and a footer.
+
+
+#

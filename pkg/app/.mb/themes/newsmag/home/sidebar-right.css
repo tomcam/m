@@ -1,0 +1,71 @@
+article{padding-left:var(--text-start);}
+article{margin-left:var(--left-margin);}
+
+aside > h3 {
+  font-size:1.5em;
+  font-weight:bold;
+  color:red;
+  padding:1em 2em 0em 2.5em;
+  margin-bottom:0;
+}
+
+/*
+ * --------------------------------------------------
+ * Sidebar unordered list for breaking news
+ * shows:
+ * - Item preceded by number in circle
+ * - Item is bold
+ * - Indented item in normal text with bottom padding
+ *
+ * Example usage (note 2nd level of indentation):
+ *
+ *  * Item 1
+ *     - More about item 1
+ *   * Item 2
+ *     - More about item 2
+ *   * Item 3
+ *     - More about item 3
+ *
+ * --------------------------------------------------
+ */
+
+aside > ul {
+  counter-reset:li;
+  list-style-type:none;
+  font-size:1rem;
+  line-height:1.2rem;
+  padding-left:1em;
+  border-top:none;
+}
+
+aside > ul li {
+  list-style-type:none;
+  border:none;
+  font-weight:normal;
+}
+
+aside > ul > li > ul > li {
+  line-height:1.5em;
+  padding-bottom:1em;
+}
+aside > ul >li {
+  font-weight:bold;
+  position:relative;
+  padding: .5em 1em 0rem 3em;
+  border:none;
+} 
+aside > ul > li:before {
+  background-color:var(--fg);
+  content:counter(li);
+  counter-increment:li;
+  height:2rem;
+  line-height:2rem;
+  width:2em;
+  border-radius:50%;
+  color: var(--bg);
+  text-align:center;
+  position:absolute;
+  left:0;
+}
+
+

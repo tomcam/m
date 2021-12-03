@@ -1,0 +1,18 @@
+Branding: "Eastside Emerald Home Repair"
+Description: "Handyman and home repair services near me"
+Stylesheets: 
+- "reset.css"
+- "fonts.css"
+- "layout.css"
+- "bind.css"
+- "sizes.css"
+- "theme-light.css"
+- "tradesman.css"
+- "responsive.css"
+Nav: {File: nav.md, HTML:}
+Header: {File: header.md, HTML:}
+Article: {File:, HTML:}
+Sidebar: {File: sidebar.md, HTML:}
+Footer: {File: footer.md, HTML:}
+Language: en
+

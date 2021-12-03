@@ -15,6 +15,7 @@ import (
 // articlefunc() returns the contents of the Markdown file itself.
 // It can only be used from one of the page regions, not inside
 // the markdown text, because that would cause a Markdown inception.
+// TODO: I think this doesn't work
 func (app *App) articlefunc(params ...string) string {
 	if len(params) < 1 {
 		return string(app.Site.webPages[app.Page.filePath].html)

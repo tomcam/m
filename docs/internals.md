@@ -1,5 +1,17 @@
 # Internals: How Metabuzz builds, starts, and runs
 
+## Publishing a project
+* Starts with build(path), where path is the name of a directory (which is assumed but not expected to contain a valid project)
+  - It changes to the diretory specified by path
+  - It checks that there is a site file
+  - It calls tree.go getProjectTree(), which returns a list of all files on the site (actually that list is discarded) and therefore
+    Site.webPages, which is map[string]WebPage, isn't used.
+    + getProjectTree calls tree.go visit(), which does things like discard directories that start with a dot or are on the site exclusion list.
+      It also builds up a list of directories  in  App.Site.dirs via calls to the poorly named setMdOption() function 
+  - It deletes the publish directory
+  - It reads the site configuration file
+  - It calls buildPublishDirs(), which uses app.Site.dirs to reconstruct the directory tree
+
 ## Utilities
 * errdoc 1234 creates a help file for error code 1234. Must be 4 digits.
 * mbtest deletes and recreates the directory .theme-test, and populates

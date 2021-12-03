@@ -1,0 +1,165 @@
+#!/bin/zsh
+# Exit if an error occurs
+set -e
+DIR=~/code/m/cmd/mb/theme-test
+rm -rf $DIR
+mb new site $DIR
+INDEX=$DIR/index.md
+LINKSECTION=$DIR/links.tmp
+THEMELIST=$DIR/themelist.tmp
+TMPFILE=$DIR/foobar.txt
+
+cp site.yaml $DIR/.mb
+cp eastside-emerald-64x64.png $DIR
+# Create an array of filenames
+declare -a themes=(
+	'wide'
+	'pillar'
+  'tradesman'
+  'debut'
+  'w'
+	)
+rawthemes=$themes
+#
+# Since nest themes have slashes in their
+# names, like 'debut/gallery', convert
+# those slashes to dashes to generate
+# test filenames. Delimit filenames with newlines.
+for theme in "${themes[@]}";
+do
+  echo $theme >> $TMPFILE
+done
+sed -i '' 's/\//\-/' $TMPFILE
+
+# Convert the list of filenames back
+# to an array.
+# I think I'm overcomplicating this. See https://stackoverflow.com/questions/6723426/looping-over-arrays-printing-both-index-and-value#comment65441853_6723516
+themes=()
+while IFS= read -r line; do
+  themes+=("$line")
+done < $TMPFILE
+
+
+# Create an array of variations
+declare -a sidebars=(
+  'left'
+  'right'
+  'no'
+  )
+
+# Array of modes
+declare -a modes=(
+  'dark'
+  'light'
+)
+
+L=\<
+R=\>
+# Loop through the array
+for theme in "${themes[@]}";
+do
+  echo "<a name=\"${theme}\"></a> " >> $LINKSECTION
+  #echo "### Theme: ${theme}" >> $LINKSECTION
+  echo "<br />**${theme}** " >> $LINKSECTION
+  echo "[left sidebar](theme-${theme}-left-light.html) ([dark](theme-${theme}-left-dark.html)) [right sidebar](theme-${theme}-right-light.html) ([dark version](theme-${theme}-right-dark.html)) and [no sidebar](theme-${theme}-no-light.html) ([dark](theme-${theme}-no-dark.html)) " >> $LINKSECTION
+  echo "[${theme}](#${theme}) " >> $THEMELIST
+
+  for sidebar in "${sidebars[@]}";
+  do
+    for mode in "${modes[@]}";
+    do
+      FILENAME=theme-${theme}-${sidebar}-${mode}
+      echo ${FILENAME}.md
+cat <<-EOM > $DIR/$FILENAME.md
+---
+Theme: ${theme}
+Sidebar: ${sidebar}
+Mode: ${mode}
+---
+# About Metabuzz
+
+* Theme is **${theme}**. According to frontmatter it's **{{ .Page.FrontMatter.Theme }}**
+* Sidebar **${sidebar}**. According to frontmatter it's **{{ .Page.FrontMatter.Sidebar }}** 
+* Mode should be **${mode}**
+
+Metabuzz is the best static site generator for creators who want to 
+start a documentation project with no special knowledge up front.
+There is absolutely no configuration or setup required. 
+
+
+## How it works
+
+You install a single
+executable file, create pages with a text editor, and Metabuzz does the rest.
+It's designed so that you don't need to know anything but how to write in Markdown
+format--and even that's optional. You can start knowing nothing at all about Markdown. 
+When you need to learn more, it comes tutorials designed to get you
+going at any level.
+Just install it, run **mb new site** and enter the name of a folder to create when prompted.
+(You can also give a full path to the on the command line, for example, **mb new site ~/code/mysite**.)
+
+## Features for agencies
+
+Metabuzz produces beautiful, SEO-enabled informational sites by starting
+with words, then letting you "reskin" the site using themes.
+
+* All sites require certain pages to start with. For example, you'd typically want an
+About page, a Terms of Service page, and  Privacy Policy page. *Starter files* let you describe these
+pages in a simple YAML format. That means when you create a new site you can generate starter versions
+of all those pages too. It's also good for book series or periodicals where you frequently
+create new publications with a standard format.
+* The included themes are all mobile-friendly: try them yourself at Google's [Mobile-Friendly Test](https://search.google.com/test/mobile-friendly) site.
+* The factory themes are built using standard CSS and work with browsers going back to 2016. All factory themes support
+a sidebar (either right or left), light mode and dark mode, a header section, a nav section, and a footer.
+
+
+## Wait'll they get a load of this
+
+![Logo](eastside-emerald-64x64.png)
+**Note**
+
+* **Resize this** to check for responsive versions
+* Check in all browsers
+
+#### Code fence example
+
+```
+writeln("hello, world.")
+```
+
+| Page element   | HTML tag        |
+|--------------- | --------------- |
+| header         | &lt;header&gt;  |
+| navbar         | &lt;nav&gt;     |
+| article        | &lt;article&gt; |
+| sidebar        | &lt;aside&gt;   |
+| header         | &lt;header&gt;  |
+
+
+#### HTML form test: Search reddit.com
+<form action="https://www.google.com/search" class="searchform" method="get" name="searchform" target="_blank">
+<input name="sitesearch" type="hidden" value="reddit.com">
+<input autocomplete="on" name="q" placeholder="Search reddit.com" required="required"  type="text">
+<button class="button" type="submit">Search</button>
+</form>
+
+
+
+[Home](./index.html)
+
+EOM
+
+    # A single variation has been generated
+    done
+    
+  done
+# All variations on one theme have been generated
+  echo "[Home](./index.html)" >> $LINKSECTION
+
+# All test files have been generated
+done
+cat $THEMELIST >> $INDEX
+cat $LINKSECTION >> $INDEX
+mb build $DIR
+open $DIR/.mb/pub/index.html
+

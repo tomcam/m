@@ -1,0 +1,5 @@
+/* Put article on the left and sidebar on the right */
+aside{float:left;}
+article{margin-left:var(--left-margin);}
+
+ 

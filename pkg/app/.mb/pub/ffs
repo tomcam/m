@@ -1,0 +1,5 @@
+#!/bin/bash
+## ffs searches for text in the Metabuzz theme (stylesheet) files
+#grep -lr --include='*.go' "$1" ~/code/m/
+# -n means print line number
+grep -r -n --include='*.css' "$1" ~/code/m/ | sed -e 's/^\s*//' -e '/^$/d' 

@@ -1,10 +1,7 @@
 # To do
 
 ## Priority 1: Showstoppers--required for the next release
-* Publising a source file is broken. Check old code. Among onter things:
-  - markdown file is getting published
-* Theme inheritance is failing
-* Test site is showing the reverse mode
+* WTF. Nested themes are broken again. If you do debut/gallery it only gets gallery.
 * Theme that's named as a number doesn't seem to work well
 * Add idea of post and specfiications like YYYY-MM-DD or y-m-d etc, using dirs or strings as needed . That way mb new post "/blog/avengers review" would expand to something like "/blog/2022/04/21/avengers-review.html" or "/blog/2022-March-1-avengers-review.html" and so on 
 * Mention in docs that one should default to post if one dones't know the difference between page and post
@@ -13,6 +10,10 @@
   Image properties are likely based on adjancent headers, which can be added empty (without text for the header)
 * Document how Frontmatter Mode determines whether
 theme-light.css or theme-dark.css is used.
+* Create a page with this intentional error (no closing quote), then document the resulting error message
+```
+{{ inc "common|mdemo.md }}
+```
 * Incomplete list of things that need to be handled once I start accepting
 options other than the front matter:
   - Site.Mode sets default for FrontMatter.Mode
@@ -53,6 +54,8 @@ a leading . in the name
 source file directory structure remains sacrosanct: a tree of Markdown files
 
 ## Priority 2: Desired but not required for the next release
+* funcs.go articlefunc() doesn't work because I don't actually store the output. Should probably do it.
+  don't forget that  getProjectTree() returns a list of all files on the site but discards it.
 * Documente that Inhereted themes still need (empty) sidebar-left.css, sidebar-right.css, theme-light.css, theme-dark.css for the test suite only. Or maybe test suite should generate them.
 * wide theme using to have {{ toc }} in the sidebar. Hve to revivi that aftermaking parser options more detailed
 * The test used to show all features of a theme should include
@@ -61,6 +64,10 @@ source file directory structure remains sacrosanct: a tree of Markdown files
 * pub.go: stylesheetTags()  Last stylesheet tag always gets duplicated
 * RSS support
 * Sitemap support
+* Create a page with this intentional error (no closing quote), then document the resulting error message
+```
+{{ inc "common|mdemo.md }}
+```
 * Error in YAML file doesn't identify the YAML filename
 * Change readThemeFile to readThemeConfig. Also write- version
 * If nothing is avaialble for header, footer, and so on, 
@@ -70,6 +77,7 @@ publish nothing. Right now I'm publishing empty tags.
 * Ensure Dedent is working properly. The generated source always has a newline appended. Does Dedent account for that, or should it?
 * Introduce idea of drafts so you don't publish something by accident
 * Move util.go to pkg/util
+* createDirStructure() is no longer used, but create an example from it before deleting?
 * In util.go, see if I need all the cfgPath code
 * Create a test case for each error code
 * Ensure each error code is documented

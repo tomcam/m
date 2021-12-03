@@ -19,9 +19,6 @@ import (
 	"strings"
 )
 
-//go:embed .mb/*
-var mb embed.FS
-
 // App contains all runtime options required to convert a markdown
 // file or project to an HTML file or site.
 // Compound data structure for config example at
@@ -259,11 +256,13 @@ func (app *App) setPaths() {
 // setWorkingDir() changes to the specified
 // directory and sets app.Site.path accordingly.
 func (app *App) setWorkingDir(dir string) error {
-	app.Debug("setWorkingDir()")
+	app.Debug("\tsetWorkingDir(%v)", dir)
 	if dir == "." || dir == "" {
 	} else {
 		if err := os.Chdir(dir); err != nil {
-			return ErrCode("PREVIOUS", dir)
+			app.Debug("\t\tos.ChDir(%v) failed", dir)
+			return ErrCode("1108", "PREVIOUS", err.Error())
+			// xxx
 		}
 	}
 	app.Site.path = currDir()

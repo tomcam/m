@@ -176,7 +176,8 @@ func (app *App) kitchenSink(pathname string) error {
 	// Get factory themes and copy to project. They will then
 	// be copied on demand to the publish directory as needed.
 	// This makes it easy to find themes and modify theme.
-	if err := app.copyFactoryThemesDir(); err != nil {
+	if err := app.copyMbDir(); err != nil {
+
 		return ErrCode("PREVIOUS", err.Error())
 	}
 

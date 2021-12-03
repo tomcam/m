@@ -1,11 +1,11 @@
 package app
 
 import (
-	"embed"
+	//"embed"
 	"github.com/tomcam/m/pkg/default"
 	"gopkg.in/yaml.v3"
-	"io"
-	"io/fs"
+	//"io"
+	//"io/fs"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -68,71 +68,8 @@ type layoutElement struct {
 // list of files even though the themes directory
 // doesn't exist at runtime.
 
-//go:embed themes/*
-var factoryThemeFiles embed.FS
-
-// Todo: changed name from embedDirCpy() to copyFactoryThemes
-// copyFactoryThemes() copies the theme files embedded in
-// this subdirectory to the project's themes directory.
-// In turn, when the site is published only the themes
-// it needs will be copied over.
-func (app *App) oldcopyFactoryThemes() error {
-	// TODO: Can this whole thing be replaced with a copyDirAll()?
-	// Is there a perf benefit either way?
-	app.Debug("\tcopyFactoryThemes")
-	var target string
-	fs.WalkDir(factoryThemeFiles, ".", func(path string, d fs.DirEntry, err error) error {
-		if err != nil {
-			// TODO: Handle error properly & and document error code
-			return err
-		}
-		// Handle subdirectory.
-		// path is the relative path of the file, for example,
-		// it might be /en/products or something like that
-		if d.IsDir() {
-			if path == "." {
-				return nil
-			}
-			// Get name of destination directory.
-			target = filepath.Join(app.cfgPath, path)
-			// Create the destination directory.
-			err := os.MkdirAll(target, defaults.PublicFilePermissions)
-			if err != nil {
-				// TODO: Handle error properly & and document error code
-				app.Debug("\tos.MkdirAll() error: %v", err.Error())
-				return ErrCode("0409", target)
-			}
-			app.Debug("\t\tcreated directory %v", target)
-			return nil
-		}
-		// It's a file, not a directory
-		app.Debug("\t\tCreated theme directory %v", target)
-		// Handle individual file
-		target = filepath.Join(app.Site.factoryThemesPath, path)
-		f, err := factoryThemeFiles.Open(path)
-		if err != nil {
-			// TODO: Handle error properly & and document error code
-			app.Debug("\tFS.Open(%v) error: %v", path, err.Error())
-			return err
-		}
-		// Read the file into a byte array.
-		b, err := io.ReadAll(f)
-		if err != nil {
-			// TODO: Handle error properly & and document error code
-			app.Debug("\tio.ReadAll(%v) error: %v", f, err.Error())
-			return err
-		}
-		// Copy the recently read file to its destination
-		err = ioutil.WriteFile(target, b, defaults.ProjectFilePermissions)
-		if err != nil {
-			app.Debug("\t\tcopyFactoryThemes(): err after WriteFile:  %#v", err)
-			// TODO: Handle error properly & and document error code
-			return ErrCode("0216", err.Error(), target)
-		}
-		return nil
-	})
-	return nil
-}
+// TODOgo:don'tembed themes/*
+//var factoryThemeFiles embed.FS
 
 // themeNameToLower() determines the theme name in
 // proper order, from most to least proximate.
@@ -222,6 +159,7 @@ func (app *App) loadThemeLevel(source string, dest string, level int) error {
 	return nil
 } // loadThemeLevel()
 
+// xxx
 // loadTheme() finds the theme specified for this page.
 // Load the theme and all its descendants, because
 // a theme could be as sample as "debut" or it could be

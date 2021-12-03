@@ -4,7 +4,7 @@ import (
 	//"github.com/yuin/goldmark/util"
 	"bytes"
 	//"fmt"
-	"github.com/tomcam/m/pkg/default"
+	//"github.com/tomcam/m/pkg/default"
 	//"github.com/tomcam/m/pkg/mdext"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark-highlighting"
@@ -53,9 +53,11 @@ func (app *App) mdToHTML(source []byte) ([]byte, error) {
 //  setPaths()
 func (app *App) build(path string) error {
 	var err error
+	app.Debug("\tbuild(%v)", path)
 	// Change to specified directory.
 	// Update app.Site.path and build all related directories
 	if err := app.setWorkingDir(path); err != nil {
+		app.Debug("\t\tUnable to change to directory (%v)", path)
 		return ErrCode("1107", path)
 	}
 
@@ -63,27 +65,21 @@ func (app *App) build(path string) error {
 		return ErrCode("1002", path)
 	}
 
-	app.Debug("build %s", app.Site.path)
-	// Create minimal subdirectory structure:
-	// Publish directory, site directory,
-	// theme directory, etc.
-	if err = createDirStructure(&defaults.SitePaths); err != nil {
-		return ErrCode("PREVIOUS", err.Error())
-	}
-
 	// Get a list of all files & directories in the site.
 	if _, err = app.getProjectTree(app.Site.path); err != nil {
+		app.Debug("\t\tError reading project tree")
 		return ErrCode("0913", app.Site.path)
 	}
 
 	// Delete any existing publish dir
 	if err := os.RemoveAll(app.Site.publishPath); err != nil {
+		app.Debug("\t\tError deleting existing publish dir %v", app.Site.publishPath)
 		return ErrCode("0302", app.Site.publishPath)
 	}
 
 	// xxx
 	if err := app.readSiteConfig(); err != nil {
-		app.Note("siteConfig filename: %v", app.Site.siteFilePath)
+		app.Debug("\t\tError reading siteConfig %v", app.Site.siteFilePath)
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	// Build the target publish dir so there should be

@@ -118,7 +118,8 @@ var errMsgs = map[string]string{
 	"0922": "No project found at",     // message
 	// TODO: Get rid of the line below
 	// Old errors stopped at 0924
-
+	"0923": "Error building",             // projectname
+	"0924": "Error creating new project", // projectname
 	// TODO: Get rid of the line below
 	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
 
@@ -149,7 +150,7 @@ var errMsgs = map[string]string{
 	// Old errors stopped at 1106
 	// TODO: Get rid of the line below
 	"1107": "Can't change to site directory", // project name
-
+	"1108": "Can't change to site directory",
 	// 1200 - Syntax error!
 	"1204": "Unknown dot value in Go template function ", //
 	// TODO: Get rid of the line below
@@ -157,28 +158,28 @@ var errMsgs = map[string]string{
 }
 
 type ErrMsg struct {
-	// Key to a map of error messages
-	Key string
+	// key to a map of error messages
+	key string
 
-	// If Key is the word "PREVIOUS", this will contain an error
+	// If key is the word "PREVIOUS", this will contain an error
 	// message from an earlier action, typically a return from the
 	// Go runtime.
-	Previous string
-	Extra    []string
+	previous string
+	extra    []string
 }
 
-// Error() looks up e.Key, which is an error code number
+// Error() looks up e.key, which is an error code number
 // expressed as a string (for example, "1001")
 // and returns its associated map entry, which is an explanatory
 // text message for that error code.
 // But there's likely much more happening:
-// -  If e.Key is "PREVIOUS" it suggests that an error message
+// -  If e.key is "PREVIOUS" it suggests that an error message
 //    that didn't get displayed probably
 //    should be displayed, and its contents
 //    in e.previous are returned.
-// -  If e.Extra has something, say, a filename, it should be
+// -  If e.extra has something, say, a filename, it should be
 //    used to customize the error message.
-// -  If the e.Key isn't recognized, it displays an
+// -  If the e.key isn't recognized, it displays an
 //    "error code untracked" error message as a reminder to me
 //    that I screwed up.
 // Why is the key a number formatted as a string?
@@ -190,32 +191,39 @@ type ErrMsg struct {
 func (e *ErrMsg) Error() string {
 	var msg error
 	// Make sure the error code has documentation
-	if errMsgs[e.Key] == "" {
+	if errMsgs[e.key] == "" {
 		msg = fmt.Errorf("ERROR CODE %s UNTRACKED: please contact the developer\nMore info: %s\n",
-			defaults.ErrorCodePrefix+e.Key, e.Previous)
+			defaults.ErrorCodePrefix+e.key, e.previous)
 		return msg.Error()
 	}
 
+	// Handle this special case:
+	// ErrCode("1234", "PREVIOUS", something)
+	// This is the case where something like a Go system call
+	// returned an error, but I want to know where it occurred.
+	if e.previous == "PREVIOUS" {
+		msg = fmt.Errorf("%s (error code %s%s). Previous error was '%s'",
+			errMsgs[e.key], defaults.ErrorCodePrefix, e.key, e.extra)
+		//fmt.Printf("HEY %v", msg.Error())
+		return msg.Error()
+	}
+	//xxx
+
 	// Error message from an earlier error return needs to be seen.
-	if e.Key == "PREVIOUS" {
-		return fmt.Errorf("%s\n", e.Previous).Error()
+	if e.key == "PREVIOUS" {
+		return fmt.Errorf("%s\n", e.previous).Error()
 	}
 
-	if e.Previous != "" {
+	if e.previous != "" {
 		msg = fmt.Errorf("%s %s (error code %s%s)\n",
 			// The most common case: an error code with customization
-			errMsgs[e.Key], e.Previous, defaults.ErrorCodePrefix, e.Key)
+			errMsgs[e.key], e.previous, defaults.ErrorCodePrefix, e.key)
 	} else {
 		msg = fmt.Errorf("%s (error code %s%s)\n",
 			// The slightly unusual case of an error code with no customization
-			errMsgs[e.Key], defaults.ErrorCodePrefix, e.Key)
+			errMsgs[e.key], defaults.ErrorCodePrefix, e.key)
 	}
 	return msg.Error()
-}
-
-// new() allocates a map entry for errMsgs.
-func new(key string, previous string, extra ...string) error {
-	return &ErrMsg{key, previous, extra}
 }
 
 // ErrCode() takes an error code, say "0110", and
@@ -237,7 +245,10 @@ func new(key string, previous string, extra ...string) error {
 //
 //   return ErrCode("0401", err.Error(), filename)
 //
-//   Example (a very good example) from util.go
+// TODO: Make sure I implemented this or delete the comment
+//   return ErrCode("0401", "PREVIOUS", errText)
+//
+//   Good example from util.go
 //	 if err != nil {
 //     return ErrCode("1234", "from '"+source+"' to '"+dest+"'", "")
 //   }
@@ -259,11 +270,16 @@ func new(key string, previous string, extra ...string) error {
 func ErrCode(key string, previous string, extra ...string) error {
 	var e error
 	if len(extra) > 0 {
-		e = new(key, previous, extra[0])
+		e = add(key, previous, extra[0])
 	} else {
-		e = new(key, previous)
+		e = add(key, previous)
 	}
 	return e
+}
+
+// add() allocates a map entry for errMsgs.
+func add(key string, previous string, extra ...string) error {
+	return &ErrMsg{key, previous, extra}
 }
 
 // QuitError() displays the error passed to it and exits

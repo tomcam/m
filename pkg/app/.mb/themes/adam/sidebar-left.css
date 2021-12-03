@@ -1,0 +1,9 @@
+article{float:right;}
+
+/* This is the header and footer width minus sidebar width */
+article {width:var(--alt-article-column-width);}
+/* With sidebar to left no article margin is needed  */
+article{margin-left:0;}
+
+
+

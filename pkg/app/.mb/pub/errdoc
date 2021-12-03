@@ -1,0 +1,28 @@
+#!/bin/zsh
+# Creates a new error code documentation file such as 0123.md 
+# from a template in the website errors documentation 
+# directory. So if you run this:
+#   ./errdoc 1102
+# The result is this file:
+#    ~/code/m/website/docs/errors/1102.md
+# The top of the template has the error code in an h1, but
+#  represented as #XXX so it can easily be relpaced with
+#  # 1234 or whatever your error code is
+#
+# Replace with your own, inferior editor
+EDITOR=nvim
+
+# Directory where errors are documented and where the template lives.
+ERRDIR=~/code/m/website/docs/errors
+
+# Validate that user has specified nothing but 4 digits
+[[ ! $1 =~ ^[0-9]{4} ]] && echo "Please specify the a 4 digit error number, e.g. 1234" && exit 1 
+# Generate proposed filename
+FILENAME=$ERRDIR/$1.md
+
+# If the file exists edit it.
+[ -f $FILENAME ] && ${EDITOR} ${FILENAME} && exit 0
+
+# If the file doesn't exist, generate it and edit the new file.
+sed -E "s/#XXX/# ${1}/" ${ERRDIR}/errtemplate.md > ${FILENAME} && ${EDITOR} ${FILENAME} && exit 0 
+

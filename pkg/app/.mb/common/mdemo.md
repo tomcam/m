@@ -1,12 +1,9 @@
 # Metabuzz Markdown quick reference
 
-Metabuzz was designed from the ground up to make creating information-dense websites as fast as possible. If you only know Markdown, you can create a full website starting right now. You don't need to know CSS or HTML. You don't need to understand how to edit front matter, though knowing these things helps. 
-
-If you don't even know Markdown, you're still fine. This page is a quick reference showing all Markdown features and the website has a complete [tutorial](https://metabuzz.com/website/docs/tutorial.html).
-
-** Autogen TOC **
+## Automatically generated TOC
 
 {{ toc }}
+
 
 **Table of contents** 
 
@@ -203,43 +200,25 @@ fmt.Println("This is a code block")
 
 ## There are 2 or 3 kinds of list types
 
-
 #### You type:
 ```
 ### Ordered lists
 
-1. Numbered item 
-   1. Numbered subitem 1 after 3 spaces
-   2. Numbered subitem 2 after 3 spaces
-1. Back to level 1 ordered aka numbered list
-   1. Subitem 1 after 3 spaces
-   1. Subitem 2 after 3 spaces
-   1. Subitem 3 after 3 spaces
-      1. Sub-subitem 1 is 3 levels deep
-      1. Sub-subitem 2 is 3 levels deep
-         1. Sub-sub-subitem 1 is 4 levels deep
-         1. That's more than recommended for clarity
-
+1. Ordered lists have numeric sequences
+1. Even though you write `1` in Markdown,
+1. The numbers display properly on output
 ```
 
-#### It shows as:
 
+#### It shows as:
 ### Ordered lists
 
-1. Numbered item 
-   1. Numbered subitem 1 after 3 spaces
-   2. Numbered subitem 2 after 3 spaces
-1. Back to level 1 ordered aka numbered list
-   1. Subitem 1 after 3 spaces
-   1. Subitem 2 after 3 spaces
-   1. Subitem 3 after 3 spaces
-      1. Sub-subitem 1 is 3 levels deep
-      1. Sub-subitem 2 is 3 levels deep
-         1. Sub-sub-subitem 1 is 4 levels deep
-         1. That's more than recommended for clarity
+1. Ordered lists have numeric sequences
+1. Even though you write `1` in Markdown,
+1. The numbers display properly on output
 
 
-<a name="unordered-lists"></a>
+<a name="unordered-lists"><a/>
 
 ### Unordered, or bullet lists
 
@@ -248,7 +227,7 @@ fmt.Println("This is a code block")
 Reasons people hate bullet lists
 
 * They were traumatized by bad PowerPoint
-* Some people actually like bullet lists
+* Some peple actually like bullet lists
   + You can indent bullet lists
     - Just use tab, then one of the characters `*`, `+`, `-`
   + The `+` isn't required. It's just for clarity
@@ -262,7 +241,7 @@ Reasons people hate bullet lists
 Reasons people hate bullet lists
 
 * They were traumatized by bad PowerPoint
-* Some people actually like bullet lists
+* Some peple actually like bullet lists
   + You can indent bullet lists
     - Just use tab, then one of the characters `*`, `+`, `-`
   + The `+` isn't required. It's just for clarity
@@ -320,7 +299,7 @@ You can combine them to make a clickable image, like this:
 ## Tables
 
 Use this method of creating tables. Columns are normally left-aligned,
-but `:|` on the row of dashes right-aligns a column, and  `|:--:|` center-aligns a column.
+but `:|` on the row of dashes right-aligns a column, and  `|:-` and  `-:|` center-aligns a column.
 Headers are always centered.
 
 #### You type:
@@ -345,7 +324,8 @@ And here's what results from the table markdown shown above:
 
 #### You type:
 ```
-> Hypocrisy waits silently for us all. 
+>Hypocrisy waits silently for us all. 
+
 ```
 
 #### It shows as:

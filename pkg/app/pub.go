@@ -10,7 +10,8 @@ import (
 )
 
 // publish() copies the specified file to the publish directory,
-// as long as it's not excluded.
+// as long as it's not excluded. It's known not to
+// be a Markdown file.
 func (app *App) publish(filename string) error {
 	rel, err := filepath.Rel(app.Site.path, filepath.Dir(filename))
 	if err != nil {
@@ -19,8 +20,7 @@ func (app *App) publish(filename string) error {
 	}
 	app.Page.filePath = filename
 	dest := filepath.Join(app.Site.publishPath, rel, filepath.Base(filename))
-	//app.Debug("\tpublish(%v) to %v", filename, dest)
-	app.Debug("\tpublish(%v) to %v", filename, rel)
+	app.Debug("\t\tpublish(%v) to %v", filename, rel)
 	err = Copy(filename, dest)
 	if err != nil {
 		return ErrCode("PREVIOUS", err.Error())
@@ -29,6 +29,8 @@ func (app *App) publish(filename string) error {
 }
 
 func (app *App) publishMarkdownFile(filename string) error {
+	//app.Page.FrontMatter = FrontMatter{}
+	app.Page = Page{}
 	app.Debug("\tpublishMarkdownFile(%#v)", filename)
 	// Figure out this file's relative position in the output
 	// directory true. For example:
@@ -66,7 +68,6 @@ func (app *App) publishMarkdownFile(filename string) error {
 		return err
 	}
 
-	app.Page.FrontMatter = FrontMatter{}
 	// Convert the FrontMatter map produced by Goldmark into
 	// the Page.FrontMatter struct.
 	app.frontMatterRawToStruct()
@@ -119,6 +120,7 @@ func (app *App) publishMarkdownFile(filename string) error {
 	// TODO: May be unnecessary
 	app.Page.Theme = Theme{}
 	app.Site.publishedThemes = map[string]bool{}
+	app.Page.FrontMatter = FrontMatter{}
 	return nil
 }
 
@@ -497,7 +499,7 @@ func (app *App) publishStylesheets() error {
 // graphics files, and other assets required to
 // publish this page.
 func (app *App) publishPageAssets() error {
-	app.Debug("\t\tpublishPageAssets()")
+	app.Debug("\t\tpublishPageAssets() for %v", app.Page.filePath)
 	// Take raw list of stylesheets from theme and ensure
 	// they're in the right order, right
 	app.normalizeStylesheetList()

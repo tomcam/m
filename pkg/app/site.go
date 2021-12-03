@@ -1,11 +1,15 @@
 package app
 
 import (
+	"embed"
 	"github.com/tomcam/m/pkg/default"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"os"
 )
+
+//go:embed .mb
+var mbfiles embed.FS
 
 // Site contains configuration specific to each site, such as
 // its directory location, title, publish directory,
@@ -157,6 +161,7 @@ type Site struct {
 
 	// All the rendered pages on the site, plus meta information.
 	// Index by the fully qualified path name of the source .md file.
+	// TODO: Not yet used
 	webPages map[string]WebPage
 
 	// Pages to generate when site is created
@@ -263,13 +268,6 @@ const (
 )
 
 // TODO: Document
-func (a *App) addMdOption(dir string, mdOption MdOptions) {
-	d := a.Site.dirs[dir]
-	d.mdOptions |= mdOption
-	a.Site.dirs[dir] = d
-}
-
-// TODO: Document
 func (a *App) setMdOption(dir string, mdOption MdOptions) {
 	d := a.Site.dirs[dir]
 	d.mdOptions = mdOption
@@ -284,9 +282,10 @@ func (m MdOptions) IsOptionSet(opt MdOptions) bool {
 // newSite() generates an empty site at
 // the directory specified in app.Site.path
 func (app *App) newSite(pathname string) error {
-	app.Debug("\tnewSite(%v)", pathname)
+	app.Debug("newSite(%v)", pathname)
 	var err error
 	// Create a project at the specified path
+	// xxx
 	err = os.MkdirAll(pathname, defaults.ProjectFilePermissions)
 	if err != nil {
 		return ErrCode("0401", pathname)
@@ -312,14 +311,6 @@ func (app *App) newSite(pathname string) error {
 	// Get factory themes and copy to project. They will then
 	// be copied on demand to the publish directory as needed.
 	// This makes it easy to find themes and modify theme.
-	app.Debug("\t\tAbout to copy factory themes")
-	if err = app.copyFactoryThemesDir(); err != nil {
-		app.Debug("\t\t\tError after calling app.copyFactoryThemesDir(): %v", err)
-		// TODO: Improve error handling?
-		app.Debug("\t\t\tcopyFactoryThemesDir() failed during newSite()")
-		return ErrCode("PREVIOUS", err.Error())
-	}
-
 	filename := ""
 	// If user supplied a site configuration file, use it
 	if app.Flags.Site != "" {
@@ -412,11 +403,6 @@ func (app *App) setSiteDefaults() {
 
 // copyMbDir() copies the .mb directory to the new site.
 func (app *App) copyMbDir() error {
-	return app.embedDirCopy(mb, app.Site.path)
-}
-
-// copyFactoryThemesDir() copies the theme files embedded in
-// the named file embed to the project's themes directory.
-func (app *App) copyFactoryThemesDir() error {
-	return app.embedDirCopy(factoryThemeFiles, app.cfgPath)
+	app.Print("copyMbDir to %v", app.Site.path)
+	return app.embedDirCopy(mbfiles, app.Site.path)
 }

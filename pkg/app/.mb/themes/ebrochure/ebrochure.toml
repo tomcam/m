@@ -1,0 +1,26 @@
+Branding = "Yo Mama"
+Description = ""
+RootStylesheets = ["reset.css", "fonts.css", "bind.css"]
+Stylesheets = ["sizes.css", "theme-light.css", "ebrochure.css"]
+PathName = ""
+Version = "0.7.0"
+
+[Nav]
+  HTML = ""
+  File = ""
+
+[Header]
+  HTML = ""
+  File = ""
+
+[Article]
+  HTML = ""
+  File = ""
+
+[Footer]
+  HTML = ""
+  File = ""
+
+[Sidebar]
+  HTML = ""
+  #File = "sidebar.md"
