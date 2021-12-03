@@ -124,6 +124,7 @@ var errMsgs = map[string]string{
 	"0924": "Error creating new project", // projectname
 	// TODO: Get rid of the line below
 	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
+	"0925": "Error generating Markdown for page elment file", // filename
 
 	// 0950 - Something's already there
 	"0951": "Site already exists at", // sitename
@@ -143,6 +144,7 @@ var errMsgs = map[string]string{
 	"1028": "Can't find a theme named",                               // filename
 	"1029": "Can't find the theme file",                              // filename
 	"1033": "Unable to read theme directory",                         // filename
+  "1034": "Unable to find layout element file", // filename
 	// TODO: Get rid of the line below
 	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
 

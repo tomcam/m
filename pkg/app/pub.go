@@ -90,6 +90,22 @@ func (app *App) publishMarkdownFile(filename string) error {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 
+  var header string
+  if header, err = app.header(); err != nil {
+		return ErrCode("PREVIOUS", err.Error())
+  }
+  var nav string
+  if nav, err = app.nav(); err != nil {
+		return ErrCode("PREVIOUS", err.Error())
+  }
+  var sidebar string
+  if sidebar, err = app.sidebar(); err != nil {
+		return ErrCode("PREVIOUS", err.Error())
+  }
+  var footer string
+  if footer, err = app.footer(); err != nil {
+		return ErrCode("PREVIOUS", err.Error())
+  }
 	// Write HTML text of the body
 	fullPage := app.Site.HTMLStartFile +
 		"\"" + app.Site.Language + "\"" + ">" + "\n" +
@@ -101,11 +117,13 @@ func (app *App) publishMarkdownFile(filename string) error {
 		//app.stylesheetTags() +
 		app.Page.stylesheetTags +
 		"</head>" + "\n" +
-		app.header() +
-		app.nav() +
+		//app.header() +
+		header +
+		//app.nav() +
+    nav +
 		app.article(body, "article") +
-		app.sidebar() +
-		app.footer() +
+		sidebar +
+		footer +
 		app.Site.HTMLEndFile
 
 	if err = os.WriteFile(target, []byte(fullPage), defaults.PublicFilePermissions); err != nil {
@@ -135,11 +153,9 @@ func (app *App) publishMarkdownFile(filename string) error {
 // Pre: loadTheme() has been called so all nested themes are present
 func (app *App) normalizeStylesheetList() {
 	app.Debug("\t\t\tnormalizeStylesheetList()")
-	app.Print("\t\t\tnormalizeStylesheetList()")
 	for level := 0; level < len(app.Page.Theme.levels); level++ {
 		theme := app.Page.themes[level]
 	  app.Debug("\t\t\t\t%#v", app.Page.themes[level])
-	  app.Print("\t\t\t\t%#v", app.Page.themes[level])
 		// xxx
 		responsive := false
 		darkMode := app.darkMode()
@@ -173,8 +189,6 @@ func (app *App) normalizeStylesheetList() {
 			if stylesheet != "" {
 				theme.stylesheetList =
 					append(theme.stylesheetList, stylesheet)
-				//app.Print("\t\t\t\tappending style sheet %v to stylesheetlist %v", stylesheet, theme.stylesheetList)
-				app.Print("\t\t\t\tappending style sheet %v", stylesheet)
 			}
 		}
 		// sidebar-right.css or sidebar-left.css must be
@@ -256,7 +270,8 @@ func (app *App) buildPublishDirs() error {
 			return ErrCode("PREVIOUS", err.Error())
 		}
 	}
-	//app.Note("About to create %v",app.Site.cssPublishPath)
+  // TODO: Not actually using this
+	app.Debug("About to create %v",app.Site.cssPublishPath)
 	if err := os.MkdirAll(app.Site.cssPublishPath, defaults.PublicFilePermissions); err != nil {
 		app.QuitError(err)
 	}
@@ -264,26 +279,8 @@ func (app *App) buildPublishDirs() error {
 	return nil
 }
 
-// descriptionTag() does everything it can to
-// generate a Description metatag for the file.
-// TODO: Add this my ghetto description function
-func (a *App) FulldescriptionTag() {
-	/*
-		// Best case: user supplied the description in the front matter.
-		if a.FrontMatter.Description != "" {
-			a.Page.descriptionTag = a.FrontMatter.Description
-		} else if a.Site.Branding != "" {
-			a.Page.descriptionTag = a.Site.Branding
-		} else if a.Site.Name != "" {
-			a.Page.descriptionTag = a.Site.Name
-		} else {
-			a.Page.descriptionTag = "Powered by " + defaults.ProductName
-		}
-	*/
-}
-
 // stylesheetTag() produces just that.
-// Given the name of a stylesheet, like say "markdown.css",
+// Given the full pathname of a stylesheet, 
 // return it in a link tag.
 func stylesheetTag(stylesheet string) string {
 	// If no stylesheet specified just return empty string
@@ -296,23 +293,27 @@ func stylesheetTag(stylesheet string) string {
 // layoutElementToHTML() takes an page region (header, nav, article, sidebar, or footer)
 // and converts it to HTML. All we know is that it's been specified
 // but we don't know whether's a Markdown file, inline HTML, whatever.
-func (app *App) layoutElementToHTML(tag string) string {
+func (app *App) layoutElementToHTML(tag string) (string, error) {
+  app.Debug("\tlayoutElementToHTML(%v)", tag)
 	html := ""
+  var err error
 	switch tag {
 	default:
 		html = ""
 	case "header", "nav", "footer":
-		html = app.layoutElement(tag)
+    if html, err = app.layoutElement(tag); err != nil {
+      return "", err
+    }
 		if html != "" {
-			return wrapTag("<"+tag+">", html, true)
+			return wrapTag("<"+tag+">", html, true), nil
 		}
 	case "sidebar":
-		html = app.layoutElement(tag)
+    html, err = app.layoutElement(tag)
 		if html != "" {
-			return wrapTag("<aside id='sidebar'>", html, true)
+			return wrapTag("<aside id='sidebar'>", html, true), nil
 		}
 	}
-	return html
+	return html, nil
 }
 
 // layoutElement() takes one of the layout elements (which
@@ -321,7 +322,7 @@ func (app *App) layoutElementToHTML(tag string) string {
 // to the theme config it maybe in inline HTML from the
 // config file, or it may be a file containing either
 // markdown or HTML.
-func (app *App) layoutElement(tag string) string {
+func (app *App) layoutElement(tag string) (string, error) {
 	var l layoutElement
 	switch tag {
 	case "header":
@@ -331,7 +332,7 @@ func (app *App) layoutElement(tag string) string {
 	case "sidebar":
 		sidebar := app.sidebarType()
 		if sidebar != "left" && sidebar != "right" {
-			return ""
+			return "", nil
 		}
 		l = app.Page.Theme.Sidebar
 	case "footer":
@@ -341,8 +342,8 @@ func (app *App) layoutElement(tag string) string {
 }
 
 // TODO: Probably want to return a byte slice
-func (app *App) layoutEl(l layoutElement) string {
-	app.Debug("\t\tlayoutEl(%#v)", l)
+func (app *App) layoutEl(l layoutElement) (string, error) {
+	app.Debug("\t\t\tlayoutEl(%#v)", l)
 	var err error
 	var html []byte
 	// Inline HTML is top priority
@@ -354,31 +355,26 @@ func (app *App) layoutEl(l layoutElement) string {
 	filename := l.File
 
 	// Locate it in the theme directory
-	filename = filepath.Join(app.siteThemesPath(), filename)
+	filename = filepath.Join(app.Page.Theme.sourcePath, filename)
 
-	// TODO: Should probably return an error
-	// Quit silently if file can't be found
+  app.Debug("\t\t\t\tlayoutEl filename: %v", filename)
 	if !fileExists(filename) {
-		// TODO: Handle error properly & and document error code
-		// T
-		app.Debug("\t\t\tlayoutEl() Can't find layout element file %v", filename)
-		return ""
+    return "", ErrCode("1034", filename)
 	}
 
 	// Convert file contents to a byte slice of HTML
 	if isMarkdownFile(filename) {
 		if html, err = app.MdFileToHTML(filename); err != nil {
-			app.Debug("\t\tlayoutEl() ERROR converting Markdown file %v", filename)
-			return ""
+      return "", ErrCode("0925", filename)
 		} else {
-			return string(html)
+			return string(html), nil
 		}
 	} else {
 		html = fileToBuf(filename)
 	}
 	// Handle the case where pure HTML was specified. First
 	// handle any Go template values.
-	return app.interps(filename, string(html))
+	return app.interps(filename, string(html)), nil
 }
 
 // article() takes the already-generated HTML and returns
@@ -399,19 +395,19 @@ func (app *App) article(body []byte, params ...string) string {
 	return html
 }
 
-func (app *App) header() string {
+func (app *App) header() (string, error) {
 	return app.layoutElementToHTML("header")
 }
 
-func (app *App) nav() string {
+func (app *App) nav() (string, error) {
 	return app.layoutElementToHTML("nav")
 }
 
-func (app *App) sidebar() string {
+func (app *App) sidebar() (string, error) {
 	return (app.layoutElementToHTML("sidebar"))
 }
 
-func (app *App) footer() string {
+func (app *App) footer() (string, error) {
 	return app.layoutElementToHTML("footer")
 }
 
@@ -474,7 +470,6 @@ func (app *App) publishStylesheet(source string, dest string) error {
 // after normalizeStylesheetList().
 func (app *App) publishStylesheets() error {
 	app.Debug("\t\t\tpublishStylesheets()")
-	app.Print("\t\t\tpublishStylesheets()")
 	var source, dest string
 	// Go through the list of stylesheets for this theme.
 	// Copy stylesheets for this theme from the local
@@ -484,14 +479,13 @@ func (app *App) publishStylesheets() error {
 	// xxx
 	for level := 0; level < len(app.Page.Theme.levels); level++ {
 		theme := app.Page.themes[level]
-		//app.Print("\t\t\tstylesheetList: %v", theme.stylesheetList)
-		app.Print("\t\t\t\ttheme is: %#v", theme.level)
-		app.Print("\t\t\t\tstylesheetList is: %#v", theme.stylesheetList)
+		app.Debug("\t\t\t\ttheme is: %#v", theme.level)
+		app.Debug("\t\t\t\tstylesheetList is: %#v", theme.stylesheetList)
 		for _, stylesheet := range theme.stylesheetList {
 			source = filepath.Join(theme.sourcePath, stylesheet)
 			dest = filepath.Join(app.themePublishDir(theme.level), stylesheet)
 
-			app.Print("\t\t\t\t\tsheet: %#v", stylesheet)
+			app.Debug("\t\t\t\t\tsheet: %#v", stylesheet)
 			if err := app.publishStylesheet(source, dest); err != nil {
 				return ErrCode("PREVIOUS", err.Error())
 				//return ErrCode("1024", source)
@@ -502,7 +496,7 @@ func (app *App) publishStylesheets() error {
 
 		}
 		app.Page.stylesheetTags = stylesheets.String()
-		app.Print("\t\t\t\tstylesheets.String() %v", stylesheets.String())
+		app.Debug("\t\t\t\tstylesheets.String() %v", stylesheets.String())
 	}
 	return nil
 }

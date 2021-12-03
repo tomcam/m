@@ -239,7 +239,8 @@ func (app *App) setPaths() {
 	// Compute the directory location of themes
 	// that get copied over selectively for a
 	// particular site.
-	app.Site.siteThemesPath = filepath.Join(app.Site.publishPath,
+	//app.Site.siteThemesPath = filepath.Join(app.Site.publishPath,
+	app.Site.siteThemesPath = filepath.Join(app.Site.path,
 		defaults.SiteThemesDir)
 
 	// Compute the directory location for tags

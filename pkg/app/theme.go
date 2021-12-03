@@ -186,7 +186,7 @@ func (app *App) loadThemeLevel(source string, dest string, level int) error {
 		return ErrCode("1028", source)
 	}
 
-	app.Page.Theme.publishPath = dest
+	//app.Page.Theme.publishPath = dest
 	if err := app.loadThemeConfig(source); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
@@ -243,7 +243,7 @@ func (app *App) loadTheme() error {
 	from := filepath.Join(app.Site.factoryThemesPath, defaults.SiteThemesDir)
 
 	// Get directory to which the theme will be copied for this site
-	to := app.Site.siteThemesPath
+	//to := app.Site.publishPath
 	themeName := ""
 	//app.Print("\t\t\tfrom: %v. to: %v", from, to)
 	for level := 0; level < len(app.Page.Theme.levels); level++ {
@@ -253,7 +253,7 @@ func (app *App) loadTheme() error {
 		// Get the next level of directory and append
 		// to the previous directory
 		source := filepath.Join(from, themeName)
-		dest := filepath.Join(to, themeName)
+		dest := app.themePublishDir(themeName)
 		app.Page.Theme.sourcePath = source
 		// TODO: I can probably remove nestingLevel entirely, unless i need it
 		// to detect latest sidebar or mode
@@ -332,8 +332,8 @@ func (app *App) loadThemeConfig(path string) error {
 	theme := strings.ToLower(app.Page.FrontMatter.Theme)
 	app.Page.FrontMatter.Theme = theme
 	app.Page.Theme.Name = theme
-
 	app.Page.Theme.publishPath = path
+  // TODO: This doesn't seem to be used
 	app.Site.publishedThemes[path] = true
 
 	return nil
