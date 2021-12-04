@@ -85,21 +85,7 @@ nav > ul > li > a:active {text-decoration:underline;}
 /* ******************************/
 /*  ARTICLE-MAIN PORTION OF TEXT*/
 /* ******************************/
-
-article > p, 
-  article > p > a,
-  article > ul, 
-  article > ol, 
-  article > li, 
-  article > dd, 
-  article > dl{
-  font-size:var(--p-font-size);padding-top:var(--p-padding-top);padding-bottom:var(--article-padding-bottom);margin-top:var(--p-margin-top);margin-bottom:var(--p-margin-bottom);}
-
-article > h1,article > h2 {font-weight:900;}
-article > h4 {font-weight:normal;} /* Byline */
-article > h4 > strong {font-weight:bold;} /* Byline */
-article > p > strong {font-weight:700;}
-
+article > ul {padding-left:1rem;}
 article > p, 
   article > ul, 
   article > ol, 
@@ -107,9 +93,27 @@ article > p,
   article > dd, 
   article > dl,
   article > hr {
-    padding-left:var(--p-padding-left);
-		line-height:1.5rem;
+		font-size:var(--p-font-size);
+    padding-right:var(--text-end);
+    line-height:var(--p-line-height);
 }
+article > table, 
+  article > table > thead, 
+  article > table > thead > tr,
+  article > table > thead > tr > th,
+  article > table > tbody,
+  article > table > tbody > tr,
+  article > table > tbody > tr > th,
+  {
+    margin-left:var(--p-margin-left);
+    padding-left:var(--text-start);
+  }
+article > h1,article > h2 {font-weight:900;}
+article > h4 {font-weight:normal;} /* Byline */
+article > h4 > strong {font-weight:bold;} /* Byline */
+article > p > strong {font-weight:700;}
+
+
 
 article > hr {height:.125em;}
 
@@ -118,8 +122,8 @@ article > li {margin-left:1rem;}
 
 /* Indent lists */
 /* Handle all levels of nested indentation */
-article ul > li {margin-left:1em; padding-left:0em;}
-article ol > li {margin-left:1em; padding-left:0em;}
+article ul > li {margin-left:2em; padding-left:0em;}
+article ol > li {margin-left:2em; padding-left:0em;}
 
 article > table > thead > tr > th  {padding-top:2em;}
 article > blockquote  > p{text-indent:-3rem;font-size:1.5em;font-family:var(--times);font-style:italic;margin: 2rem 15% 2rem 15%;padding:2em 1em 2em 4em;border-top:1rem solid var(--nav-fg);background-color:var(--bg);line-height:2rem;}
@@ -173,10 +177,10 @@ article > p > code, article > code, article > pre, article > pre > code {
   }
 article > pre {line-height:1.5em;font-size:1.1em;}
 
-article > table {padding-top:1em;padding-bottom:1.5em;}
+/*article > table {padding-top:1em;padding-bottom:1.5em;}
 article > table > td,th {padding:1rem;}
 article > table > tbody > tr > td {padding:1rem;}
-
+*/
 
 /* ******************************/
 /*  SIDEBAR (ASIDE TAG)         */

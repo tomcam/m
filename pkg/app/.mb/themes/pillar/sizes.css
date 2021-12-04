@@ -88,6 +88,7 @@
 
   /* Same as article > p {font-size}, p {padding}, p {margin} */
   --p-font-size:1rem;
+  --p-line-height:1.5rem;
   --p-padding-top:.5rem;
   --p-padding-bottom:0rem;
   --p-padding-right:var(--text-end);
