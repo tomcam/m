@@ -354,6 +354,12 @@ func (app *App) layoutEl(l layoutElement) (string, error) {
 	// No inline HTML. Get filename.
 	filename := l.File
 
+  // If no file and no HTML have been specified, no
+  // sweat. Only the article is required.
+	if filename == "" {
+		return "", nil
+	}
+
 	// Locate it in the theme directory
 	filename = filepath.Join(app.Page.Theme.sourcePath, filename)
 
