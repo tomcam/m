@@ -62,20 +62,6 @@ type Starter struct {
 // via newSite() and that we're in the
 // project site specified in app.Site.path
 func (app *App) generate(pathname string) error {
-	/*
-			if err := app.readSiteConfig(); err != nil {
-		    app.Note("Quitting")
-				return ErrCode("PREVIOUS", err.Error())
-			}
-			app.Note("\tgenerate(%v)", pathname)
-			app.Note("\tSite %#v\n\n", app.Site)
-			app.Note("\tSite.Starters: %#v\n\n", app.Site.Starters)
-	*/
-	//var err error
-	//var starter Starter
-	// Pages to generate when site is created
-	//pathname := app.Site.path
-	//var starter StarterConfig
 	var starters map[string]Starter
 	//pathname = filepath.Join(app.Site.path, "starter.yaml")
 	b, err := ioutil.ReadFile(pathname)
@@ -96,9 +82,7 @@ func (app *App) generate(pathname string) error {
 			return ErrCode("PREVIOUS", err.Error())
 		}
 	*/
-	//app.Note("starter: %#v", starter.Starters["Blog"])
 	for k, v := range starters {
-		//app.Note("%v: %v", k, v)
 		switch strings.ToLower(v.Type) {
 		case "page":
 			if err = app.starterPage(k, v); err != nil {
@@ -112,7 +96,7 @@ func (app *App) generate(pathname string) error {
 // starterPage() creates a stub page from a description
 // in a YAML file with startup pages
 func (app *App) starterPage(name string, starter Starter) error {
-	app.Note("starterPage(%v). Folder: %v", name, starter.Folder)
+	app.Debug("starterPage(%v). Folder: %v", name, starter.Folder)
 	dir := starter.Folder
 	if name == "" {
 		return ErrCode("1104", dir)
@@ -130,7 +114,7 @@ func (app *App) starterPage(name string, starter Starter) error {
 	if err != nil {
 		return ErrCode("0410", dir)
 	}
-	app.Note("Dir: %v", dir)
+	app.Debug("\tDir: %v", dir)
 
 	var filename string
 	// Convert the name to a filename.

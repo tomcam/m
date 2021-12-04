@@ -1,9 +1,12 @@
 # To do
 
 ## Priority 1: Showstoppers--required for the next release
-* WTF. Nested themes are broken again. If you do debut/gallery it only gets gallery.
+* Need to do a copy theme feature
+* Add idea of post and specfications like YYYY-MM-DD or y-m-d etc, using dirs or strings as needed . That way mb new post "/blog/avengers review" would expand to something like "/blog/2022/04/21/avengers-review.html" or "/blog/2022-March-1-avengers-review.html" and so on 
+* I think theme assets probalby need to go into the article publish directory
+* I think I neeed to make stylesheet paths relative not absolute
+* I am not using the assets path
 * Theme that's named as a number doesn't seem to work well
-* Add idea of post and specfiications like YYYY-MM-DD or y-m-d etc, using dirs or strings as needed . That way mb new post "/blog/avengers review" would expand to something like "/blog/2022/04/21/avengers-review.html" or "/blog/2022-March-1-avengers-review.html" and so on 
 * Mention in docs that one should default to post if one dones't know the difference between page and post
 * Search for "TODO:" in source
 * Documenting themes:
@@ -25,10 +28,10 @@ options other than the front matter:
 * Look for occurrences of App.Note(), which is only meant for prerelease usage
 * Understand whether I should create empty index.html files for dirs
 that don't have anything else to oprevent directory traversla attacks
-* Search and replqce almost all QuitError calls because
-everything should return errors, displaying to stdout at the last
-possible moment.
-That'll be important for the interactive website version
+* Search and replqce 
+  - almost all QuitError calls because of a future interactive version
+  - app.Print
+  - app.Note
 * Add versioning for themes (already did it in the older version). That should also mean:
   - new theme should increment version and allow an optional version, something like this: 
 

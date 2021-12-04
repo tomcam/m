@@ -179,7 +179,6 @@ func (app *App) publishThemeAssets(from string, to string) error {
 // Called from loadTheme() once per level.
 func (app *App) loadThemeLevel(source string, dest string, level int) error {
 	app.Debug("\t\t\tloadThemeLevel(%v, %v, %v)", source, dest, level)
-	app.Note("\t\t\tloadThemeLevel(%v, %v, %v)", source, dest, level)
 	// See if this theme has already been published.
 	// TODO: cache themes in app.Site.publishedThemes[dest]?
 	if !dirExists(source) {
@@ -333,7 +332,7 @@ func (app *App) loadThemeConfig(path string) error {
 	app.Page.FrontMatter.Theme = theme
 	app.Page.Theme.Name = theme
 	app.Page.Theme.publishPath = path
-  // TODO: This doesn't seem to be used
+	// TODO: This doesn't seem to be used
 	app.Site.publishedThemes[path] = true
 
 	return nil
