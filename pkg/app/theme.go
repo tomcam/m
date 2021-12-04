@@ -198,7 +198,8 @@ func (app *App) loadThemeLevel(source string, dest string, level int) error {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 
-	err = app.publishThemeAssets(source, dest)
+	//err = app.publishThemeAssets(source, dest)
+	err = app.publishThemeAssets(source, app.Site.publishPath)
 	// TODO: May want to improve error handling
 	if err != nil {
 		return ErrCode("PREVIOUS", err.Error())
@@ -366,8 +367,12 @@ func (app *App) newTheme(from, to string, factory bool) error {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	app.Debug("newTheme(%v, %v, %v)", from, to, factory)
+	app.Print("newTheme(from %v, to %v, factor? %v)", from, to, factory)
 	// Get directory from which themes will be copied
 	//source := filepath.Join(app.Site.siteThemesPath, defaults.SiteThemesDir, from)
+	if from == "" {
+		return ErrCode("1035", "")
+	}
 	source := filepath.Join(app.Site.siteThemesPath, from)
 
 	// Get directory to which the theme will be copied for this site

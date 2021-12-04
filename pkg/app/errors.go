@@ -145,6 +145,7 @@ var errMsgs = map[string]string{
 	"1029": "Can't find the theme file",                              // filename
 	"1033": "Unable to read theme directory",                         // filename
 	"1034": "Unable to find layout element file",                     // filename
+	"1035": "Missing name of theme to copy",                          // filename
 	// TODO: Get rid of the line below
 	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
 
