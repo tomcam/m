@@ -1,46 +1,24 @@
 # To do
 
 ## Priority 1: Showstoppers--required for the next release
-* Need to do a copy theme feature
-* Add idea of post and specfications like YYYY-MM-DD or y-m-d etc, using dirs or strings as needed . That way mb new post "/blog/avengers review" would expand to something like "/blog/2022/04/21/avengers-review.html" or "/blog/2022-March-1-avengers-review.html" and so on 
-* I think theme assets probalby need to go into the article publish directory
-* I think I neeed to make stylesheet paths relative not absolute
-* I am not using the assets path
-* Theme that's named as a number doesn't seem to work well
-* Mention in docs that one should default to post if one dones't know the difference between page and post
-* Search for "TODO:" in source
-* Documenting themes:
-  Image properties are likely based on adjancent headers, which can be added empty (without text for the header)
-* Document how Frontmatter Mode determines whether
-theme-light.css or theme-dark.css is used.
-* Create a page with this intentional error (no closing quote), then document the resulting error message
-```
-{{ inc "common|mdemo.md }}
-```
-* Incomplete list of things that need to be handled once I start accepting
-options other than the front matter:
-  - Site.Mode sets default for FrontMatter.Mode
-  - Site.Language sets default for front Theme.Language
-* Document all error codes
+* BUG: errors aren't gettingreported correctly, though they seem to work OK fi the extra
+parameter is empty
+* BUG: .Page.FrontMatter.Theme doesn't work correctly in an article, instead yielding asterisks
+* Bug: Site.HighlightStyle aka Highlight-style  doesn't seem to work
+* Add: toc
+* Add: search
+* Add: scriptclose directory
+* Add: idea of post and specfications like YYYY-MM-DD or y-m-d etc, using dirs or strings as needed . That way mb new post "/blog/avengers review" would expand to something like "/blog/2022/04/21/avengers-review.html" or "/blog/2022-March-1-avengers-review.html" and so on 
 * Make these changes when returning to the standard mb directory
   - Fix hardcoded paths in the files `gf`, `bu`
-* Ensure mdToHTML and mdFileToHTML return errors and use application error handling
-* Look for occurrences of App.Note(), which is only meant for prerelease usage
 * Understand whether I should create empty index.html files for dirs
 that don't have anything else to oprevent directory traversla attacks
+* Add: dark themes
 * Search and replqce 
+  - TODO: in source
   - almost all QuitError calls because of a future interactive version
   - app.Print
   - app.Note
-* Add versioning for themes (already did it in the older version). That should also mean:
-  - new theme should increment version and allow an optional version, something like this: 
-
-```
-mb new theme test 0.2.0 from wide 1.1.0
-
-```
-  - Check for conflicting versions with new theme command
-* Add to glossary: `command` means a command-line verb such as `new theme` or `new site`
 
 ### Testing
 * Should be able to create a project with a leading . in the name, but
@@ -56,7 +34,65 @@ a leading . in the name
 * Promise that in early versions while data stuctures and features may change, the
 source file directory structure remains sacrosanct: a tree of Markdown files
 
+
+## Document
+* Document. Given a site.yaml with this:
+Company:
+    Name: "Eastside Emerald Home Repair"
+    address: ""
+    address2: ""
+    city: ""
+    country: ""
+    postalcode: ""
+    URL: ""
+    HeaderLogo: "eastside-emerald-64x64.png"
+You can do a header like this, which gives you an optional logo
+{{- if .Site.Company.Name -}}
+{{- $name := .Site.Company.Name -}}
+{{- if .Site.Company.HeaderLogo -}}
+* ![Logo](.Site.Copmany.HeaderLogo) [{{ $name -}}](/)
+{{- else -}}
+* [{{ $name -}}](/)
+{{- end }} 
+* [Services](services.html)
+* [Rates](rates.html)
+* [Contact](contact.html)
+* [About](about.html)
+* Create a page with this intentional error (no closing quote), then document the resulting error message
+```
+{{ inc "common|mdemo.md }}
+```
+* HighlightStyle styles: See https://github.com/alecthomas/chroma/tree/master/styles
 ## Priority 2: Desired but not required for the next release
+* Add: copy theme feature
+* Add versioning for themes (already did it in the older version). That should also mean:
+  - new theme should increment version and allow an optional version, something like this: 
+
+```
+mb new theme test 0.2.0 from wide 1.1.0
+
+```
+  - Check for conflicting versions with new theme command
+* Add to glossary: `command` means a command-line verb such as `new theme` or `new site`
+* Ensure mdToHTML and mdFileToHTML return errors and use application error handling
+* Incomplete list of things that need to be handled once I start accepting
+options other than the front matter:
+  - Site.Mode sets default for FrontMatter.Mode
+  - Site.Language sets default for front Theme.Language
+* Document all error codes
+* I think I neeed to make stylesheet paths relative not absolute
+* Documenting themes:
+  Image properties are likely based on adjancent headers, which can be added empty (without text for the header)
+* Document how Frontmatter Mode determines whether
+theme-light.css or theme-dark.css is used.
+* Mention in docs that one should default to post if one dones't know the difference between page and post
+* Theme that's named as a number doesn't seem to work well
+* I am not using the assets path
+* Add a way to generaate empty
+  - site config file
+  - theme config file
+* BUG-ish: Settle on naming convention for yaml portion of structs. Sometimes it looks
+like HeaderLogo, sometimes it looks like Full-Name, sometimes it looks like Hard-wraps
 * funcs.go articlefunc() doesn't work because I don't actually store the output. Should probably do it.
   don't forget that  getProjectTree() returns a list of all files on the site but discards it.
 * Documente that Inhereted themes still need (empty) sidebar-left.css, sidebar-right.css, theme-light.css, theme-dark.css for the test suite only. Or maybe test suite should generate them.
