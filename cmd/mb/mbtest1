@@ -8,12 +8,13 @@ INDEX=$DIR/index.md
 LINKSECTION=$DIR/links.tmp
 THEMELIST=$DIR/themelist.tmp
 TMPFILE=$DIR/foobar.txt
-
+RAWFILE=$DIR/raw.tmp
 cp site.yaml $DIR/.mb
 cp eastside-emerald-64x64.png $DIR
 # Create an array of filenames
 declare -a themes=(
 	'wide'
+	'debut/gallery'
 	'pillar'
   'tradesman'
   'debut'
@@ -28,6 +29,7 @@ rawthemes=$themes
 for theme in "${themes[@]}";
 do
   echo $theme >> $TMPFILE
+  echo $theme >> $RAWFILE
 done
 sed -i '' 's/\//\-/' $TMPFILE
 
@@ -38,6 +40,11 @@ themes=()
 while IFS= read -r line; do
   themes+=("$line")
 done < $TMPFILE
+
+rawthemes=()
+while IFS= read -r line; do
+  rawthemes+=("$line")
+done < $RAWFILE
 
 
 # Create an array of variations
@@ -58,6 +65,8 @@ R=\>
 # Loop through the array
 for theme in "${themes[@]}";
 do
+  i=$((i+1))
+  echo "Theme: ${rawthemes[$i]}"
   echo "<a name=\"${theme}\"></a> " >> $LINKSECTION
   #echo "### Theme: ${theme}" >> $LINKSECTION
   echo "<br />**${theme}** " >> $LINKSECTION
@@ -72,7 +81,7 @@ do
       echo ${FILENAME}.md
 cat <<-EOM > $DIR/$FILENAME.md
 ---
-Theme: ${theme}
+Theme: ${rawthemes[$i]}
 Sidebar: ${sidebar}
 Mode: ${mode}
 ---
