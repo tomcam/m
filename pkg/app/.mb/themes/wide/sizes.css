@@ -6,10 +6,10 @@
    * ******************************/
 
   /* adjusts header height and keeps it vertically centered */
-  --header-height:8rem;
+  --header-height:4rem;
   
   /* size of the main text in the header. */
-  --branding-height:1.5rem;
+  --branding-height:2rem;
 
   /* Same as header {margin-top:}  */
   --header-margin-top:0rem;
@@ -24,10 +24,10 @@
   --header-margin-left:0rem;
 
   /* Same as header {padding-top:}  */
-  --header-padding-top:1rem;
+  --header-padding-top:0rem;
 
   /* Same as header {padding-bottom} */
-  --header-padding-bottom:10rem;
+  --header-padding-bottom:1rem;
 
   /* Same as header {padding-left:}  */
   /* NOTE: MTF doesn't use padding-left for header.
@@ -44,7 +44,7 @@
    * ******************************/
 
   /* Adjusts navbar height and keeps it vertically centered */
-  --nav-height:5rem;
+  --nav-height:3rem;
 
   /* Same as nav {margin-top} */
   --nav-margin-top:0rem;
@@ -75,20 +75,20 @@
    * ******************************/
 
   /* Same as article {margin-top:}  */
-  --article-margin-top:1rem;
+  --article-margin-top:0rem;
 
   /* Same as article {margin-bottom:}  */
-  --article-margin-bottom:0rem;
+  --article-margin-bottom:1rem;
 
   /* Same as article {padding-top:}  */
-  --article-padding-top:3rem;
+  --article-padding-top:0rem;
 
   /* Same as article {padding-bottom} */
-  --article-padding-bottom:3.5rem;
+  --article-padding-bottom:1rem;
 
   /* Same as article > p {font-size}, p {padding}, p {margin} */
-  --p-font-size:1.5rem;
-  --p-line-height:2rem;
+  --p-font-size:1rem;
+  --p-line-height:1.5rem;
   --p-padding-top:.5rem;
   --p-padding-bottom:0rem;
   --p-padding-right:var(--text-end);
@@ -99,31 +99,31 @@
   --p-margin-left:0rem;
 
   /* Same as article > h1 {font-size}, h1 {padding}, h1 {margin} */
-  --h1-font-size:2.5rem;
+  --h1-font-size:2rem;
   --h1-margin-top:0rem;
   --h1-margin-bottom:0rem;
   --h1-margin-right:0rem;
   --h1-margin-left:0rem;
-  --h1-padding-top:2rem;
+  --h1-padding-top:0rem;
   --h1-padding-bottom:0rem;
   --h1-padding-right:0rem;
   --h1-padding-left:0rem;
 
 
   /* Same as article > h2 {font-size}, h2 {padding}, h2 {margin} */
-  --h2-font-size:2rem;
-  --h2-margin-top:1.5rem;
+  --h2-font-size:1.5rem;
+  --h2-margin-top:.5rem;
   --h2-margin-bottom:0rem;
   --h2-margin-right:0rem;
   --h2-margin-left:0rem;
-  --h2-padding-top:1.5em;
+  --h2-padding-top:.5em;
   --h2-padding-bottom:0rem;
   --h2-padding-right:0rem;
   --h2-padding-left:0rem;
 
 
   /* Same as article > h3 {font-size}, h3 {padding}, h3 {margin} */
-  --h3-font-size:1.5rem;
+  --h3-font-size:1rem;
   --h3-margin-top:1.5rem;
   --h3-margin-bottom:0rem;
   --h2-margin-right:0rem;
@@ -176,16 +176,15 @@
    *  Sidebar dimensions          *
    * ******************************/
 
-  --sidebar-padding-top:4rem;
+  --sidebar-padding-top:1rem;
   --sidebar-padding-bottom:1rem;
   --sidebar-padding-left:var(--text-start);
-  --sidebar-padding-right:1em;
+  --sidebar-padding-right:1rem;
 
   --sidebar-margin-top:0rem;
   --sidebar-margin-bottom:0rem;
   --sidebar-margin-left:0rem;
-  --sidebar-margin-right:0em;
-
+  --sidebar-margin-right:0rem;
 
 
   /* ******************************
@@ -193,19 +192,19 @@
    * ******************************/
 
   /* Adjusts footer height and keeps it vertically centered */
-  --footer-height:10rem;
+  --footer-height:8rem;
 
   /* Size of the main text in the header. */
-  --footer-branding-height:3rem;
+  --footer-branding-height:2rem;
 
   /* Same as footer {margin-top:}  */
-  --footer-margin-top:0rem;
+  --footer-margin-top:1rem;
 
   /* Same as footer {margin-bottom:}  */
   --footer-margin-bottom:1rem;
 
   /* Same as footer {margin-right:}  */
-  --footer-margin-right:0rem;
+  --footer-margin-right:1rem;
 
   /* Same as footer {margin-left:}  */
   --footer-margin-left:0rem;
@@ -223,7 +222,7 @@
   --footer-padding-left:var(--text-start);
 
   /* Same as footer {width} */
-  --footer-width:100%;
+  --footer-width:var(--article-width);
 
   /* ******************************
    *  Make theme pillar or wide   *
@@ -252,17 +251,17 @@
   /* --alt-article-width is width of article WITHOUT sidebar 
    * Added to --sidebar-width it should always sum up to
    * --article-width */
-  --alt-article-width:80%;
+  --alt-article-width:70%;
 
   /* --sidebar-width must be the same as
    * --article-width MINUS --alt-article-width
    */
-  --sidebar-width:20%;
+  --sidebar-width:30%;
 
   /* --text-start is a padding value not a margin */
   --text-start:5%; 
 
-  --text-end:0%;
+  --text-end:10%;
 
 }
 

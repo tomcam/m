@@ -1,6 +1,5 @@
 html,body,nav,header,article,footer{width:100%;height:auto;max-width:100%;display:block;float:left;clear:both;overflow:auto;}
 html {box-sizing: border-box;}
-ul, ol{list-style-position: outside;}
 *, *:before, *:after {box-sizing: inherit;}
 
 html, body, div, span, applet, object, iframe,

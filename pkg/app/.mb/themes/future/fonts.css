@@ -33,16 +33,16 @@
 		--formal:
 			"Palatino Linotype",
 			"Palatino",
-  		"Georgia",
+      "Georgia",
 			"Times",
 			"Times New Roman",
-  		"New York",
-			"sans-serif";
+      "New York",
+			"serif";
 }
 
 /* System fonts always look best so it's a good default */
 html,body,p {font-family:var(--informal),sans-serif;}
 /* OTOH Courier is a lousy code font by default */
-code,pre{font-size:.75em;font-family:var(--code),monospace;}
+code,pre{font-family:var(--code),monospace;}
 
 

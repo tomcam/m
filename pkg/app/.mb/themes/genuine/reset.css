@@ -1,3 +1,4 @@
+html,body,nav,header,article,footer{width:100%;height:auto;max-width:100%;display:block;float:left;clear:both;overflow:auto;}
 html {box-sizing: border-box;}
 *, *:before, *:after {box-sizing: inherit;}
 
@@ -22,12 +23,11 @@ time, mark, audio, video {
 	vertical-align: baseline;
 }
 
-/* Removes space at top of header that uses tweaked ul for links */
-p,ol,ul,li {margin-block-start:0;margin-block-end:0;padding-inline-start:0;} 
 /* Make touch interaction faster */
 a,area,button,[role="button"],input:not([type=range]),label,select,summary,textarea { -ms-touch-action: manipulation;touch-action: manipulation;}
 
-html,body,nav,header,article,footer{width:100%;height:auto;max-width:100%;display:block}
+/* Largely undocumented and fails nvu validation. But removing it causes subtle problems, for example, adding extra left padding in header. */
+p,ol,ul,li,header {margin-block-start:0;margin-block-end:0;padding-inline-start:0;}
 
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 

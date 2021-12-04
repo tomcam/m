@@ -40,7 +40,9 @@
 			"serif";
 }
 
-html,body,p {font-family:var(--formal),sans-serif;}
+/* System fonts always look best so it's a good default */
+html,body,p {font-family:var(--informal),sans-serif;}
+/* OTOH Courier is a lousy code font by default */
 code,pre{font-family:var(--code),monospace;}
 
 

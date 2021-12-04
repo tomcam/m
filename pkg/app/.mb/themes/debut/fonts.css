@@ -1,5 +1,4 @@
 /* font @imports should appear here ABOVE :root */
-@import url('https://fonts.googleapis.com/css?family=Kanit:400,700&display=swap');
 :root
 {
 
@@ -34,11 +33,11 @@
 		--formal:
 			"Palatino Linotype",
 			"Palatino",
-  			"Georgia",
+      "Georgia",
 			"Times",
 			"Times New Roman",
-  			"New York",
-			"sans-serif";
+      "New York",
+			"serif";
 }
 
 /* System fonts always look best so it's a good default */
