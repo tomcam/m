@@ -16,7 +16,7 @@ header > ul > li > a > em {color:red;}
 header > a {text-decoration:none;}
 /* Make it sticky */
 header {position: fixed;top:0;width:100%;text-align:left;} 
-header > img {display:inline;} 
+header > img, header > p > img, header > ul > li > img {display:inline;padding-right:1em;} 
 /*
  * --------------------------------------------------
  * Simplest case: Branded name, nothing else

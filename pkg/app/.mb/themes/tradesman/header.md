@@ -1,12 +1,10 @@
 {{- if .Site.Company.Name -}}
 {{- $name := .Site.Company.Name -}}
+{{- if .Site.Company.HeaderLogo -}}
+* ![Logo]({{ .Site.Company.HeaderLogo }}) [{{ $name -}}](/)
+{{- else -}}
 * [{{ $name -}}](/)
-{{- else if .Site.Author.FullName -}}
-{{- $name := .Site.Author.FullName -}}
-* [{{ $name -}}](/)
-{{- else if .Page.Theme.Branding -}}
-{{- $name := .Page.Theme.Branding -}}
-* [{{ $name -}}](/)
+{{- end }} 
 {{- end }} 
 * [Services](services.html)
 * [Rates](rates.html)
