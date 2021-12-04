@@ -1,5 +1,6 @@
 /* System fonts always look best so it's a good default */
 html,body,p {font-family:var(--informal),sans-serif;}
+html{font-size:18px;}
 /* OTOH Courier is a lousy code font by default */
 code,pre{font-family:var(--code),monospace;}
 
@@ -41,15 +42,6 @@ header > ul > li > a:visited
  * --------------------------------------------------
  */
 header > ul > li:first-child > a {font-size:var(--branding-height);font-weight:900;padding-right:1rem;}
-
-/*
- * --------------------------------------------------
- * Special feature: Last item in list is styled 
- * to look like a button. 
- * See also theme-light.css and theme-dark.css
- * --------------------------------------------------
- */
-header > ul > li:last-child > a {padding:.5rem;}
 
 
 /* ******************************/
@@ -101,14 +93,11 @@ article > p,
   article > li, 
   article > dd, 
   article > dl{
-  font-size:var(--p-font-size);padding-top:var(--p-padding-top);padding-bottom:var(--p-padding-bottom);margin-top:var(--p-margin-top);margin-bottom:var(--p-margin-bottom);}
+  font-size:var(--p-font-size);padding-top:var(--p-padding-top);padding-bottom:var(--article-padding-bottom);margin-top:var(--p-margin-top);margin-bottom:var(--p-margin-bottom);}
 
-article > p, article > ul, article > ol {font-family:var(--code);}
-article > h1,article > h2 {font-weight:700;}
+article > h1,article > h2 {font-weight:900;}
 article > h4 {font-weight:normal;} /* Byline */
 article > h4 > strong {font-weight:bold;} /* Byline */
-article > h4 > em {font-family:var(--code);}
-article > h5 {font-size:1.5rem;font-family:var(--code);}
 article > p > strong {font-weight:700;}
 
 article > p, 
@@ -118,7 +107,8 @@ article > p,
   article > dd, 
   article > dl,
   article > hr {
-		line-height:2rem;;
+    padding-left:var(--p-padding-left);
+		line-height:1.5rem;
 }
 
 article > hr {height:.125em;}

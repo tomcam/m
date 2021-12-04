@@ -1,19 +1,30 @@
-Branding: "Genuine by Metabuzz"
-Description: "Clean text presentation for documentation or minimal blogs"
-Stylesheets: 
-- "reset.css"
-- "fonts.css"
-- "layout.css"
-- "bind.css"
-- "sizes.css"
-- "theme-light.css"
-- "genuine.css"
-- "responsive.css"
-Nav: {File: nav.md, HTML:}
-Header: {File: header.md, HTML:}
-Article: {File:, HTML:}
-Sidebar: {File: sidebar.md, HTML:}
-Footer: {File: footer.md, HTML:}
-Language: en
-
+Branding: ''
+Description: ''
+Stylesheets:
+  - reset.css
+  - fonts.css
+  - bind.css
+  - sizes.css
+  - theme-light.css
+  - layout.css
+  - genuine.css
+  - responsive.css
+PathName: ''
+Version: 1.2.3
+Nav:
+  HTML: ''
+    #File: 'nav.md' 
+  File: '' 
+Header:
+  HTML: ''
+  File: header.md
+Article:
+  HTML: ''
+  File: ''
+Footer:
+  HTML: ''
+  File: footer.md
+Sidebar:
+  HTML: ''
+  File: sidebar.md
 

@@ -5,8 +5,7 @@
         was specified.
         
 */ -}}
-* [~~tom~~.im](/)
-* [Blog](/)
-* [Articles](/)
-* [Contact](/)
-* 
+* [Events](/)
+* [Podcast](/)
+* [Subscribe](/)
+

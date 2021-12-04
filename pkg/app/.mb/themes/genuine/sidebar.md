@@ -1,9 +1,17 @@
-### About me
+## In the News
+Paris had an uptick in civil unrest as a sanitation worker strike drags into its third month.
+[MORE](/)
 
-![T](https://via.placeholder.com/150)
+##### AROUND TOWN
+Cherry Poppin' Daddies reunite to reproduce their 1997 hit "Zoot Suit Riot" in its entirety this Saturday at Nate's.
+[MORE](/)
 
-I love to talk about myself. But more important, this profile adds credibility to the reader. 
+Best Szechuan restaurant in town? You might be surprised
+[MORE](/)
 
-Surprisingly, your authority isn't derived simply from your content.
+Springfield Park reopens with a restored bandshell
+[MORE](/)
+
+{{- /* the sidebar element doesn't resize the way we'd like. This keeps it filling the height as it should */ -}}
 
 

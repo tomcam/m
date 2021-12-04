@@ -1,5 +1,5 @@
 /* System fonts always look best so it's a good default */
-html,body,p {font-family:var(--code),monospace;}
+html,body,p {font-family:var(--informal),sans-serif;}
 /* OTOH Courier is a lousy code font by default */
 code,pre{font-family:var(--code),monospace;}
 
@@ -103,12 +103,9 @@ article > p,
   article > dl{
   font-size:var(--p-font-size);padding-top:var(--p-padding-top);padding-bottom:var(--p-padding-bottom);margin-top:var(--p-margin-top);margin-bottom:var(--p-margin-bottom);}
 
-article > p, article > ul, article > ol {font-family:var(--code);}
 article > h1,article > h2 {font-weight:700;}
 article > h4 {font-weight:normal;} /* Byline */
 article > h4 > strong {font-weight:bold;} /* Byline */
-article > h4 > em {font-family:var(--code);}
-article > h5 {font-size:1.5rem;font-family:var(--code);}
 article > p > strong {font-weight:700;}
 
 article > p, 
