@@ -5,8 +5,8 @@
   }
  ## Publishing a project
 * Starts with build(path), where path is the name of a directory (which is assumed but not expected to contain a valid project)
-  - It changes to the diretory specified by path
-  - It checks that there is a site file
+  - It changes to the directory specified by path
+  - It reads the site config file
   - It calls tree.go getProjectTree(), which returns a list of all files on the site (actually that list is discarded) and therefore
     Site.webPages, which is map[string]WebPage, isn't used.
     + getProjectTree calls tree.go visit(), which does things like discard directories that start with a dot or are on the site exclusion list.
