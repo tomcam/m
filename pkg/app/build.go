@@ -19,15 +19,6 @@ import (
 	"path/filepath"
 )
 
-// mdWithFrontMatterToHTML() converts a Markdown source file
-// in a byte slice to HTML. It may have front matter,
-// such as a YAML document, at the start of the file.
-// TODO: Everything possible, such as table extensions,
-// should be optional.
-func (app *App) mdWithFrontMatterToHTML(source []byte) ([]byte, error) {
-	return []byte{}, nil
-}
-
 // mdToHTML converts a Markdown source file in a byte
 // slice to HTML.
 func (app *App) mdToHTML(source []byte) ([]byte, error) {
