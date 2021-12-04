@@ -1,9 +1,28 @@
 # To do
 
 ## Updating themes
+* Old theme directory
+https://github.com/tomcam/mb/tree/master/.mb/.themes
 * Delete themename.toml
 * Copy either w/layout.css or pillar/layout.css
 * Update theme-light.css, theme-dark.css
+    /* Same as article > h1 { color: } */
+    --article-h1-fg:var(--fg);
+    --article-h2-fg:var(--fg);
+    --article-h3-fg:var(--fg);
+    --article-h4-fg:var(--fg);
+    --article-h5-fg:var(--fg);
+    --article-h6-fg:var(--fg);
+
+    /* Same as article > h1 { background-color: } */
+    --article-h1-bg:var(--bg);
+    --article-h2-bg:var(--bg);
+    --article-h3-bg:var(--bg);
+    --article-h4-bg:var(--bg);
+    --article-h5-bg:var(--bg);
+    --article-h6-bg:var(--bg);
+
+
 * YAML file Format looks like this:
 Branding: "W by Metabuzz"
 Description: "Minimal wide theme"
@@ -24,6 +43,9 @@ Footer: {File: footer.md, HTML:}
 Language: en
 
 ## Priority 1: Showstoppers--required for the next release
+* Bug in sizes.css: I had got rid of --text-start.
+  --sidebar-padding-left:var(--text-start);
+* BUG: Apparently if nav.md (and other layout elements?) is missing a 1034 error occurs
 * BUG: errors aren't gettingreported correctly, though they seem to work OK fi the extra
 parameter is empty
 * BUG: .Page.FrontMatter.Theme doesn't work correctly in an article, instead yielding asterisks
