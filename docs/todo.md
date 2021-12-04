@@ -1,5 +1,28 @@
 # To do
 
+## Updating themes
+* Delete themename.toml
+* Copy either w/layout.css or pillar/layout.css
+* Update theme-light.css, theme-dark.css
+* YAML file Format looks like this:
+Branding: "W by Metabuzz"
+Description: "Minimal wide theme"
+Stylesheets: 
+- "reset.css"
+- "fonts.css"
+- "layout.css"
+- "bind.css"
+- "sizes.css"
+- "theme-light.css"
+- "w.css"
+- "responsive.css"
+Nav: {File: nav.md, HTML:}
+Header: {File: header.md, HTML:}
+Article: {File:, HTML:}
+Sidebar: {File: sidebar.md, HTML:}
+Footer: {File: footer.md, HTML:}
+Language: en
+
 ## Priority 1: Showstoppers--required for the next release
 * BUG: errors aren't gettingreported correctly, though they seem to work OK fi the extra
 parameter is empty

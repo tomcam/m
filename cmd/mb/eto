@@ -1,0 +1,4 @@
+#!/bin/zsh 
+# Edit todo file.
+nvim /Users/tom/code/m/docs/todo.md
+
