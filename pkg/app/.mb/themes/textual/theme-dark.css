@@ -2,10 +2,9 @@
 :root 
 {
 
-	/* **********************************************************/
-	/* COLOR DECLARATIONS USED BY ALL METABUZZ FRAMEWORK THEMES */
-	/* **********************************************************/
-
+	/* ****************/
+	/* COLORS         */
+	/* ****************/
 	/*
 	 * Most but not all colors used by a theme appear
 	 * in this CSS file as CSS variables, so that you
@@ -18,25 +17,26 @@
 	 * they aren't called -text or -background.
 	 *
 	 */
-  /* https://coolors.co/01675a-04aa84-9ea93f-fed766-fc9d65-fa6363-696773-3d405b-010536-f8f8f8 */
 
     /* Default foreground (text) and background colors  */
-    --fg:#FFFFFF;
-    --bg:#212121;   
+    --fg:whitesmoke;
+    --bg:darkblue;
     /* Default link colors */
-    --a:#644EE7;  
-    --a-link: var(--a);
-    --a-visited: var(--a);
-    --a-hover: var(--a);
-    --a-active: var(--a);
+    --a:whitesmoke;
+    --a-link:var(--a);
+    --a-visited:var(--a);
+    --a-hover:var(--a);
+    --a-active:var(--a);
 
+    
     /* Secondary foreground (text) and background colors for accents. */
-    --trim-fg:#FF096D; /* Lemoney: fed766 Orangey: fc9d65 Light green: 40FFC2; */
-    --trim-bg: white;
- 
+    --trim-fg:white; 
+    --trim-bg:darkblue;
+
+    
     /* Primary foreground (text) and background colors in header */
-    --header-fg:#644EE7jjj;
-    --header-bg:var(--bg); 
+    --header-fg:var(--fg);
+    --header-bg:var(--bg);
     /* Link colors specific to header */
     --a-header: var(--header-fg); 
     --a-header-link:  var(--header-fg);
@@ -46,7 +46,7 @@
 
 
     /* Primary foreground (text) and background colors in navbar */
-    --nav-fg: var(--fg);
+    --nav-fg:black;
     --nav-bg: var(--bg);
     /* Link colors specific to navbar */
     --a-nav: var(--a); 
@@ -55,9 +55,10 @@
     --a-nav-hover: var(--a); 
     --a-nav-active:  var(--a);
 
+
     /* Default foreground (text) and background colors in article */
     --article-fg: var(--fg);
-    --article-bg:var(--bg);
+    --article-bg: var(--bg);
     /* Link colors specific to article */
     --a-article: var(--a); 
     --a-article-link:  var(--a);
@@ -70,12 +71,13 @@
     --sidebar-fg: var(--fg);
     --sidebar-bg: var(--bg);
     /* Link colors specific to sidebar */
-    --a-sidebar: var(--a);
+    --a-sidebar: var(--a); 
+    --a-sidebar-link:  var(--a);
     --a-sidebar-visited:  var(--a);
     --a-sidebar-hover: var(--a); 
     --a-sidebar-active:  var(--a);
 
-   
+
     /* Primary foreground (text) and background colors in footer */
     --footer-fg: var(--header-fg);
     --footer-bg: var(--header-bg);
@@ -88,15 +90,8 @@
 
 }
 
-
-/* **********************************************************/
-/* COLOR AND BORDER CHOICES UNIQUE TO THIS THEME            */
-/* **********************************************************/
-
-/* ******************************/
-/*  HEADER COLORS AND BORDERS   */
-/* ******************************/
-
+/* HEADER colors */
+header {color:var(--header-fg);background-color:var(--header-bg);} 
 header > p {color:var(--header-fg);background-color:var(--header-bg);} 
 
 header > ul > li > a,
@@ -105,21 +100,13 @@ header > ul > li > a:visited
 	{color:var(--a);}
 header > ul > li > a:hover,
 header > ul > li > a:active
-	{color:var(--a);}
+	{color:var(--header-fg);}
 
-/*
- * --------------------------------------------------
- * Special feature: First item in list can have
- * a distinct color.
- * --------------------------------------------------
- */
 header > ul > li:first-child > a {color:var(--header-fg);}
+header > ul > li:last-child > a {border: 2px solid var(--header-fg);color:var(--header-fg);}
+header > ul > li:last-child > a:hover {color: var(--header-bg);background-color: var(--header-fg);}
 
-
-/* ******************************/
-/*  NAVBAR COLORS AND BORDERS   */
-/* ******************************/
-
+/* NAVBAR */
 nav > p {background-color:var(--nav-bg); }
 nav > ul > li > a,
 nav > ul > li > a:link,
@@ -130,72 +117,30 @@ nav > p > a:link,
 nav > p > a:visited {color:var(--nav-fg);} 
 
 
-/* ******************************/
-/*  ARTICLE COLORS AND BORDERS  */
-/* ******************************/
-
-article > p > code, article > code, article > pre, article > pre > code {
-		color:var(--fg);
-}
-
-article > p > strong, article > h3 {font-family:var(--informal);color:var(--trim-fg);}
+article > p > a,
+article > p > a:link,
+article > p >  a:visited
+	{color:var(--trim-fg);}
+article > p >  a:hover,
+article > p >  a:active
+	{color:var(--bg);background-color:var(--fg);}
+article > h2 {color:var(--header-bg);}
+article > h3 {color:var(--fg);}
+article > h4 {color:gray;} 
+article > h4 > strong {color:var(--fg); } 
+article > table > thead > tr > th {color:var(--header-bg);background-color:var(--header-fg);}
 article > table > tbody > tr > td {border-bottom:.1px solid gray;}
 
-article > h2 {color:var(--fg);font-weight:bold;}
-article > h3 {color:#FF096D;}
-
-/* Colors in all levels of lists, including links */
-article a,
-article a:link,
-article a:visited,
-article ol a,
-article ol a:link,
-article ol a:visited,
-article ul a,
-article ul a:link,
-article ul a:visited
-  {color:var(--fg);text-decoration:none;border-bottom:.125em solid var(--a);}
-
-/* Hover and button hold states for all links. */
-article a:hover,
-article a:active,
-article ol a:hover
-article ol a:active,
-article ul a:hover,
-article ul a:active
-  {text-decoration:none;border-bottom:none;}
-
-/*
- * --------------------------------------------------
- * Images: light drop shadow 
- * --------------------------------------------------
- */
-article > img, article > p > img {
-  box-shadow: rgb(128,128,128) 1px 1px 3px 0px;
-}
-
-
-article > blockquote {background-color:var(--trim-fg);}
-/* ******************************/
-/*  SIDEBAR COLORS AND BORDERS  */
-/* ******************************/
-
-/*
-aside > p > a,
-aside > p > a:link,
-aside > p >  a:visited
-	{color:#7cbefc;}
+aside > h2 {color:var(--fg);background-color:var(--article-bg);}
+aside > h3 {color:var(--trim-fg);}
 aside > h4 {color:var(--header-bg);background-color:var(--header-fg)}
 aside > h3 > del {color:var(--header-bg);} 
 aside > h5 {color:red;}
-*/
-
-/* ******************************/
-/*  FOOTER COLORS AND BORDERS   */
-/* ******************************/
-
-footer {border-top:1px solid var(--trim-fg);}
-
+aside > ul {background-color:var(--bg);}
+aside > ul li {border-bottom: 1px solid gray;}
+aside > ul li a:active, aside > ul li a:hover {
+  color:yellow;
+}
 footer > table > thead > tr > th {color:var(--trim-fg);background-color:var(--footer-bg);}
 /* Color of links in main rows (body) of table */
 footer > table > tbody > tr > td > a:link,
@@ -205,16 +150,4 @@ footer > table > tbody > tr > td > a:hover,
 footer > table > tbody > tr > td > a:active
 	{color:var(--header-fg);}
 
-footer > ul > li > a,
-footer > ul > li > a:link,
-footer > ul > li > a:visited
-	{color:var(--trim-fg);}
-
-/*
- * --------------------------------------------------
- * Special feature: First item in list has its own 
- * color
- * --------------------------------------------------
- */
-footer > ul > li:first-child > a {color:var(--trim-fg);}
 

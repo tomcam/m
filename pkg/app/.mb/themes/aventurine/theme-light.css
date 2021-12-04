@@ -2,81 +2,113 @@
 :root 
 {
 
-		/* ****************/
-		/* COLORS         */
-		/* ****************/
-		/*
-		 * Most but not all colors used by a theme appear
-		 * in this CSS file as CSS variables, so that you
-		 * can make big changes to your theme by doing 
-		 * nothing more than altering these values.
-		 * 
-		 * Text colors use fg, meaning foreground, and
-		 * background colors use fg. Sometimes they're
-		 * used to color non-text objects, which is why
-		 * they aren't called -text or -background.
-		 * 
-		/* Default foreground (text) and background colors  */
-		--fg:#121212;
-		--bg:white;
+	/* ****************/
+	/* COLORS         */
+	/* ****************/
+	/*
+	 * Most but not all colors used by a theme appear
+	 * in this CSS file as CSS variables, so that you
+	 * can make big changes to your theme by doing 
+	 * nothing more than altering these values.
+	 * 
+	 * Text colors use fg, meaning foreground, and
+	 * background colors use fg. Sometimes they're
+	 * used to color non-text objects, which is why
+	 * they aren't called -text or -background.
+	 *
+	 */
+
+    /* Default foreground (text) and background colors  */
+    --fg:black;
+    --bg:white;
     /* Default link colors */
-    --a:#964AB8; /* Purple */
-    --a-link: var(--a);
-    --a-visited: var(--a);
-    --a-hover: var(--a);
-    --a-active: var(--a);
+    --a:darkblue;
+    --a-link:var(--a);
+    --a-visited:var(--a);
+    --a-hover:var(--a);
+    --a-active:var(--a);
+
+    
+    /* Secondary foreground (text) and background colors for branding. */
+    --branding-fg:darkblue; 
+    --branding-bg:white;
+
+    
+    /* Primary foreground (text) and background colors in header */
+    --header-fg:var(--branding-fg);
+    --header-bg:var(--branding-bg);
+    /* Link colors specific to header */
+    --a-header:var(--header-fg); 
+    --a-header-link:var(--header-fg);
+    --a-header-visited:var(--header-fg);
+    --a-header-hover:var(--header-fg); 
+    --a-header-active:var(--header-fg);
 
 
-		/* Secondary foreground (text) and background colors for accents. */
-		--trim-fg:red; /* cyan: #03DAC6; */
-		--trim-bg: white;
-
-
-		/* Primary foreground (text) and background colors in header */
-		--header-fg: white;
-		--header-bg: white;
-    /* Link colors specific to header*/
-    --a-header: var(--a); 
-    --a-header-link:  var(--a);
-    --a-header-visited:  var(--a);
-    --a-header-hover: var(--a); 
-    --a-header-active:  var(--a);
-
-
-		/* Primary foreground (text) and background colors in navbar */
-		--nav-fg: black;
-		--nav-bg: lightgray;
+    /* Primary foreground (text) and background colors in navbar */
+    --nav-fg:var(--branding-fg);
+    --nav-bg:var(--branding-bg);
     /* Link colors specific to navbar */
-    --a-nav: var(--a); 
-    --a-nav-link:  var(--a);
-    --a-nav-visited:  var(--a);
-    --a-nav-hover: var(--a); 
-    --a-nav-active:  var(--a);
+    --a-nav:var(--nav-fg); 
+    --a-nav-link:var(--nav-fg);
+    --a-nav-visited:var(--nav-fg);
+    --a-nav-hover:var(--nav-fg); 
+    --a-nav-active:var(--nav-fg);
 
 
-		/* Default foreground (text) and background colors in article */
-		--article-fg: black;
-		--article-bg: var(--bg);
+    /* Default foreground (text) and background colors in article */
+    --article-fg: var(--fg);
+    --article-bg: var(--bg);
     /* Link colors specific to article */
     --a-article: var(--a); 
-    --a-article-link:  var(--a);
-    --a-article-visited:  var(--a);
-    --a-article-hover: var(--a); 
-    --a-article-active:  var(--a);
+    --a-article-link:var(--a);
+    --a-article-visited:var(--a);
+    --a-article-hover:var(--a); 
+    --a-article-active:var(--a);
 
-	
-		/* Primary foreground (text) and background colors in footer */
-		--footer-fg: var(--header-fg);
-		--footer-bg: var(--header-bg);
+        
+    /* Default foreground (text) and background colors in aside */
+    --sidebar-fg: var(--fg);
+    --sidebar-bg: var(--bg);
+    /* Link colors specific to sidebar */
+    --a-sidebar: var(--a); 
+    --a-sidebar-link:  var(--a);
+    --a-sidebar-visited:  var(--a);
+    --a-sidebar-hover: var(--a); 
+    --a-sidebar-active:  var(--a);
+
+
+    /* Primary foreground (text) and background colors in footer */
+    --footer-fg: var(--header-fg);
+    --footer-bg: var(--header-bg);
     /* Link colors specific to footer */
     --a-footer: var(--a); 
     --a-footer-link: var(--a);
     --a-footer-visited: var(--a);
     --a-footer-hover: var(--a); 
     --a-footer-active: var(--a);
-
 }
 
+/* HEADER colors */
 
-#footer {border-top: 1px solid var(--a);} 
+header > ul > li > a,
+header > ul > li > a:link,
+header > ul > li > a:visited
+	{color:var(--branding-fg);}
+header > ul > li > a:hover,
+header > ul > li > a:active
+	{text-decoration:underline;}
+
+header > ul > li:first-child > a {color:var(--header-fg);}
+
+/* NAVBAR */
+
+article > p > a,
+article > p > a:link,
+article > p > a:visited
+	{color:var(--a);}
+article > p >  a:hover,
+article > p >  a:active
+	{color:var(--a);background-color:var(--bg);}
+
 

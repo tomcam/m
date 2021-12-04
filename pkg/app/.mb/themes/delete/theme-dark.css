@@ -16,28 +16,27 @@
 	 * used to color non-text objects, which is why
 	 * they aren't called -text or -background.
 	 *
-	 * --------------------------------------------------
-	 * Header style
-	 * --------------------------------------------------
 	 */
 
     /* Default foreground (text) and background colors  */
-    --fg:white;
-    --bg:#010536; /* Dark blue. darker #071412;	darkest #040D0B; */
+    --fg:whitesmoke;
+    --bg:darkblue;
     /* Default link colors */
-    --a:cyan;
-    --a-link: var(--a);
-    --a-visited: var(--a);
-    --a-hover: var(--a);
-    --a-active: var(--a);
+    --a:whitesmoke;
+    --a-link:var(--a);
+    --a-visited:var(--a);
+    --a-hover:var(--a);
+    --a-active:var(--a);
 
+    
     /* Secondary foreground (text) and background colors for accents. */
-    --trim-fg:#40FFC2;
-    --trim-bg: white;
- 
+    --trim-fg:white; 
+    --trim-bg:darkblue;
+
+    
     /* Primary foreground (text) and background colors in header */
     --header-fg:var(--fg);
-    --header-bg:var(--bg); 
+    --header-bg:var(--bg);
     /* Link colors specific to header */
     --a-header: var(--header-fg); 
     --a-header-link:  var(--header-fg);
@@ -47,7 +46,7 @@
 
 
     /* Primary foreground (text) and background colors in navbar */
-    --nav-fg: var(--fg);
+    --nav-fg:black;
     --nav-bg: var(--bg);
     /* Link colors specific to navbar */
     --a-nav: var(--a); 
@@ -56,9 +55,10 @@
     --a-nav-hover: var(--a); 
     --a-nav-active:  var(--a);
 
+
     /* Default foreground (text) and background colors in article */
     --article-fg: var(--fg);
-    --article-bg:var(--bg);
+    --article-bg: var(--bg);
     /* Link colors specific to article */
     --a-article: var(--a); 
     --a-article-link:  var(--a);
@@ -68,8 +68,8 @@
 
         
     /* Default foreground (text) and background colors in aside */
-    --aside-fg: var(--fg);
-    --aside-bg: var(--bg);
+    --sidebar-fg: var(--fg);
+    --sidebar-bg: var(--bg);
     /* Link colors specific to sidebar */
     --a-sidebar: var(--a); 
     --a-sidebar-link:  var(--a);
@@ -77,7 +77,7 @@
     --a-sidebar-hover: var(--a); 
     --a-sidebar-active:  var(--a);
 
-   
+
     /* Primary foreground (text) and background colors in footer */
     --footer-fg: var(--header-fg);
     --footer-bg: var(--header-bg);
@@ -91,12 +91,13 @@
 }
 
 /* HEADER colors */
+header {color:var(--header-fg);background-color:var(--header-bg);} 
 header > p {color:var(--header-fg);background-color:var(--header-bg);} 
 
 header > ul > li > a,
 header > ul > li > a:link,
 header > ul > li > a:visited
-	{color:var(--header-fg);}
+	{color:var(--a);}
 header > ul > li > a:hover,
 header > ul > li > a:active
 	{color:var(--header-fg);}
@@ -116,42 +117,30 @@ nav > p > a:link,
 nav > p > a:visited {color:var(--nav-fg);} 
 
 
-/* ARTICLE */
 article > p > a,
 article > p > a:link,
 article > p >  a:visited
-	{color:#7cbefc;} 
+	{color:var(--trim-fg);}
 article > p >  a:hover,
 article > p >  a:active
-	{background-color:var(--trim-fg);}
-
-article > p{color:#F2F2F2;}
-article > h1 {color:#F2F2F2;}
-article > h2, article > h3 {color:#b8c6d4;}
+	{color:var(--bg);background-color:var(--fg);}
+article > h2 {color:var(--header-bg);}
+article > h3 {color:var(--fg);}
 article > h4 {color:gray;} 
-article > h4 > strong {color:black; } 
-
-article > p > code, article > code, article > pre, article > pre > code {
-		color:#F2F2F2;
-}
-
-
+article > h4 > strong {color:var(--fg); } 
 article > table > thead > tr > th {color:var(--header-bg);background-color:var(--header-fg);}
 article > table > tbody > tr > td {border-bottom:.1px solid gray;}
 
-/* SIDEBAR */
-
-aside > p > a,
-aside > p > a:link,
-aside > p >  a:visited
-	{color:#7cbefc;} /* 46AC7A */
-aside > p {color:#F2F2F2;}
-aside > h2 {color:#F2F2F2;}
-aside > h3 {color:#F2F2F2;}
+aside > h2 {color:var(--fg);background-color:var(--article-bg);}
+aside > h3 {color:var(--trim-fg);}
 aside > h4 {color:var(--header-bg);background-color:var(--header-fg)}
 aside > h3 > del {color:var(--header-bg);} 
 aside > h5 {color:red;}
-/* FOOTER */
+aside > ul {background-color:var(--bg);}
+aside > ul li {border-bottom: 1px solid gray;}
+aside > ul li a:active, aside > ul li a:hover {
+  color:yellow;
+}
 footer > table > thead > tr > th {color:var(--trim-fg);background-color:var(--footer-bg);}
 /* Color of links in main rows (body) of table */
 footer > table > tbody > tr > td > a:link,

@@ -22,33 +22,38 @@
     --fg:black;
     --bg:white;
     /* Default link colors */
-    --a: blue;
-    --a-link: var(--a);
-    --a-visited: var(--a);
-    --a-hover: var(--a);
-    --a-active: var(--a);
+    --a:darkblue;
+    --a-link:var(--a);
+    --a-visited:var(--a);
+    --a-hover:var(--a);
+    --a-active:var(--a);
+
+    
+    /* Secondary foreground (text) and background colors for branding. */
+    --branding-fg:darkblue; 
+    --branding-bg:white;
 
     
     /* Primary foreground (text) and background colors in header */
-    --header-fg:var(--fg);
-    --header-bg:var(--bg);
+    --header-fg:var(--branding-fg);
+    --header-bg:var(--branding-bg);
     /* Link colors specific to header */
-    --a-header: var(--header-fg); 
-    --a-header-link:  var(--header-fg);
-    --a-header-visited:  var(--header-fg);
-    --a-header-hover: var(--header-fg); 
-    --a-header-active:  var(--header-fg);
+    --a-header:var(--header-fg); 
+    --a-header-link:var(--header-fg);
+    --a-header-visited:var(--header-fg);
+    --a-header-hover:var(--header-fg); 
+    --a-header-active:var(--header-fg);
 
 
     /* Primary foreground (text) and background colors in navbar */
-    --nav-fg: var(--bg);
-    --nav-bg: whitesmoke; /* var(--fg);  */
+    --nav-fg:var(--branding-fg);
+    --nav-bg:var(--branding-bg);
     /* Link colors specific to navbar */
-    --a-nav: var(--fg); 
-    --a-nav-link: var(--fg);
-    --a-nav-visited: var(--fg);
-    --a-nav-hover: var(--fg); 
-    --a-nav-active: var(--fg);
+    --a-nav:var(--nav-fg); 
+    --a-nav-link:var(--nav-fg);
+    --a-nav-visited:var(--nav-fg);
+    --a-nav-hover:var(--nav-fg); 
+    --a-nav-active:var(--nav-fg);
 
 
     /* Default foreground (text) and background colors in article */
@@ -56,34 +61,54 @@
     --article-bg: var(--bg);
     /* Link colors specific to article */
     --a-article: var(--a); 
-    --a-article-link: var(--a);
-    --a-article-visited: var(--a);
-    --a-article-hover: var(--a); 
-    --a-article-active: var(--a);
+    --a-article-link:var(--a);
+    --a-article-visited:var(--a);
+    --a-article-hover:var(--a); 
+    --a-article-active:var(--a);
 
         
     /* Default foreground (text) and background colors in aside */
     --sidebar-fg: var(--fg);
     --sidebar-bg: var(--bg);
     /* Link colors specific to sidebar */
-    --a-sidebar: var(--fg); 
-    --a-sidebar-link: var(--fg);
-    --a-sidebar-visited: var(--a);
+    --a-sidebar: var(--a); 
+    --a-sidebar-link:  var(--a);
+    --a-sidebar-visited:  var(--a);
     --a-sidebar-hover: var(--a); 
-    --a-sidebar-active: var(--a);
+    --a-sidebar-active:  var(--a);
 
 
     /* Primary foreground (text) and background colors in footer */
-    --footer-fg: var(--fg);
-    --footer-bg: var(--bg);
+    --footer-fg: var(--header-fg);
+    --footer-bg: var(--header-bg);
     /* Link colors specific to footer */
-    --a-footer: var(--a);
+    --a-footer: var(--a); 
     --a-footer-link: var(--a);
     --a-footer-visited: var(--a);
     --a-footer-hover: var(--a); 
     --a-footer-active: var(--a);
 }
 
+/* HEADER colors */
 
+header > ul > li > a,
+header > ul > li > a:link,
+header > ul > li > a:visited
+	{color:var(--branding-fg);}
+header > ul > li > a:hover,
+header > ul > li > a:active
+	{text-decoration:underline;}
+
+header > ul > li:first-child > a {color:var(--header-fg);}
+
+/* NAVBAR */
+
+article > p > a,
+article > p > a:link,
+article > p > a:visited
+	{color:var(--a);}
+article > p >  a:hover,
+article > p >  a:active
+	{color:var(--a);background-color:var(--bg);}
 
 

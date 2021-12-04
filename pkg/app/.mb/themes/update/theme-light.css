@@ -1,111 +1,114 @@
-/* update skin.css IMPORTANT: Downloadable fonts should be imported above this rule  */
+/* IMPORTANT: Downloadable fonts should be imported above this rule  */
 :root 
 {
-		/* ****************/
-		/* FONT SELECTION */
-		/* ****************/
-		/*
-		 * --------------------------------------------------
-		 * Header style
-		 * --------------------------------------------------
-		 *
-		 * Font family used for headings (it can easily be
-		 * overridden). Often you want headings h1 through
-		 * h6 to use a font familu that contrasts with the
-		 * body text, so you can set it here.
-		 * Docset adds the styles formal, informal, and code  
-		 * to the existing styles serif, sans-serif, and 
-		 * monospace. This can give better results depending
-		 * on the platform, which is a combination of the
-		 * operating system, browser, and versions of both.
-		 */
-		--header-style:serif;
 
-		/* Font style (family) used in body text */
-		--body-style:formal;
+	/* ****************/
+	/* COLORS         */
+	/* ****************/
+	/*
+	 * Most but not all colors used by a theme appear
+	 * in this CSS file as CSS variables, so that you
+	 * can make big changes to your theme by doing 
+	 * nothing more than altering these values.
+	 * 
+	 * Text colors use fg, meaning foreground, and
+	 * background colors use fg. Sometimes they're
+	 * used to color non-text objects, which is why
+	 * they aren't called -text or -background.
+	 *
+	 */
 
+    /* Default foreground (text) and background colors  */
+    --fg:black;
+    --bg:white;
+    /* Default link colors */
+    --a:darkblue;
+    --a-link:var(--a);
+    --a-visited:var(--a);
+    --a-hover:var(--a);
+    --a-active:var(--a);
 
-		/* ****************/
-		/* COLORS         */
-		/* ****************/
-		/*
-		 * Most but not all colors used by a theme appear
-		 * in this CSS file as CSS variables, so that you
-		 * can make big changes to your theme by doing 
-		 * nothing more than altering these values.
-		 * 
-		 * Text colors use fg, meaning foreground, and
-		 * background colors use fg. Sometimes they're
-		 * used to color non-text objects, which is why
-		 * they aren't called -text or -background.
-		 *
-		 * --------------------------------------------------
-		 * Header style
-		 * --------------------------------------------------
-	
-		/* Default foreground (text) and background colors  */
-		--fg: black;
-		--bg: white;
+    
+    /* Secondary foreground (text) and background colors for branding. */
+    --branding-fg:darkblue; 
+    --branding-bg:white;
 
-		/* Default foreground (text) and background colors in article */
-		--article-fg: black;
-		--article-bg: var(--bg);
-				
-		/* Default foreground (text) and background colors in aside */
-		--aside-fg: black;
-		--aside-bg: var(--bg);
-
-		/* Primary foreground (text) and background colors in header */
-		--header-fg: white;
-		--header-bg: black;
-
-		/* Primary foreground (text) and background colors in navbar */
-		--nav-fg: var(--header-fg);
-		--nav-bg: var(--header-bg);
-
-		/* Secondary foreground (text) and background colors for accents. */
-		--trim-fg: #201D3A;
-		--trim-bg: white;
-		
-		/* Primary foreground (text) and background colors in footer */
-		--footer-fg: var(--header-fg);
-		--footer-bg: var(--header-bg);
+    
+    /* Primary foreground (text) and background colors in header */
+    --header-fg:var(--branding-fg);
+    --header-bg:var(--branding-bg);
+    /* Link colors specific to header */
+    --a-header:var(--header-fg); 
+    --a-header-link:var(--header-fg);
+    --a-header-visited:var(--header-fg);
+    --a-header-hover:var(--header-fg); 
+    --a-header-active:var(--header-fg);
 
 
-		/* ****************/
-		/* DIMENSIONS      */
-		/* ****************/
-	
-		--max-article-width: 80%; 
+    /* Primary foreground (text) and background colors in navbar */
+    --nav-fg:var(--branding-fg);
+    --nav-bg:var(--branding-bg);
+    /* Link colors specific to navbar */
+    --a-nav:var(--nav-fg); 
+    --a-nav-link:var(--nav-fg);
+    --a-nav-visited:var(--nav-fg);
+    --a-nav-hover:var(--nav-fg); 
+    --a-nav-active:var(--nav-fg);
 
-		/* Widest the aside column should be */
-		--max-aside-width: 15%;    
 
-		/* Header, nav, and footer stretch all the way across
-		 * the screen at 100%. To see gaps (margins) on either side
-		 * reduce that number, then increase --left-gap
-		 * and --right-gap. */
-		--full-page:100%; 
+    /* Default foreground (text) and background colors in article */
+    --article-fg: var(--fg);
+    --article-bg: var(--bg);
+    /* Link colors specific to article */
+    --a-article: var(--a); 
+    --a-article-link:var(--a);
+    --a-article-visited:var(--a);
+    --a-article-hover:var(--a); 
+    --a-article-active:var(--a);
 
-		/* Margin/background visible surrounding article. 
-		 * When --full-page is 100% these should be at 0.
-		 * When --full-page is less than 100% then these
-		 * two should add up to the difference. */
-		--left-gap:0%;
-		--right-gap:0%;
+        
+    /* Default foreground (text) and background colors in aside */
+    --sidebar-fg: var(--fg);
+    --sidebar-bg: var(--bg);
+    /* Link colors specific to sidebar */
+    --a-sidebar: var(--a); 
+    --a-sidebar-link:  var(--a);
+    --a-sidebar-visited:  var(--a);
+    --a-sidebar-hover: var(--a); 
+    --a-sidebar-active:  var(--a);
 
-		/* Starting point from left where text (and by default headers) appears */
-		--left-start:5%;
 
-		/* Adjusts header height and keeps it vertically centered */
-		--header-height:10rem;
-
-		/* Size of the main text in the header. */
-		--branding-height:5rem;
-
-		/* Adjusts navbar height and keeps it vertically centered */
-		--nav-height:5rem;
-
+    /* Primary foreground (text) and background colors in footer */
+    --footer-fg: var(--header-fg);
+    --footer-bg: var(--header-bg);
+    /* Link colors specific to footer */
+    --a-footer: var(--a); 
+    --a-footer-link: var(--a);
+    --a-footer-visited: var(--a);
+    --a-footer-hover: var(--a); 
+    --a-footer-active: var(--a);
 }
+
+/* HEADER colors */
+
+header > ul > li > a,
+header > ul > li > a:link,
+header > ul > li > a:visited
+	{color:var(--branding-fg);}
+header > ul > li > a:hover,
+header > ul > li > a:active
+	{text-decoration:underline;}
+
+header > ul > li:first-child > a {color:var(--header-fg);}
+
+/* NAVBAR */
+
+article > p > a,
+article > p > a:link,
+article > p > a:visited
+	{color:var(--a);}
+article > p >  a:hover,
+article > p >  a:active
+	{color:var(--a);background-color:var(--bg);}
 
 

@@ -2,10 +2,9 @@
 :root 
 {
 
-	/* **********************************************************/
-	/* COLOR DECLARATIONS USED BY ALL METABUZZ FRAMEWORK THEMES */
-	/* **********************************************************/
-
+	/* ****************/
+	/* COLORS         */
+	/* ****************/
 	/*
 	 * Most but not all colors used by a theme appear
 	 * in this CSS file as CSS variables, so that you
@@ -20,85 +19,96 @@
 	 */
 
     /* Default foreground (text) and background colors  */
-    --fg: #212121;
-    --bg: white;
+    --fg:black;
+    --bg:white;
     /* Default link colors */
-    --a:#3a86ff/*#644EE7*/;
-    --a-visited: var(--a);
-    --a-hover: var(--a);
-    --a-active: var(--a);
+    --a:darkblue;
+    --a-link:var(--a);
+    --a-visited:var(--a);
+    --a-hover:var(--a);
+    --a-active:var(--a);
 
     
-    /* Secondary foreground (text) and background colors for accents. */
-article > blockquote + h3 + h4 {color:var(--fg);}
+    /* Secondary foreground (text) and background colors for branding. */
+    --branding-fg:darkblue; 
+    --branding-bg:white;
 
-/* Colors in all levels of lists, including links */
-article a,
-article a:link,
-article a:visited,
-article ol a,
-article ol a:link,
-article ol a:visited,
-article ul a,
-article ul a:link,
-article ul a:visited
-  {color:var(--fg);text-decoration:none;border-bottom:.125em solid var(--a);}
+    
+    /* Primary foreground (text) and background colors in header */
+    --header-fg:var(--branding-fg);
+    --header-bg:var(--branding-bg);
+    /* Link colors specific to header */
+    --a-header:var(--header-fg); 
+    --a-header-link:var(--header-fg);
+    --a-header-visited:var(--header-fg);
+    --a-header-hover:var(--header-fg); 
+    --a-header-active:var(--header-fg);
 
-/* Hover and button hold states for all links. */
-article a:hover,
-article a:active,
-article ol a:hover
-article ol a:active,
-article ul a:hover,
-article ul a:active
-  {text-decoration:none;border-bottom:none;}
 
-article > blockquote > p {color:var(--trim-fg);}
-/*
- * --------------------------------------------------
- * Images: light drop shadow 
- * --------------------------------------------------
- */
-article > img, article > p > img {
-  box-shadow: rgb(128,128,128) 1px 1px 3px 0px;
+    /* Primary foreground (text) and background colors in navbar */
+    --nav-fg:var(--branding-fg);
+    --nav-bg:var(--branding-bg);
+    /* Link colors specific to navbar */
+    --a-nav:var(--nav-fg); 
+    --a-nav-link:var(--nav-fg);
+    --a-nav-visited:var(--nav-fg);
+    --a-nav-hover:var(--nav-fg); 
+    --a-nav-active:var(--nav-fg);
+
+
+    /* Default foreground (text) and background colors in article */
+    --article-fg: var(--fg);
+    --article-bg: var(--bg);
+    /* Link colors specific to article */
+    --a-article: var(--a); 
+    --a-article-link:var(--a);
+    --a-article-visited:var(--a);
+    --a-article-hover:var(--a); 
+    --a-article-active:var(--a);
+
+        
+    /* Default foreground (text) and background colors in aside */
+    --sidebar-fg: var(--fg);
+    --sidebar-bg: var(--bg);
+    /* Link colors specific to sidebar */
+    --a-sidebar: var(--a); 
+    --a-sidebar-link:  var(--a);
+    --a-sidebar-visited:  var(--a);
+    --a-sidebar-hover: var(--a); 
+    --a-sidebar-active:  var(--a);
+
+
+    /* Primary foreground (text) and background colors in footer */
+    --footer-fg: var(--header-fg);
+    --footer-bg: var(--header-bg);
+    /* Link colors specific to footer */
+    --a-footer: var(--a); 
+    --a-footer-link: var(--a);
+    --a-footer-visited: var(--a);
+    --a-footer-hover: var(--a); 
+    --a-footer-active: var(--a);
 }
 
+/* HEADER colors */
 
-/* ******************************/
-/*  SIDEBAR COLORS AND BORDERS  */
-/* ******************************/
+header > ul > li > a,
+header > ul > li > a:link,
+header > ul > li > a:visited
+	{color:var(--branding-fg);}
+header > ul > li > a:hover,
+header > ul > li > a:active
+	{text-decoration:underline;}
 
-aside > h2 {color:var(--a);/*#4488FF*/;background-color:var(--article-bg);}
-aside > h4 {color:var(--a);margin-bottom:.5em;font-weight:bold;}
-aside a:link,
-aside a:visited
-  {color:var(--fg);text-decoration:none;/*border-bottom:.0625em dotted var(--a);*/}
+header > ul > li:first-child > a {color:var(--header-fg);}
 
+/* NAVBAR */
 
+article > p > a,
+article > p > a:link,
+article > p > a:visited
+	{color:var(--a);}
+article > p >  a:hover,
+article > p >  a:active
+	{color:var(--a);background-color:var(--bg);}
 
-/* ******************************/
-/*  FOOTER COLORS AND BORDERS   */
-/* ******************************/
-
-footer {border-top:1px solid var(--trim-fg);}
-footer > table > thead > tr > th {color:var(--footer-fg);background-color:var(--footer-bg);}
-/* Color of links in main rows (body) of table */
-footer > table > tbody > tr > td > a:link,
-footer > table > tbody > tr > td > a:visited
-	{color:var(--header-fg);}
-footer > table > tbody > tr > td > a:hover,
-footer > table > tbody > tr > td > a:active
-	{color:var(--header-fg);}
-footer > ul > li > a,
-footer > ul > li > a:link,
-footer > ul > li > a:visited
-	{color:var(--trim-fg);}
-
-/*
- * --------------------------------------------------
- * Special feature: First item in list has its own 
- * color
- * --------------------------------------------------
- */
-footer > ul > li:first-child > a {color:var(--trim-fg);}
 
