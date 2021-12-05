@@ -1,5 +1,0 @@
-* [MY NAME HERE](/) 
-* [Blog](/) 
-* [Newsletter](/) 
-* [Services](/) 
-* [Contact](/) 
