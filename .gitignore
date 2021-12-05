@@ -12,6 +12,7 @@ m
 *.sav
 foo.*
 *.swp
+foo/
 
 # Binaries for programs and plugins
 *.exe
