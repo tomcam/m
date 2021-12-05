@@ -114,23 +114,23 @@ func (app *App) publishMarkdownFile(filename string) error {
 	// Write HTML text of the body
 	fullPage := app.Site.HTMLStartFile +
 		"\"" + app.Site.Language + "\"" + ">" + "\n" +
-		/*	"<html>" + "\n" + */
 		"<head>" + "\n" +
 		app.titleTag() +
 		app.metatags() +
+    // Avoid flash of unstyled content (FOUT)
+    "<style>.no-js {visibility: visible;}</style>" +
 		h + "\n" +
-		//app.stylesheetTags() +
 		app.Page.stylesheetTags +
 		"</head>" + "\n" +
-		//app.header() +
+    // Avoid flash of unstyled content (FOUT)
+    "<body style='visibility: hidden;'class='no-js'>"  +
+    "<script>document.querySelector('body').classList.remove('no-js');</script>"+
 		header +
-		//app.nav() +
 		nav +
 		app.article(body, "article") +
 		sidebar +
 		footer +
     closeScripts +
-  //  "</script>" + "\n" +
 		app.Site.HTMLEndFile
 
 	if err = os.WriteFile(target, []byte(fullPage), defaults.PublicFilePermissions); err != nil {

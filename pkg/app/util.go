@@ -527,7 +527,7 @@ func writeYamlFile(filename string, target interface{}) error {
 	return ioutil.WriteFile(filename, theYaml, defaults.ProjectFilePermissions)
 }
 
-func writeStructToYAML(filename string, i interface{}) error {
+func WriteStructToYAML(filename string, i interface{}) error {
 	b, err := yaml.Marshal(i)
 	if err != nil {
 		return err

@@ -21,7 +21,6 @@ type Site struct {
 	// path of that directory, based on the app path,
 	// the current theme, etc.
 	// See also its subdirectories, CSSDir and ImageDir
-	// Was assetDir
 	assetPath string
 
 	// Make it easy if you just have 1 author.
@@ -34,7 +33,6 @@ type Site struct {
 	// from its actual root. For example, GitHub Pages prefers
 	// the blog to start in /docs instead of root, but
 	// a URL would omit it.
-	// Was BaseDir
 	BasePath string `yaml:"Base-Path"`
 
 	// Site's branding, any string, that user specifies in site.toml.
@@ -50,7 +48,6 @@ type Site struct {
 
 	// Subdirectory under the AssetDir where
 	// CSS files go when published.
-	// Was cssDir string
 	cssPublishPath string
 
 	// List of all directories in the site
@@ -87,7 +84,6 @@ type Site struct {
 	HTMLStartFile string `yaml:"HTML-start-file"`
 	HTMLEndFile   string `yaml:"HTML-end-file"`
 	// Subdirectory under the AssetDir where image files go
-	// Was imageDir
 	imagePath string
 
 	// for HTML header, as in "en" or "fr"
@@ -119,7 +115,6 @@ type Site struct {
 	path string
 
 	// Directory for finished site--rendered HTML & asset output
-	// Was publishDir
 	publishPath string
 
 	// Full path of shortcode dir for this project. It's computed
@@ -142,11 +137,9 @@ type Site struct {
 
 	// Site defaults to using this sidebar setting unless
 	// a page specifies otherwise
-	// Was DefaultSidebar
 	Sidebar string `yaml:"Sidebar"`
 
 	// Name (not path) of Theme used by this site unless overridden in front matter.
-	// Was DefaultTheme
 	Theme string `yaml:"Theme"`
 
 	// Location of complete set of themes included
@@ -167,9 +160,6 @@ type Site struct {
 	// Index by the fully qualified path name of the source .md file.
 	// TODO: Not yet used
 	webPages map[string]WebPage
-
-	// Pages to generate when site is created
-	//Starters map[string]Starter `yaml:"Starters"`
 
 	// IMPORTANT
 	// LIST ALWAYS GOES AT THE END OF THE FILE/DATA STRUCTURE
@@ -398,7 +388,6 @@ func (app *App) writeSiteConfig(filename string) error {
 // to a site config file, or initialized
 // by another site config file.
 func (app *App) setSiteDefaults() {
-	app.Debug("setSiteDefaults()")
 	app.Site.Language = defaults.Language
 	app.Site.HTMLStartFile = defaults.HTMLStartFile
 	app.Site.HTMLEndFile = defaults.HTMLEndFile
@@ -407,6 +396,6 @@ func (app *App) setSiteDefaults() {
 
 // copyMbDir() copies the .mb directory to the new site.
 func (app *App) copyMbDir() error {
-	app.Print("copyMbDir to %v", app.Site.path)
+	app.Debug("\tcopyMbDir to %v", app.Site.path)
 	return app.embedDirCopy(mbfiles, app.Site.path)
 }

@@ -1,4 +1,24 @@
 <script>
+
+
+// This and ready() are used to avoid 
+// flash of unstyled content (FOUT)
+function ready(fn) {
+  if (document.readyState !== 'loading'){
+    fn();
+  } else {
+    document.addEventListener('DOMContentLoaded', fn);
+  }
+}
+
+ready(function () {
+  document.body.style.visibility = 'visible';
+});
+
+
+
+// Stretch sidebar when document is scrolled.
+// For some reason HTML doesn't do that for you.
 var scrollTimer = -1;
 function bodyScroll()
 {

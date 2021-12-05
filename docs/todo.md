@@ -44,6 +44,7 @@ Footer: {File: footer.md, HTML:}
 Language: en
 
 ## Priority 1: Showstoppers--required for the next release
+* Bug: Error handling is broken
 * Bug: pillar.css is infested with colors and may even have trim-fg etc
 * Bug: Pillar, genuine have good nested lists. I think it's just htis:
 ```
@@ -67,7 +68,7 @@ parameter is empty
 * Bug: Site.HighlightStyle aka Highlight-style  doesn't seem to work
 * Add: toc
 * Add: search
-* Add: scriptclose directory
+* DONE Add: scriptclose directory
 * Add: idea of post and specfications like YYYY-MM-DD or y-m-d etc, using dirs or strings as needed . That way mb new post "/blog/avengers review" would expand to something like "/blog/2022/04/21/avengers-review.html" or "/blog/2022-March-1-avengers-review.html" and so on 
 * Make these changes when returning to the standard mb directory
   - Fix hardcoded paths in the files `gf`, `bu`
@@ -136,6 +137,9 @@ mb new theme test 0.2.0 from wide 1.1.0
 
 ```
   - Check for conflicting versions with new theme command
+* Add: RSS feed
+* Add: sitemap
+* Add: Generate empty YAML files for site, theme, starter
 * Add to glossary: `command` means a command-line verb such as `new theme` or `new site`
 * Ensure mdToHTML and mdFileToHTML return errors and use application error handling
 * Incomplete list of things that need to be handled once I start accepting
@@ -240,9 +244,6 @@ the error handling I'll know what's happening
 * I think if there's a dir starting with "." in the factory themes directory
 a runtime error occurs. Fix that but also add a test for it.
 10/17/2021
-* Bug: `mb new site foo` calls setSiteDefaults() twice
-* Bug: `mb new site /Users/tom/code/deleteme` calles setSiteDefaults() twice, the 
-first time for the current directory and the second time for the target directory
 * Bug: Run `mb -i` that is without build. The data structures don't get default initialization
 * Themes
   - Wiring up the YAML data to internals
