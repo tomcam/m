@@ -89,7 +89,6 @@ func (app *App) publishMarkdownFile(filename string) error {
 	if h, err = app.headFiles(); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
-
 	var header string
 	if header, err = app.header(); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
@@ -107,7 +106,7 @@ func (app *App) publishMarkdownFile(filename string) error {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	var closeScripts string
-  // xxx
+	// xxx
 	if closeScripts, err = app.insertScript(app.Site.scriptClosePath); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
@@ -117,20 +116,20 @@ func (app *App) publishMarkdownFile(filename string) error {
 		"<head>" + "\n" +
 		app.titleTag() +
 		app.metatags() +
-    // Avoid flash of unstyled content (FOUT)
-    "<style>.no-js {visibility: visible;}</style>" +
+		// Avoid flash of unstyled content (FOUT)
+		"<style>.no-js {visibility: visible;}</style>" +
 		h + "\n" +
 		app.Page.stylesheetTags +
 		"</head>" + "\n" +
-    // Avoid flash of unstyled content (FOUT)
-    "<body style='visibility: hidden;'class='no-js'>"  +
-    "<script>document.querySelector('body').classList.remove('no-js');</script>"+
+		// Avoid flash of unstyled content (FOUT)
+		"<body style='visibility: hidden;'class='no-js'>" +
+		"<script>document.querySelector('body').classList.remove('no-js');</script>" +
 		header +
 		nav +
 		app.article(body, "article") +
 		sidebar +
 		footer +
-    closeScripts +
+		closeScripts +
 		app.Site.HTMLEndFile
 
 	if err = os.WriteFile(target, []byte(fullPage), defaults.PublicFilePermissions); err != nil {
@@ -193,7 +192,7 @@ func (app *App) normalizeStylesheetList() {
 				stylesheet = ""
 			}
 			if stylesheet != "" {
-				theme.publishStylesheets=
+				theme.publishStylesheets =
 					append(theme.publishStylesheets, stylesheet)
 			}
 		}
@@ -211,7 +210,7 @@ func (app *App) normalizeStylesheetList() {
 		// responsive.css is the final stylesheet to add
 		if responsive == true {
 			app.Debug("\t\t\t\tadding responsive.css")
-			theme.publishStylesheets= append(theme.publishStylesheets, "responsive.css")
+			theme.publishStylesheets = append(theme.publishStylesheets, "responsive.css")
 		}
 		app.Page.themes[level] = theme
 	}
@@ -250,7 +249,10 @@ func (app *App) descriptionTag() string {
 // should be a separate step
 func (app *App) MdFileToHTML(filename string) ([]byte, error) {
 	// Read file into a byte slice.
-	b := util.FileToBytes(filename)
+	//app.src = util.FileToBytes(filename)
+  b := util.FileToBytes(filename)
+  app.src = b
+	//s := app.interps(filename, string(app.src))
 	s := app.interps(filename, string(b))
 	// Convert to HTML
 	return app.mdToHTML([]byte(s))
@@ -384,8 +386,7 @@ func (app *App) layoutEl(l layoutElement) (string, error) {
 	} else {
 		html = fileToBuf(filename)
 	}
-	// Handle the case where pure HTML was specified. First
-	// handle any Go template values.
+	// Handle any Go template values.
 	return app.interps(filename, string(html)), nil
 }
 
@@ -394,7 +395,6 @@ func (app *App) layoutEl(l layoutElement) (string, error) {
 // You can optionally include an id tag with it.
 func (app *App) article(body []byte, params ...string) string {
 	// interps runs custom Go template functions like ftime
-	//html := app.interps(app.Page.filePath, string(body) + app.sidebar())
 	html := app.interps(app.Page.filePath, string(body))
 	if len(params) < 1 {
 		// Optional ID tag was not supplied
@@ -492,7 +492,7 @@ func (app *App) publishStylesheets() error {
 		theme := app.Page.themes[level]
 		app.Debug("\t\t\t\ttheme is: %#v", theme.level)
 		app.Debug("\t\t\t\tpublishStylesheets: %#v", theme.publishStylesheets)
-		for _, stylesheet := range theme.publishStylesheets{
+		for _, stylesheet := range theme.publishStylesheets {
 			source = filepath.Join(theme.sourcePath, stylesheet)
 			dest = filepath.Join(app.themePublishDir(theme.level), stylesheet)
 
@@ -560,7 +560,6 @@ func (app *App) headFiles() (string, error) {
 	return h, nil
 }
 
-
 // insertScript() injects Javascript (technically,
 // any thing inside script tags) into the
 // output stream.
@@ -579,4 +578,3 @@ func (app *App) insertScript(dir string) (string, error) {
 	}
 	return script, nil
 }
-

@@ -26,7 +26,7 @@ func (a *App) execute(templateName string, tpl string, funcMap template.FuncMap)
 	var t *template.Template
 	var err error
 	if t, err = template.New(templateName).Funcs(funcMap).Parse(tpl); err != nil {
-		// TODO: Handle error properly & and document error code
+    // TODO: Function should return error
 		a.QuitError(ErrCode("0917", err.Error()))
 	}
 	var b bytes.Buffer

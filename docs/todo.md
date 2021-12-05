@@ -4,6 +4,11 @@
 * Old theme directory
 https://github.com/tomcam/mb/tree/master/.mb/.themes
 * Delete themename.toml
+* Add styling for definition lists
+```
+article > dl > dt {font-size:.8em;font-weight:bold;}  
+article > dl > dd {font-size:.8em;padding-bottom:1em;}
+```
 * Copy either w/layout.css or pillar/layout.css
 * add --branding-weight to sizes.css
 * Update theme-light.css, theme-dark.css
@@ -25,6 +30,7 @@ https://github.com/tomcam/mb/tree/master/.mb/.themes
 
 
 * YAML file Format looks like this:
+```
 Branding: "W by Metabuzz"
 Description: "Minimal wide theme"
 Stylesheets: 
@@ -42,8 +48,24 @@ Article: {File:, HTML:}
 Sidebar: {File: sidebar.md, HTML:}
 Footer: {File: footer.md, HTML:}
 Language: en
-
+```
+Good footer from Pillar
+```
+footer > h2 {text-align:center;}
+footer > table {font-size:calc(80%);}                
+/* Give table columns to get some breathing room */       
+footer > table > thead > tr > th {padding-right:2rem;}    
+footer > table > thead > tr > th {padding-top:1em;padding-right:2em;padding-bottom:1em;}
+footer > table > tbody > tr > td {padding-right:3em;}
+footer > table > tbody > tr > td > a:link,
+footer > table > tbody > tr > td > a:visited         
+  {text-decoration:none;}
+footer > table > tbody > tr > td > a:hover,    
+footer > table > tbody > tr > td > a:active       
+  {text-decoration:underline;}
+```
 ## Priority 1: Showstoppers--required for the next release
+* bug: toc seems to be broken with includes files, or even if it's in the included file (seens to be usefless when I put it at the top of common|mdemo.md)
 * Bug: Error handling is broken
 * Bug: pillar.css is infested with colors and may even have trim-fg etc
 * Bug: Pillar, genuine have good nested lists. I think it's just htis:
@@ -128,6 +150,9 @@ You can do a header like this, which gives you an optional logo
 Same with w-based themes.
 * To change the root text (rem) size, 
 ## Priority 2: Desired but not required for the next release
+* Add: new page command
+* Add: Generate index.md for new site
+* Add: Get variables from frontmatter, site file, env variables, or config file
 * Add: copy theme feature
 * Add versioning for themes (already did it in the older version). That should also mean:
   - new theme should increment version and allow an optional version, something like this: 
@@ -158,6 +183,13 @@ theme-light.css or theme-dark.css is used.
 * Add a way to generaate empty
   - site config file
   - theme config file
+```
+  site := Site{}
+  var err error
+  if err = WriteStructToYAML("foo.txt", site); err != nil {
+    app.QuitError(ErrCode("PREVIOUS", "foo.txt"))
+  }
+```
 * BUG-ish: Settle on naming convention for yaml portion of structs. Sometimes it looks
 like HeaderLogo, sometimes it looks like Full-Name, sometimes it looks like Hard-wraps
 * funcs.go articlefunc() doesn't work because I don't actually store the output. Should probably do it.

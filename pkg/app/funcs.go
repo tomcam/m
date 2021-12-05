@@ -1,13 +1,14 @@
 package app
 
 import (
-	//"bytes"
-	//"fmt"
+  "bytes"
+	"fmt"
 	"html/template"
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	//"strconv"
+	"strconv"
+	"github.com/tomcam/m/pkg/mdext"
 	"strings"
 	"time"
 )
@@ -120,17 +121,18 @@ func (app *App) inc(filename string) template.HTML {
 		}
 	}
 	if !fileExists(filename) {
+    // TODO: return an error instead
 		app.QuitError(ErrCode("0120", filename))
 	}
 
 	input, err = ioutil.ReadFile(filename)
 	if err != nil {
+    // TODO: return an error instead
 		app.QuitError(ErrCode("0121", filename))
 	}
 
 	// Apply the template to it.
-	// The one function missing from fewerFuncs is shortcode() itself.
-	s := app.execute(filename, string(input), app.fewerFuncs)
+	s := app.execute(filename, string(input), app.funcs)
 	return template.HTML(s)
 }
 
@@ -200,6 +202,103 @@ func (a *App) addTemplateFunctions() {
 		"inc":      a.inc,
 		"path":     a.path,
 		"scode":    a.scode,
-		//"toc":      a.toc,
+		"toc":      a.toc,
 	}
 }
+
+// generateTOC reads the Markdown source and returns a slice of TOC entries
+// corresponding to each header less than or equal to level.
+func (a *App) generateTOC(level int) []mdext.TOCEntry {
+	node := a.markdownAST(a.src)
+	tocs, err := mdext.ExtractTOCs(a.newGoldmark().Renderer(), node, a.src, level)
+	if err != nil {
+    // TODO: this should return an error
+		a.QuitError(ErrCode("0926", err.Error()))
+	}
+	return tocs
+}
+
+// toc generates a table of contents and includes all headers with a level less
+// than or equal level. Level must be 1-6 inclusive.
+func (a *App) toc(params ...string) string {
+	pcount := len(params)
+	var listType string
+	var level int
+	var err error
+	switch pcount {
+	case 0:
+		{
+			level = 6
+			listType = "ul"
+		}
+	case 1:
+		{
+			level, err = strconv.Atoi(params[0])
+			listType = "ul"
+		}
+	default:
+		{
+			level, err = strconv.Atoi(params[0])
+			listType = params[1]
+			if strings.Contains(listType, "ol") {
+				listType = "ol"
+			} else {
+				listType = "ul"
+			}
+		}
+	}
+
+	// Please leave this error code as is
+	if err != nil {
+		a.QuitError(ErrCode("1205", err.Error()))
+	}
+	// Ditto
+	if level <= 0 || level > 6 {
+    // TODO: Return an error
+		a.QuitError(ErrCode("1206", params[0]))
+	}
+	tocs := a.generateTOC(level)
+	b := new(bytes.Buffer)
+	b.Grow(256)
+	writeTOCLevel(listType, b, tocs, 1)
+	return b.String()
+}
+
+// writeTOCLevel writes a single TOC level and recursively delegates for child
+// levels. The result is nested HTML lists corresponding to TOC levels.
+func writeTOCLevel(listType string, b *bytes.Buffer, tocs []mdext.TOCEntry, level int) int {
+	openTag := "<" + listType + ">"
+	closeTag := "</" + listType + ">"
+	b.WriteString(openTag)
+	i := 0 // explicit index because recursive calls advance i by variable amount
+loop:
+	for {
+		if i >= len(tocs) {
+			break
+		}
+		toc := tocs[i]
+		switch {
+		case toc.Level < level:
+			break loop
+		case toc.Level == level:
+			b.WriteString("<li>")
+			_, _ = fmt.Fprintf(b, `<a href="#%s">`, toc.ID)
+			b.WriteString(toc.Header)
+			b.WriteString("</a>")
+			b.WriteString("</li>")
+		case toc.Level > level:
+			b.WriteString("<li>")
+			// We're adding i instead of assigning because we pass a smaller slice
+			// to the recursive call.
+			i += writeTOCLevel(listType, b, tocs[i:], level+1)
+			b.WriteString("</li>")
+			continue // skip i++ since the child must have made progress
+		}
+		i++
+	}
+	b.WriteString(closeTag)
+	return i
+}
+
+
+

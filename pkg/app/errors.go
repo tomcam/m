@@ -115,6 +115,7 @@ var errMsgs = map[string]string{
 	"0901": "Unable to allocate Site object",
 	"0902": "Error creating new site file",
 	"0915": "Error copying theme to site", // filename
+	"0917": "Problem parsing template", // filename
 	"0920": "Error generating Markdown",
 	"0921": "Unable to build project", // filename
 	"0922": "No project found at",     // message
@@ -125,7 +126,7 @@ var errMsgs = map[string]string{
 	// TODO: Get rid of the line below
 	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
 	"0925": "Error generating Markdown for page elment file", // filename
-
+  "0926": "Unable to generate table of contents",
 	// 0950 - Something's already there
 	"0951": "Site already exists at", // sitename
 
@@ -160,6 +161,7 @@ var errMsgs = map[string]string{
 	"1108": "Can't change to site directory",
 	// 1200 - Syntax error!
 	"1204": "Unknown dot value in Go template function ", //
+	"1205": "Error generating table of contents", //
 	// TODO: Get rid of the line below
 	// Old errors stopped at 1206
 }

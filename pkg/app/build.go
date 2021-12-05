@@ -1,11 +1,13 @@
 package app
 
 import (
-	//"github.com/yuin/goldmark/util"
+	//"text/transform"
 	"bytes"
 	//"fmt"
 	//"github.com/tomcam/m/pkg/default"
-	//"github.com/tomcam/m/pkg/mdext"
+	//toc "github.com/abhinav/goldmark-toc"
+  "github.com/yuin/goldmark/ast"
+	"github.com/yuin/goldmark/text"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark-highlighting"
 	"github.com/yuin/goldmark-meta"
@@ -13,7 +15,6 @@ import (
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/renderer"
 	"github.com/yuin/goldmark/renderer/html"
-	//"github.com/yuin/goldmark/text"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -22,15 +23,14 @@ import (
 // mdToHTML converts a Markdown source file in a byte
 // slice to HTML.
 func (app *App) mdToHTML(source []byte) ([]byte, error) {
+  //app.src = source
 	var buf bytes.Buffer
 	if err := app.parser.Convert(source, &buf, parser.WithContext(app.parserCtx)); err != nil {
-		// TODO: Handle error properly & and document error code
 		return buf.Bytes(), ErrCode("0920", err.Error())
 	}
 	// Obtain the parsed front matter as a raw
 	// interface
 	app.Page.frontMatterRaw = meta.Get(app.parserCtx)
-	//app.page.Data = meta.Get(app.parserCtx)
 	return buf.Bytes(), nil
 }
 
@@ -111,8 +111,6 @@ func (app *App) build(path string) error {
 						commaNeeded = false
 					}
 					filename = filepath.Join(dir, file.Name())
-					//if err = app.publishFile(filepath.Join(dir, file.Name())); err != nil {
-					//app.Debug("\tmarkdown file %v", filename)
 					if err = app.publishMarkdownFile(filename); err != nil {
 						return ErrCode("PREVIOUS", err.Error())
 					}
@@ -143,8 +141,9 @@ func (app *App) build(path string) error {
 	return nil
 }
 
-// TODO: Move this to mark package or eliinate mark
-func (app *App) parserWithOptions() goldmark.Markdown {
+// newGoldmark returns the a goldmark object with a parser and renderer.
+func (app *App) newGoldmark() goldmark.Markdown {
+
 	exts := []goldmark.Extender{
 
 		// YAML support
@@ -159,23 +158,29 @@ func (app *App) parserWithOptions() goldmark.Markdown {
 			highlighting.WithFormatOptions()),
 	}
 
-	parserOpts := []parser.Option{parser.WithAttribute(), parser.WithAutoHeadingID()}
+	parserOpts := []parser.Option{
+		parser.WithAttribute(),
+		parser.WithAutoHeadingID()}
 
 	renderOpts := []renderer.Option{
 		// WithUnsafe is required for HTML templates to work properly
 		html.WithUnsafe(),
 		html.WithXHTML(),
 	}
-	// TC: Add as option?
-	/*
-		if a.Site.MarkdownOptions.hardWraps {
-			renderOpts = append(renderOpts, html.WithHardWraps())
-		}
-	*/
-
 	return goldmark.New(
 		goldmark.WithExtensions(exts...),
 		goldmark.WithParserOptions(parserOpts...),
 		goldmark.WithRendererOptions(renderOpts...),
 	)
 }
+
+func (a *App) markdownAST(input []byte) ast.Node {
+	ctx := parser.NewContext()
+	p := a.newGoldmark().Parser()
+	return p.Parse(text.NewReader(input), parser.WithContext(ctx))
+	//return p.Parse(text.NewReader(input), parser.WithContext(ap.parserCtx))
+}
+
+
+
+

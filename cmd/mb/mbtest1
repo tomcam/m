@@ -93,23 +93,8 @@ Mode: ${mode}
 * Theme is **${theme}**. According to frontmatter it's **{{ .Page.FrontMatter.Theme }}**
 * Sidebar **${sidebar}**. According to frontmatter it's **{{ .Page.FrontMatter.Sidebar }}** 
 * Mode should be **${mode}**
-
+{{ toc }}
 {{ inc "common|mdemo.md" }}
-
-## Wait'll they get a load of this
-
-![Logo](eastside-emerald-64x64.png)
-**Note**
-
-* **Resize this** to check for responsive versions
-* Check in all browsers
-
-#### Code example
-
-````
-writeln("hello, world.")
-````
-
 
 [Home](./index.html)
 

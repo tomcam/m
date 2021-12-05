@@ -5,8 +5,14 @@ import (
 	"io"
 	"io/fs"
 	"io/ioutil"
-
-	"errors"
+  /*
+	"github.com/yuin/goldmark-meta"
+  "github.com/yuin/goldmark/renderer"
+  "github.com/yuin/goldmark/renderer/html"
+	"github.com/yuin/goldmark/extension"
+ 	highlighting "github.com/yuin/goldmark-highlighting"
+  */
+  "errors"
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -27,6 +33,9 @@ type App struct {
 	// Location (on startup) of user application data directory
 	applicationDataPath string
 	Site                Site
+  // TODO: experimental
+  // Markdown file source
+  src []byte
 
 	// Cobra Command Processes command line options
 	RootCmd cobra.Command
@@ -94,7 +103,10 @@ type Flags struct {
 //
 func NewApp() *App {
 	app := App{
-		Page: Page{},
+		// TODO: tenporary
+    src: []byte{},
+
+		Page:     Page{},
 		// Missing here: initializing the parser.
 		// Can't set parser options until command
 		// line has been processed.
@@ -174,7 +186,7 @@ func (app *App) initConfig() {
 
 	// Parser couldn't be initialized until command line and
 	// other options were processed
-	app.parser = app.parserWithOptions()
+	app.parser = app.newGoldmark()
 	app.parserCtx = parser.NewContext()
 
 	// Add snazzy Go template functions like ftime() etc.
@@ -248,8 +260,8 @@ func (app *App) setPaths() {
 	app.Site.headTagsPath = filepath.Join(app.cfgPath,
 		defaults.HeadTagsPath)
 
-	// Compute the directory location for scripts 
-	// copied just before the closing HTML tag 
+	// Compute the directory location for scripts
+	// copied just before the closing HTML tag
 	app.Site.scriptClosePath = filepath.Join(app.cfgPath,
 		defaults.ScriptClosePath)
 
@@ -467,3 +479,6 @@ func (app *App) embedDirCopy(source embed.FS, target string) error {
 	})
 	return nil
 }
+
+
+

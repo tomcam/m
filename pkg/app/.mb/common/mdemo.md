@@ -1,4 +1,7 @@
-# Metabuzz Markdown quick reference
+# Metabuzz Markdown quic reference
+
+## Table of contents should appear here
+
 
 **Table of contents** 
 
