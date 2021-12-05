@@ -124,7 +124,7 @@
 
   /* Same as article > h3 {font-size}, h3 {padding}, h3 {margin} */
   --h3-font-size:1.5rem;
-  --h3-margin-top:1.5rem;
+  --h3-margin-top:0rem;
   --h3-margin-bottom:0rem;
   --h2-margin-right:0rem;
   --h2-margin-left:0rem;

@@ -45,6 +45,15 @@ Language: en
 
 ## Priority 1: Showstoppers--required for the next release
 * Bug: pillar.css is infested with colors and may even have trim-fg etc
+* Bug: Pillar, genuine have good nested lists. I think it's just htis:
+```
+article ul > li {margin-left: 2em;padding-left: 0em;}
+```
+* Bug: add styling for definition lists
+```
+article > dl > dt {font-size:.8em;font-weight:bold;}  
+article > dl > dd {font-size:.8em;padding-bottom:1em;}
+```
 * Bug: delete a theme directory, then try to build wih that theme.
 you get this error. Handle that errcode condition.
 Error building Can't find a theme named /Users/tom/code/m/cmd/mb/theme-test/.mb/themes/simplify (error code mbz1028)

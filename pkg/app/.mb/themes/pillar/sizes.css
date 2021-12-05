@@ -91,7 +91,7 @@
 
   /* Same as article > p {font-size}, p {padding}, p {margin} */
   --p-font-size:1rem;
-  --p-line-height:2rem;
+  --p-line-height:1.5rem;
   --p-padding-top:.5rem;
   --p-padding-bottom:0rem;
   --p-padding-right:var(--text-end);
@@ -115,7 +115,7 @@
 
   /* Same as article > h2 {font-size}, h2 {padding}, h2 {margin} */
   --h2-font-size:2rem;
-  --h2-margin-top:1.5rem;
+  --h2-margin-top:0rem;
   --h2-margin-bottom:0rem;
   --h2-margin-right:0rem;
   --h2-margin-left:0rem;

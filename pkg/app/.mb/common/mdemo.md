@@ -1,10 +1,5 @@
 # Metabuzz Markdown quick reference
 
-## Automatically generated TOC
-
-{{ toc }}
-
-
 **Table of contents** 
 
 * [Common text formatting](#common-text-formatting)
@@ -18,21 +13,20 @@
 * [Header styles](#header-styles)
 * [Coding styles](#coding-styles)
   - [Choosing the programming language](#choose-pl)
-* [Ordered lists](#ordered-lists)
+* [Ordered lists](#ordered-lists-37)
 * [Unordered, or bullet lists](#unordered-lists)
 * [The "third" list type: definition lists](#def-lists)
 * [Creating clickable image links in Markdown](#clickable-images)
 * [Tables](#tables)
 * [Block quote](#block-quote)
+* [Footer](#footer-43)
+* [HTML Forms](#html-forms)
 
 
 
 ## Markdown syntax
 
-Here's how markdown appears in the **{{.FrontMatter.Theme }}** theme
-{{- if .FrontMatter.PageType }}
-with the PageType **{{ .FrontMatter.PageType }}**
-{{ end }}:
+Here's how markdown appears in the **{{.Page.FrontMatter.Theme }}** theme
 ## Common text formatting
 
 #### You type:
@@ -218,9 +212,11 @@ fmt.Println("This is a code block")
 1. The numbers display properly on output
 
 
-<a name="unordered-lists"><a/>
 
-### Unordered, or bullet lists
+### Unordered lists
+
+Unordered lists are normally represented as bullets They're always
+the same, whereas ordered lists show as automatically generated sequences of letters or number
 
 #### You type:
 ```
@@ -333,4 +329,13 @@ And here's what results from the table markdown shown above:
 
 [Return to the bookmarks section](#bookmarks)
 
+## HTML forms
+**HTML form test: Search reddit.com**
+<form action="https://www.google.com/search" class="searchform" method="get" name="searchform" target="_blank">
+<input name="sitesearch" type="hidden" value="reddit.com">
+<input autocomplete="on" name="q" placeholder="Search reddit.com" required="required"  type="text">
+<button class="button" type="submit">Search</button>
+</form>
 
+
+## Footer

@@ -169,6 +169,8 @@ article ul a:hover,
 article ul a:active
   {text-decoration:none;border-bottom:none;}
 
+article > hr {border-bottom:1px solid lightgray;}
+
 /*
  * --------------------------------------------------
  * Images: light drop shadow 

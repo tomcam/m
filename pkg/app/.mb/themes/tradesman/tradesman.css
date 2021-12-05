@@ -105,6 +105,10 @@ article > p,
 }
 
 article > ul, article > ol {margin-top:.5em;padding-left:1em;}
+article ul > li {
+    margin-left: 1em;
+    padding-left: 0em;
+}
 article > p > strong {font-family:var(--informal);font-weight:var(--branding-weight);}
 /* Override font rule for code */
 article > p > code, article > code, article > pre, article > pre > code {
@@ -128,6 +132,8 @@ article > table {width:var(--full-page);margin-top:2rem;margin-bottom:3rem;}
 article > table > td,th {padding:1rem;}
 article > table > tbody > tr > td {padding:1rem;}
 
+article > dl > dt {font-size:.8em;font-weight:bold;}
+article > dl > dd {font-size:.8em;padding-bottom:1em;}
 
 /* ******************************/
 /*  SIDEBAR (ASIDE TAG)         */
