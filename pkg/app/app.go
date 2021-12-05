@@ -248,6 +248,11 @@ func (app *App) setPaths() {
 	app.Site.headTagsPath = filepath.Join(app.cfgPath,
 		defaults.HeadTagsPath)
 
+	// Compute the directory location for scripts 
+	// copied just before the closing HTML tag 
+	app.Site.scriptClosePath = filepath.Join(app.cfgPath,
+		defaults.ScriptClosePath)
+
 	// Create a new, empty map to hold the
 	// source directory tree.
 	app.Site.dirs = make(map[string]dirInfo)

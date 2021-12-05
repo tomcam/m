@@ -130,6 +130,10 @@ type Site struct {
 	// to be indexed
 	searchJSONFilePath string
 
+	// Full path to directory containing scripts
+  // to be copied in just before the closing HTML tag
+	scriptClosePath string
+
 	// Full path to site config file
 	siteFilePath string
 

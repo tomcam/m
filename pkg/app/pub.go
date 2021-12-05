@@ -106,6 +106,11 @@ func (app *App) publishMarkdownFile(filename string) error {
 	if footer, err = app.footer(); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
+	var closeScripts string
+  // xxx
+	if closeScripts, err = app.insertScript(app.Site.scriptClosePath); err != nil {
+		return ErrCode("PREVIOUS", err.Error())
+	}
 	// Write HTML text of the body
 	fullPage := app.Site.HTMLStartFile +
 		"\"" + app.Site.Language + "\"" + ">" + "\n" +
@@ -124,6 +129,8 @@ func (app *App) publishMarkdownFile(filename string) error {
 		app.article(body, "article") +
 		sidebar +
 		footer +
+    closeScripts +
+  //  "</script>" + "\n" +
 		app.Site.HTMLEndFile
 
 	if err = os.WriteFile(target, []byte(fullPage), defaults.PublicFilePermissions); err != nil {
@@ -552,3 +559,24 @@ func (app *App) headFiles() (string, error) {
 	}
 	return h, nil
 }
+
+
+// insertScript() injects Javascript (technically,
+// any thing inside script tags) into the
+// output stream.
+// dir is the fully qualified directory
+// name containing the scripts.
+// The scripts supplied MUST provide their
+// own script tags.
+func (app *App) insertScript(dir string) (string, error) {
+	var script string
+	scripts, err := ioutil.ReadDir(dir)
+	if err != nil {
+		return "", ErrCode("0709", dir)
+	}
+	for _, file := range scripts {
+		script += fileToString(filepath.Join(dir, file.Name()))
+	}
+	return script, nil
+}
+

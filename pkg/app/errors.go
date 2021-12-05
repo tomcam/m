@@ -107,7 +107,7 @@ var errMsgs = map[string]string{
 	// 0700	- Error reading directory
 	"0706": "Unable to read from headtags directory", // Expected pathname of headtags directory
 	// Old errors stopped at 0709
-
+	"0709": "Unable to read from script directory " + defaults.ScriptClosePath, // Expected pathname of scripts directory
 	// 0800	- Can't determine the name of something
 	"0801": "",
 
