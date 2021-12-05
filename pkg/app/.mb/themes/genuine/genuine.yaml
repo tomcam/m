@@ -1,5 +1,5 @@
-Branding: ''
-Description: ''
+Branding: 'Genuine'
+Description: 'A clean, text-based pillar theme in cheerful colors. Good for a personal blog or technical reference documentation.'
 Stylesheets:
   - reset.css
   - fonts.css

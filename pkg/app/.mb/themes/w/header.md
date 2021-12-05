@@ -28,4 +28,3 @@
 {{- end }} 
 * [About](/)
 * [Contact](/)
-![logo](metabuzz-tilt.svg)

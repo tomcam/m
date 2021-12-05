@@ -1,5 +1,5 @@
-Branding: ''
-Description: ''
+Branding: 'Simplify'
+Description: 'A minimalist, two-color wide theme suitable for blogs and technical releases'
 Stylesheets:
   - reset.css
   - fonts.css

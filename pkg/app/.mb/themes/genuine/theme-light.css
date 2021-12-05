@@ -21,7 +21,7 @@
 
     /* Default foreground (text) and background colors  */
     --fg:black;
-    --bg:whitesmoke;
+    --bg:white;
     /* Default link colors */
     --a:red;
     --a-link:var(--a);

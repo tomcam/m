@@ -35,8 +35,8 @@
 
     
     /* Primary foreground (text) and background colors in header */
-    --header-fg:var(--branding-fg);
-    --header-bg:var(--branding-bg);
+    --header-fg:var(--fg);
+    --header-bg:var(--bg);
     /* Link colors specific to header */
     --a-header:var(--header-fg); 
     --a-header-link:var(--header-fg);
@@ -46,8 +46,8 @@
 
 
     /* Primary foreground (text) and background colors in navbar */
-    --nav-fg:var(--branding-fg);
-    --nav-bg:var(--branding-bg);
+    --nav-fg:var(--fg);
+    --nav-bg:var(--bg);
     /* Link colors specific to navbar */
     --a-nav:var(--nav-fg); 
     --a-nav-link:var(--nav-fg);
@@ -79,8 +79,8 @@
 
 
     /* Primary foreground (text) and background colors in footer */
-    --footer-fg: var(--header-fg);
-    --footer-bg: var(--header-bg);
+    --footer-fg: var(--fg);
+    --footer-bg: var(--bg);
     /* Link colors specific to footer */
     --a-footer: var(--a); 
     --a-footer-link: var(--a);
