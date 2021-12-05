@@ -129,9 +129,9 @@ article ul > li {margin-left:1em; padding-left:0em;}
 article ol > li {margin-left:1em; padding-left:0em;}
 
 article > table > thead > tr > th  {padding-top:2em;}
-article > blockquote  > p{text-indent:-3rem;font-size:1.5em;font-family:var(--times);font-style:italic;margin: 2rem 15% 2rem 15%;padding:2em 1em 2em 4em;border-top:1rem solid var(--nav-fg);background-color:var(--bg);line-height:2rem;}
-article > blockquote > p:before {font-style:normal;content:"\275D";color:var(--trim-fg);font-size:3em;position:relative;left:-.25em;top:-.25em;}
-article > blockquote > p:after {font-style:normal;content: "\275E";color:var(--trim-fg);font-size:3em;line-height:0;vertical-align:-1em;}
+article > blockquote  > p{text-indent:-3rem;font-size:1.5em;font-family:var(--times);font-style:italic;margin: 2rem 15% 2rem 15%;padding:2em 1em 2em 4em;border-top:1rem solid var(--nav-fg);line-height:2rem;}
+article > blockquote > p:before {font-style:normal;content:"\275D";font-size:3em;position:relative;left:-.25em;top:-.25em;}
+article > blockquote > p:after {font-style:normal;content: "\275E";font-size:3em;line-height:0;vertical-align:-1em;}
 
 
 /* Link appearance including all list levels */
@@ -154,8 +154,10 @@ article ol a:hover,
 article ol a:active
   {text-decoration:none;}
 
-/*
- * --------------------------------------------------
+article > dl > dt {font-size:.8em;font-weight:bold;}  
+article > dl > dd {font-size:.8em;padding-bottom:1em;}
+
+/* --------------------------------------------------
  * Images: full width, light drop shadow 
  * --------------------------------------------------
  */
@@ -196,11 +198,7 @@ aside > h5 {text-align:center;font-weight:bold;margin-left:0;padding-left:0;padd
 aside > h6  {font-weight:normal;font-style:italic;}
 
 
-aside > a, aside > p > a {color:var(--a-sidebar);}
-aside > a:visited, aside > p > a:visited {color:var(--a-sidebar-visited);}
-aside > a:hover, aside > p > a:hover{color:var(--a-sidebar-hover);}
-aside > a:active, aside > p > a:active{color:var(--a-sidebar-active);}
- 
+
 
 
 aside > h2 {text-align:center;font-size:1.2rem;font-weight:700;}
@@ -231,6 +229,19 @@ aside > p > img {padding:0;padding-top:1rem;width:100%;}
 footer > p {font-size:var(--footer-branding-height);font-weight:900;display:inline;} 
 
  
+footer > h2 {text-align:center;}
+footer > table {font-size:calc(80%);}
+/* Give table columns to get some breathing room */
+footer > table > thead > tr > th {padding-right:2rem;} 
+footer > table > thead > tr > th {padding-top:1em;padding-right:2em;padding-bottom:1em;}
+footer > table > tbody > tr > td {padding-right:3em;}
+footer > table > tbody > tr > td > a:link,
+footer > table > tbody > tr > td > a:visited
+	{text-decoration:none;}
+footer > table > tbody > tr > td > a:hover,
+footer > table > tbody > tr > td > a:active
+	{text-decoration:underline;}
+
 /*
  * --------------------------------------------------
  * If you have more than one item, use an unordered list. 
@@ -258,21 +269,4 @@ footer > ul > li > a:active
  * --------------------------------------------------
  */
 footer > ul > li:first-child > a {font-size:var(--footer-branding-height);font-weight:900;}
-
-footer > h2 {text-align:center;}
-footer > table {font-size:calc(80%);}
-/* Give table columns to get some breathing room */
-footer > table > thead > tr > th {padding-right:2rem;} 
-footer > table > thead > tr > th {padding-top:1em;padding-right:2em;padding-bottom:1em;}
-footer > table > tbody > tr > td {padding-right:3em;}
-footer > table > tbody > tr > td > a:link,
-footer > table > tbody > tr > td > a:visited
-	{text-decoration:none;}
-footer > table > tbody > tr > td > a:hover,
-footer > table > tbody > tr > td > a:active
-	{text-decoration:underline;}
-
-footer > a:visited, footer > p > a:visited {color:var(--a-footer-visited);}
-footer > a:hover, footer > p > a:hover{color:var(--a-footer-hover);}
-footer > a:active, footer > p > a:active{color:var(--a-footer-active);}
 

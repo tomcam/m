@@ -147,6 +147,9 @@ article > h4 {color:gray;}
 article > h4 > strong {color:black; } 
 article > table > thead > tr > th {color:var(--header-bg);background-color:var(--header-fg);}
 article > table > tbody > tr > td {border-bottom:.1px solid gray;}
+article > blockquote > p:before {color:var(--trim-fg);}
+article > blockquote > p:after {color:var(--trim-fg);}
+
 
 /* Colors in all levels of lists, including links */
 article a,
@@ -187,14 +190,16 @@ article > img, article > p > img {
 
 aside > h2 {color:black;background-color:var(--article-bg);}
 aside > h4 {color:var(--header-bg);background-color:var(--header-fg)}
-
+aside > a:visited, aside > p > a:visited {color:var(--a-sidebar-visited);}
+aside > a:hover, aside > p > a:hover{color:var(--a-sidebar-hover);}
+aside > a:active, aside > p > a:active{color:var(--a-sidebar-active);}
+ 
 
 /* ******************************/
 /*  FOOTER COLORS AND BORDERS   */
 /* ******************************/
 
 footer {border-top: 1px solid var(--trim-fg);} 
-
 footer > table > thead > tr > th {color:var(--footer-fg);background-color:var(--footer-bg);}
 /* Color of links in main rows (body) of table */
 footer > table > tbody > tr > td > a:link,
@@ -210,4 +215,8 @@ footer > ul > li > a,
 footer > ul > li > a:link,
 footer > ul > li > a:visited
 	{color:var(--trim-fg);}
+footer > a:visited, footer > p > a:visited {color:var(--a-footer-visited);}
+footer > a:hover, footer > p > a:hover{color:var(--a-footer-hover);}
+footer > a:active, footer > p > a:active{color:var(--a-footer-active);}
+
 
