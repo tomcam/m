@@ -5,6 +5,7 @@
 https://github.com/tomcam/mb/tree/master/.mb/.themes
 * Delete themename.toml
 * Copy either w/layout.css or pillar/layout.css
+* add --branding-weight to sizes.css
 * Update theme-light.css, theme-dark.css
     /* Same as article > h1 { color: } */
     --article-h1-fg:var(--fg);
@@ -43,9 +44,14 @@ Footer: {File: footer.md, HTML:}
 Language: en
 
 ## Priority 1: Showstoppers--required for the next release
+* Bug: pillar.css is infested with colors and may even have trim-fg etc
+* Bug: delete a theme directory, then try to build wih that theme.
+you get this error. Handle that errcode condition.
+Error building Can't find a theme named /Users/tom/code/m/cmd/mb/theme-test/.mb/themes/simplify (error code mbz1028)
+ (error code mbz0923)
+
 * Bug in sizes.css: I had got rid of --text-start.
   --sidebar-padding-left:var(--text-start);
-* BUG: Apparently if nav.md (and other layout elements?) is missing a 1034 error occurs
 * BUG: errors aren't gettingreported correctly, though they seem to work OK fi the extra
 parameter is empty
 * BUG: .Page.FrontMatter.Theme doesn't work correctly in an article, instead yielding asterisks
@@ -108,6 +114,7 @@ You can do a header like this, which gives you an optional logo
 {{ inc "common|mdemo.md }}
 ```
 * HighlightStyle styles: See https://github.com/alecthomas/chroma/tree/master/styles
+* To change the root text (rem) size, 
 ## Priority 2: Desired but not required for the next release
 * Add: copy theme feature
 * Add versioning for themes (already did it in the older version). That should also mean:

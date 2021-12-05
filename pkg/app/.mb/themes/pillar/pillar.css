@@ -14,7 +14,7 @@ code,pre{font-family:var(--code),monospace;}
  * Doesn't act like a link.
  * --------------------------------------------------
  */
-header > p {font-size:var(--branding-height);font-weight:900;display:inline;} 
+header > p {font-size:var(--branding-height);font-weight:var(--branding-weight);;display:inline;} 
 
  
 /*
@@ -115,7 +115,7 @@ article > p,
   article > dd, 
   article > dl,
   article > hr {
-		line-height:2rem;;
+		line-height:var(--p-line-height);
 }
 
 article > hr {height:.125em;}

@@ -87,9 +87,7 @@ table > thead > tr > th  {margin-top:4rem;}
 blockquote {font-style:italic;margin: 2rem 2rem 2rem 2rem;}
 
 article > h1,article > h2 {font-weight:900;}
-article > h1 {font-size:4rem;margin-top:0;margin-bottom:3rem;}
 article > li {margin-left:1rem;}
-article > h2 {margin-top:4rem;}
 article > h4 {font-weight:normal;font-size:1em;margin-bottom:1rem; } /* Byline */
 article > h4 > strong {font-weight:bold;} /* Byline */
 
@@ -101,7 +99,7 @@ article > p,
   article > dl,
   article > hr {
 		font-size:var(--p-font-size);
-		line-height:2rem;
+		line-height:var(--p-line-height);
     padding-right:var(--text-end);
 }
 
@@ -138,7 +136,7 @@ article > table > tbody > tr > td {padding:1rem;}
 
 
 
-article > h2 {margin-top:4rem;clear:left;}
+article > h2 {margin-top:2rem;clear:left;}
 article > h2 + ul {
 	padding:0;
 	margin:0;

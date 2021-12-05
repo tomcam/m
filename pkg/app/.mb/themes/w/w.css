@@ -9,7 +9,7 @@ header {overflow:hidden;}
  * Doesn't act like a link.
  * --------------------------------------------------
  */
-header > p {font-size:var(--branding-height);font-weight:bold;display:inline;} 
+header > p {font-size:var(--branding-height);font-weight:var(--branding-weight);display:inline;} 
 
 /* Special treatment if use emphasis */
 header > ul > li > a > em {font-style:normal;position:relative;top:-.25rem;left:-.5rem;color:red;}

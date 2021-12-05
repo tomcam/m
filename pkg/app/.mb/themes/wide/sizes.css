@@ -6,10 +6,13 @@
    * ******************************/
 
   /* adjusts header height and keeps it vertically centered */
-  --header-height:4rem;
+  --header-height:6rem;
   
   /* size of the main text in the header. */
-  --branding-height:2rem;
+  --branding-height:3rem;
+
+  /* font weight of the main text in the header. */
+  --branding-weight:normal;
 
   /* Same as header {margin-top:}  */
   --header-margin-top:0rem;
@@ -112,7 +115,7 @@
 
   /* Same as article > h2 {font-size}, h2 {padding}, h2 {margin} */
   --h2-font-size:1.5rem;
-  --h2-margin-top:.5rem;
+  --h2-margin-top:0rem;
   --h2-margin-bottom:0rem;
   --h2-margin-right:0rem;
   --h2-margin-left:0rem;
@@ -194,7 +197,7 @@
   /* Adjusts footer height and keeps it vertically centered */
   --footer-height:8rem;
 
-  /* Size of the main text in the header. */
+  /* Size of the main text in the footer. */
   --footer-branding-height:2rem;
 
   /* Same as footer {margin-top:}  */

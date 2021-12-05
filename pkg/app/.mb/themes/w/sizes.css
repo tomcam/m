@@ -11,6 +11,9 @@
   /* size of the main text in the header. */
   --branding-height:2rem;
 
+   /* font weight of the main text in the header. */
+  --branding-weight:bold;
+
   /* Same as header {margin-top:}  */
   --header-margin-top:0rem;
 

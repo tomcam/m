@@ -1,9 +1,8 @@
 /* System fonts always look best so it's a good default */
 html,body,p {font-family:var(--informal),sans-serif;}
-html{font-size:18px;}
 /* OTOH Courier is a lousy code font by default */
 code,pre{font-family:var(--code),monospace;}
-
+html {font-size:24px;}
 /* ****************************/
 /*  HEADER BRANDING AND LINKS */
 /* ****************************/
@@ -15,7 +14,7 @@ code,pre{font-family:var(--code),monospace;}
  * Doesn't act like a link.
  * --------------------------------------------------
  */
-header > p {font-size:var(--branding-height);font-weight:900;display:inline;} 
+header > p {font-size:var(--branding-height);font-weight:500;display:inline;} 
 
  
 /*
@@ -29,7 +28,7 @@ header > p {font-size:var(--branding-height);font-weight:900;display:inline;}
  */
 header > ul {line-height:var(--header-height);}
 header > ul {list-style-type:none;display:inline;}
-header > ul > li{display:inline;padding-right:.5rem;font-size:1.25rem;} 
+header > ul > li{display:inline;padding-right:.5rem;} 
 header > ul > li > a,
 header > ul > li > a:link,
 header > ul > li > a:visited
@@ -41,7 +40,16 @@ header > ul > li > a:visited
  * branding
  * --------------------------------------------------
  */
-header > ul > li:first-child > a {font-size:var(--branding-height);font-weight:900;padding-right:1rem;}
+header > ul > li:first-child > a {font-size:var(--branding-height);font-weight:var(--branding-weight);padding-right:1rem;}
+
+/*
+ * --------------------------------------------------
+ * Special feature: Last item in list is styled 
+ * to look like a button. 
+ * See also theme-light.css and theme-dark.css
+ * --------------------------------------------------
+ */
+header > ul > li:last-child > a {padding:.5rem;}
 
 
 /* ******************************/
@@ -57,7 +65,7 @@ nav > img {display:inline;}
  * --------------------------------------------------
  */
 nav > p {line-height:var(--nav-height);}
-nav > p > a {font-size:1.25em;font-weight:700;}
+nav > p > a {font-size:.75rem}
 nav > p > a {font-style:normal;}
 
 nav > p > a,
@@ -85,7 +93,21 @@ nav > ul > li > a:active {text-decoration:underline;}
 /* ******************************/
 /*  ARTICLE-MAIN PORTION OF TEXT*/
 /* ******************************/
-article > ul {padding-left:1rem;}
+
+article > p, 
+  article > p > a,
+  article > ul, 
+  article > ol, 
+  article > li, 
+  article > dd, 
+  article > dl{
+  font-size:var(--p-font-size);padding-top:var(--p-padding-top);padding-bottom:var(--p-padding-bottom);margin-top:var(--p-margin-top);margin-bottom:var(--p-margin-bottom);}
+
+article > h1,article > h2 {font-weight:700;}
+article > h4 {font-weight:normal;} /* Byline */
+article > h4 > strong {font-weight:bold;} /* Byline */
+article > p > strong {font-weight:700;}
+
 article > p, 
   article > ul, 
   article > ol, 
@@ -93,42 +115,21 @@ article > p,
   article > dd, 
   article > dl,
   article > hr {
-		font-size:var(--p-font-size);
-    padding-right:var(--text-end);
-    line-height:var(--p-line-height);
+		line-height:var(--p-line-height);
 }
-article > table, 
-  article > table > thead, 
-  article > table > thead > tr,
-  article > table > thead > tr > th,
-  article > table > tbody,
-  article > table > tbody > tr,
-  article > table > tbody > tr > th
-  {
-    margin-left:var(--p-margin-left);
-    padding-left:var(--text-start);
-  }
-article > h1,article > h2 {font-weight:900;}
-article > h4 {font-weight:normal;} /* Byline */
-article > h4 > strong {font-weight:bold;} /* Byline */
-article > p > strong {font-weight:700;}
-
-
 
 article > hr {height:.125em;}
 
-article > ul, article > ol {margin-top:.5em;}
 article > li {margin-left:1rem;}
 
 /* Indent lists */
 /* Handle all levels of nested indentation */
-article ul > li {margin-left:2em; padding-left:0em;}
-article ol > li {margin-left:2em; padding-left:0em;}
+article ul > li {margin-left:1em; padding-left:0em;}
+article ol > li {margin-left:1em; padding-left:0em;}
 
-article > table > thead > tr > th  {padding-top:2em;}
-article > blockquote  > p{text-indent:-3rem;font-size:1.5em;font-family:var(--times);font-style:italic;margin: 2rem 15% 2rem 15%;padding:2em 1em 2em 4em;border-top:1rem solid var(--nav-fg);background-color:var(--bg);line-height:2rem;}
-article > blockquote > p:before {font-style:normal;content:"\275D";color:var(--trim-fg);font-size:3em;position:relative;left:-.25em;top:-.25em;}
-article > blockquote > p:after {font-style:normal;content: "\275E";color:var(--trim-fg);font-size:3em;line-height:0;vertical-align:-1em;}
+article > blockquote  > p{text-indent:-3rem;font-size:1.5em;font-family:var(--times);font-style:italic;margin: 2rem 15% 2rem 15%;padding:2em 1em 2em 4em;border-top:1rem solid var(--nav-fg);line-height:2rem;}
+article > blockquote > p:before {font-style:normal;content:"\275D";font-size:3em;position:relative;left:-.25em;top:-.25em;}
+article > blockquote > p:after {font-style:normal;content: "\275E";font-size:3em;line-height:0;vertical-align:-1em;}
 
 
 /* Link appearance including all list levels */
@@ -177,57 +178,37 @@ article > p > code, article > code, article > pre, article > pre > code {
   }
 article > pre {line-height:1.5em;font-size:1.1em;}
 
-/*article > table {padding-top:1em;padding-bottom:1.5em;}
-article > table > td,th {padding:1rem;}
-article > table > tbody > tr > td {padding:1rem;}
-*/
+article > table {padding-top:1em;padding-bottom:1.5em;}
+article > table > td,th {padding-right:1rem;}
+/*article > table > tbody > tr > td {padding:1rem;}  */
+
 
 /* ******************************/
 /*  SIDEBAR (ASIDE TAG)         */
 /* ******************************/
 
-/*
- * --------------------------------------------------
- * Special feature: Unordered list in the sidebar
- * appears as up to 3 separate outline levels. Just
- * indent bullets 2 spaces for each level.
- * --------------------------------------------------
- */
-aside {margin-left:4rem;}
-aside ul, aside > ul li, aside > ul > li li, aside > ul > li li li
-{
-  font-weight:300;
-  list-style:none;
-  margin-left:0;
-  padding-left:0;
-}
+aside {margin-top:4rem;margin-left:1em;}
+aside > h2 {padding-left:1rem;margin-bottom:1rem;font-family:'Nova Mono',var(--informal);}
+aside > h2 {margin-bottom:1rem;}
+
+aside {padding-right:1em;}
+aside > p > img, aside > img {float:left;}
+
+
+aside > h2 {text-align:center;font-size:1.2rem;font-weight:700;}
+aside > h3 {font-size:.75em;font-weight:bold;padding-bottom:2rem;}
+aside > ul {text-align:right;padding-right:1rem;line-height:1.5em;}
+aside > ul > li {list-style-type:none;} 
 aside > ul > li > a,
 aside > ul > li > a:link,
-aside > ul > li > a:visited,
-aside > ul > li li > a,
-aside > ul > li li > a:link,
-aside > ul > li li > a:visited,
-aside > ul > li li > a,
-aside > ul > li li li > a:link,
-aside > ul > li li li > a:visited
-{
-  text-decoration-style:dotted;
-  text-decoration-thickness:.1rem;
-  text-underline-offset:.2rem;
-  line-height:1.75em;
-}
+aside > ul > li > a:visited {text-decoration:none;font-size:1rem;line-height:2.5rem;font-weight:normal;padding-right:1em;} 
+/* For accessibility purposes show visual distinction when hovering or active */
+aside > ul > li > a:hover,
+aside > ul > li > a:active {font-weight:bold;} 
+
+aside > p > img {padding:0;padding-top:1rem;width:100%;}
 
 
-/* List order goes up to 3 levels visually but they don't show by
- * indentation--they have been flatted horizontally to maximize space
- * on the sidebar. Show top level as bold. Level 2 is non-bold. 
- * Level 3 shows with a right-pointing triangle. */
-aside > ul li {font-weight:bold;}
-/* Nothing needs be done for level 2. This is for level 3: */
-aside > ul > li > ul > li > ul > li:before  {
-	content: '▸';
-	margin-right:.5em;
-}  
 /* ******************************/
 /*  FOOTER                      */
 /* ******************************/
@@ -283,7 +264,4 @@ footer > table > tbody > tr > td > a:hover,
 footer > table > tbody > tr > td > a:active
 	{text-decoration:underline;}
 
-footer > a:visited, footer > p > a:visited {color:var(--a-footer-visited);}
-footer > a:hover, footer > p > a:hover{color:var(--a-footer-hover);}
-footer > a:active, footer > p > a:active{color:var(--a-footer-active);}
 
