@@ -149,14 +149,13 @@ func (app *App) publishMarkdownFile(filename string) error {
 // stylesheets needed by this theme from the raw
 // collection of filesheets from the theme config file
 // (and stored in app.Page.Theme.Stylesheets),
-// into app.Page.Theme.stylesheetList.
+// into app.Page.Theme.publishStylesheets
 // Pre: loadTheme() has been called so all nested themes are present
 func (app *App) normalizeStylesheetList() {
 	app.Debug("\t\t\tnormalizeStylesheetList()")
 	for level := 0; level < len(app.Page.Theme.levels); level++ {
 		theme := app.Page.themes[level]
 		app.Debug("\t\t\t\t%#v", app.Page.themes[level])
-		// xxx
 		responsive := false
 		darkMode := app.darkMode()
 		if darkMode {
@@ -187,8 +186,8 @@ func (app *App) normalizeStylesheetList() {
 				stylesheet = ""
 			}
 			if stylesheet != "" {
-				theme.stylesheetList =
-					append(theme.stylesheetList, stylesheet)
+				theme.publishStylesheets=
+					append(theme.publishStylesheets, stylesheet)
 			}
 		}
 		// sidebar-right.css or sidebar-left.css must be
@@ -199,13 +198,13 @@ func (app *App) normalizeStylesheetList() {
 		switch sidebar {
 		case "left", "right":
 			stylesheet = "sidebar-" + sidebar + ".css"
-			theme.stylesheetList =
-				append(theme.stylesheetList, stylesheet)
+			theme.publishStylesheets =
+				append(theme.publishStylesheets, stylesheet)
 		}
 		// responsive.css is the final stylesheet to add
 		if responsive == true {
 			app.Debug("\t\t\t\tadding responsive.css")
-			theme.stylesheetList = append(theme.stylesheetList, "responsive.css")
+			theme.publishStylesheets= append(theme.publishStylesheets, "responsive.css")
 		}
 		app.Page.themes[level] = theme
 	}
@@ -354,8 +353,8 @@ func (app *App) layoutEl(l layoutElement) (string, error) {
 	// No inline HTML. Get filename.
 	filename := l.File
 
-  // If no file and no HTML have been specified, no
-  // sweat. Only the article is required.
+	// If no file and no HTML have been specified, no
+	// sweat. Only the article is required.
 	if filename == "" {
 		return "", nil
 	}
@@ -482,12 +481,11 @@ func (app *App) publishStylesheets() error {
 	// theme directory to the publish
 	// CSS directory for stylesheets.
 	var stylesheets strings.Builder
-	// xxx
 	for level := 0; level < len(app.Page.Theme.levels); level++ {
 		theme := app.Page.themes[level]
 		app.Debug("\t\t\t\ttheme is: %#v", theme.level)
-		app.Debug("\t\t\t\tstylesheetList is: %#v", theme.stylesheetList)
-		for _, stylesheet := range theme.stylesheetList {
+		app.Debug("\t\t\t\tpublishStylesheets: %#v", theme.publishStylesheets)
+		for _, stylesheet := range theme.publishStylesheets{
 			source = filepath.Join(theme.sourcePath, stylesheet)
 			dest = filepath.Join(app.themePublishDir(theme.level), stylesheet)
 

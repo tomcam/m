@@ -37,7 +37,7 @@ type Theme struct {
 	// List of all stylesheet after being massaged,
 	// for example, to ensure responive.css comes
 	// last among other things.
-	stylesheetList []string
+	publishStylesheets []string
 
 	// Name is the name of the theme for this page,
 	// e.g. "wide"
@@ -45,6 +45,8 @@ type Theme struct {
 	Branding    string        `yaml:"Branding"`
 	Description string        `yaml:"Description"`
 	Stylesheets []string      `yaml:"Stylesheets"`
+	License     string        `yaml:"License"`
+	Author      string        `yaml:"Author"`
 	Nav         layoutElement `yaml:"Nav"`
 	Header      layoutElement `yaml:"Header"`
 	Article     layoutElement `yaml:"Article"`

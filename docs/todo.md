@@ -114,6 +114,8 @@ You can do a header like this, which gives you an optional logo
 {{ inc "common|mdemo.md }}
 ```
 * HighlightStyle styles: See https://github.com/alecthomas/chroma/tree/master/styles
+* Pillar-based themes: Just change bg for a dramatic difference. 
+Same with w-based themes.
 * To change the root text (rem) size, 
 ## Priority 2: Desired but not required for the next release
 * Add: copy theme feature
