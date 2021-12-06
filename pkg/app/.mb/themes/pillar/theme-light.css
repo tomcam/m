@@ -81,7 +81,7 @@
 
     /* Primary foreground (text) and background colors in footer */
     --footer-fg:var(--fg);
-    --footer-bg:var(--bg);
+    --footer-bg:var(--header-bg);
     /* Link colors specific to footer */
     --a-footer: var(--a);
     --a-footer-link: var(--a);
