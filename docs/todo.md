@@ -6,19 +6,6 @@ Goal:
 * try what I did with wid3  with pillar
 * Try to reunite layout.css for both if that succeeds
 
-### Fixing the wide theme
-* WAS A BUG: wide3.css aside > p padding-left to 0 from var(--text-start)
-* sizes.css --text-start from --text-start:5%; to --text-start:var(--sidebar-width); 
-* sizes.css  --text-end:2em;/* xxx 10%; EXPLORE THIS */
-* sizes.css --sidebar-padding-left:2rem; /* xxx var(--text-start); */
-* layout.css article {padding-left:var(--text-start) to article {padding-left:0)
-* I think above is wrong. It's article {padding-left:var(--text-start)
-* layout.css aside {padding-left:var(--text-start);} to aside {padding-left:0);}
-* ONLY FOR WIDE NOT PILLAR For sidebar-left.css,  add to article /* xxx */padding-left:0; and remove the whole second line, which is /* xxx aside {margin-left:var(--left-margin);} */
-* ONLY FOR WIDE For sidebar-right.css, add to article /* xxx */padding-right:0;
-* 
-
-
 ## Outdated?
 
 * Old theme directory
@@ -382,3 +369,20 @@ the markup would be:
 ```
 fmt.Println(string(mdFileToHTML(filename)))
 ```
+
+## Outdated, from The Great Theme Cleanup of 12/5/21
+
+### Fixing the wide theme
+* WAS A BUG: wide3.css aside > p padding-left to 0 from var(--text-start)
+* sizes.css --text-start from --text-start:5%; to --text-start:var(--sidebar-width); 
+* sizes.css  --text-end:2em;/* xxx 10%; EXPLORE THIS */
+* sizes.css --sidebar-padding-left:2rem; /* xxx var(--text-start); */
+* layout.css article {padding-left:var(--text-start) to article {padding-left:0)
+* I think above is wrong. It's article {padding-left:var(--text-start)
+* layout.css aside {padding-left:var(--text-start);} to aside {padding-left:0);}
+* ONLY FOR WIDE NOT PILLAR For sidebar-left.css,  add to article /* xxx */padding-left:0; and remove the whole second line, which is /* xxx aside {margin-left:var(--left-margin);} */
+* ONLY FOR WIDE For sidebar-right.css, add to article /* xxx */padding-right:0;
+* 
+
+
+

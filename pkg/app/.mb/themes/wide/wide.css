@@ -129,7 +129,7 @@ article ul > li {margin-left:1em; padding-left:0em;}
 article ol > li {margin-left:1em; padding-left:0em;}
 
 article > table > thead > tr > th  {padding-top:2em;}
-article > blockquote  > p{text-indent:-3rem;font-size:1.5em;font-family:var(--times);font-style:italic;margin: 2rem 15% 2rem 15%;padding:2em 1em 2em 4em;border-top:1rem solid var(--nav-fg);line-height:2rem;}
+article > blockquote  > p{text-indent:-3rem;font-size:1.5em;font-family:var(--times);font-style:italic;margin: 2rem 15% 2rem 15%;padding:2em 1em 2em 4em;line-height:2rem;}
 article > blockquote > p:before {font-style:normal;content:"\275D";font-size:3em;position:relative;left:-.25em;top:-.25em;}
 article > blockquote > p:after {font-style:normal;content: "\275E";font-size:3em;line-height:0;vertical-align:-1em;}
 
@@ -187,7 +187,7 @@ article > table > tbody > tr > td {padding:1rem;}
 /*  SIDEBAR (ASIDE TAG)         */
 /* ******************************/
 
-aside > p {margin-bottom:1rem;font-size:.8rem;padding-left:var(--sidebar-padding-left);padding-right:.75em;}
+aside > p {margin-bottom:1rem;font-size:.8rem;padding-right:.75em;padding-left:var(--sidebar-padding-left);}
 aside > h2 {padding:1rem;text-align:center;font-size:1.2rem;font-weight:700;white-space:nowrap;}
 aside > h3 {font-size:.75em;font-weight:bold;padding-bottom:2rem;}
 aside > h5 {text-align:center;font-weight:bold;margin-left:0;padding-left:0;padding-top:2rem;padding-bottom:1rem;}
@@ -221,7 +221,6 @@ footer > p {font-size:var(--footer-branding-height);font-weight:900;display:inli
  
 footer > h2 {text-align:center;}
 footer > table {font-size:calc(80%);}
-/* Give table columns to get some breathing room */
 footer > table > thead > tr > th {padding-right:2rem;text-align:left;padding-bottom:1em;}
 footer > table > tbody > tr > td {padding-right:3em;}
 footer > table > tbody > tr > td > a:link,

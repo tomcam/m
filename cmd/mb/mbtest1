@@ -17,10 +17,10 @@ declare -a themes=(
 	'pillar'
   'future'
   'genuine'
+  'debut'
 	'debut/gallery'
   'simplify'
   'tradesman'
-  'debut'
 	)
 rawthemes=$themes
 #
