@@ -2,12 +2,7 @@
 
 ## Updating themes
 
-Goal: 
-* try what I did with wid3  with pillar
-* Try to reunite layout.css for both if that succeeds
-
-## Outdated?
-
+* Clear out any graphic or other assets the theme doesn't use
 * Old theme directory
 https://github.com/tomcam/mb/tree/master/.mb/.themes
 * Delete themename.toml
@@ -225,6 +220,7 @@ article > p > code, article > code, article > pre, article > pre > code {
     overflow:auto;
 }
 ```
+* Add link preview https://andrejgajdos.com/how-to-create-a-link-preview/
 * Theme bug: many occurrences of --sidebar-bullet in debut theme & children
 * Add: RSS feed
 * Add: sitemap
