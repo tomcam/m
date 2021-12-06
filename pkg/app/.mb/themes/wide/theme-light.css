@@ -34,7 +34,7 @@
     --code-bg:#F0F0F0;
 
     /* Secondary foreground (text) and background colors for accents. */
-    --trim-fg:var(-fg); 
+    --trim-fg:var(--fg); 
     --trim-bg:var(--bg);
     
     /* Primary foreground (text) and background colors in header */
