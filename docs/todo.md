@@ -1,14 +1,41 @@
 # To do
 
 ## Updating themes
+
+Goal: 
+* try this with pillar
+* Try to reunit layout.css for both if that succeeds
+
+### Fixing the wide theme
+* wide3.css aside > p padding-left to 0 from var(--text-start)
+* sizes.css --text-start from --text-start:5%; to --text-start:var(--sidebar-width); 
+* sizes.css  --text-end:2em;/* xxx 10%; */
+* sizes.css --sidebar-padding-left:2rem; /* xxx var(--text-start); */
+* layout.css article {padding-left:var(--text-start) to article {padding-left:0)
+* layout.css aside {padding-left:var(--text-start);} to aside {padding-left:0);}
+* For left sidebar-left.css,  add to article /* xxx */padding-left:0; and remove the whole second line, which is /* xxx aside {margin-left:var(--left-margin);} */
+* For sidebar-right.css, add to article /* xxx */padding-right:0;
+I think sidebar-left.css and sidebar-right.css
+* 
+
+
+## Outdated?
+
 * Old theme directory
 https://github.com/tomcam/mb/tree/master/.mb/.themes
 * Delete themename.toml
 * Rename themename.yaml if necessary, and its .css name within that file
+
 * Add to theme-light
    /* Code listings */
     --code-fg:var(--fg);
     --code-bg:#F0F0F0; 
+/* ******************************/
+/*  ARTICLE COLORS AND BORDERS  */
+/* ******************************/
+article > p > code, article > code, article > pre, article > pre > code
+  {background-color:var(--code-bg);}   
+
 * Add as the last article style in bind.css
 article > p > code, article > pre > code {color:var(--code-fg);background-color:var(--code-bg);}
 * Add styling for definition lists
@@ -92,6 +119,8 @@ footer > table > tbody > tr > td > a:active
   {text-decoration:underline;}
 ```
 ## Priority 1: Showstoppers--required for the next release
+* wide.css bug: aside > p has 
+padding-left:var(--text-start)
 * bug: toc seems to be broken with includes files, or even if it's in the included file (seens to be useless when I put it at the top of common|mdemo.md)
 * Bug: Error handling is broken
 * Bug: Pillar, genuine have good nested lists. I think it's just htis:
