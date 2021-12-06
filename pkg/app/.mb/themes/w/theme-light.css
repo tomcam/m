@@ -29,6 +29,10 @@
     --a-active:var(--a);
 
     
+    /* Code listings */
+    --code-fg:var(--fg);
+    --code-bg:#F0F0F0;
+
     /* Secondary foreground (text) and background colors for branding. */
     --branding-fg:darkblue; 
     --branding-bg:white;

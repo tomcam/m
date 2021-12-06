@@ -13,17 +13,17 @@ Company:
     country: ""
     postalcode: ""
     URL: ""
-    HeaderLogo: ""
+    Header-Logo: ""
 Exclude-Dirs: []
 Exclude-Extensions: []
-filename: /Users/tom/code/m/cmd/mb/.mb/site.yaml
+filename: 
 Ganalytics: ""
 Head-Tags: []
-HTML-start-file: <!DOCTYPE html><HTML lang=
-HTML-end-file: |-
-    </body>
-    </html>
 Language: en
+Markdown-Options:
+    Hard-Wraps: false
+    Highlight-Style: github
+    Heading-IDs: false
 Mode: ""
 Social:
     Deviant-Art: ""

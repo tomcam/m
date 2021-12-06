@@ -144,6 +144,8 @@ func (app *App) build(path string) error {
 // newGoldmark returns the a goldmark object with a parser and renderer.
 func (app *App) newGoldmark() goldmark.Markdown {
 
+
+
 	exts := []goldmark.Extender{
 
 		// YAML support
@@ -154,7 +156,7 @@ func (app *App) newGoldmark() goldmark.Markdown {
 		extension.DefinitionList,
 		extension.Footnote,
 		highlighting.NewHighlighting(
-			highlighting.WithStyle(app.Site.markdownOptions.HighlightStyle),
+			highlighting.WithStyle(app.Site.MarkdownOptions.HighlightStyle),
 			highlighting.WithFormatOptions()),
 	}
 

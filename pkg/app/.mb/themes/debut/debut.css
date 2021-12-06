@@ -56,9 +56,9 @@ article > h2 {font-size:1.5rem;line-height:1em;margin-top:1em;}
 article > h1 + p + h2, article > h1 > p > img + h2, article > h1 + h2 {font-size:3rem;line-height:1.25em;margin-top:1em;}
 article > h3 {margin-top:1em;}
 article > h4 {font-weight:bold;font-size:1.25em;margin-bottom:0em; } /* Byline */
+/* article {width:var(--max-article-width);} */
 
-article {width:var(--max-article-width);}
-
+article ul > li {margin-left:1em;padding-left:0em;}
 
 article > p,
 article > ul,
@@ -96,7 +96,7 @@ article > p > a:hover,
 article > p > a:active {text-decoration:none;} 
 
 
-article >  table {width:var(--max-article-width);margin-top:2rem;margin-bottom:3rem;}
+article >  table {margin-top:2rem;margin-bottom:3rem;}
 article > table > thead > tr > th {font-size:1.5rem;}
 article > table > td,th {padding:1rem;}
 article > p > img {width:100%;}

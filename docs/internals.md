@@ -14,6 +14,9 @@
   - It deletes the publish directory
   - It reads the site configuration file
   - It calls buildPublishDirs(), which uses app.Site.dirs to reconstruct the directory tree
+* I need to understand
+  - when the site config file is read compared to newGoldmark(), which isn't
+picking up thie highlight style
 
 ## Utilities
 * errdoc 1234 creates a help file for error code 1234. Must be 4 digits.

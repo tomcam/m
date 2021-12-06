@@ -4,11 +4,27 @@
 * Old theme directory
 https://github.com/tomcam/mb/tree/master/.mb/.themes
 * Delete themename.toml
+* Rename themename.yaml if necessary, and its .css name within that file
+* Add to theme-light
+   /* Code listings */
+    --code-fg:var(--fg);
+    --code-bg:#F0F0F0; 
+* Add as the last article style in bind.css
+article > p > code, article > pre > code {color:var(--code-fg);background-color:var(--code-bg);}
 * Add styling for definition lists
 ```
 article > dl > dt {font-size:.8em;font-weight:bold;}  
 article > dl > dd {font-size:.8em;padding-bottom:1em;}
 ```
+* Style nested lists. I think it's just htis:
+```
+article ul > li {margin-left:1em;padding-left:0em;}
+```
+* Style definition lists
+```
+article > dl {padding-top:.5rem;}
+article > dl > dt {font-size:.8em;font-weight:bold;}  
+article > dl > dd {font-size:.8em;padding-bottom:1em;}
 * Copy either w/layout.css or pillar/layout.css
 * add --branding-weight to sizes.css
 * Update theme-light.css, theme-dark.css
@@ -28,6 +44,17 @@ article > dl > dd {font-size:.8em;padding-bottom:1em;}
     --article-h5-bg:var(--bg);
     --article-h6-bg:var(--bg);
 
+* Pillar has good table styling
+```
+article > table {padding-top:1em;padding-bottom:1.5em;}
+article > table > td,th {padding:1rem;}
+article > table > tbody > tr > td {padding:1rem;}
+```
+And in theme-light:
+```
+article > table > thead > tr > th {color:var(--header-bg);background-color:var(--header-fg);}
+article > table > tbody > tr > td {border-bottom:.1px solid gray;}
+```
 
 * YAML file Format looks like this:
 ```
@@ -65,15 +92,15 @@ footer > table > tbody > tr > td > a:active
   {text-decoration:underline;}
 ```
 ## Priority 1: Showstoppers--required for the next release
-* bug: toc seems to be broken with includes files, or even if it's in the included file (seens to be usefless when I put it at the top of common|mdemo.md)
+* bug: toc seems to be broken with includes files, or even if it's in the included file (seens to be useless when I put it at the top of common|mdemo.md)
 * Bug: Error handling is broken
-* Bug: pillar.css is infested with colors and may even have trim-fg etc
 * Bug: Pillar, genuine have good nested lists. I think it's just htis:
 ```
-article ul > li {margin-left: 2em;padding-left: 0em;}
+article ul > li {margin-left:1em;padding-left:0em;} 
 ```
 * Bug: add styling for definition lists
 ```
+article > dl {padding-top:1rem;} 
 article > dl > dt {font-size:.8em;font-weight:bold;}  
 article > dl > dd {font-size:.8em;padding-bottom:1em;}
 ```
@@ -88,7 +115,15 @@ Error building Can't find a theme named /Users/tom/code/m/cmd/mb/theme-test/.mb/
 parameter is empty
 * BUG: .Page.FrontMatter.Theme doesn't work correctly in an article, instead yielding asterisks
 * Bug: Site.HighlightStyle aka Highlight-style  doesn't seem to work
-* Add: toc
+Note that if you do this  in newGoldmark():
+```
+app.Print(app.Site.MarkdownOptions.HighlightStyle) 
+```
+it prints nothing, even though the following happens. Maybe site file isn't being read in early enough?
+func (app *App) setSiteDefaults() {
+	app.Site.Language = defaults.Language
+	app.setPaths()
+}* Add: toc
 * Add: search
 * DONE Add: scriptclose directory
 * Add: idea of post and specfications like YYYY-MM-DD or y-m-d etc, using dirs or strings as needed . That way mb new post "/blog/avengers review" would expand to something like "/blog/2022/04/21/avengers-review.html" or "/blog/2022-March-1-avengers-review.html" and so on 
@@ -119,6 +154,8 @@ source file directory structure remains sacrosanct: a tree of Markdown files
 
 
 ## Document
+* Layout element files such as header.md don't have to use the
+sample names
 * Document. Given a site.yaml with this:
 Company:
     Name: "Eastside Emerald Home Repair"
@@ -162,6 +199,17 @@ mb new theme test 0.2.0 from wide 1.1.0
 
 ```
   - Check for conflicting versions with new theme command
+* Theme bug: pillar and w have the same code for pre, but pillar
+correctly shows the background color as full width, but w doesn't.
+```
+article > p > code, article > code, article > pre, article > pre > code {
+    font-family:var(--code);
+    font-size:var(--p-font-size);
+    /* Doesn't matter in w */ width:var(--article-width);
+    overflow:auto;
+}
+```
+* Theme bug: many occurrences of --sidebar-bullet in debut theme & children
 * Add: RSS feed
 * Add: sitemap
 * Add: Generate empty YAML files for site, theme, starter

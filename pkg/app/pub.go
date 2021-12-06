@@ -111,7 +111,7 @@ func (app *App) publishMarkdownFile(filename string) error {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	// Write HTML text of the body
-	fullPage := app.Site.HTMLStartFile +
+	fullPage := "<!DOCTYPE html><html lang=" +
 		"\"" + app.Site.Language + "\"" + ">" + "\n" +
 		"<head>" + "\n" +
 		app.titleTag() +
@@ -130,7 +130,8 @@ func (app *App) publishMarkdownFile(filename string) error {
 		sidebar +
 		footer +
 		closeScripts +
-		app.Site.HTMLEndFile
+    "</body>" + "\n" +
+    "</html>"
 
 	if err = os.WriteFile(target, []byte(fullPage), defaults.PublicFilePermissions); err != nil {
 		// TODO: Handle error properly & and document error code

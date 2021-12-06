@@ -84,7 +84,7 @@
   --article-margin-bottom:0rem;
 
   /* Same as article {padding-top:}  */
-  --article-padding-top:3rem;
+  --article-padding-top:1rem;
 
   /* Same as article {padding-bottom} */
   --article-padding-bottom:3.5rem;
@@ -107,8 +107,8 @@
   --h1-margin-bottom:0rem;
   --h1-margin-right:0rem;
   --h1-margin-left:0rem;
-  --h1-padding-top:2rem;
-  --h1-padding-bottom:0rem;
+  --h1-padding-top:0rem;
+  --h1-padding-bottom:2rem;
   --h1-padding-right:0rem;
   --h1-padding-left:0rem;
 
@@ -119,7 +119,7 @@
   --h2-margin-bottom:0rem;
   --h2-margin-right:0rem;
   --h2-margin-left:0rem;
-  --h2-padding-top:1.5em;
+  --h2-padding-top:1rem;
   --h2-padding-bottom:0rem;
   --h2-padding-right:0rem;
   --h2-padding-left:0rem;
@@ -127,10 +127,10 @@
 
   /* Same as article > h3 {font-size}, h3 {padding}, h3 {margin} */
   --h3-font-size:1.5rem;
-  --h3-margin-top:1.5rem;
+  --h3-margin-top:0rem;
   --h3-margin-bottom:0rem;
-  --h2-margin-right:0rem;
-  --h2-margin-left:0rem;
+  --h3-margin-right:0rem;
+  --h3-margin-left:0rem;
   --h3-padding-top:1em;
   --h3-padding-bottom:0rem;
   --h3-padding-right:0rem;
@@ -139,12 +139,12 @@
 
   /* Same as article > h4 {font-size}, h5 {padding}, h5 {margin} */
   --h4-font-size:.9rem;
-  --h4-margin-top:.75em;
+  --h4-margin-top:0em;
   --h4-margin-bottom:0rem;
   --h4-margin-right:0rem;
   --h4-margin-left:0rem;
-  --h4-padding-top:0rem;
-  --h4-padding-bottom:0rem;
+  --h4-padding-top:.5rem;
+  --h4-padding-bottom:1rem;
   --h4-padding-right:0rem;
   --h4-padding-left:0rem;
 
@@ -179,7 +179,7 @@
    *  Sidebar dimensions          *
    * ******************************/
 
-  --sidebar-padding-top:4rem;
+  --sidebar-padding-top:6rem;
   --sidebar-padding-bottom:1rem;
   --sidebar-padding-left:var(--text-start);
   --sidebar-padding-right:1em;

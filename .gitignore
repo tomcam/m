@@ -13,7 +13,7 @@ m
 foo.*
 *.swp
 foo/
-
+foobar/
 # Binaries for programs and plugins
 *.exe
 *.exe~

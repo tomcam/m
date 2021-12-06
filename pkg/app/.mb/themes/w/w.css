@@ -73,7 +73,7 @@ table > thead > tr > th  {margin-top:2rem;}
 blockquote {font-style:italic;margin: 2rem 2rem 2rem 2rem;}
 
 
-article > ul {padding-left:1rem;}
+article > ul, article > ol {margin-left:1rem;}
 article > p, 
   article > ul, 
   article > ol, 
@@ -88,14 +88,34 @@ article > p,
 
 article > p > img {display:block;width:var(--article-width);}
 /* Override font rule for code */
+/*j
+article > p > code, article > code, article > pre, article > pre > code {
+		font-family:var(--code);
+		font-size:.8rem;
+		overflow:auto;
+    line-height:1.75rem;
+    width:var(--article-width);
+}
+*/
+/*
+ * --------------------------------------------------
+ * Code listings
+ * --------------------------------------------------
+ */
+
 article > p > code, article > code, article > pre, article > pre > code {
 		font-family:var(--code);
 		font-size:var(--p-font-size);
+    width:var(--article-width);
 		overflow:auto;
 }
 
-article > h1, article > h2, article > h3 {font-weight:700;)
+article ul > li {margin-left:1em;padding-left:0em;}
+article > h1, article > h2, article > h3 {font-weight:700;}
 
+article > dl {padding-top:.5rem;}
+article > dl > dt {font-weight:bold;}  
+article > dl > dd {padding-bottom:.5rem;}
 
 /* ******************************/
 /*  SIDEBAR (ASIDE TAG)         */

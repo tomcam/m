@@ -168,14 +168,12 @@ article > img, article > p > img {
  * Code listings
  * --------------------------------------------------
  */
+
 article > p > code, article > code, article > pre, article > pre > code {
-  font-family:var(--code);
-  font-size:.8em;
-  overflow:auto;
-  margin-bottom:0em;
-  line-height:1.15em;
-  padding: .5em;
-  }
+		font-family:var(--code);
+		font-size:var(--p-font-size);
+		overflow:auto;
+} 
 article > pre {line-height:1.5em;font-size:1.1em;}
 
 article > table {padding-top:1em;padding-bottom:1.5em;}

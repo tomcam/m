@@ -39,14 +39,32 @@ type Theme struct {
 	// last among other things.
 	publishStylesheets []string
 
-	// Name is the name of the theme for this page,
+	// Name is the slug name of the theme for this page,
 	// e.g. "wide"
 	Name        string        `yaml:"Name"`
+
+  // Branding is the pretty name of the theme,
+  // say, "Wide" or "Metabuzz Wide"
 	Branding    string        `yaml:"Branding"`
+
+  // A sentence or two describing why to use this theme
 	Description string        `yaml:"Description"`
+  
+  // Raw list of all possible stylesheets required to 
+  // publish, but some actually may be omitted
+  // on publish. For example, only sidebar-right.css
+  // or sidebar-left.css, but not both.
 	Stylesheets []string      `yaml:"Stylesheets"`
+
+  // Copyright/licensing terms, e.g. GPL 3.0, Apache,
+  // whatever
 	License     string        `yaml:"License"`
+
+  // Designer of the theme
 	Author      string        `yaml:"Author"`
+
+  // Page layout elements. Sidebar becomes the
+  // "aside" tag
 	Nav         layoutElement `yaml:"Nav"`
 	Header      layoutElement `yaml:"Header"`
 	Article     layoutElement `yaml:"Article"`
@@ -73,8 +91,6 @@ type layoutElement struct {
 // list of files even though the themes directory
 // doesn't exist at runtime.
 
-// TODOgo:don'tembed themes/*
-//var factoryThemeFiles embed.FS
 
 // themeNameToLower() determines the theme name in
 // proper order, from most to least proximate.

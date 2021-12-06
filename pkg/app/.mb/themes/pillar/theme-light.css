@@ -29,6 +29,10 @@
     --a-hover: var(--a);
     --a-active: var(--a);
 
+   /* Code listings */                                                         
+    --code-fg:var(--fg);                                             
+    --code-bg:#F0F0F0;
+
     /* Secondary foreground (text) and background colors for accents. */
     --trim-fg:#969598; 
     --trim-bg:white;
@@ -142,7 +146,10 @@ nav > p > a:visited {color:var(--nav-fg);}
 /* ******************************/
 
 article > p > code, article > code, article > pre, article > pre > code 
-  {background-color:#F0F0F0;}    
+  {background-color:#F0F0F0;} 
+/*
+  {background-color:var:(--code-bg);}   
+  */
 article > h4 {color:gray;} 
 article > h4 > strong {color:black; } 
 article > table > thead > tr > th {color:var(--header-bg);background-color:var(--header-fg);}

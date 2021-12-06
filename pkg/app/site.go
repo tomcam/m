@@ -69,7 +69,7 @@ type Site struct {
 	// Full pathname of site file so it can be read
 	// using {{ Site.Filename }}.
 	// READ ONLY
-	Filename string
+  Filename string `'yaml:"Filename"`
 
 	// Google Analytics tracking ID specified in site.toml
 	Ganalytics string `yaml:"Ganalytics"`
@@ -81,8 +81,6 @@ type Site struct {
 	// Full path of header tags for "code injection"
 	headTagsPath string
 
-	HTMLStartFile string `yaml:"HTML-start-file"`
-	HTMLEndFile   string `yaml:"HTML-end-file"`
 	// Subdirectory under the AssetDir where image files go
 	imagePath string
 
@@ -90,12 +88,13 @@ type Site struct {
 	Language string `yaml:"Language"`
 
 	// Flags indicating which non-CommonMark Markdown extensions to use
-	markdownOptions MarkdownOptions
+	MarkdownOptions MarkdownOptions `yaml:"Markdown-Options"` 
 
 	// Mode ("dark" or "light") used by this site unless overridden in front matter
 	Mode string `yaml:"Mode"`
 
-	// Site's project name, so it's a filename.
+	// Site's project name, so it's a filename
+  // (not a pathname).
 	// It's an identifier so it should be in slug format:
 	// Preferably just alphanumerics, underline or hyphen, and
 	// no spaces, for example, 'my-project'
@@ -178,7 +177,7 @@ type company struct {
 	URL        string `yaml:"URL"`
 
 	// Logo file for the header
-	HeaderLogo string `yaml:"HeaderLogo"`
+	HeaderLogo string `yaml:"Header-Logo"`
 }
 type author struct {
 	FullName string `yaml:"Full-Name"`
@@ -194,7 +193,7 @@ type authors struct {
 // options used when converting markdown to HTML.
 type MarkdownOptions struct {
 	// If true, line breaks are significant
-	HardWraps bool `yaml:"Hard-wraps"`
+	HardWraps bool `yaml:"Hard-Wraps"`
 
 	// Name of color scheme used for code highlighting,
 	// for example, "monokai"
@@ -202,7 +201,7 @@ type MarkdownOptions struct {
 	// https://github.com/alecthomas/chroma/blob/master/README.md
 	// I believe the list of themes is here:
 	// https://github.com/alecthomas/chroma/tree/master/styles
-	HighlightStyle string `yaml:"Highlight-style"`
+	HighlightStyle string `yaml:"Highlight-Style"`
 
 	// Create id= attributes for all headers automatically
 	HeadingIDs bool `yaml:"Heading-IDs"`
@@ -389,8 +388,7 @@ func (app *App) writeSiteConfig(filename string) error {
 // by another site config file.
 func (app *App) setSiteDefaults() {
 	app.Site.Language = defaults.Language
-	app.Site.HTMLStartFile = defaults.HTMLStartFile
-	app.Site.HTMLEndFile = defaults.HTMLEndFile
+  app.Site.MarkdownOptions.HighlightStyle = defaults.ChromaDefault
 	app.setPaths()
 }
 

@@ -1,9 +1,6 @@
 # Metabuzz Markdown quic reference
 
-## Table of contents should appear here
-
-
-**Table of contents** 
+## Table of contents 
 
 * [Common text formatting](#common-text-formatting)
 * [Links](#links)
@@ -86,19 +83,19 @@ Jump to the [tables](#tables) section.
 
 Metabuzz automatically generates an `id` attribute for each header from h1 to h6 by taking the text of the link itself, reducing it to lowercase, and either replacing spaces and other non-letter characters with hyphens, or removing them altogether. If you look at the HTML for this page you'll see the `Tables` header looks like this:
 
-```html
+```
 <h2 id="tables">Tables</h2>
 ```
 
 The `Coding styles` header uses a hyphen to replace the space:
 
-```html
+```
 <h2 id="coding-styles">Coding styles</h2>
 ```
 
-And the more complicated example of the header named `The "third" list type: definition lists`:
+And the more complicated example of the header named "The 'third' list type: definition lists":
 
-```html
+```
 <h3 id="the-third-list-type-definition-lists">The "third" list type: definition lists</h3>
 ```
 <a name="bookmarks-unique"></a>
@@ -279,19 +276,19 @@ source format.
 
 Remember that a Markdown link looks like this:
 
-```markdown
+```
 [Twitter](https://twitter.com)
 ```
 
 And that an image link looks like this:
 
-```markdown
+```
 ![Twitter logo](twitter-32x32-black.png)
 ```
 
 You can combine them to make a clickable image, like this:
 
-```markdown
+```
 [![Twitter logo](twitter-32x32-black.png)](https://twitter.com)
 ```
 
@@ -324,7 +321,6 @@ And here's what results from the table markdown shown above:
 #### You type:
 ```
 >Hypocrisy waits silently for us all. 
-
 ```
 
 #### It shows as:

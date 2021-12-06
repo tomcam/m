@@ -104,7 +104,7 @@ article > p,
   font-size:var(--p-font-size);padding-top:var(--p-padding-top);padding-bottom:var(--p-padding-bottom);margin-top:var(--p-margin-top);margin-bottom:var(--p-margin-bottom);}
 
 article > h1,article > h2 {font-weight:700;}
-article > h4 {font-weight:normal;} /* Byline */
+article > h4 {font-size:1rem;font-weight:normal;} /* Byline */
 article > h4 > strong {font-weight:bold;} /* Byline */
 article > p > strong {font-weight:700;}
 
@@ -118,9 +118,9 @@ article > p,
 		line-height:var(--p-line-height);
 }
 
+article > h3 {font-weight:bold;}
 article > hr {height:.125em;}
-
-article > ul, article > ol {margin-top:.5em;}
+article > ul, article > ol {padding-top:.5em;}
 article > li {margin-left:1rem;}
 
 /* Indent lists */
@@ -172,16 +172,12 @@ article > img, article > p > img {
  * Code listings
  * --------------------------------------------------
  */
-article > p > code, article > code, article > pre, article > pre > code {
-  font-family:var(--code);
-  font-size:.8em;
-  overflow:auto;
-  margin-bottom:0em;
-  line-height:1.15em;
-  padding: .5em;
-  }
-article > pre {line-height:1.5em;font-size:1.1em;}
 
+article > p > code, article > code, article > pre, article > pre > code {
+		font-family:var(--code);
+		font-size:var(--p-font-size);
+		overflow:auto;
+}
 article > table {padding-top:1em;padding-bottom:1.5em;}
 article > table > td,th {padding:1rem;}
 article > table > tbody > tr > td {padding:1rem;}
@@ -192,17 +188,11 @@ article > table > tbody > tr > td {padding:1rem;}
 /* ******************************/
 
 aside > p {margin-bottom:1rem;font-size:.8rem;padding-left:var(--text-start);padding-right:.75em;}
-aside > h2 {padding:1rem;font-size:1.75rem;font-weight:bold;white-space:nowrap;}
-aside > h3 {font-size:1em;font-weight:bold;padding-bottom:1rem;}
+aside > h2 {padding:1rem;text-align:center;font-size:1.2rem;font-weight:700;white-space:nowrap;}
+aside > h3 {font-size:.75em;font-weight:bold;padding-bottom:2rem;}
 aside > h5 {text-align:center;font-weight:bold;margin-left:0;padding-left:0;padding-top:2rem;padding-bottom:1rem;}
 aside > h6  {font-weight:normal;font-style:italic;}
 
-
-
-
-
-aside > h2 {text-align:center;font-size:1.2rem;font-weight:700;}
-aside > h3 {font-size:.75em;font-weight:bold;padding-bottom:2rem;}
 aside > ul {text-align:right;padding-right:1rem;line-height:1.5em;}
 aside > ul > li {list-style-type:none;} 
 aside > ul > li > a,

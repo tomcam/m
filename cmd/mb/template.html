@@ -1,0 +1,87 @@
+<!DOCTYPE html><HTML lang="en">
+<head>
+
+<title>metabuzz: Title needed here, squib</title>
+<meta charset="utf-8">
+
+</head>
+<body style='visibility: hidden;'class='no-js'><script>document.querySelector('body').classList.remove('no-js');</script>
+<header><ul>
+<li><a href="/">W by Metabuzz</a></li>
+<li><a href="/">About</a></li>
+<li><a href="/">Contact</a></li>
+</ul>
+</header>
+
+<nav><p><a href="#">Learn More</a> <a href="#">Support</a>  <a href="/">Media</a></p>
+</nav>
+
+<article id="article">
+  <h1>hello, world.</h1>
+<p>Super short article</p>
+</article>
+
+<footer><p>Powered by <a href="https://metabuzz.com">Metabuzz</a></p>
+</footer>
+<script>
+
+
+// This and ready() are used to avoid 
+// flash of unstyled content (FOUT)
+function ready(fn) {
+  if (document.readyState !== 'loading'){
+    fn();
+  } else {
+    document.addEventListener('DOMContentLoaded', fn);
+  }
+}
+
+ready(function () {
+  document.body.style.visibility = 'visible';
+});
+
+
+
+// Stretch sidebar when document is scrolled.
+// For some reason HTML doesn't do that for you.
+var scrollTimer = -1;
+function bodyScroll()
+{
+  if(scrollTimer != -1){
+    clearTimeout(scrollTimer);
+  }
+  scrollTimer = window.setTimeout(sidebarHeight, 100);
+}
+function sidebarHeight() {
+  s=document.getElementById('sidebar');
+  a=document.getElementById('article'); 
+  if (s != null && a != null) {
+    // If there's a sidebar,
+    ha=a.offsetHeight;
+    hs=s.offsetHeight;
+    // If the article is longer, make
+    // the sidebar as long as the article.
+    if (ha>hs) {
+      h=a.offsetHeight+'px';s.style.height=h;
+    }
+    // If the sidebar is longer than the
+    // article, make the article as long
+    // as the sidebar.
+    else{
+      h=s.offsetHeight+'px';a.style.height=h;
+    }
+  }
+} 
+document.onreadystatechange = function () {
+  if (document.readyState == "interactive") {
+    // Init or start code here
+    bodyScroll();
+  }
+} 
+window.onresize=sidebarHeight;
+/* ES5 works fine */
+document.getElementsByTagName('body')[0].onscroll=bodyScroll();
+</script>
+
+</body>
+</html>

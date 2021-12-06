@@ -62,9 +62,6 @@ const (
 
 Welcome to %s
 `
-	HTMLStartFile = "<!DOCTYPE html><HTML lang="
-	HTMLEndFile   = `</body>` + "\n" + `</html>`
-
 	// Name of subdirectory within the publish directory for CSS, theme files.
 	// for that theme.
 	DefaultAssetPath = "assets"
@@ -199,6 +196,13 @@ Welcome to %s
 	// Name of the file that holds site configuration information
 	SiteConfigFilename = "site" + "." + ConfigFileDefaultExt
 
-	// String that precedes error codes
+	// String that precedes error codes. Makes it easier
+  // to do a web search.
 	ErrorCodePrefix = "mbz"
+
+  // Chroma highlighter default theme
+  // List at:
+  // https://github.com/alecthomas/chroma/tree/master/styles
+  // https://github.com/alecthomas/chroma
+  ChromaDefault = "github"
 )
