@@ -276,7 +276,7 @@
   --sidebar-width:20%;
 
   /* --text-start is a padding value not a margin */
-  --text-start:var(--sidebar-width);  /* 3% xxx */
+  --text-start:var(--sidebar-width); 
 
   --text-end:2em;
 
