@@ -13,15 +13,14 @@ cp site.yaml $DIR/.mb
 cp eastside-emerald-64x64.png $DIR
 # Create an array of filenames
 declare -a themes=(
+	'wide'
+	'pillar'
   'future'
   'genuine'
-	'wide'
 	'debut/gallery'
-	'pillar'
   'simplify'
   'tradesman'
   'debut'
-  'w'
 	)
 rawthemes=$themes
 #

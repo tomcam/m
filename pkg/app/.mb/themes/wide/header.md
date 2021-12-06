@@ -24,9 +24,7 @@
 {{- $name := .Page.Theme.Branding -}}
 * [{{ $name -}}](/)
 {{- else }}
-* [{{.FrontMatter.Theme}} {{.FrontMatter.PageType}}](/)
+* [Metabuzz](/)
 {{- end }} 
-* [Events](/)
-* [Podcast](/)
-* [Subscribe](/)
-
+* [About](/)
+* [Contact](/)

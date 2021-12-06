@@ -196,7 +196,7 @@
    * ******************************/
 
   /* Adjusts footer height and keeps it vertically centered */
-  --footer-height:10rem;
+  --footer-height:14rem;
 
   /* Size of the main text in the footer. */
   --footer-branding-height:3rem;

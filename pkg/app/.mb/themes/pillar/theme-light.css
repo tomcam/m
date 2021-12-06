@@ -34,8 +34,8 @@
     --code-bg:#F0F0F0;
 
     /* Secondary foreground (text) and background colors for accents. */
-    --trim-fg:#969598; 
-    --trim-bg:white;
+    --trim-fg:var(-fg); 
+    --trim-bg:var(--bg);
     
     /* Primary foreground (text) and background colors in header */
     --header-fg: white;
@@ -81,7 +81,7 @@
 
     /* Primary foreground (text) and background colors in footer */
     --footer-fg:var(--fg);
-    --footer-bg:white;
+    --footer-bg:var(--bg);
     /* Link colors specific to footer */
     --a-footer: var(--a);
     --a-footer-link: var(--a);
@@ -145,11 +145,7 @@ nav > p > a:visited {color:var(--nav-fg);}
 /*  ARTICLE COLORS AND BORDERS  */
 /* ******************************/
 
-article > p > code, article > code, article > pre, article > pre > code 
-  {background-color:#F0F0F0;} 
-/*
-  {background-color:var:(--code-bg);}   
-  */
+article > p > code, article > code, article > pre, article > pre > code {background-color:var(--code-bg);}   
 article > h4 {color:gray;} 
 article > h4 > strong {color:black; } 
 article > table > thead > tr > th {color:var(--header-bg);background-color:var(--header-fg);}
@@ -207,7 +203,7 @@ aside > a:active, aside > p > a:active{color:var(--a-sidebar-active);}
 /* ******************************/
 
 footer {border-top: 1px solid var(--trim-fg);} 
-footer > table > thead > tr > th {color:var(--footer-fg);background-color:var(--footer-bg);}
+footer > table > thead > tr > th {color:var(--header-fg);background-color:var(--footer-bg);}
 /* Color of links in main rows (body) of table */
 footer > table > tbody > tr > td > a:link,
 footer > table > tbody > tr > td > a:visited
@@ -217,13 +213,10 @@ footer > table > tbody > tr > td > a:active
 	{color:var(--header-fg);}
 
 footer > ul > li:first-child > a {color:var(--trim-fg);}
-
-footer > ul > li > a,
+footer > table > thead > tr > th {color:var(--header-fg);}
 footer > ul > li > a:link,
 footer > ul > li > a:visited
 	{color:var(--trim-fg);}
 footer > a:visited, footer > p > a:visited {color:var(--a-footer-visited);}
 footer > a:hover, footer > p > a:hover{color:var(--a-footer-hover);}
 footer > a:active, footer > p > a:active{color:var(--a-footer-active);}
-
-
