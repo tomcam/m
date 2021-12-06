@@ -1,3 +1,5 @@
-article {width:var(--alt-article-width);margin-left:0;float:right}
+article {width:var(--alt-article-width);margin-left:0;float:right; /* xxx */padding-left:0;}
+/* xxx aside {margin-left:var(--left-margin);} */
+
 
 

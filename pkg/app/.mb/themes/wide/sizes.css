@@ -181,7 +181,7 @@
 
   --sidebar-padding-top:6rem;
   --sidebar-padding-bottom:1rem;
-  --sidebar-padding-left:var(--text-start);
+  --sidebar-padding-left:2rem;
   --sidebar-padding-right:1em;
 
   --sidebar-margin-top:0rem;
@@ -263,9 +263,9 @@
   --sidebar-width:25%;
 
   /* --text-start is a padding value not a margin */
-  --text-start:5%; 
+  --text-start:var(--sidebar-width);
 
-  --text-end:10%;
+  --text-end:2em;
 
 }
 

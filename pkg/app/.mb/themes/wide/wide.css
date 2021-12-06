@@ -187,7 +187,7 @@ article > table > tbody > tr > td {padding:1rem;}
 /*  SIDEBAR (ASIDE TAG)         */
 /* ******************************/
 
-aside > p {margin-bottom:1rem;font-size:.8rem;padding-left:padding-right:.75em;}
+aside > p {margin-bottom:1rem;font-size:.8rem;padding-left:var(--sidebar-padding-left);padding-right:.75em;}
 aside > h2 {padding:1rem;text-align:center;font-size:1.2rem;font-weight:700;white-space:nowrap;}
 aside > h3 {font-size:.75em;font-weight:bold;padding-bottom:2rem;}
 aside > h5 {text-align:center;font-weight:bold;margin-left:0;padding-left:0;padding-top:2rem;padding-bottom:1rem;}
