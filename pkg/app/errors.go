@@ -130,6 +130,8 @@ var errMsgs = map[string]string{
 	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
 	"0925": "Error generating Markdown for page elment file", // filename
 	"0926": "Unable to generate table of contents",
+  "0927": "Unable to create a new page",
+  "0928": "Unable to create a new post",
 	// 0950 - Something's already there
 	"0951": "Site already exists at", // sitename
 

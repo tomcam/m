@@ -1,0 +1,4 @@
+#!/bin/zsh
+# Change to the website directory
+cd /Users/tom/code/m/website
+

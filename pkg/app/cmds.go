@@ -133,9 +133,10 @@ func (app *App) addCommands() {
 		/*****************************************************
 		TOP LEVEL COMMAND: new
 		*****************************************************/
+    // TODO: Do/correct all the help text on all of these
 		CmdNew = &cobra.Command{
 			Use:   "new",
-			Short: "new commands: new site|theme",
+			Short: "new commands: new site|theme|page",
 			Long: `site: Use new site to start a new project. Use new theme to 
 create theme based on an existing one. 
       Typical usage of new site:
@@ -237,6 +238,64 @@ create theme based on an existing one.
 		}
 
 		/*****************************************************
+		    Subcommand: new page
+		*****************************************************/
+
+		CmdNewPost = &cobra.Command{
+			Use:   "post {postname}",
+			Short: "post",
+			Long: `new post {"postname"}
+      Where {postname} is a name in quotes.
+      mb new post "
+`,
+			Run: func(cmd *cobra.Command, args []string) {
+				var postname string
+				// See if the user specfied a page name.
+				if len(args) > 0 {
+					postname = args[0]
+				} else {
+					postname = promptString("Name of post to create?")
+				}
+				err := app.createPost(postname)
+				if err != nil {
+					app.QuitError(ErrCode("0928", postname))
+				}
+				app.Debug("Created post %v", postname)
+			},
+		}
+
+/* NEW PAGE
+
+		CmdNewSite = &cobra.Command{
+			Use:   "page {pagename}",
+			Short: "new page headlines",
+			Long: `new page {pagename}
+      Where {pagename} is a valid filename. An .md extension is supplied if you omit it. For example:
+      mb new page headlines
+`,
+			Run: func(cmd *cobra.Command, args []string) {
+				var pathname string
+				// See if the user specfied a page name.
+				if len(args) > 0 {
+					pathname = args[0]
+				} else {
+					pathname = promptString("Name of page to create?")
+				}
+				err := app.newSite(pathname)
+				if err != nil {
+					app.QuitError(ErrCode("0927", pathname))
+				}
+				app.Debug("Created page %v", pathname)
+			},
+		}
+
+*/
+
+
+
+
+
+		/*****************************************************
 		END TOP LEVEL COMMANDS
 		*****************************************************/
 
@@ -264,6 +323,7 @@ create theme based on an existing one.
 	app.RootCmd.AddCommand(cmdInterview)
 	CmdNew.AddCommand(CmdNewSite)
 	CmdNew.AddCommand(CmdNewTheme)
+	CmdNew.AddCommand(CmdNewPost)
 	cmdUpdate.AddCommand(cmdUpdateThemes)
 	app.RootCmd.AddCommand(cmdInfo)
 	app.RootCmd.AddCommand(cmdBuild)

@@ -1,0 +1,11 @@
+#!/bin/zsh
+echo "errdoc  Create documentation for an error code, e.g. errdoc 0256"
+echo "eto     Edit todo.md"
+echo "ffs     Find text in stylesheets (theme directory)"
+echo "mbtest1 Generate test files for all themes, all permutations"
+echo "v       Validate a stylesheet"
+echo "wb      Change to website directory"
+
+echo ""
+echo "template.html   Blank HTML file with all page elements"
+

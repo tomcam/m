@@ -109,6 +109,7 @@ You can do a header like this, which gives you an optional logo
 Same with w-based themes.
 * To change the root text (rem) size, 
 ## Priority 2: Desired but not required for the next release
+* Fix naming conventions. Anything that generates a file should be called create. new should be used to allocate new data objects.
 * Add: new page command
 * Add: Generate index.md for new site
 * Add: Get variables from frontmatter, site file, env variables, or config file
