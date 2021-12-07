@@ -6,65 +6,6 @@
 * Old theme directory
 https://github.com/tomcam/mb/tree/master/.mb/.themes
 * Delete themename.toml
-* Rename themename.yaml if necessary, and its .css name within that file
-
-* Add to theme-light
-   /* Code listings */
-    --code-fg:var(--fg);
-    --code-bg:#F0F0F0; 
-/* ******************************/
-/*  ARTICLE COLORS AND BORDERS  */
-/* ******************************/
-article > p > code, article > code, article > pre, article > pre > code
-  {background-color:var(--code-bg);}   
-
-* Add as the last article style in bind.css
-article > p > code, article > pre > code {color:var(--code-fg);background-color:var(--code-bg);}
-* Add styling for definition lists
-```
-article > dl > dt {font-size:.8em;font-weight:bold;}  
-article > dl > dd {font-size:.8em;padding-bottom:1em;}
-```
-* Style nested lists. I think it's just htis:
-```
-article ul > li {margin-left:1em;padding-left:0em;}
-```
-* Style definition lists
-```
-article > dl {padding-top:.5rem;}
-article > dl > dt {font-size:.8em;font-weight:bold;}  
-article > dl > dd {font-size:.8em;padding-bottom:1em;}
-* Copy either w/layout.css or pillar/layout.css
-* add --branding-weight to sizes.css
-* Update theme-light.css, theme-dark.css
-    /* Same as article > h1 { color: } */
-    --article-h1-fg:var(--fg);
-    --article-h2-fg:var(--fg);
-    --article-h3-fg:var(--fg);
-    --article-h4-fg:var(--fg);
-    --article-h5-fg:var(--fg);
-    --article-h6-fg:var(--fg);
-
-    /* Same as article > h1 { background-color: } */
-    --article-h1-bg:var(--bg);
-    --article-h2-bg:var(--bg);
-    --article-h3-bg:var(--bg);
-    --article-h4-bg:var(--bg);
-    --article-h5-bg:var(--bg);
-    --article-h6-bg:var(--bg);
-
-* Pillar has good table styling
-```
-article > table {padding-top:1em;padding-bottom:1.5em;}
-article > table > td,th {padding:1rem;}
-article > table > tbody > tr > td {padding:1rem;}
-```
-And in theme-light:
-```
-article > table > thead > tr > th {color:var(--header-bg);background-color:var(--header-fg);}
-article > table > tbody > tr > td {border-bottom:.1px solid gray;}
-```
-
 * YAML file Format looks like this:
 ```
 Branding: "W by Metabuzz"
@@ -84,45 +25,14 @@ Article: {File:, HTML:}
 Sidebar: {File: sidebar.md, HTML:}
 Footer: {File: footer.md, HTML:}
 Language: en
-```
-Good footer from Pillar
-```
-footer > h2 {text-align:center;}
-footer > table {font-size:calc(80%);}                
-/* Give table columns to get some breathing room */       
-footer > table > thead > tr > th {padding-right:2rem;}    
-footer > table > thead > tr > th {padding-top:1em;padding-right:2em;padding-bottom:1em;}
-footer > table > tbody > tr > td {padding-right:3em;}
-footer > table > tbody > tr > td > a:link,
-footer > table > tbody > tr > td > a:visited         
-  {text-decoration:none;}
-footer > table > tbody > tr > td > a:hover,    
-footer > table > tbody > tr > td > a:active       
-  {text-decoration:underline;}
-```
 ## Priority 1: Showstoppers--required for the next release
-* wide.css bug: aside > p has 
-padding-left:var(--text-start)
-* bug: toc seems to be broken with includes files, or even if it's in the included file (seens to be useless when I put it at the top of common|mdemo.md)
+* bug: toc seems to be broken with inc files, or even if it's in the included file (seens to be useless when I put it at the top of common|mdemo.md)
 * Bug: Error handling is broken
-* Bug: Pillar, genuine have good nested lists. I think it's just htis:
-```
-article ul > li {margin-left:1em;padding-left:0em;} 
-```
-* Bug: add styling for definition lists
-```
-article > dl {padding-top:1rem;} 
-article > dl > dt {font-size:.8em;font-weight:bold;}  
-article > dl > dd {font-size:.8em;padding-bottom:1em;}
-```
-* Bug: delete a theme directory, then try to build wih that theme.
+  - Example: delete a theme directory, then try to build wih that theme.
 you get this error. Handle that errcode condition.
 Error building Can't find a theme named /Users/tom/code/m/cmd/mb/theme-test/.mb/themes/simplify (error code mbz1028)
  (error code mbz0923)
-
-* Bug in sizes.css: I had got rid of --text-start.
-  --sidebar-padding-left:var(--text-start);
-* BUG: errors aren't gettingreported correctly, though they seem to work OK fi the extra
+  - BUG: errors aren't gettingreported correctly, though they seem to work OK fi the extra
 parameter is empty. Example. Try doing this when there's already a project at foo:
 mb new site foo
 * BUG: .Page.FrontMatter.Theme doesn't work correctly in an article, instead yielding asterisks
@@ -381,5 +291,66 @@ fmt.Println(string(mdFileToHTML(filename)))
 * ONLY FOR WIDE For sidebar-right.css, add to article /* xxx */padding-right:0;
 * 
 
+
+###  I think this is all outdated but keep it awhile to be sure
+
+* Rename themename.yaml if necessary, and its .css name within that file
+
+* Add to theme-light
+   /* Code listings */
+    --code-fg:var(--fg);
+    --code-bg:#F0F0F0; 
+/* ******************************/
+/*  ARTICLE COLORS AND BORDERS  */
+/* ******************************/
+article > p > code, article > code, article > pre, article > pre > code
+  {background-color:var(--code-bg);}   
+
+* Add as the last article style in bind.css
+article > p > code, article > pre > code {color:var(--code-fg);background-color:var(--code-bg);}
+* Add styling for definition lists
+```
+article > dl > dt {font-size:.8em;font-weight:bold;}  
+article > dl > dd {font-size:.8em;padding-bottom:1em;}
+```
+* Style nested lists. I think it's just htis:
+```
+article ul > li {margin-left:1em;padding-left:0em;}
+```
+* Style definition lists
+```
+article > dl {padding-top:.5rem;}
+article > dl > dt {font-size:.8em;font-weight:bold;}  
+article > dl > dd {font-size:.8em;padding-bottom:1em;}
+* Copy either w/layout.css or pillar/layout.css
+* add --branding-weight to sizes.css
+* Update theme-light.css, theme-dark.css
+    /* Same as article > h1 { color: } */
+    --article-h1-fg:var(--fg);
+    --article-h2-fg:var(--fg);
+    --article-h3-fg:var(--fg);
+    --article-h4-fg:var(--fg);
+    --article-h5-fg:var(--fg);
+    --article-h6-fg:var(--fg);
+
+    /* Same as article > h1 { background-color: } */
+    --article-h1-bg:var(--bg);
+    --article-h2-bg:var(--bg);
+    --article-h3-bg:var(--bg);
+    --article-h4-bg:var(--bg);
+    --article-h5-bg:var(--bg);
+    --article-h6-bg:var(--bg);
+
+* Pillar has good table styling
+```
+article > table {padding-top:1em;padding-bottom:1.5em;}
+article > table > td,th {padding:1rem;}
+article > table > tbody > tr > td {padding:1rem;}
+```
+And in theme-light:
+```
+article > table > thead > tr > th {color:var(--header-bg);background-color:var(--header-fg);}
+article > table > tbody > tr > td {border-bottom:.1px solid gray;}
+```
 
 

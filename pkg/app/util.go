@@ -387,8 +387,14 @@ func promptStringDefault(prompt string, defaultValue string) string {
 // See also inputString(), promptString()
 func promptYes(prompt string) bool {
 	// See also inputString(), promptYes()
-	answer := promptString(prompt)
-	return strings.HasPrefix(strings.ToLower(answer), "y")
+	for {
+		answer := promptString(prompt)
+		if strings.HasPrefix(strings.ToLower(answer), "y") ||
+			strings.HasPrefix(strings.ToLower(answer), "n") {
+	    return strings.HasPrefix(strings.ToLower(answer), "y")
+		}
+	}
+	///return strings.HasPrefix(strings.ToLower(answer), "y")
 }
 
 /*

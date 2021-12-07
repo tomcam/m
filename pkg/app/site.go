@@ -324,7 +324,12 @@ func (app *App) newSite(pathname string) error {
 		if err := app.generate(app.Flags.Starters); err != nil {
 			return ErrCode("PREVIOUS", err.Error())
 		}
-	}
+	} else {
+    // if not just generate a very simple index page
+ 		if err := app.createStubIndex(); err != nil {
+			return ErrCode("PREVIOUS", err.Error())
+		}
+ }
 	return nil
 }
 
@@ -352,11 +357,11 @@ func (app *App) readSiteConfig() error {
 	return nil
 }
 
-// writeSiteConfig() writes out the contents of App.Site 
+// writeSiteConfig() writes out the contents of App.Site
 func (app *App) writeSiteConfig() error {
 	app.Debug("writeSiteConfig()")
 	if err := writeYamlFile(app.Site.siteFilePath, app.Site); err != nil {
-    // TODO: Better error handling?
+		// TODO: Better error handling?
 		return ErrCode("PREVIOUS", app.Site.siteFilePath, err.Error())
 	}
 	return nil

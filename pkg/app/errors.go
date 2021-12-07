@@ -98,6 +98,7 @@ var errMsgs = map[string]string{
 	// TODO: Get rid of the line below
 	// Old errors stopped at 0410
 	"0411": "Unable to copy theme directory",
+	"0412": "Error creating directory for simple page", // directory
 
 	// TODO: Get rid of the line below
 	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
@@ -150,6 +151,7 @@ var errMsgs = map[string]string{
 	"1034": "Unable to find layout element file",                     // filename
 	"1035": "Missing name of theme to copy",                          // filename
 	"1036": "No site configuration file was specified",
+  "1037": "Filename missing to create page",
 	// TODO: Get rid of the line below
 	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
 
