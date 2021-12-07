@@ -118,14 +118,6 @@ header > ul > li > a:active
  */
 header > ul > li:first-child > a {color:var(--header-fg);}
 
-/*
- * --------------------------------------------------
- * Special feature: Last item in list is styled 
- * to look like a button. 
- * --------------------------------------------------
- */
-header > ul > li:last-child > a {border: 2px solid var(--header-fg);color:var(--header-fg);}
-
 /* ******************************/
 /*  NAVBAR COLORS AND BORDERS   */
 /* ******************************/

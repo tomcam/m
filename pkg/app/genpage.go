@@ -10,7 +10,11 @@ import(
 // directory.
 func (app *App) createStubIndex() error {
   page := fmt.Sprintf("# Welcome to %s\nhello, world.",app.Site.name)
-  return app.createSimplePage("index.md", "", page)
+  if !fileExists(filepath.Join(app.Site.path, "index.md")) {
+    return app.createSimplePage("index.md", "", page)
+  }
+  // index already exists
+  return nil
 }
 // createSimplePage generates a page of text.
 // Creates dir if it doesn't exist
