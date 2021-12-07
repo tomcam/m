@@ -123,7 +123,8 @@ Error building Can't find a theme named /Users/tom/code/m/cmd/mb/theme-test/.mb/
 * Bug in sizes.css: I had got rid of --text-start.
   --sidebar-padding-left:var(--text-start);
 * BUG: errors aren't gettingreported correctly, though they seem to work OK fi the extra
-parameter is empty
+parameter is empty. Example. Try doing this when there's already a project at foo:
+mb new site foo
 * BUG: .Page.FrontMatter.Theme doesn't work correctly in an article, instead yielding asterisks
 * Bug: Site.HighlightStyle aka Highlight-style  doesn't seem to work
 Note that if you do this  in newGoldmark():

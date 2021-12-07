@@ -16,15 +16,15 @@
 
 {{- if .Site.Company.Name -}}
 {{- $name := .Site.Company.Name -}}
-* [{{ $name -}}](/)
+* [{{ $name -}}]()
 {{- else if .Site.Author.FullName -}}
 {{- $name := .Site.Author.FullName -}}
-* [{{ $name -}}](/)
+* [{{ $name -}}]()
 {{- else if .Page.Theme.Branding -}}
 {{- $name := .Page.Theme.Branding -}}
-* [{{ $name -}}](/)
+* [{{ $name -}}]()
 {{- else }}
-* [Metabuzz](/)
+* [Metabuzz]()
 {{- end }} 
-* [About](/)
-* [Contact](/)
+* [About]()
+* [Contact]()

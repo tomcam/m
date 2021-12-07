@@ -149,8 +149,8 @@ func (app *App) kitchenSink(pathname string) error {
 		return ErrCode("0401", pathname)
 	}
 	// Update app.Site.path and build all related directories
-	if err := app.setWorkingDir(pathname); err != nil {
-		return err
+	if err := app.changeWorkingDir(pathname); err != nil {
+		return ErrCode("PREVIOUS", err.Error())
 	}
 
 	// Change to specified directory.
@@ -169,8 +169,7 @@ func (app *App) kitchenSink(pathname string) error {
 	// Build the site from the array of data structures
 	if err := writeSiteFromArray(pathname, siteTest); err != nil {
 		// TODO: Improve error handling
-		app.QuitError(err)
-		return err
+		return ErrCode("PREVIOUS", err.Error())
 	}
 
 	// Get factory themes and copy to project. They will then
@@ -181,7 +180,7 @@ func (app *App) kitchenSink(pathname string) error {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 
-	if err := app.writeSiteConfig(""); err != nil {
+	if err := app.writeSiteConfig(); err != nil {
 		app.Note("Error writing site file %v", app.Site.siteFilePath)
 		return ErrCode("PREVIOUS", err.Error())
 	}

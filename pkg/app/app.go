@@ -5,14 +5,14 @@ import (
 	"io"
 	"io/fs"
 	"io/ioutil"
-  /*
-	"github.com/yuin/goldmark-meta"
-  "github.com/yuin/goldmark/renderer"
-  "github.com/yuin/goldmark/renderer/html"
-	"github.com/yuin/goldmark/extension"
- 	highlighting "github.com/yuin/goldmark-highlighting"
-  */
-  "errors"
+	/*
+			"github.com/yuin/goldmark-meta"
+		  "github.com/yuin/goldmark/renderer"
+		  "github.com/yuin/goldmark/renderer/html"
+			"github.com/yuin/goldmark/extension"
+		 	highlighting "github.com/yuin/goldmark-highlighting"
+	*/
+	"errors"
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -33,9 +33,9 @@ type App struct {
 	// Location (on startup) of user application data directory
 	applicationDataPath string
 	Site                Site
-  // TODO: experimental
-  // Markdown file source
-  src []byte
+	// TODO: experimental
+	// Markdown file source
+	src []byte
 
 	// Cobra Command Processes command line options
 	RootCmd cobra.Command
@@ -104,9 +104,9 @@ type Flags struct {
 func NewApp() *App {
 	app := App{
 		// TODO: tenporary
-    src: []byte{},
+		src: []byte{},
 
-		Page:     Page{},
+		Page: Page{},
 		// Missing here: initializing the parser.
 		// Can't set parser options until command
 		// line has been processed.
@@ -271,16 +271,15 @@ func (app *App) setPaths() {
 
 } // setPaths()
 
-// setWorkingDir() changes to the specified
+// changeWorkingDir() changes to the specified
 // directory and sets app.Site.path accordingly.
-func (app *App) setWorkingDir(dir string) error {
-	app.Debug("\tsetWorkingDir(%v)", dir)
+func (app *App) changeWorkingDir(dir string) error {
+	app.Debug("\tchangeWorkingDir(%v)", dir)
 	if dir == "." || dir == "" {
 	} else {
 		if err := os.Chdir(dir); err != nil {
 			app.Debug("\t\tos.ChDir(%v) failed", dir)
 			return ErrCode("1108", "PREVIOUS", err.Error())
-			// xxx
 		}
 	}
 	app.Site.path = currDir()
@@ -479,6 +478,3 @@ func (app *App) embedDirCopy(source embed.FS, target string) error {
 	})
 	return nil
 }
-
-
-

@@ -130,8 +130,8 @@ func (app *App) publishMarkdownFile(filename string) error {
 		sidebar +
 		footer +
 		closeScripts +
-    "</body>" + "\n" +
-    "</html>"
+		"</body>" + "\n" +
+		"</html>"
 
 	if err = os.WriteFile(target, []byte(fullPage), defaults.PublicFilePermissions); err != nil {
 		// TODO: Handle error properly & and document error code
@@ -251,8 +251,8 @@ func (app *App) descriptionTag() string {
 func (app *App) MdFileToHTML(filename string) ([]byte, error) {
 	// Read file into a byte slice.
 	//app.src = util.FileToBytes(filename)
-  b := util.FileToBytes(filename)
-  app.src = b
+	b := util.FileToBytes(filename)
+	app.src = b
 	//s := app.interps(filename, string(app.src))
 	s := app.interps(filename, string(b))
 	// Convert to HTML

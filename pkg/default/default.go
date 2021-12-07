@@ -197,12 +197,12 @@ Welcome to %s
 	SiteConfigFilename = "site" + "." + ConfigFileDefaultExt
 
 	// String that precedes error codes. Makes it easier
-  // to do a web search.
+	// to do a web search.
 	ErrorCodePrefix = "mbz"
 
-  // Chroma highlighter default theme
-  // List at:
-  // https://github.com/alecthomas/chroma/tree/master/styles
-  // https://github.com/alecthomas/chroma
-  ChromaDefault = "github"
+	// Chroma highlighter default theme
+	// List at:
+	// https://github.com/alecthomas/chroma/tree/master/styles
+	// https://github.com/alecthomas/chroma
+	ChromaDefault = "github"
 )

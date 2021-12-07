@@ -26,7 +26,7 @@ func (app *App) ShowInfo(pathname string) error {
 
 	}
 
-	if err := app.setWorkingDir(pathname); err != nil {
+	if err := app.changeWorkingDir(pathname); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	table.DefaultHeaderFormatter = func(format string, vals ...interface{}) string {
@@ -60,7 +60,7 @@ func (app *App) ShowInfo(pathname string) error {
 // if the verbose flag was used. Formats it like Fprintf.
 func (a *App) Verbose(format string, ss ...interface{}) {
 	if a.Flags.Verbose {
-		fmt.Println(a.fmtMsg(format, ss...))
+		fmt.Println(fmtMsg(format, ss...))
 	}
 }
 
@@ -69,7 +69,7 @@ func (a *App) Verbose(format string, ss ...interface{}) {
 // Formats it like Fprintf.
 func (a *App) Debug(format string, ss ...interface{}) {
 	if a.Flags.Debug {
-		fmt.Println(a.fmtMsg(format, ss...))
+		fmt.Println(fmtMsg(format, ss...))
 	}
 }
 
@@ -78,24 +78,24 @@ func (a *App) Debug(format string, ss ...interface{}) {
 // For temporary use
 // Overrides the verbose flag. Formats it like Fprintf.
 func (a *App) Note(format string, ss ...interface{}) {
-	fmt.Println("NOTE: " + a.fmtMsg(format, ss...))
+	fmt.Println("NOTE: " + fmtMsg(format, ss...))
 }
 
 // App.Print() displays a message followed by a newline
 // to stdout.
 // Formats it like Fprintf.
 func (a *App) Print(format string, ss ...interface{}) {
-	fmt.Println(a.fmtMsg(format, ss...))
+	fmt.Println(fmtMsg(format, ss...))
 }
 
 // App.Warning() displays a message followed by a newline
 // to stdout, preceded by the text "Warning: "
 // Overrides the verbose flag. Formats it like Fprintf.
 func (a *App) Warning(format string, ss ...interface{}) {
-	fmt.Println("Warning: " + a.fmtMsg(format, ss...))
+	fmt.Println("Warning: " + fmtMsg(format, ss...))
 }
 
 // fmtMsg() formats string like Fprintf and writes to a string
-func (a *App) fmtMsg(format string, ss ...interface{}) string {
+func fmtMsg(format string, ss ...interface{}) string {
 	return fmt.Sprintf(format, ss...)
 }

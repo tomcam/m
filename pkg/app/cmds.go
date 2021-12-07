@@ -13,6 +13,28 @@ func (app *App) addCommands() {
 		err      error
 
 		/*****************************************************
+		  TOP LEVEL COMMAND: interview
+		 *****************************************************/
+
+		cmdInterview = &cobra.Command{
+			Use:   "interview",
+			Short: "Fills in questions about your site",
+			Long:  "Allows you to fill get links and directory names so you don't need to edit a configuration file",
+			Run: func(cmd *cobra.Command, args []string) {
+				var err error
+				if len(args) > 0 {
+					err = app.interviewSiteBrief()
+				} else {
+					err = app.interviewSiteBrief()
+				}
+				// TODO: Return standard error?
+				if err != nil {
+					app.QuitError(err)
+				}
+			},
+		}
+
+		/*****************************************************
 		  TOP LEVEL COMMAND: kitchen
 		 *****************************************************/
 
@@ -239,6 +261,7 @@ create theme based on an existing one.
 	app.RootCmd.AddCommand(CmdNew)
 	app.RootCmd.AddCommand(cmdKitchenSink)
 	app.RootCmd.AddCommand(cmdUpdate)
+	app.RootCmd.AddCommand(cmdInterview)
 	CmdNew.AddCommand(CmdNewSite)
 	CmdNew.AddCommand(CmdNewTheme)
 	cmdUpdate.AddCommand(cmdUpdateThemes)

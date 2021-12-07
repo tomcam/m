@@ -6,15 +6,15 @@ import (
 	//"fmt"
 	//"github.com/tomcam/m/pkg/default"
 	//toc "github.com/abhinav/goldmark-toc"
-  "github.com/yuin/goldmark/ast"
-	"github.com/yuin/goldmark/text"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark-highlighting"
 	"github.com/yuin/goldmark-meta"
+	"github.com/yuin/goldmark/ast"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/renderer"
 	"github.com/yuin/goldmark/renderer/html"
+	"github.com/yuin/goldmark/text"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -23,7 +23,7 @@ import (
 // mdToHTML converts a Markdown source file in a byte
 // slice to HTML.
 func (app *App) mdToHTML(source []byte) ([]byte, error) {
-  //app.src = source
+	//app.src = source
 	var buf bytes.Buffer
 	if err := app.parser.Convert(source, &buf, parser.WithContext(app.parserCtx)); err != nil {
 		return buf.Bytes(), ErrCode("0920", err.Error())
@@ -47,7 +47,7 @@ func (app *App) build(path string) error {
 	app.Debug("\tbuild(%v)", path)
 	// Change to specified directory.
 	// Update app.Site.path and build all related directories
-	if err := app.setWorkingDir(path); err != nil {
+	if err := app.changeWorkingDir(path); err != nil {
 		app.Debug("\t\tUnable to change to directory (%v)", path)
 		return ErrCode("1107", path)
 	}
@@ -144,8 +144,6 @@ func (app *App) build(path string) error {
 // newGoldmark returns the a goldmark object with a parser and renderer.
 func (app *App) newGoldmark() goldmark.Markdown {
 
-
-
 	exts := []goldmark.Extender{
 
 		// YAML support
@@ -182,7 +180,3 @@ func (a *App) markdownAST(input []byte) ast.Node {
 	return p.Parse(text.NewReader(input), parser.WithContext(ctx))
 	//return p.Parse(text.NewReader(input), parser.WithContext(ap.parserCtx))
 }
-
-
-
-

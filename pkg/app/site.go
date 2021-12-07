@@ -26,8 +26,8 @@ type Site struct {
 	// Make it easy if you just have 1 author.
 	Author author `yaml:"Author"`
 
-	// List of authors with roles and websites in site.toml
-	Authors []author `yaml:"Authors"`
+	// List of secondary authors
+	CoAuthors []author `yaml:"CoAuthors"`
 
 	// Base directory for URL root, which may be different
 	// from its actual root. For example, GitHub Pages prefers
@@ -69,7 +69,7 @@ type Site struct {
 	// Full pathname of site file so it can be read
 	// using {{ Site.Filename }}.
 	// READ ONLY
-  Filename string `'yaml:"Filename"`
+	Filename string `'yaml:"Filename"`
 
 	// Google Analytics tracking ID specified in site.toml
 	Ganalytics string `yaml:"Ganalytics"`
@@ -88,13 +88,13 @@ type Site struct {
 	Language string `yaml:"Language"`
 
 	// Flags indicating which non-CommonMark Markdown extensions to use
-	MarkdownOptions MarkdownOptions `yaml:"Markdown-Options"` 
+	MarkdownOptions MarkdownOptions `yaml:"Markdown-Options"`
 
 	// Mode ("dark" or "light") used by this site unless overridden in front matter
 	Mode string `yaml:"Mode"`
 
 	// Site's project name, so it's a filename
-  // (not a pathname).
+	// (not a pathname).
 	// It's an identifier so it should be in slug format:
 	// Preferably just alphanumerics, underline or hyphen, and
 	// no spaces, for example, 'my-project'
@@ -225,6 +225,7 @@ type social struct {
 	LinkedIn   string `yaml:"LinkedIn"`
 	Pinterest  string `yaml:"Pinterest"`
 	Reddit     string `yaml:"Reddit"`
+	TikTok     string `yaml:"TikTok"`
 	Tumblr     string `yaml:"Tumbler"`
 	Twitter    string `yaml:"Twitter"`
 	Weibo      string `yaml:"Weibo"`
@@ -284,8 +285,8 @@ func (app *App) newSite(pathname string) error {
 		return ErrCode("0401", pathname)
 	}
 	// Update app.Site.path and build all related directories
-	if err = app.setWorkingDir(pathname); err != nil {
-		return err
+	if err = app.changeWorkingDir(pathname); err != nil {
+		return ErrCode("PREVIOU", err.Error())
 	}
 
 	// Change to specified directory.
@@ -311,8 +312,8 @@ func (app *App) newSite(pathname string) error {
 		filename = app.Flags.Site
 	}
 	// TODO: Populate
-	if err := app.writeSiteConfig(filename); err != nil {
-		app.Debug("\t\tError after app.writeSiteConfig(%v)", filename)
+	if err := app.writeSiteConfig(); err != nil {
+		app.Debug("\t\tError after app.writeSiteConfig()")
 		// TODO: Handle error properly & and document error code
 		//return ErrCode("0220", err.Error(), filename)
 		return ErrCode("PREVIOUS", err.Error(), filename)
@@ -334,12 +335,11 @@ func (app *App) readSiteConfig() error {
 	var err error
 	var b []byte
 	if app.Site.siteFilePath == "" {
-		return ErrCode("0114", app.Site.siteFilePath)
+		return ErrCode("1063", "")
 	}
 	if b, err = ioutil.ReadFile(app.Site.siteFilePath); err != nil {
 		// TODO: Handle error properly & and document error code
 		return ErrCode("PREVIOUS", err.Error(), app.Site.siteFilePath)
-		//return ErrCode("0113", err.Error(), app.Site.siteFilePath)
 	}
 
 	err = yaml.Unmarshal(b, &app.Site)
@@ -352,32 +352,12 @@ func (app *App) readSiteConfig() error {
 	return nil
 }
 
-// writeSiteConfig() writes the contents of App.Site
-// to .mb/site.yaml.
-func (app *App) writeSiteConfig(filename string) error {
-	app.Debug("writeSiteConfig(%v)", filename)
-	// Populate the site data structure with
-	// default values.
-	app.setSiteDefaults()
-	//var site Site
-	if filename != "" {
-		// Override the initialized site data structure
-		// with anything passed in
-		var err error
-		var b []byte
-		if b, err = ioutil.ReadFile(filename); err != nil {
-			// TODO: Handle error properly & and document error code
-			return ErrCode("0113", err.Error(), filename)
-		}
-		err = yaml.Unmarshal(b, &app.Site)
-		if err != nil {
-			// TODO: Document error code
-			return ErrCode("0117", filename, err.Error())
-		}
-		//return writeYamlFile(app.Site.siteFilePath, app.Site)
-	}
+// writeSiteConfig() writes out the contents of App.Site 
+func (app *App) writeSiteConfig() error {
+	app.Debug("writeSiteConfig()")
 	if err := writeYamlFile(app.Site.siteFilePath, app.Site); err != nil {
-		return ErrCode("PREVIOUS", filename, err.Error())
+    // TODO: Better error handling?
+		return ErrCode("PREVIOUS", app.Site.siteFilePath, err.Error())
 	}
 	return nil
 }
@@ -388,7 +368,7 @@ func (app *App) writeSiteConfig(filename string) error {
 // by another site config file.
 func (app *App) setSiteDefaults() {
 	app.Site.Language = defaults.Language
-  app.Site.MarkdownOptions.HighlightStyle = defaults.ChromaDefault
+	app.Site.MarkdownOptions.HighlightStyle = defaults.ChromaDefault
 	app.setPaths()
 }
 

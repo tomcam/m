@@ -61,13 +61,14 @@ var errMsgs = map[string]string{
 	"0101": "Error reading front matter",            // filename
 	"0112": "Unable to copy file",                   // filename
 	"0113": "Error reading site configuration file", // filename
-	"0114": "No site configuration file specified",
+	"0114": "Unable to open file",
 	"0115": "Unable to find starter file",                          // filename
 	"0116": "Error reading site configuration file",                // filename
 	"0117": "Error unmarshalling YAML for site configuration file", // filename
 	// Old errors stopped at 0131
 	// TODO: Get rid of the line below
 	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
+	"0118": "No site configuration file specified",
 
 	// 0200	- Error creating file
 	"0209": "Unable to copy file to", // filename
@@ -78,6 +79,7 @@ var errMsgs = map[string]string{
 	"0219": "Can't create site file",                    // filename
 	"0220": "Can't create site file",                    // filename
 	"0221": "Can't copy a file onto itself!",            // filename
+	"0222": "Can't create site file",                    // filename
 
 	// 0250 - Error closing file
 	// Old errors stopped at 0252
@@ -115,7 +117,7 @@ var errMsgs = map[string]string{
 	"0901": "Unable to allocate Site object",
 	"0902": "Error creating new site file",
 	"0915": "Error copying theme to site", // filename
-	"0917": "Problem parsing template", // filename
+	"0917": "Problem parsing template",    // filename
 	"0920": "Error generating Markdown",
 	"0921": "Unable to build project", // filename
 	"0922": "No project found at",     // message
@@ -126,7 +128,7 @@ var errMsgs = map[string]string{
 	// TODO: Get rid of the line below
 	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
 	"0925": "Error generating Markdown for page elment file", // filename
-  "0926": "Unable to generate table of contents",
+	"0926": "Unable to generate table of contents",
 	// 0950 - Something's already there
 	"0951": "Site already exists at", // sitename
 
@@ -147,6 +149,7 @@ var errMsgs = map[string]string{
 	"1033": "Unable to read theme directory",                         // filename
 	"1034": "Unable to find layout element file",                     // filename
 	"1035": "Missing name of theme to copy",                          // filename
+	"1036": "No site configuration file was specified",
 	// TODO: Get rid of the line below
 	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
 
@@ -159,9 +162,10 @@ var errMsgs = map[string]string{
 	// TODO: Get rid of the line below
 	"1107": "Can't change to site directory", // project name
 	"1108": "Can't change to site directory",
+	"1109": "Can't change to site directory for interview", // directory name
 	// 1200 - Syntax error!
 	"1204": "Unknown dot value in Go template function ", //
-	"1205": "Error generating table of contents", //
+	"1205": "Error generating table of contents",         //
 	// TODO: Get rid of the line below
 	// Old errors stopped at 1206
 }

@@ -346,24 +346,34 @@ func isSiteFilePath(path string) bool {
 // metatag() generates a meta tag. It's complicated.
 func metatag(tag string, content string) string {
 	const quote = `"`
-	return ("\n<meta name=" + quote + tag + quote + " content=" + quote + content + quote + ">\n")
+	return ("<meta name=" + quote + tag + quote + " content=" + quote + content + quote + ">\n")
 }
 
 // promptString() displays a prompt, then awaits for keyboard
 // input and returns it on completion.
 // See also inputString(), promptYes()
-func promptString(prompt string) string {
-	fmt.Print(prompt + " ")
+func promptString(format string, ss ...interface{}) string {
+	fmt.Print(fmtMsg(format, ss...))
+	fmt.Print(" ")
 	return inputString()
 }
+
+//	fmt.Println("Warning: " + fmtMsg(format, ss...))
 
 // promptStringDefault() displays a prompt, then awaits for keyboard
 // input and returns it on completion. It precedes the end of the
 // prompt with a default value in brackets.
 // See also inputString(), promptYes()
 func promptStringDefault(prompt string, defaultValue string) string {
+	answer := promptString(prompt + " [" + defaultValue + "] ")
+	if answer == "" {
+		return defaultValue
+	} else {
+		return answer
+	}
+	// TODO Remove if not used
 	fmt.Print(prompt + " [" + defaultValue + "] ")
-	answer := inputString()
+	answer = inputString()
 	if answer == "" {
 		return defaultValue
 	} else {

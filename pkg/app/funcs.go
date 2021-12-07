@@ -1,14 +1,14 @@
 package app
 
 import (
-  "bytes"
+	"bytes"
 	"fmt"
+	"github.com/tomcam/m/pkg/mdext"
 	"html/template"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strconv"
-	"github.com/tomcam/m/pkg/mdext"
 	"strings"
 	"time"
 )
@@ -121,13 +121,13 @@ func (app *App) inc(filename string) template.HTML {
 		}
 	}
 	if !fileExists(filename) {
-    // TODO: return an error instead
+		// TODO: return an error instead
 		app.QuitError(ErrCode("0120", filename))
 	}
 
 	input, err = ioutil.ReadFile(filename)
 	if err != nil {
-    // TODO: return an error instead
+		// TODO: return an error instead
 		app.QuitError(ErrCode("0121", filename))
 	}
 
@@ -212,7 +212,7 @@ func (a *App) generateTOC(level int) []mdext.TOCEntry {
 	node := a.markdownAST(a.src)
 	tocs, err := mdext.ExtractTOCs(a.newGoldmark().Renderer(), node, a.src, level)
 	if err != nil {
-    // TODO: this should return an error
+		// TODO: this should return an error
 		a.QuitError(ErrCode("0926", err.Error()))
 	}
 	return tocs
@@ -254,7 +254,7 @@ func (a *App) toc(params ...string) string {
 	}
 	// Ditto
 	if level <= 0 || level > 6 {
-    // TODO: Return an error
+		// TODO: Return an error
 		a.QuitError(ErrCode("1206", params[0]))
 	}
 	tocs := a.generateTOC(level)
@@ -299,6 +299,3 @@ loop:
 	b.WriteString(closeTag)
 	return i
 }
-
-
-
