@@ -7,6 +7,7 @@ m
 # Often end up with sample config directories in project root
 #.mb
 
+website/.mb/
 # Editor backup files
 *.bak
 *.sav

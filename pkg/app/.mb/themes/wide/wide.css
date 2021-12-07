@@ -42,16 +42,6 @@ header > ul > li > a:visited
  */
 header > ul > li:first-child > a {font-size:var(--branding-height);font-weight:900;padding-right:1rem;}
 
-/*
- * --------------------------------------------------
- * Special feature: Last item in list is styled 
- * to look like a button. 
- * See also theme-light.css and theme-dark.css
- * --------------------------------------------------
- */
-header > ul > li:last-child > a {padding:.5rem;}
-
-
 /* ******************************/
 /*  NAVBAR                      */
 /* ******************************/

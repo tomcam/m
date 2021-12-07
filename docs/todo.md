@@ -26,7 +26,15 @@ Sidebar: {File: sidebar.md, HTML:}
 Footer: {File: footer.md, HTML:}
 Language: en
 ## Priority 1: Showstoppers--required for the next release
+* bug: toc generates incorrect code for nested bullets, showing all levels of bullets. My HTML is wrong, that's all
 * bug: toc seems to be broken with inc files, or even if it's in the included file (seens to be useless when I put it at the top of common|mdemo.md)
+* Bug: when creating a new site, check for an existing index.md. Reason: you might be doing mb new site . where there are alreayd docs.
+* Bug: see the error handling here. I think an index.md already existed.
+```
+ mb new site .
+	about to create directory /Users/tom/code/m/website
+About to write file /Users/tom/code/m/website/index.md
+```
 * Bug: Error handling is broken
   - Example: delete a theme directory, then try to build wih that theme.
 you get this error. Handle that errcode condition.

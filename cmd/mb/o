@@ -1,0 +1,8 @@
+#!/bin/zsh
+if [ $# -eq 0 ] ; then
+  open .mb/pub/index.html    
+else
+  open $1/.mb/pub/index.html 
+fi
+
+
