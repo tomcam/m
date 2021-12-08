@@ -1,8 +1,6 @@
 /* Bind sets default values for colors, height padding, margins */
 html,body,nav,header,article,aside,footer{color:var(--fg);background-color:var(--bg);}
 header {color:var(--header-fg);background-color:var(--header-bg);height:var(--header-height);}
-header {margin-top:var(--header-margin-top);margin-bottom:var(--header-margin-bottom);margin-right:var(--header-margin-right);margin-left:var(--header-margin-left);}
-header {padding-top:var(--header-padding-top);padding-bottom:var(--header-padding-bottom);padding-right:var(--header-padding-right);padding-left:var(--header-padding-left);}
 header > a,
 header > a:link, 
 header > a:visited, 
