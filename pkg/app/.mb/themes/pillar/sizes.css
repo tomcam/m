@@ -229,7 +229,7 @@
   --footer-width:100%;
 
   /* ******************************
-   *  Make theme pillar or wide   *
+   *  Make theme pillar (vs wide) *
    * ******************************/
 
   /*  IMPORTANT
@@ -281,5 +281,3 @@
   --text-end:2em;
 
 }
-
- 
