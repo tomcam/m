@@ -246,7 +246,7 @@
   */
 
   /* --article-width is width of article plus sidebar */
-  --article-width:1000%;
+  --article-width:100%;
 
   --left-margin:0%;
   --right-margin:0%;
