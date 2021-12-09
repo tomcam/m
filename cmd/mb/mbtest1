@@ -3,7 +3,7 @@
 set -e
 DIR=~/code/m/cmd/mb/theme-test
 rm -rf $DIR
-mb new site $DIR
+./mb new site $DIR
 INDEX=$DIR/index.md
 LINKSECTION=$DIR/links.tmp
 THEMELIST=$DIR/themelist.tmp
@@ -110,6 +110,6 @@ EOM
 done
 cat $THEMELIST >> $INDEX
 cat $LINKSECTION >> $INDEX
-mb build $DIR
+./mb build $DIR
 open $DIR/.mb/pub/index.html
 
