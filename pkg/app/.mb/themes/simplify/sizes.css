@@ -6,7 +6,7 @@
    * ******************************/
 
   /* adjusts header height and keeps it vertically centered */
-  --header-height:6rem;
+  --header-height:auto;
   
   /* size of the main text in the header. */
   --branding-height:2rem;
@@ -199,7 +199,7 @@
    * ******************************/
 
   /* Adjusts footer height and keeps it vertically centered */
-  --footer-height:6rem;
+  --footer-height:auto;
 
   /* Size of the main text in the footer. */
   --footer-branding-height:2rem;

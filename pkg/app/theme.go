@@ -262,7 +262,6 @@ func (app *App) loadTheme() error {
 	// Get directory to which the theme will be copied for this site
 	//to := app.Site.publishPath
 	themeName := ""
-	//app.Print("\t\t\tfrom: %v. to: %v", from, to)
 	for level := 0; level < len(app.Page.Theme.levels); level++ {
 		// Build up each level of nested them: "debut",
 		// "debut/gallery", "debut/gallery/item"
@@ -276,7 +275,6 @@ func (app *App) loadTheme() error {
 		// to detect latest sidebar or mode
 		app.Page.Theme.nestingLevel = level
 		app.Page.Theme.level = themeName
-		// xxx
 		// Finds the theme specified for this page.
 		// Copy the required files to the theme publish directory.
 		app.Debug("\t\t\tloading theme(%v,%v,%v", source, dest, level)
@@ -379,26 +377,153 @@ func readThemeConfig(filename string) (*Theme, error) {
 // from is the name of the theme, not its path,
 // e.g. "debut" or "pillar".
 // TODO: Validate new name so it works as a slug/directory name
-func (app *App) newTheme(from, to string, factory bool) error {
+//func (app *App) newTheme(from, to string, factory bool) error {
+func (app *App) newTheme(from, to string) error {
+	dir := currDir()
+	if err := os.Chdir(dir); err != nil { // TODO: Handle error properly & and document error code
+		// TODO: Change this if it works
+		return ErrCode("1105", dir)
+	}
+	app.Site.path = dir
+	app.setSiteDefaults()
 	if err := app.readSiteConfig(); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
-	app.Debug("newTheme(%v, %v, %v)", from, to, factory)
-	app.Print("newTheme(from %v, to %v, factor? %v)", from, to, factory)
+	app.Debug("newTheme(%v, %v)", from, to)
 	// Get directory from which themes will be copied
-	//source := filepath.Join(app.Site.siteThemesPath, defaults.SiteThemesDir, from)
 	if from == "" {
 		return ErrCode("1035", "")
 	}
-	source := filepath.Join(app.Site.siteThemesPath, from)
 
 	// Get directory to which the theme will be copied for this site
 	dest := filepath.Join(app.Site.siteThemesPath, to)
-	app.Note("About to copy %v to %v", source, dest)
-	app.Note("siteThemesPath: %v", filepath.Join(app.Site.siteThemesPath))
 
+	if dirExists(dest) {
+		// TODO: create test case
+		// Target theme directory already there
+		return ErrCode("0952", dest)
+	}
+
+	// Derive theme filename from theme path to theme directory
+	source := filepath.Join(app.Site.siteThemesPath, from)
+	sourceCfgFile := themeCfgName(source)
+	var theme Theme
+	// TODO: create test case
+	if err := readYAMLFile(sourceCfgFile, &theme); err != nil {
+		return ErrCode("0132", sourceCfgFile)
+	}
+
+	// Create destination directory
+	if err := os.MkdirAll(dest, defaults.PublicFilePermissions); err != nil {
+		return ErrCode("0413", dest)
+	}
+	app.Debug("About to copy %v to %v using %v", source, dest)
+	if err := app.copyTheme(source, dest); err != nil {
+		return ErrCode("0929", "from '"+source+"' to '"+dest+"'")
+	}
+
+	// The destination theme has been copied but it still has the old
+	// names inside.
+	// xxx
+	if err := app.copyThemeUpdate(source, dest); err != nil {
+		return ErrCode("0930", "from '"+source+"' to '"+dest+"'")
+	}
+	/*
+		err = app.publishThemeAssets(source, app.Site.publishPath)
+		// TODO: May want to improve error handling
+		if err != nil {
+			return ErrCode("PREVIOUS", err.Error())
+		}
+
+	*/
 	//app.ShowInfo(".")
 	return nil
+}
+
+// copyThemeUpdate() takes place after a source theme has been copied
+// to the destination directory.  Pass it the fully qualified source and
+// destination directories for the themes.
+// The destination theme config filename and other
+// details now need to be updated, because they still have the source
+// theme names. So if you were copying "debut" to "newdeb", you'd
+// want to change debut.yaml to newdeb.yaml, debut.css to newdeb.css,
+// etc.
+// Currently works only with root themes, not children.
+func (app *App) copyThemeUpdate(source, dest string) error {
+	// if "themes/foo" had been copied to "themes/bar",
+	// then "themes/bar/foo.yaml" has to be renamed
+	// "themes/bar/bar.yaml"
+	// (Simplifying pathnames for purposes of illustration)
+	// So build up the bad filename "themes/bar/foo.yaml"
+	destDir := filepath.Dir(dest)
+	sourceThemeName := filepath.Base(source)
+	destThemeName := filepath.Base(dest)
+	badCfgFile := filepath.Join(destDir, destThemeName, sourceThemeName+"."+defaults.ConfigFileDefaultExt)
+	// Get the filename for the corrected theme config file.
+	// In this example, it's "bar"
+	// Derive the correct filename for it, in this example
+	// "themes/bar/bar.yaml"
+	destCfgFile := filepath.Join(destDir, destThemeName, destThemeName+"."+defaults.ConfigFileDefaultExt)
+
+	// And rename the bad file to the new one.
+	if err := os.Rename(badCfgFile, destCfgFile); err != nil {
+		return ErrCode("0223", "from '"+source+"' to '"+dest+"'")
+	}
+	// Now go through the stylesheets. See if there's one by old name,
+	// in this example, "foo.css". If so, change it to "bar.css".
+	var theme Theme
+	// TODO: create test case
+	b, err := ioutil.ReadFile(destCfgFile)
+	if err != nil {
+		app.Debug("\t\t\t\tfailed to read %v", destCfgFile)
+		// TODO: Handle error properly & and document error code
+		return ErrCode("0132", destCfgFile)
+	}
+	if err := yaml.Unmarshal(b, &theme); err != nil {
+		// TODO: Handle error properly & and document error code
+		return ErrCode("0134", destCfgFile)
+	}
+
+	newStylesheets := []string{}
+  // See if there's a CSS file by the same name as
+  // the theme. If so, rename it to the new theme name.
+  // This means reading all the themes in the config
+  // file, writing them to a new array (renaming
+  // the theme-named stylesheet if found), creating 
+  // the new list of stylesheets, and writing out
+  // a new config file with the updated list.
+	for _, stylesheet := range theme.Stylesheets {
+		if stylesheet == sourceThemeName+".css" {
+			oldStyleFile := filepath.Join(destDir, destThemeName, stylesheet)
+			stylesheet = destThemeName + ".css"
+			newStyleFile := filepath.Join(destDir, destThemeName, stylesheet)
+			// Rename the file
+			if err := os.Rename(oldStyleFile, newStyleFile); err != nil {
+				return ErrCode("0223", "from '"+oldStyleFile+"' to '"+newStyleFile+"'")
+			}
+
+		}
+		newStylesheets = append(newStylesheets, stylesheet)
+	}
+	theme.Stylesheets = newStylesheets
+	// Write out the new cfg file, with the search/replaced stylesheet name in the
+	// Stylesheets list.
+	if err := writeYamlFile(destCfgFile, &theme); err != nil {
+		// TODO: This may not be the correct move. Add a code?
+		return ErrCode("0225", destCfgFile)
+	}
+
+	// xxx
+	return nil
+
+}
+
+// themeCfgName() generatestheme name from fully qualified filename.
+// Does not check to see if such a file exists.
+func themeCfgName(pathname string) string {
+	//cfgName := filepath.Base(pathname, defaults.ConfigFileDefaultExt)
+	theme := filepath.Base(pathname)
+	return filepath.Join(pathname, theme+"."+defaults.ConfigFileDefaultExt)
 }
 
 // updateThemes() replaces all factory themes for the

@@ -133,7 +133,7 @@ func (app *App) addCommands() {
 		/*****************************************************
 		TOP LEVEL COMMAND: new
 		*****************************************************/
-    // TODO: Do/correct all the help text on all of these
+		// TODO: Do/correct all the help text on all of these
 		CmdNew = &cobra.Command{
 			Use:   "new",
 			Short: "new commands: new site|theme|page",
@@ -228,12 +228,15 @@ create theme based on an existing one.
 					from = args[0]
 					to = args[1]
 				}
-				err := app.newTheme(from, to, app.Flags.Factory)
 
+				// TODO: Difference between this and copyTheme?
+				//err := app.newTheme(from, to, app.Flags.Factory)
+				err := app.newTheme(from, to)
+				//err := app.copyTheme(from, to)
 				if err != nil {
 					app.QuitError(err)
 				}
-				app.Note("Created theme %v", to)
+				app.Print("Created theme %v", to)
 			},
 		}
 
@@ -264,36 +267,32 @@ create theme based on an existing one.
 			},
 		}
 
-/* NEW PAGE
+		/* NEW PAGE
 
-		CmdNewSite = &cobra.Command{
-			Use:   "page {pagename}",
-			Short: "new page headlines",
-			Long: `new page {pagename}
-      Where {pagename} is a valid filename. An .md extension is supplied if you omit it. For example:
-      mb new page headlines
-`,
-			Run: func(cmd *cobra.Command, args []string) {
-				var pathname string
-				// See if the user specfied a page name.
-				if len(args) > 0 {
-					pathname = args[0]
-				} else {
-					pathname = promptString("Name of page to create?")
-				}
-				err := app.newSite(pathname)
-				if err != nil {
-					app.QuitError(ErrCode("0927", pathname))
-				}
-				app.Debug("Created page %v", pathname)
-			},
-		}
+		   		CmdNewSite = &cobra.Command{
+		   			Use:   "page {pagename}",
+		   			Short: "new page headlines",
+		   			Long: `new page {pagename}
+		         Where {pagename} is a valid filename. An .md extension is supplied if you omit it. For example:
+		         mb new page headlines
+		   `,
+		   			Run: func(cmd *cobra.Command, args []string) {
+		   				var pathname string
+		   				// See if the user specfied a page name.
+		   				if len(args) > 0 {
+		   					pathname = args[0]
+		   				} else {
+		   					pathname = promptString("Name of page to create?")
+		   				}
+		   				err := app.newSite(pathname)
+		   				if err != nil {
+		   					app.QuitError(ErrCode("0927", pathname))
+		   				}
+		   				app.Debug("Created page %v", pathname)
+		   			},
+		   		}
 
-*/
-
-
-
-
+		*/
 
 		/*****************************************************
 		END TOP LEVEL COMMANDS

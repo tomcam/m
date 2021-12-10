@@ -69,6 +69,9 @@ var errMsgs = map[string]string{
 	// TODO: Get rid of the line below
 	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
 	"0118": "No site configuration file specified",
+	"0132": "Unable to open theme configuration file",     // filename
+	"0133": "Unable to open theme configuration file",     // filename
+	"0134": "Error unmarshalling YAML for new theme file", // filename
 
 	// 0200	- Error creating file
 	"0209": "Unable to copy file to", // filename
@@ -80,6 +83,9 @@ var errMsgs = map[string]string{
 	"0220": "Can't create site file",                    // filename
 	"0221": "Can't copy a file onto itself!",            // filename
 	"0222": "Can't create site file",                    // filename
+	"0223": "Unable to rename theme file",               // custom message
+	"0224": "Unable to rename stylesheet",               // custom message
+  "0225": "Unable to create config file for new theme", // filename
 
 	// 0250 - Error closing file
 	// Old errors stopped at 0252
@@ -99,6 +105,7 @@ var errMsgs = map[string]string{
 	// Old errors stopped at 0410
 	"0411": "Unable to copy theme directory",
 	"0412": "Error creating directory for simple page", // directory
+	"0413": "Error creating directory for new theme",   // Fully qualified pathname
 
 	// TODO: Get rid of the line below
 	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
@@ -130,10 +137,13 @@ var errMsgs = map[string]string{
 	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
 	"0925": "Error generating Markdown for page elment file", // filename
 	"0926": "Unable to generate table of contents",
-  "0927": "Unable to create a new page",
-  "0928": "Unable to create a new post",
+	"0927": "Unable to create a new page",
+	"0928": "Unable to create a new post",
+	"0929": "Error copying theme",         // Custom message
+	"0930": "Error updating copied theme", // Custom message
 	// 0950 - Something's already there
-	"0951": "Site already exists at", // sitename
+	"0951": "Site already exists at",  // sitename
+	"0952": "Theme already exists at", // sitename
 
 	// 1000	- Something's missing that should be there
 	"1001": "Missing front matter and markdown", // filename
@@ -153,7 +163,7 @@ var errMsgs = map[string]string{
 	"1034": "Unable to find layout element file",                     // filename
 	"1035": "Missing name of theme to copy",                          // filename
 	"1036": "No site configuration file was specified",
-  "1037": "Filename missing to create page",
+	"1037": "Filename missing to create page",
 	// TODO: Get rid of the line below
 	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
 
@@ -162,11 +172,13 @@ var errMsgs = map[string]string{
 	"1102": "Unable to", // chdir to bad dir name during showInfo()
 	"1103": "Unable to", // chdir to bad dir name during newSite()
 	"1104": "Missing name for starter page",
+	"1105": "Unable to", // chdir to bad dir name
 	// Old errors stopped at 1106
 	// TODO: Get rid of the line below
 	"1107": "Can't change to site directory", // project name
 	"1108": "Can't change to site directory",
 	"1109": "Can't change to site directory for interview", // directory name
+	"1110": "Can't change to site directory to copy theme", // directory name
 	// 1200 - Syntax error!
 	"1204": "Unknown dot value in Go template function ", //
 	"1205": "Error generating table of contents",         //

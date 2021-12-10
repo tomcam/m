@@ -9,10 +9,10 @@
   --header-height:auto;
   
   /* size of the main text in the header. */
-  --branding-height:1.5rem;
+  --branding-height:2rem;
 
   /* font weight of the main text in the header. */
-  --branding-weight:900;
+  --branding-weight:500;
 
    /* Same as header {margin-top:}  */
   --header-margin-top:0rem;
@@ -229,7 +229,7 @@
   --footer-width:100%;
 
   /* ******************************
-   *  Make theme pillar (vs wide) *
+   *  Make theme wide (vs pillar) *
    * ******************************/
 
   /*  IMPORTANT
@@ -245,38 +245,25 @@
    
   */
 
-  /*  IMPORTANT
-      The following should always add up to 100%: 
-      --article-width 
-      --left-margin
-      --right-margin
-
-
-      IMPORTANT
-      --alt-article-width and  --sidebar-width 
-      should always sum up to --article-width 
-   
-  */
-
   /* --article-width is width of article plus sidebar */
-  --article-width:80%;
+  --article-width:100%;
 
-  --left-margin:10%;
-  --right-margin:10%;
+  --left-margin:0%;
+  --right-margin:0%;
 
 
   /* --alt-article-width is width of article WITHOUT sidebar 
    * Added to --sidebar-width it should always sum up to
    * --article-width */
-  --alt-article-width:60%;
+  --alt-article-width:75%;
 
   /* --sidebar-width must be the same as
    * --article-width MINUS --alt-article-width
    */
-  --sidebar-width:20%;
+  --sidebar-width:25%;
 
   /* --text-start is a padding value not a margin */
-  --text-start:var(--sidebar-width); 
+  --text-start:var(--sidebar-width);
 
   --text-end:2em;
 

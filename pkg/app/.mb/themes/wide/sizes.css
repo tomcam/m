@@ -9,10 +9,10 @@
   --header-height:auto;
   
   /* size of the main text in the header. */
-  --branding-height:1.5rem;
+  --branding-height:2rem;
 
   /* font weight of the main text in the header. */
-  --branding-weight:900;
+  --branding-weight:500;
 
    /* Same as header {margin-top:}  */
   --header-margin-top:0rem;

@@ -36,6 +36,9 @@ Language: en
 About to write file /Users/tom/code/m/website/index.md
 ```
 * Bug: Error handling is broken
+  - ;Example: This doesn't print the eright tihing. It just prints a naked Go error so you con't know where it came from.
+			return ErrCode("1108", "PREVIOUS", err.Error())
+
   - Example: delete a theme directory, then try to build wih that theme.
 you get this error. Handle that errcode condition.
 Error building Can't find a theme named /Users/tom/code/m/cmd/mb/theme-test/.mb/themes/simplify (error code mbz1028)

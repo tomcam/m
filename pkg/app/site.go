@@ -325,11 +325,11 @@ func (app *App) newSite(pathname string) error {
 			return ErrCode("PREVIOUS", err.Error())
 		}
 	} else {
-    // if not just generate a very simple index page
- 		if err := app.createStubIndex(); err != nil {
+		// if not just generate a very simple index page
+		if err := app.createStubIndex(); err != nil {
 			return ErrCode("PREVIOUS", err.Error())
 		}
- }
+	}
 	return nil
 }
 

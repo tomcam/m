@@ -1,4 +1,20 @@
 # Internals: How Metabuzz builds, starts, and runs
+* Project init
+  - I think this may be necessary
+```
+    dir := currDir()
+		if err := os.Chdir(dir); err != nil { // TODO: Handle error properly & and document error code
+      // TODO: Change this if it works
+			return ErrCode("1101", dir)
+		}
+  app.Site.path = dir
+  app.setSiteDefaults()
+	if err := app.readSiteConfig(); err != nil {
+		return ErrCode("PREVIOUS", err.Error())
+	}
+
+```
+* Looping through themes
 
 	for level := 0; level < len(app.Page.Theme.levels); level++ {
     theme := app.Page.themes[level]

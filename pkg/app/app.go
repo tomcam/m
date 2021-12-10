@@ -252,7 +252,7 @@ func (app *App) setPaths() {
 	// that get copied over selectively for a
 	// particular site.
 	//app.Site.siteThemesPath = filepath.Join(app.Site.publishPath,
-	app.Site.siteThemesPath = filepath.Join(app.Site.path,
+	app.Site.siteThemesPath = filepath.Join(app.cfgPath,
 		defaults.SiteThemesDir)
 
 	// Compute the directory location for tags
@@ -345,12 +345,6 @@ func (app *App) frontMatterMust(key string) string {
 func (app *App) frontMatterMustLower(key string) string {
 	// If the key exists, return its value.
 	return strings.ToLower(app.frontMatterMust(key))
-}
-
-// siteThemesPath() determines the directory the
-// theme file is found in.
-func (app *App) siteThemesPath() string {
-	return filepath.Join(app.Site.siteThemesPath, app.Page.Theme.Name)
 }
 
 // frontMatterRawToStruct() takes the generic map of front

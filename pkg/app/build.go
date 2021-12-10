@@ -68,7 +68,6 @@ func (app *App) build(path string) error {
 		return ErrCode("0302", app.Site.publishPath)
 	}
 
-	// xxx
 	if err := app.readSiteConfig(); err != nil {
 		app.Debug("\t\tError reading siteConfig %v", app.Site.siteFilePath)
 		return ErrCode("PREVIOUS", err.Error())

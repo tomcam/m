@@ -391,7 +391,7 @@ func promptYes(prompt string) bool {
 		answer := promptString(prompt)
 		if strings.HasPrefix(strings.ToLower(answer), "y") ||
 			strings.HasPrefix(strings.ToLower(answer), "n") {
-	    return strings.HasPrefix(strings.ToLower(answer), "y")
+			return strings.HasPrefix(strings.ToLower(answer), "y")
 		}
 	}
 	///return strings.HasPrefix(strings.ToLower(answer), "y")
@@ -422,20 +422,6 @@ func readYAMLFile(filename string, target interface{}) (err error) {
 		return err
 	}
 	//fmt.Printf("readYAMLFile(): %#v", string(b))
-	return nil
-}
-
-// TODO: Do someting with this
-func oldreadYAMLFile(filename string, target interface{}) (err error) {
-	b, err := ioutil.ReadFile(filename)
-	if err != nil {
-		return err
-	}
-	err = yaml.Unmarshal(b, &target)
-	if err != nil {
-		return err
-	}
-	fmt.Printf("readYAMLFile: \n%#v\n", string(b))
 	return nil
 }
 

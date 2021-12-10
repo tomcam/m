@@ -55,7 +55,7 @@ nav > img {display:inline;}
  * --------------------------------------------------
  */
 nav > p {line-height:var(--nav-height);}
-nav > p > a {font-size:1.25em;font-weight:700;}
+nav > p > a {font-size:1.25em;}
 nav > p > a {font-style:normal;}
 
 nav > p > a,
