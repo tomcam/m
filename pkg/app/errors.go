@@ -23,6 +23,12 @@ package app
 //     return ErrCode("0906", msg)
 //   }
 //
+//    if err := RemoveAll(tmpDir); err != nil {
+//      msg := fmt.Sprintf("System error attempting to delete temporary site directory %s: %s", tmpDir, err.Error())
+//      return ErrCode("0601", msg)
+//    }
+
+//
 import (
 	"fmt"
 	"github.com/tomcam/m/pkg/default"
@@ -77,16 +83,17 @@ var errMsgs = map[string]string{
 	"0209": "Unable to copy file to", // filename
 	// TODO: Get rid of the line below
 	// Old errors stopped at 0215
-	"0217": "Can't publish stylesheet to same location", // filename
-	"0218": "Can't create starter file",                 // filename
-	"0219": "Can't create site file",                    // filename
-	"0220": "Can't create site file",                    // filename
-	"0221": "Can't copy a file onto itself!",            // filename
-	"0222": "Can't create site file",                    // filename
-	"0223": "Unable to rename theme file",               // custom message
-	"0224": "Unable to rename stylesheet",               // custom message
-  "0225": "Unable to create config file for new theme", // filename
-
+	"0217": "Can't publish stylesheet to same location",                  // filename
+	"0218": "Can't create starter file",                                  // filename
+	"0219": "Can't create site file",                                     // filename
+	"0220": "Can't create site file",                                     // filename
+	"0221": "Can't copy a file onto itself!",                             // filename
+	"0222": "Can't create site file",                                     // filename
+	"0223": "Unable to rename theme file",                                // custom message
+	"0224": "Unable to rename stylesheet",                                // custom message
+	"0225": "Unable to create config file for new theme",                 // filename
+	"0226": "System error attempting to rename temporary site directory", // custom message
+	"0227": "System error attempting to write site config file to",       // custom message
 	// 0250 - Error closing file
 	// Old errors stopped at 0252
 
@@ -106,7 +113,7 @@ var errMsgs = map[string]string{
 	"0411": "Unable to copy theme directory",
 	"0412": "Error creating directory for simple page", // directory
 	"0413": "Error creating directory for new theme",   // Fully qualified pathname
-
+	"0414": "System error creating temp directory in ", // custom message
 	// TODO: Get rid of the line below
 	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
 
@@ -114,6 +121,8 @@ var errMsgs = map[string]string{
 	"0501": "Couldn't get relative directory name", // custom message I think
 
 	// 0600 - Error deleting directory
+	"0601": "System error attempting to delete temporary site directory", // dirname
+
 	// 0700	- Error reading directory
 	"0706": "Unable to read from headtags directory", // Expected pathname of headtags directory
 	// Old errors stopped at 0709
@@ -177,13 +186,15 @@ var errMsgs = map[string]string{
 	// TODO: Get rid of the line below
 	"1107": "Can't change to site directory", // project name
 	"1108": "Can't change to site directory",
-	"1109": "Can't change to site directory for interview", // directory name
-	"1110": "Can't change to site directory to copy theme", // directory name
+	"1109": "Can't change to site directory for interview",         // directory name
+	"1110": "Can't change to site directory to copy theme",         // directory name
+	"1111": "System error changing to newly create site directory", // directory name
 	// 1200 - Syntax error!
 	"1204": "Unknown dot value in Go template function ", //
 	"1205": "Error generating table of contents",         //
 	// TODO: Get rid of the line below
 	// Old errors stopped at 1206
+	"1207": "Don't understand the starter type", // Name of type in a starter file
 }
 
 type ErrMsg struct {

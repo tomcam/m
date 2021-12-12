@@ -485,13 +485,13 @@ func (app *App) copyThemeUpdate(source, dest string) error {
 	}
 
 	newStylesheets := []string{}
-  // See if there's a CSS file by the same name as
-  // the theme. If so, rename it to the new theme name.
-  // This means reading all the themes in the config
-  // file, writing them to a new array (renaming
-  // the theme-named stylesheet if found), creating 
-  // the new list of stylesheets, and writing out
-  // a new config file with the updated list.
+	// See if there's a CSS file by the same name as
+	// the theme. If so, rename it to the new theme name.
+	// This means reading all the themes in the config
+	// file, writing them to a new array (renaming
+	// the theme-named stylesheet if found), creating
+	// the new list of stylesheets, and writing out
+	// a new config file with the updated list.
 	for _, stylesheet := range theme.Stylesheets {
 		if stylesheet == sourceThemeName+".css" {
 			oldStyleFile := filepath.Join(destDir, destThemeName, stylesheet)

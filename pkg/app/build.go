@@ -69,7 +69,7 @@ func (app *App) build(path string) error {
 	}
 
 	if err := app.readSiteConfig(); err != nil {
-		app.Debug("\t\tError reading siteConfig %v", app.Site.siteFilePath)
+		app.Debug("\t\tError reading siteConfig %v", app.Site.filename)
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	// Build the target publish dir so there should be

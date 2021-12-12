@@ -213,11 +213,11 @@ func (app *App) setPaths() {
 	app.cfgPath = filepath.Join(app.Site.path, defaults.CfgDir)
 
 	// Compute full pathname of the site file.
-	app.Site.siteFilePath = filepath.Join(app.cfgPath,
+	app.Site.filename = filepath.Join(app.cfgPath,
 		defaults.SiteConfigFilename)
 	// Make a read-only public version for use in
 	// templates: {{ Site.Filename }}
-	app.Site.Filename = app.Site.siteFilePath
+	app.Site.Filename = app.Site.filename
 
 	// Compute the publish directory  (aka WWW directory)
 	app.Site.publishPath = filepath.Join(app.cfgPath,

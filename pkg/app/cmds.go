@@ -184,7 +184,8 @@ create theme based on an existing one.
 				err := app.newSite(pathname)
 				if err != nil {
 					//app.QuitError(ErrCode("0924", pathname))
-					app.QuitError(ErrCode("0924", "PREVIOUS", err.Error()))
+					//app.QuitError(ErrCode("0924", "PREVIOUS", err.Error()))
+					app.QuitError(ErrCode("PREVIOUS", err.Error()))
 				}
 				app.Debug("Created site %v", app.Site.path)
 				if app.Flags.Info == true {

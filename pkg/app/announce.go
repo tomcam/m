@@ -38,7 +38,7 @@ func (app *App) ShowInfo(pathname string) error {
 	tbl.AddRow("Project directory", app.Site.path)
 	tbl.AddRow("Project directory", exists("", app.Site.path))
 	tbl.AddRow("Config file directory", app.cfgPath)
-	tbl.AddRow("Site file", exists("", app.Site.siteFilePath))
+	tbl.AddRow("Site file", exists("", app.Site.filename))
 	tbl.AddRow("Asset path", app.Site.assetPath)
 	tbl.AddRow("Image path", app.Site.imagePath)
 	tbl.AddRow("Common path", app.Site.commonPath)

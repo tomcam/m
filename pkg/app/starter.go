@@ -72,18 +72,10 @@ func (app *App) generate(pathname string) error {
 	if err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
-	/* why? Just why?
-		if err = readStarterConfig(pathname, &starter); err != nil {
-			app.QuitError(ErrCode("0115", pathname))
-			return ErrCode("PREVIOUS", err.Error())
-		}
-		if err := readYAMLFile(pathname, starters); err != nil {
-	 		app.QuitError(ErrCode("0115", pathname))
-			return ErrCode("PREVIOUS", err.Error())
-		}
-	*/
 	for k, v := range starters {
 		switch strings.ToLower(v.Type) {
+		default:
+			return ErrCode("1207", v.Type)
 		case "page":
 			if err = app.starterPage(k, v); err != nil {
 				return ErrCode("PREVIOUS", err.Error())

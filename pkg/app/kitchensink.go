@@ -181,7 +181,7 @@ func (app *App) kitchenSink(pathname string) error {
 	}
 
 	if err := app.writeSiteConfig(); err != nil {
-		app.Note("Error writing site file %v", app.Site.siteFilePath)
+		app.Note("Error writing site file %v", app.Site.filename)
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	app.Print("Created site %v", app.Site.path)
