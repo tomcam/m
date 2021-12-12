@@ -276,7 +276,10 @@ func (m MdOptions) IsOptionSet(opt MdOptions) bool {
 }
 
 // newSite() generates an empty site at
-// the directory specified in app.Site.path
+// the directory specified in pathname.
+// It creates the site in a temp directory,
+// then renames the temp directory to the desired name 
+// when completed.
 func (app *App) newSite(pathname string) error {
 	// Exit if there's already a project at specified location.
 	if isProject(pathname) {
@@ -284,30 +287,27 @@ func (app *App) newSite(pathname string) error {
 	}
 
 	// Change to specified directory.
-  requested := pathname
+	requested := pathname
 
 	// First job is to create a temporary site in
 	// the current directory. If anything goes wrong
 	// it gets deleted. Extract the desired directory,
 	// then replace the filename with a temp fileame.
 	dir := filepath.Dir(pathname)
-	app.Note("Dir: %s. pathname: %s", dir, pathname)
 	if dir == "." || dir == ".." {
 		dir = currDir()
-    requested = filepath.Join(dir, pathname)
+		requested = filepath.Join(dir, pathname)
 	}
 	var tmpDir string
 	var err error
 	// Create the temporary directory. It starts with the
 	// Metabuzz product name abbreviation.
 	if tmpDir, err = os.MkdirTemp(dir, defaults.ProductShortName); err != nil {
-		//return ErrCode("0414", pathname)
 		msg := fmt.Sprintf("%s for project %s: %s", dir, pathname, err.Error())
 		return ErrCode("0414", msg)
 	}
 	app.Debug("newSite(%v)", pathname)
 	// Create a project at the specified path
-	//err = os.MkdirAll(pathname, defaults.ProjectFilePermissions)
 	err = os.MkdirAll(tmpDir, defaults.ProjectFilePermissions)
 	if err != nil {
 		return ErrCode("0401", tmpDir)
@@ -325,31 +325,48 @@ func (app *App) newSite(pathname string) error {
 	// be copied on demand to the publish directory as needed.
 	// This makes it easy to find themes and modify theme.
 	// If user supplied a site configuration file, use it
-  /*
 	filename := ""
 	if app.Flags.Site != "" {
-		app.Debug("\t\tUse site file %v", app.Flags.Site)
-		filename = app.Flags.Site
+    // User specified a site file such "--site foo.yaml", 
+    // so turn it into a fully qualified pathname if
+    // no path is supplied
+    if filepath.Dir(app.Flags.Site) == ".."  {
+      // Only filename, e.g. "--site foo.yaml", no path, so add path
+		  filename = filepath.Join(tmpDir, defaults.CfgDir, app.Flags.Site)
+    } else {
+      // Fully qualified filename, e.g. "--site ~/foo.yaml", 
+      // so no need to add path
+      filename = app.Flags.Site
+    }
+	} else {
+    // No site file specified, so use default
+		filename = filepath.Join(tmpDir, defaults.CfgDir, defaults.SiteConfigFilename)
 	}
-  */
-	// TODO: Populate
-	app.Note("About to write site config")
-  // xxx
-  filename := filepath.Join(tmpDir,defaults.CfgDir, defaults.SiteConfigFilename )
 	if err = app.writeSiteConfig(filename); err != nil {
-		app.Note("\t\tError %s after app.writeSiteConfig()", err.Error())
-		// TODO: Handle error properly & and document error code
-		//return ErrCode("0220", err.Error(), filename)
 		msg := fmt.Sprintf("%s: %s", filename, err.Error())
 		return ErrCode("0227", msg)
 	}
-
 	app.Site.path = tmpDir
-	app.Note("About to generate stub or starter files")
 	// Generate stub pages/sections if specified
-  app.Site.name = filepath.Base(requested)
+	app.Site.name = filepath.Base(requested)
 	if app.Flags.Starters != "" {
-		if err = app.generate(app.Flags.Starters); err != nil {
+   // User specified a site file such "--site foo.yaml", 
+    // so turn it into a fully qualified pathname if
+    // no path is supplied
+    app.Note("Use starter file %s", app.Flags.Starters)
+    app.Note("It is in %s",filepath.Dir(app.Flags.Starters))
+    dir := filepath.Dir(app.Flags.Starters) 
+    if dir == ".." || dir == "."  {
+      // Only filename, e.g. "--site foo.yaml", no path, so add path
+      app.Note("%s is in current directory", app.Flags.Starters)
+		  filename = filepath.Join(filepath.Dir(requested), app.Flags.Starters)
+  // xxx
+    } else {
+      // Fully qualified filename, e.g. "--site ~/foo.yaml", 
+      // so no need to add path
+      filename = app.Flags.Starters
+    }
+		if err = app.generate(filename); err != nil {
 			return ErrCode("PREVIOUS", err.Error())
 		}
 	} else {
@@ -359,7 +376,6 @@ func (app *App) newSite(pathname string) error {
 		}
 	}
 	// Restore temp dir name to pathname  passed in
-	app.Note("About to rename %s to %s", tmpDir, requested)
 	if err = os.Rename(tmpDir, requested); err != nil {
 
 		msg := fmt.Sprintf("%s to %s: %s", tmpDir, requested, err.Error())
@@ -375,7 +391,7 @@ func (app *App) newSite(pathname string) error {
 		}
 
 	}
-	app.Site.path = requested 
+	app.Site.path = requested
 	if err := app.changeWorkingDir(requested); err != nil {
 		msg := fmt.Sprintf("System error attempting to change to new site directory %s: %s", requested, err.Error())
 		return ErrCode("1111", msg)
@@ -416,13 +432,14 @@ func (app *App) writeSiteConfig(path ...string) error {
 	if len(path) < 1 {
 		filename = app.Site.filename
 	} else {
-    filename = path[0]
-  }
-	app.Debug("writeSiteConfig()")
+		filename = path[0]
+	}
+	app.Note("writeSiteConfig()")
 	if err := writeYamlFile(filename, app.Site); err != nil {
 		// TODO: Better error handling?
 		//return ErrCode("PREVIOUS", filename, err.Error())
-		return  err
+    app.Note("writesiteconfig failed")
+		return err
 	}
 	return nil
 }

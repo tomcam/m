@@ -25,7 +25,13 @@ Article: {File:, HTML:}
 Sidebar: {File: sidebar.md, HTML:}
 Footer: {File: footer.md, HTML:}
 Language: en
+
 ## Priority 1: Showstoppers--required for the next release
+* Because of temporary site this now fails:
+```
+mb new site foo --site /Users/tom/code/m/cmd/mb/site.yaml --starter /Users/tom/code/m/cmd/mb/badstart.yaml 
+```
+* Every "return err" needs to be replaced with something clearer
 * bug: toc generates incorrect code for nested bullets, showing all levels of bullets. My HTML is wrong, that's all
 * bug: toc seems to be broken with inc files, or even if it's in the included file (seens to be useless when I put it at the top of common|mdemo.md)
 * Bug: no theme-dark.csses are ready

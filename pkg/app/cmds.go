@@ -311,7 +311,7 @@ create theme based on an existing one.
 
 	// See also flgs.go
 	CmdNewTheme.PersistentFlags().BoolVarP(&app.Flags.Factory, "factory", "", false, "use factory theme, not from local project")
-	CmdNewSite.PersistentFlags().StringVar(&app.Flags.Starters, "starters", "", "config file (default is "+defaults.ConfigStartersFilename+")")
+	CmdNewSite.PersistentFlags().StringVar(&app.Flags.Starters, "starter", "", "config file (default is "+defaults.ConfigStartersFilename+")")
 	CmdNewSite.PersistentFlags().StringVar(&app.Flags.Site, "site", "", "site config file (default is "+defaults.SiteConfigFilename+")")
 
 	/*****************************************************
