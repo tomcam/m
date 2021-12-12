@@ -27,6 +27,14 @@ Footer: {File: footer.md, HTML:}
 Language: en
 
 ## Priority 1: Showstoppers--required for the next release
+* Test cases for all of hte following:
+```
+mb new site foo --site /Users/tom/code/m/cmd/mb/site.yaml 
+mb new site foo --site site.yaml 
+mb new site foo --starter /Users/tom/code/m/cmd/mb/starter.yaml
+mb new site foo --starter starter.yaml
+
+```
 * Because of temporary site this now fails:
 ```
 mb new site foo --site /Users/tom/code/m/cmd/mb/site.yaml --starter /Users/tom/code/m/cmd/mb/badstart.yaml 

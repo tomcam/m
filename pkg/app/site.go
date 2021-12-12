@@ -130,9 +130,6 @@ type Site struct {
 	// to be copied in just before the closing HTML tag
 	scriptClosePath string
 
-	// Full path to site config file
-	filename string
-
 	// Social media URLs
 	Social social `yaml:"Social"`
 
@@ -330,7 +327,8 @@ func (app *App) newSite(pathname string) error {
     // User specified a site file such "--site foo.yaml", 
     // so turn it into a fully qualified pathname if
     // no path is supplied
-    if filepath.Dir(app.Flags.Site) == ".."  {
+    dir := filepath.Dir(app.Flags.Site) 
+    if dir == ".." || dir == "." {
       // Only filename, e.g. "--site foo.yaml", no path, so add path
 		  filename = filepath.Join(tmpDir, defaults.CfgDir, app.Flags.Site)
     } else {
@@ -406,12 +404,12 @@ func (app *App) newSite(pathname string) error {
 func (app *App) readSiteConfig() error {
 	var err error
 	var b []byte
-	if app.Site.filename == "" {
+	if app.Site.Filename == "" {
 		return ErrCode("1063", "")
 	}
-	if b, err = ioutil.ReadFile(app.Site.filename); err != nil {
+	if b, err = ioutil.ReadFile(app.Site.Filename); err != nil {
 		// TODO: Handle error properly & and document error code
-		return ErrCode("PREVIOUS", err.Error(), app.Site.filename)
+		return ErrCode("PREVIOUS", err.Error(), app.Site.Filename)
 	}
 
 	err = yaml.Unmarshal(b, &app.Site)
@@ -419,7 +417,7 @@ func (app *App) readSiteConfig() error {
 		// TODO: Handle error properly & and document error code
 		return err
 	}
-	app.Debug("readSiteConfig(%v): Site is %#v", app.Site.filename, app.Site)
+	app.Debug("readSiteConfig(%v): Site is %#v", app.Site.Filename, app.Site)
 
 	return nil
 }
@@ -430,7 +428,7 @@ func (app *App) readSiteConfig() error {
 func (app *App) writeSiteConfig(path ...string) error {
 	var filename string
 	if len(path) < 1 {
-		filename = app.Site.filename
+		filename = app.Site.Filename
 	} else {
 		filename = path[0]
 	}

@@ -40,9 +40,9 @@ func (app *App) interviewSiteBrief() error {
 		app.Site = site
 		if err := app.writeSiteConfig(); err != nil {
 			app.Print("Error writing site config")
-			return ErrCode("0222", app.Site.filename)
+			return ErrCode("0222", app.Site.Filename)
 		}
-		fmt.Printf("\nYou can also change these values directly by editing the site configuration file at %v\n", app.Site.filename)
+		fmt.Printf("\nYou can also change these values directly by editing the site configuration file at %v\n", app.Site.Filename)
 	}
 	return nil
 }

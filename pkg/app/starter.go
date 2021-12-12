@@ -88,7 +88,7 @@ func (app *App) generate(pathname string) error {
 // starterPage() creates a stub page from a description
 // in a YAML file with startup pages
 func (app *App) starterPage(name string, starter Starter) error {
-	app.Note("starterPage(%v) Folder: %v", name, starter.Folder)
+	//app.Note("starterPage(%v) Folder: %v", name, starter.Folder)
 	dir := starter.Folder
 	if name == "" {
 		return ErrCode("1104", dir)
