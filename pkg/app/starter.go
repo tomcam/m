@@ -1,7 +1,7 @@
 package app
 
 import (
-	"fmt"
+  "fmt"
 	"github.com/gosimple/slug"
 	"github.com/tomcam/m/pkg/default"
 	"gopkg.in/yaml.v3"
@@ -120,32 +120,29 @@ func (app *App) starterCollection(name string, starter Starter) error {
 	if permalink, err := validatePermalink(starter.Permalink); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	} else {
-    fmt.Printf("permalink: %v", permalink)
 		c.permalink = permalink
 	}
 	c.path = dir
 	// xxx
 
 	app.Site.Collections[dir] = c
-	//app.Note("Collections: %v", app.Site.Collections)
+  fmt.Println(app.Site.Collections)
 	return nil
 }
 
-// validatePermalink() ensures that 
+// validatePermalink() ensures that
 // the proposed permalink can be used in a directory
 // structure reliably.
 func validatePermalink(permalink string) (string, error) {
 	defaultPermalink := ":year/:monthnum/:day/:postname"
-  fmt.Printf("validatePermalink(%s)\n", permalink)
 	if permalink == "" {
-     fmt.Printf("\tPermalink is empty so it's now %s\n", defaultPermalink)
-  	 	permalink = defaultPermalink
+		permalink = defaultPermalink
 	}
 	// Break the description up into segments.
 	segments := strings.Split(permalink, "/")
-  segs := len(segments)
+	segs := len(segments)
 	postnamePresent := false
-  postnameIndex  := 0
+	postnameIndex := 0
 	var seg string
 	// Explode the string into ":" delineated
 	// path segments. Remove any slashes.
@@ -166,29 +163,28 @@ func validatePermalink(permalink string) (string, error) {
 		}
 		// If the permalink didn't include post name
 		// we'll have to fix append it.
-    if segments[i] == ":postname" {
+		if segments[i] == ":postname" {
 			postnamePresent = true
-      postnameIndex = i
+			postnameIndex = i
 		}
 	}
 
-
-  // Detect if postname is used anywhere but the end
-  // If so remove it and replace with empty string.
-  // This results in 2 slash characters at that position. 
-  // Should work OK because Go uses Unix conventions.
-  if postnameIndex <= segs - 2 {
-    segments[postnameIndex] = ""
-    postnamePresent = false
-  }
-  // Ensure :postname is appended
+	// Detect if postname is used anywhere but the end
+	// If so remove it and replace with empty string.
+	// This results in 2 slash characters at that position.
+	// Should work OK because Go uses Unix conventions.
+	if postnameIndex <= segs-2 {
+		segments[postnameIndex] = ""
+		postnamePresent = false
+	}
+	// Ensure :postname comes last
 	if !postnamePresent {
-		segments = append(segments,":postname")
+		segments = append(segments, ":postname")
 	}
 
-  // Collapse everything pack to what should now be
-  // a usable directory designation.
-	clean := strings.Join(segments,"/")
+	// Collapse everything pack to what should now be
+	// a usable directory designation.
+	clean := strings.Join(segments, "/")
 	return clean, nil
 }
 
