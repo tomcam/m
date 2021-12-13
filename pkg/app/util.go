@@ -205,6 +205,19 @@ func exists(description, filename string) string {
 	return r
 }
 
+// firstN() returns first part of string.
+// Gratefully stolen from https://stackoverflow.com/a/41604514/478311
+func firstN(s string, n int) string {
+	i := 0
+	for j := range s {
+		if i == n {
+			return s[:j]
+		}
+		i++
+	}
+	return s
+}
+
 func Oldexists(description, filename string) {
 	found := false
 	if isDirectory(filename) {

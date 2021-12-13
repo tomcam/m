@@ -117,7 +117,9 @@ func NewApp() *App {
 	// TODO: This didn't help newTheme()
 	//app.Site.Starters = make(map[string]Starter)
 	app.Site.publishedThemes = make(map[string]bool)
+	app.Site.Collections = make(map[string]Collection)
 	return &app
+
 }
 
 // loadConfigs() looks for the many possible sources of

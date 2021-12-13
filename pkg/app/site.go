@@ -159,6 +159,9 @@ type Site struct {
 	// TODO: Not yet used
 	webPages map[string]WebPage
 
+	// List of all directories of type Collection
+	Collections map[string]Collection
+
 	// IMPORTANT
 	// LIST ALWAYS GOES AT THE END OF THE FILE/DATA STRUCTURE
 	// User data.
@@ -275,7 +278,7 @@ func (m MdOptions) IsOptionSet(opt MdOptions) bool {
 // newSite() generates an empty site at
 // the directory specified in pathname.
 // It creates the site in a temp directory,
-// then renames the temp directory to the desired name 
+// then renames the temp directory to the desired name
 // when completed.
 func (app *App) newSite(pathname string) error {
 	// Exit if there's already a project at specified location.
@@ -324,20 +327,20 @@ func (app *App) newSite(pathname string) error {
 	// If user supplied a site configuration file, use it
 	filename := ""
 	if app.Flags.Site != "" {
-    // User specified a site file such "--site foo.yaml", 
-    // so turn it into a fully qualified pathname if
-    // no path is supplied
-    dir := filepath.Dir(app.Flags.Site) 
-    if dir == ".." || dir == "." {
-      // Only filename, e.g. "--site foo.yaml", no path, so add path
-		  filename = filepath.Join(tmpDir, defaults.CfgDir, app.Flags.Site)
-    } else {
-      // Fully qualified filename, e.g. "--site ~/foo.yaml", 
-      // so no need to add path
-      filename = app.Flags.Site
-    }
+		// User specified a site file such "--site foo.yaml",
+		// so turn it into a fully qualified pathname if
+		// no path is supplied
+		dir := filepath.Dir(app.Flags.Site)
+		if dir == ".." || dir == "." {
+			// Only filename, e.g. "--site foo.yaml", no path, so add path
+			filename = filepath.Join(tmpDir, defaults.CfgDir, app.Flags.Site)
+		} else {
+			// Fully qualified filename, e.g. "--site ~/foo.yaml",
+			// so no need to add path
+			filename = app.Flags.Site
+		}
 	} else {
-    // No site file specified, so use default
+		// No site file specified, so use default
 		filename = filepath.Join(tmpDir, defaults.CfgDir, defaults.SiteConfigFilename)
 	}
 	if err = app.writeSiteConfig(filename); err != nil {
@@ -348,22 +351,18 @@ func (app *App) newSite(pathname string) error {
 	// Generate stub pages/sections if specified
 	app.Site.name = filepath.Base(requested)
 	if app.Flags.Starters != "" {
-   // User specified a site file such "--site foo.yaml", 
-    // so turn it into a fully qualified pathname if
-    // no path is supplied
-    app.Note("Use starter file %s", app.Flags.Starters)
-    app.Note("It is in %s",filepath.Dir(app.Flags.Starters))
-    dir := filepath.Dir(app.Flags.Starters) 
-    if dir == ".." || dir == "."  {
-      // Only filename, e.g. "--site foo.yaml", no path, so add path
-      app.Note("%s is in current directory", app.Flags.Starters)
-		  filename = filepath.Join(filepath.Dir(requested), app.Flags.Starters)
-  // xxx
-    } else {
-      // Fully qualified filename, e.g. "--site ~/foo.yaml", 
-      // so no need to add path
-      filename = app.Flags.Starters
-    }
+		// User specified a site file such "--site foo.yaml",
+		// so turn it into a fully qualified pathname if
+		// no path is supplied
+		dir := filepath.Dir(app.Flags.Starters)
+		if dir == ".." || dir == "." {
+			// Only filename, e.g. "--site foo.yaml", no path, so add path
+			filename = filepath.Join(filepath.Dir(requested), app.Flags.Starters)
+		} else {
+			// Fully qualified filename, e.g. "--site ~/foo.yaml",
+			// so no need to add path
+			filename = app.Flags.Starters
+		}
 		if err = app.generate(filename); err != nil {
 			return ErrCode("PREVIOUS", err.Error())
 		}
@@ -375,7 +374,6 @@ func (app *App) newSite(pathname string) error {
 	}
 	// Restore temp dir name to pathname  passed in
 	if err = os.Rename(tmpDir, requested); err != nil {
-
 		msg := fmt.Sprintf("%s to %s: %s", tmpDir, requested, err.Error())
 		return ErrCode("0226", msg)
 
@@ -396,6 +394,13 @@ func (app *App) newSite(pathname string) error {
 	}
 	// xxx
 	return nil
+}
+func fullPath(defaultDir string, filename string) string {
+	dir := filepath.Dir(filename)
+	if dir == ".." || dir == "." {
+		filename = filepath.Join(defaultDir, filename)
+	}
+	return filename
 }
 
 // readSiteConfig() obtains site config info from the
@@ -432,11 +437,9 @@ func (app *App) writeSiteConfig(path ...string) error {
 	} else {
 		filename = path[0]
 	}
-	app.Note("writeSiteConfig()")
 	if err := writeYamlFile(filename, app.Site); err != nil {
 		// TODO: Better error handling?
-		//return ErrCode("PREVIOUS", filename, err.Error())
-    app.Note("writesiteconfig failed")
+		app.Note("writesiteconfig failed")
 		return err
 	}
 	return nil

@@ -114,6 +114,7 @@ var errMsgs = map[string]string{
 	"0412": "Error creating directory for simple page", // directory
 	"0413": "Error creating directory for new theme",   // Fully qualified pathname
 	"0414": "System error creating temp directory in ", // custom message
+	"0415": "Error creating directory for posts",       // directory
 	// TODO: Get rid of the line below
 	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
 
@@ -151,8 +152,9 @@ var errMsgs = map[string]string{
 	"0929": "Error copying theme",         // Custom message
 	"0930": "Error updating copied theme", // Custom message
 	// 0950 - Something's already there
-	"0951": "Site already exists at",  // sitename
-	"0952": "Theme already exists at", // sitename
+	"0951": "Site already exists at",             // sitename
+	"0952": "Theme already exists at",            // sitename
+	"0953": "There is already a directory named", // posts directory name
 
 	// 1000	- Something's missing that should be there
 	"1001": "Missing front matter and markdown", // filename

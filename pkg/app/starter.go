@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"github.com/gosimple/slug"
 	"github.com/tomcam/m/pkg/default"
 	"gopkg.in/yaml.v3"
@@ -25,7 +26,7 @@ type Description struct {
 // the site is created (or later, but it makes most
 // sense upon site creation).
 type Starter struct {
-	Type string `yaml:"Type"` // Page, Posts, Gallery, Category
+	Type string `yaml:"Type"` // e.g. Page, Collection
 	//Name string `yaml:"Name"`
 
 	// Derived from the map key name if not given here
@@ -34,7 +35,7 @@ type Starter struct {
 	// Directory this should appear in
 	Folder string `yaml:"Folder"`
 
-	// Sort order if gallery, category, or posts
+	// Sort order if collection
 	Sort string `yaml:"Sort"`
 
 	// If specified, the Permalink template makes it post
@@ -58,18 +59,17 @@ type Starter struct {
 }
 
 // generate() creates files specified in the
-
-// via newSite() and that we're in the
-// project site specified in app.Site.path
+// specified starter config file.
 func (app *App) generate(pathname string) error {
 	var starters map[string]Starter
-	//pathname = filepath.Join(app.Site.path, "starter.yaml")
 	b, err := ioutil.ReadFile(pathname)
 	if err != nil {
+		// TODO: Improve error handling
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	err = yaml.Unmarshal(b, &starters)
 	if err != nil {
+		// TODO: Improve error handling
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	for k, v := range starters {
@@ -77,12 +77,119 @@ func (app *App) generate(pathname string) error {
 		default:
 			return ErrCode("1207", v.Type)
 		case "page":
+			// TODO: Improve error handling
 			if err = app.starterPage(k, v); err != nil {
 				return ErrCode("PREVIOUS", err.Error())
 			}
+		case "collection":
+			if err = app.starterCollection(k, v); err != nil {
+				return ErrCode("PREVIOUS", err.Error())
+			}
 		}
+
 	}
 	return nil
+}
+
+// starterPages() creates a collection directory from a description
+// in a YAML file with startup pages
+func (app *App) starterCollection(name string, starter Starter) error {
+	app.Note("\n\nstarterCollection(%v) Folder: %v", name, starter.Folder)
+	dir := starter.Folder
+	// If no folder is given, assume project root.
+	// Remember Go uses Unix folder conventions even
+	// under Windows
+	if dir == "" {
+		dir = "/"
+	}
+
+	if app.Site.Collections[dir].path == dir {
+		return ErrCode("0953", dir)
+	}
+
+	// Create the specified folder as a subdirectory
+	// of the current project.
+	dir = filepath.Join(app.Site.path, dir)
+	err := os.MkdirAll(dir, defaults.ProjectFilePermissions)
+	if err != nil {
+		return ErrCode("0415", dir)
+	}
+
+	var c Collection
+	// TODO: Need test case
+	if permalink, err := validatePermalink(starter.Permalink); err != nil {
+		return ErrCode("PREVIOUS", err.Error())
+	} else {
+    fmt.Printf("permalink: %v", permalink)
+		c.permalink = permalink
+	}
+	c.path = dir
+	// xxx
+
+	app.Site.Collections[dir] = c
+	//app.Note("Collections: %v", app.Site.Collections)
+	return nil
+}
+
+// validatePermalink() ensures that 
+// the proposed permalink can be used in a directory
+// structure reliably.
+func validatePermalink(permalink string) (string, error) {
+	defaultPermalink := ":year/:monthnum/:day/:postname"
+  fmt.Printf("validatePermalink(%s)\n", permalink)
+	if permalink == "" {
+     fmt.Printf("\tPermalink is empty so it's now %s\n", defaultPermalink)
+  	 	permalink = defaultPermalink
+	}
+	// Break the description up into segments.
+	segments := strings.Split(permalink, "/")
+  segs := len(segments)
+	postnamePresent := false
+  postnameIndex  := 0
+	var seg string
+	// Explode the string into ":" delineated
+	// path segments. Remove any slashes.
+	for i := range segments {
+		seg = segments[i]
+		last := strings.HasSuffix(seg, "/")
+		if last {
+			// Remove trailing slash if any
+			seg = firstN(seg, len(seg)-1)
+			segments[i] = seg
+		}
+		switch seg {
+		case ":year", ":monthnum", ":day", ":hour",
+			":minute", ":second", ":postname", ":author":
+			/* Do nothing */
+		default:
+			segments[i] = slug.Make(seg)
+		}
+		// If the permalink didn't include post name
+		// we'll have to fix append it.
+    if segments[i] == ":postname" {
+			postnamePresent = true
+      postnameIndex = i
+		}
+	}
+
+
+  // Detect if postname is used anywhere but the end
+  // If so remove it and replace with empty string.
+  // This results in 2 slash characters at that position. 
+  // Should work OK because Go uses Unix conventions.
+  if postnameIndex <= segs - 2 {
+    segments[postnameIndex] = ""
+    postnamePresent = false
+  }
+  // Ensure :postname is appended
+	if !postnamePresent {
+		segments = append(segments,":postname")
+	}
+
+  // Collapse everything pack to what should now be
+  // a usable directory designation.
+	clean := strings.Join(segments,"/")
+	return clean, nil
 }
 
 // starterPage() creates a stub page from a description

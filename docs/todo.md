@@ -27,6 +27,12 @@ Footer: {File: footer.md, HTML:}
 Language: en
 
 ## Priority 1: Showstoppers--required for the next release
+* I tihnk I need to add Page.URL
+* Change app.go setPaths like this and it almost works with relative directories. I tink publshing stylesheets
+is the only broken thing
+```
+app.cfgPath = filepath.Join(".", defaults.CfgDir)
+```
 * Test cases for all of hte following:
 ```
 mb new site foo --site /Users/tom/code/m/cmd/mb/site.yaml 
@@ -101,6 +107,8 @@ source file directory structure remains sacrosanct: a tree of Markdown files
 
 
 ## Document
+* In a starter, if you don't specify the permalihnk format it's ":year/:monthnum/:day/:postname"
+* Permalink must end with :postname 
 * Layout element files such as header.md don't have to use the
 sample names
 * Document. Given a site.yaml with this:
