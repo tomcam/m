@@ -1,0 +1,37 @@
+index:
+  Type: page
+  Article: |-
+    Just how incredible am I?
+
+blog:
+  Type: collection 
+  Permalink: "blog/:year/:monthnum/:day/:postname"
+
+blog2:
+  Type: collection 
+  Permalink: "/blog2/:year/:monthnum/:day/:postname"
+
+articles:
+  Type: collection 
+  Permalink: "/articles/:year/:monthnum/"
+
+news:
+  Type: collection
+  Folder: /news
+
+wrong permalink:
+  Type: collection
+  Folder: /news
+  Permalink: ":postname/:monthnum/:year/"
+
+othernews:
+  Type: collection 
+  Folder: /blog
+  Permalink: "other news:year/:monthnum/:day/:postname"
+
+/long directory/with /spaces:
+  Type: collection 
+  Folder: /blog
+  Permalink: "other news:year/:monthnum/:day/:postname"
+
+

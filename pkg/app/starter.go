@@ -1,7 +1,7 @@
 package app
 
 import (
-  "fmt"
+	"fmt"
 	"github.com/gosimple/slug"
 	"github.com/tomcam/m/pkg/default"
 	"gopkg.in/yaml.v3"
@@ -11,18 +11,8 @@ import (
 	"strings"
 )
 
-// Description makes up what you need for a Description metatag.
-// The Tag field is the most important, but if you want to
-// append something like "| blog" you'd use After for that.
-// Likewise for Before, but it creates a suffix.
-type Description struct {
-	Before string `yaml:"Before"`
-	Tag    string `yaml:"Description"`
-	After  string `yaml:"After"`
-}
-
-// Generate a list of pages, posts, galleries, or categories
-// to avoid copy pasta. Normally used when
+// Generate a list of pages, collections
+// from a config file. Normally used when
 // the site is created (or later, but it makes most
 // sense upon site creation).
 type Starter struct {
@@ -30,23 +20,23 @@ type Starter struct {
 	//Name string `yaml:"Name"`
 
 	// Derived from the map key name if not given here
-	Filename string `yaml:"Filename"`
+	//Filename string `yaml:"Filename"`
 
 	// Directory this should appear in
-	Folder string `yaml:"Folder"`
+	//Folder string `yaml:"Folder"`
 
 	// Sort order if collection
 	Sort string `yaml:"Sort"`
 
 	// If specified, the Permalink template makes it post
 	// and not a page
-	Permalink string `yaml:"Permalink"`
+	//Permalink string `yaml:"Permalink"`
 
 	// For title tag
 	Title string `yaml:"Title"`
 
 	// For description meta tag
-	Description Description `yaml:"Description"`
+	Description string `yaml:"Description"`
 
 	// Name of theme to use for this page/section
 	Theme string `yaml:"Theme"`
@@ -91,43 +81,57 @@ func (app *App) generate(pathname string) error {
 	return nil
 }
 
-// starterPages() creates a collection directory from a description
-// in a YAML file with startup pages
 func (app *App) starterCollection(name string, starter Starter) error {
-	app.Note("\n\nstarterCollection(%v) Folder: %v", name, starter.Folder)
-	dir := starter.Folder
+	app.Note("\n\nstarterCollection(%v)", name)
+	// The name is a path to the file or collection.
+	// It may also be a permalink.
+	path := name
 	// If no folder is given, assume project root.
 	// Remember Go uses Unix folder conventions even
 	// under Windows
-	if dir == "" {
-		dir = "/"
+	if path == "" {
+		path = "/"
 	}
 
-	if app.Site.Collections[dir].path == dir {
-		return ErrCode("0953", dir)
-	}
-
-	// Create the specified folder as a subdirectory
-	// of the current project.
-	dir = filepath.Join(app.Site.path, dir)
-	err := os.MkdirAll(dir, defaults.ProjectFilePermissions)
-	if err != nil {
-		return ErrCode("0415", dir)
+	// Ensure it has a leading "/" unless preceded with a dot
+	if !strings.HasPrefix(path, "/") && !strings.HasPrefix(path, ".") {
+		path = filepath.Join("/", path)
 	}
 
 	var c Collection
+	var permalink string
+	var err error
 	// TODO: Need test case
-	if permalink, err := validatePermalink(starter.Permalink); err != nil {
+	if permalink, err = validatePermalink(path); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
-	} else {
-		c.permalink = permalink
 	}
-	c.path = dir
-	// xxx
+	// TODO: This should come later after it's been cleaned
+	if app.Site.Collections[permalink].path == permalink {
+		return ErrCode("0953", path)
+	}
+	c.path = permalink
+	app.Site.Collections[permalink] = c
 
-	app.Site.Collections[dir] = c
-  fmt.Println(app.Site.Collections)
+	// Create the specified folder as a subdirectory
+	// of the current project.
+  dir := filepath.Join(app.Site.path, firstDir(permalink))
+	err = os.MkdirAll(dir, defaults.ProjectFilePermissions)
+	if err != nil {
+		return ErrCode("0415", dir)
+	}
+	//xxx
+
+	fmt.Println(app.Site.Collections)
 	return nil
+}
+
+// Retrieve the first directory in the URL-like
+// string passed in
+// https://stackoverflow.com/a/70342730/478311
+// Thanks for saving my remaining sanity on this, stt106!
+func firstDir(permalink string) string {
+	split := strings.Split(permalink, string(os.PathSeparator))
+	return split[1]
 }
 
 // validatePermalink() ensures that
@@ -155,9 +159,11 @@ func validatePermalink(permalink string) (string, error) {
 			segments[i] = seg
 		}
 		switch seg {
-		case ":year", ":monthnum", ":day", ":hour",
+		case ":year", ":monthnum", ":daynum", ":day", ":hour",
 			":minute", ":second", ":postname", ":author":
-			/* Do nothing */
+			if i == 0 {
+				return "", ErrCode("1208", "")
+			}
 		default:
 			segments[i] = slug.Make(seg)
 		}
@@ -191,12 +197,12 @@ func validatePermalink(permalink string) (string, error) {
 // starterPage() creates a stub page from a description
 // in a YAML file with startup pages
 func (app *App) starterPage(name string, starter Starter) error {
-	//app.Note("starterPage(%v) Folder: %v", name, starter.Folder)
-	dir := starter.Folder
+	dir := filepath.Dir(name)
 	if name == "" {
 		return ErrCode("1104", dir)
 	}
 	// If no folder is given, assume project root.
+	filename := filepath.Base(name)
 	// Remember Go uses Unix folder conventions even
 	// under Windows
 	if dir == "" {
@@ -204,6 +210,7 @@ func (app *App) starterPage(name string, starter Starter) error {
 	}
 	// Create the specified folder as a subdirectory
 	// of the current project.
+	dir = slug.Make(dir)
 	dir = filepath.Join(app.Site.path, dir)
 	err := os.MkdirAll(dir, defaults.ProjectFilePermissions)
 	if err != nil {
@@ -211,13 +218,7 @@ func (app *App) starterPage(name string, starter Starter) error {
 	}
 	app.Debug("\tDir: %v", dir)
 
-	var filename string
-	// Convert the name to a filename.
-	if starter.Filename == "" {
-		filename = slug.Make(name)
-	} else {
-		filename = starter.Filename
-	}
+	filename = slug.Make(filename)
 
 	// Get the fully qualified filename to generate
 	filename = filepath.Join(dir, filename)
@@ -235,8 +236,8 @@ func (app *App) starterPage(name string, starter Starter) error {
 
 	// TODO: Stuff these things into a read FrontMatter to get it right
 	description := ""
-	if starter.Description.Tag != "" {
-		title = "Description: " + starter.Description.Tag + "\n"
+	if starter.Description != "" {
+		title = "Description: " + starter.Description + "\n"
 	}
 
 	frontMatter :=

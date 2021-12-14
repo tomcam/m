@@ -1,5 +1,7 @@
 # To do
-
+# START IUSIG\
+* filepath.Abs
+ os.PathSeparator
 ## Updating themes
 
 * Clear out any graphic or other assets the theme doesn't use
@@ -108,7 +110,9 @@ source file directory structure remains sacrosanct: a tree of Markdown files
 
 ## Document
 * In a starter, if you don't specify the permalihnk format it's ":year/:monthnum/:day/:postname"
-* Permalink must end with :postname 
+* Permalink must start with a directory such as blog or news and end with :postname .
+That way a comman like mb new post /blog "Big news" will turn into `/blog/2022/06/21/big-news.md`
+
 * Layout element files such as header.md don't have to use the
 sample names
 * Document. Given a site.yaml with this:

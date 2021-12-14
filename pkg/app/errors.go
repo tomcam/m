@@ -197,6 +197,7 @@ var errMsgs = map[string]string{
 	// TODO: Get rid of the line below
 	// Old errors stopped at 1206
 	"1207": "Don't understand the starter type", // Name of type in a starter file
+	"1208": "Your path must start with a normal directory name, for example, `blog` or `news`",
 }
 
 type ErrMsg struct {
