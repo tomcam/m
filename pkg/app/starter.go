@@ -114,7 +114,11 @@ func (app *App) starterCollection(name string, starter Starter) error {
 
 	// Create the specified folder as a subdirectory
 	// of the current project.
-  dir := filepath.Join(app.Site.path, firstDir(permalink))
+  // The base directory is everything up to the first
+  // colon. Since permalink is guaranteed to start
+  // with a directory separater
+  dir := permalink[1:strings.IndexRune(permalink, ':')]
+
 	err = os.MkdirAll(dir, defaults.ProjectFilePermissions)
 	if err != nil {
 		return ErrCode("0415", dir)
