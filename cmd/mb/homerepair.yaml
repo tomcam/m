@@ -1,6 +1,5 @@
-Index:
+/index:
   Type: page
-  Folder: /
   Title: 
   Theme: tradesman
   Article: |
@@ -12,7 +11,7 @@ Index:
     * [Flooring](floor-repairs-and-installation.html)
     * [Painting](painting.html)
     * [Fencing](fencing.html)
-    * [Wall repairs](repairs/wall.html)
+    * [Wall repairs](repairs/wall-repair.html)
     * [Deck](deck.html)
     * [Patio](patio.html)
     * [Concrete](concrete.html)
@@ -26,9 +25,8 @@ Index:
     * [Privacy policy](privacy-policy.html)
     * [Terms and Conditions](terms-and-conditions.html)
 
-About:
+/about:
   Type: page
-  Folder: /
   Title: About Eastside Emerald Home Repair
   Theme: tradesman
   Article: |
@@ -73,9 +71,8 @@ About:
     * Bellevue
     * Samammish
 
-Rates:
+/rates:
   Type: page
-  Folder: /
   Title: Eastside Emerald Home Repair  Rates
   Theme: tradesman
   Article: |
@@ -85,9 +82,8 @@ Rates:
     * Hourly rate: $150 if not estimated as a job (minimum 2 hours)
     * Rates do not include 10% King County tax
 
-Service area:
+/Service area:
   Type: page
-  Folder: /
   Title: Areas Served by Eastside Emerald Home Repair 
   Theme: tradesman
   Article: |
@@ -98,9 +94,8 @@ Service area:
     * Bellevue
     * Samammish
 
-Contact:
+/Contact:
   Type: page
-  Folder: /
   Title: Contact Eastside Emerald
   Theme: tradesman
   Article: |
@@ -118,9 +113,8 @@ Contact:
     </form>
 
 
-Services:
+/Services:
   Type: page
-  Folder: /
   Title: Eastside Emerald Home Repair Handyman Services
   Theme: tradesman
   Article: |
@@ -192,9 +186,8 @@ Services:
  
     [Home](index.html)
 
-Kitchen Remodeling:
+/remodeling/Kitchen Remodeling:
   Type: page
-  Folder: /remodeling
   Title: Kitchen remodeling
   Theme: tradesman
   Article: |
@@ -208,9 +201,8 @@ Kitchen Remodeling:
 
     [Contact Us](../contact.html) [More about Eastside Emerald Home Repair Services](../services.html) 
 
-Bathroom Remodeling:
+/remodeling/Bathroom Remodeling:
   Type: page
-  Folder: /remodeling
   Title: Bathroom remodeling
   Theme: tradesman
   Article: |
@@ -232,7 +224,6 @@ Bathroom Remodeling:
 Floor repairs and installation:
   Title: Floor repairs and installation
   Type: page
-  Folder: /
   Theme: tradesman
   Article: |
     # We've done just about everything you can do with a floor, including
@@ -248,7 +239,6 @@ Floor repairs and installation:
 
 Painting:
   Type: page
-  Folder: /
   Title: Painting
   Theme: tradesman
   Article: |
@@ -260,7 +250,6 @@ Painting:
 
 Fencing:
   Type: page
-  Folder: /
   Title: Fence Repair and installation
   Theme: tradesman
   Article: |
@@ -271,9 +260,8 @@ Fencing:
     * Pet fences
 
 
-Wall:
+repairs/Wall repair:
   Type: page
-  Folder: /repairs
   Title: Wall repair
   Theme: tradesman
   Article: |
@@ -284,7 +272,6 @@ Wall:
 
 Deck:
   Type: page
-  Folder: / 
   Title: Deck repair and installation
   Theme: tradesman
   Article: |
@@ -295,7 +282,6 @@ Deck:
 
 Patio:
   Type: page
-  Folder: /
   Title: Patio repair and installation
   Theme: tradesman
   Article: |
@@ -306,7 +292,6 @@ Patio:
 
 Concrete:
   Type: page
-  Folder: /
   Title: Concrete repair and installation
   Theme: tradesman
   Article: |
@@ -316,9 +301,8 @@ Concrete:
     * Install concrete interior floors
     * Set fenceposts in concrete
 
-Repairs:
+repairs/Repairs:
   Type: page
-  Folder: /repairs
   Title: General repair work
   Theme: tradesman
   Article: |
@@ -328,8 +312,8 @@ Repairs:
     * Air conditioners
     * Drywall
     * Exterior walls
-    * [Bathroom Sinks](remodeling/bathroom-remodeling.html) and [Kitchen sinks](remodeling/bathroom-remodeling.html) 
-    * [Kitchen](remodeling/bathroom-remodeling.html) and [bathroom](remodeling/bathroom-remodeling.html) faucets
+    * [Bathroom Sinks](../remodeling/bathroom-remodeling.html) and [Kitchen sinks](../remodeling/bathroom-remodeling.html) 
+    * [Kitchen](../remodeling/bathroom-remodeling.html) and [bathroom](../remodeling/bathroom-remodeling.html) faucets
     * [Wooden floors](../floor-repairs-and-installation.html)
     * [Concrete floors](../floor-repairs-and-installation.html)
     * [Tile floors](../floor-repairs-and-installation.html)
@@ -343,7 +327,6 @@ Repairs:
 
 Assemble:
   Type: page
-  Folder: /
   Title: Assemble 
   Theme: tradesman
   Article: |
@@ -360,14 +343,12 @@ Assemble:
 
 Reviews:
   Type: page
-  Folder: /
   Title: Reviews
   Theme: tradesman
   Article: ""
 
 Gallery:
   Type: page
-  Folder: /
   Title: Gallery 
   Theme: tradesman
   Article: ""
@@ -375,7 +356,6 @@ Gallery:
 
 General Contracting:
   Type: page
-  Folder: /
   Title: General Contracting
   Theme: tradesman
   Article: ""
@@ -383,7 +363,6 @@ General Contracting:
 
 Call for Quote:
   Type: page
-  Folder: /
   Title: Call for quote
   Theme: tradesman
   Article: ""
@@ -391,7 +370,6 @@ Call for Quote:
 
 Privacy Policy:
   Type: page
-  Folder: /
   Title: Privacy Policy
   Theme: tradesman
   Article: | 
@@ -413,7 +391,6 @@ Privacy Policy:
 
 Terms and Conditions:
   Type: page
-  Folder: /
   Title: Terms and Conditions
   Theme: tradesman
   Article: |
@@ -474,7 +451,6 @@ Terms and Conditions:
 
 Sitemap:
   Type: page
-  Folder: /
   Title: Sitemap
   Theme: tradesman
   Article: ""

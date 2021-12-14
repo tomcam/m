@@ -102,7 +102,7 @@ func (app *App) starterCollection(name string, starter Starter) error {
 	var permalink string
 	var err error
 	// TODO: Need test case
-	if permalink, err = validatePermalink(path); err != nil {
+	if permalink, err = fixPermalink(path); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	// TODO: This should come later after it's been cleaned
@@ -133,16 +133,19 @@ func (app *App) starterCollection(name string, starter Starter) error {
 // string passed in
 // https://stackoverflow.com/a/70342730/478311
 // Thanks for saving my remaining sanity on this, stt106!
+// Turned out not to be useful because I forgot about
+// the fact that yiou may have something like
+// dir1/dir2/:year/:monthum/:daynum
 func firstDir(permalink string) string {
 	split := strings.Split(permalink, string(os.PathSeparator))
 	return split[1]
 }
 
-// validatePermalink() ensures that
+// fixPermalink() ensures that
 // the proposed permalink can be used in a directory
 // structure reliably.
-func validatePermalink(permalink string) (string, error) {
-	defaultPermalink := ":year/:monthnum/:day/:postname"
+func fixPermalink(permalink string) (string, error) {
+	defaultPermalink := ":year/:monthnum/:daynum/:postname"
 	if permalink == "" {
 		permalink = defaultPermalink
 	}

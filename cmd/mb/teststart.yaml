@@ -24,7 +24,7 @@ wrong permalink:
   Folder: /news
   Permalink: ":postname/:monthnum/:year/"
 
-othernews:
+nested1/nested2/nested3:
   Type: collection 
   Folder: /blog
   Permalink: "other news:year/:monthnum/:day/:postname"
