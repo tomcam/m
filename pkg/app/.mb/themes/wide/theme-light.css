@@ -49,7 +49,7 @@
 
     /* Primary foreground (text) and background colors in navbar */
     --nav-fg:#CD433F;
-    --nav-bg:white;
+    --nav-bg:var(--bg);
     /* Link colors specific to navbar */
     --a-nav: var(--a); 
     --a-nav-link:  var(--a);
