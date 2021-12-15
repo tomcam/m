@@ -1,4 +1,5 @@
 # Metabuzz manual
 
-[CSS snippets](docs/css-snippets.html)
+[Documentation](docs/index.html)
+
 
