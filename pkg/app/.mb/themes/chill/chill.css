@@ -1,29 +1,20 @@
 /* System fonts always look best so it's a good default */
-html,body,p {font-family:var(--informal),sans-serif;}
+html,body,p {font-family:'Lato';var(--informal),sans-serif;font-size:20px;}
 /* OTOH Courier is a lousy code font by default */
 code,pre{font-family:var(--code),monospace;}
-
-h1{ font-size:2.5em;margin-top:2rem; }
-h2{ font-size:2em;margin-top:1.5rem; }
-h3{ font-size:1.5em;margin-top:1.5rem; }
-h4{ font-size:.9em;margin-top:1rem;}
-h5{ font-size:.8em; }
-h6{ font-size:0.9em; }
-
-table > thead > tr > th  {margin-top:4rem;}
-blockquote {font-style:italic;margin: 2rem 2rem 2rem 2rem;}
 
 /* ****************************/
 /*  HEADER BRANDING AND LINKS */
 /* ****************************/
-
+header > ul > li:first-child > a  {font-family:'Fredoka One';sans-serif} 
+header > ul > li:first-child > a > del, header > p > del {color:var(--nav-fg);text-decoration:none;}
 /*
  * --------------------------------------------------
  * Simplest case: Branded name, nothing else
  * Doesn't act like a link.
  * --------------------------------------------------
  */
-header > p {color:var(--header-fg);background-color:var(--header-bg);font-size:var(--branding-height);font-weight:700;display:inline;} 
+header > p {font-size:var(--branding-height);font-weight:var(--branding-weight);display:inline;} 
 
  
 /*
@@ -35,16 +26,13 @@ header > p {color:var(--header-fg);background-color:var(--header-bg);font-size:v
  * looks like a button.
  * --------------------------------------------------
  */
-header > ul {line-height:var(--header-height);font-size:var(--branding-height);}
-header > ul {margin-left:0;padding-left:0;list-style-type:none;display:inline;}
-header > ul > li{display:inline;padding-right:1.5rem;} 
+header > ul {line-height:var(--header-height);}
+header > ul {list-style-type:none;display:inline;}
+header > ul > li{display:inline;padding-right:.5rem;font-size:1.25rem;} 
 header > ul > li > a,
 header > ul > li > a:link,
 header > ul > li > a:visited
-	{font-size:1.25rem;color:var(--header-fg);text-decoration:none;}
-header > ul > li > a:hover,
-header > ul > li > a:active
-	{color:var(--header-fg);text-decoration:underline;}
+	{font-weight:400;text-decoration:none;padding-right:1.5rem;}
 
 /*
  * --------------------------------------------------
@@ -52,50 +40,75 @@ header > ul > li > a:active
  * branding
  * --------------------------------------------------
  */
-header > ul > li:first-child > a {color:var(--header-fg);font-size:calc(120%);font-weight:900;padding-right:1rem;font-family:'Fredoka One';}
-header > ul > li:first-child > a > del  {text-decoration:non;color:var(--trim-fg);} 
-header > ul > li > a > del {text-decoration:none;}
-
+header > ul > li:first-child > a {font-family:'Fredoka One';sans-serif;font-size:var(--branding-height);font-weight:900;padding-right:1rem;}
 
 /*
  * --------------------------------------------------
- * Special feature: Last item in list is styled like 
- * a button. Just leave omit text after the
- * bullet character (asterisk) in your Markdown 
+ * Special feature: Last item in list is styled like                          
+ * a button. Just leave omit text after the                                  
+ * bullet character (asterisk) in your Markdown                      
  * if you don't want the effect. (Or just remove
  * these lines of CSS.)
  * --------------------------------------------------
- */
-/* Last item of the unordered list is styled to look like a button and stays to the right */
-header > ul >  li:last-child > a {font-weight:bold;padding-right:4em; background-color: var(--trim-fg);color: white;padding: .5em 1em;text-decoration: none;text-transform: uppercase;webkit-border-radius:1em;-moz-border-radius: 1em;border-radius:1em;
-}
+ */                                   
+header > ul >  li:last-child > a {font-weight:bold;padding-right:4em; background-color:var(--nav-fg);color: white;padding: .5em 1em;text-decoration: none;text-transform: uppercase;webkit-border-radius:1em;-moz-border-radius: 1em;border-radius:1em;                                  
+}   
 
 /* ******************************/
 /*  NAVBAR                      */
 /* ******************************/
-nav > p {margin-top:0;line-height:var(--nav-height);font-weight:bold;font-family:var(--informal);}
-nav > p > a,
-nav > p > a:link,
-nav > p > a:visited 
-  {color:var(--nav-fg);font-size:1.5em;margin-right:1em;font-weight:normal;text-decoration:none;}
-nav > p {background-color:var(--nav-bg); }
+
 nav > img {display:inline;}
 
+/*
+ * --------------------------------------------------
+ * Simplest case: a single item. Don't even need to
+ * make it a bullet.
+ * --------------------------------------------------
+ */
+nav > p {line-height:var(--nav-height);}
+nav > p > a {font-size:1.25em;}
+nav > p > a {font-style:normal;}
+
+nav > p > a,
+nav > p > a:link,
+nav > p > a:visited {display:inline;text-decoration:none;padding-right:1em;} 
+/* For accessibility purposes show visual distinction when hovering or active */
+nav > p > a:hover,
+nav > p > a:active {text-decoration:underline;} 
+
+/*
+ * --------------------------------------------------
+ * More likely case: a horizontal row of menu items.
+ * Use an unordered list--in other words, just
+ * a bullet list. 
+ * --------------------------------------------------
+ */
+nav > ul > li {list-style-type:none;padding-right:1em;} 
+nav > ul > li > a,
+nav > ul > li > a:link,
+nav > ul > li > a:visited {display:inline;text-decoration:none;} 
+/* For accessibility purposes show visual distinction when hovering or active */
+nav > ul > li > a:hover,
+nav > ul > li > a:active {text-decoration:underline;} 
 
 /* ******************************/
 /*  ARTICLE-MAIN PORTION OF TEXT*/
 /* ******************************/
-article {font-family:'Lato';}
-article > hr {margin-left:0;margin-top:3rem;margin-bottom:2rem;border-top: .5rem solid var(--trim-fg);border-radius:1rem;}
-article {background-color:white;width:60%;margin-top:1rem;box-shadow:1px 1px 3px grey;min-height:60vh;}
-article {max-width:var(--full-page);}
-article > h1,article > h2 {font-weight:700;color:var(--header-fg);}
-article > h1 {margin-bottom:2rem;}
-article > h2 {margin-top:4rem;}
-article > h2 {color:var(--trim-fg);}
-article > h3 {color:var(--fg);}
-article > h4 {font-weight:light;font-size:1em;color:gray;margin-bottom:1em; } /* Byline */
-article > h4 > strong {font-weight:bold;color:black; } /* Byline */
+
+article > p, 
+  article > p > a,
+  article > ul, 
+  article > ol, 
+  article > li, 
+  article > dd, 
+  article > dl{
+  font-size:var(--p-font-size);padding-top:var(--p-padding-top);padding-bottom:var(--p-padding-bottom);margin-bottom:var(--p-margin-bottom);}
+
+article > h1,article > h2 {font-weight:700;}
+article > h4 {font-weight:normal;} /* Byline */
+article > h4 > strong {font-weight:bold;} /* Byline */
+article > p > strong {font-weight:700;}
 
 article > p, 
   article > ul, 
@@ -104,83 +117,146 @@ article > p,
   article > dd, 
   article > dl,
   article > hr {
-		font-size:1.5rem;
-		line-height:2.25rem;
-		margin-bottom:2em;
-    max-width:var(--max-article-width);
+		line-height:var(--p-line-height);
 }
-article > p > strong {font-family:var(--informal);font-weight:700;}
-/* Override font rule for code */
+
+article > h3 {font-weight:bold;}
+article > hr {height:.125em;}
+article > ul, article > ol {padding-top:.5em;}
+article > li {margin-left:1rem;}
+
+/* Indent lists */
+/* Handle all levels of nested indentation */
+article ul > li {margin-left:1em; padding-left:0em;}
+article ol > li {margin-left:1em; padding-left:0em;}
+
+article > table > thead > tr > th  {padding-top:2em;}
+article > blockquote  > p{text-indent:-3rem;font-size:1.5em;font-family:var(--times);font-style:italic;margin: 2rem 15% 2rem 15%;padding:2em 1em 2em 4em;line-height:2rem;}
+article > blockquote > p:before {font-style:normal;content:"\275D";font-size:3em;position:relative;left:-.25em;top:-.25em;}
+article > blockquote > p:after {font-style:normal;content: "\275E";font-size:3em;line-height:0;vertical-align:-1em;}
+
+
+/* Link appearance including all list levels */
+article a,
+article a:link,
+article a:visited,
+article ol a,
+article ol a:link,
+article ol a:visited,
+article ul a,
+article ul a:link,
+article ul a:visited
+  {text-decoration:none;}
+
+/* Link appearance during click or passing over */
+article a:hover,
+article ul a:hover,
+article ul a:active,
+article ol a:hover,
+article ol a:active
+  {text-decoration:none;}
+
+article > dl > dt {font-size:.8em;font-weight:bold;}  
+article > dl > dd {font-size:.8em;padding-bottom:1em;}
+
+/* --------------------------------------------------
+ * Images: full width, light drop shadow 
+ * --------------------------------------------------
+ */
+article > img, article > p > img {
+  width:100%;
+  box-shadow: rgb(128,128,128) 1px 1px 3px 0px;
+  display:block;
+}
+
+/*
+ * --------------------------------------------------
+ * Code listings
+ * --------------------------------------------------
+ */
+
 article > p > code, article > code, article > pre, article > pre > code {
 		font-family:var(--code);
-		font-size:1em;
+		font-size:var(--p-font-size);
 		overflow:auto;
-    margin-bottom:1em;
-    line-height:1.5em;
-    max-width:var(--max-article-width);
-		}
-article > pre { padding-left: 1em;}
-article > p > a,
-article > p > a:link,
-article > p >  a:visited
-	{font-family:var(--informal);font-weight:bold;color:var(--trim-fg);text-decoration:underline;}
-article > p >  a:hover,
-article > p >  a:active
-	{text-decoration:underline;color:var(--trim-bg);background-color:var(--trim-fg);}
-
-
-/* Article tables use colors same as header, but reversed in first row */
-article > table {width:var(--full-page);margin-top:2rem;margin-bottom:3rem;}
-article > table > thead > tr > th {color:var(--header-bg);background-color:var(--header-fg);}
+}
+article > table {padding-top:1em;padding-bottom:1.5em;}
 article > table > td,th {padding:1rem;}
-article > table > tbody > tr > td {padding:1rem;border-bottom:.1px solid gray;}
-
-
+article > table > tbody > tr > td {padding:1rem;}
 
 
 /* ******************************/
 /*  SIDEBAR (ASIDE TAG)         */
 /* ******************************/
 
-aside {padding-top:3rem;}
-aside, aside > p, aside > h2, aside > h3, aside > h4 {margin-left:0;padding-left:1rem;padding-right:1rem;} 
-aside > h3 {color:var(--trim-bg);}
-aside > h4 {color:var(--header-bg);background-color:var(--header-fg)}
-aside {color:var(--trim-bg);background-color:var(--trim-fg);padding:2rem;margin: 2rem;}
-aside h2 {font-family:'Fredoka One';margin-top: 1em;margin-bottom:.5em}
-aside > p {margin-top:1rem;margin-bottom:1rem;}
-/*
- * --------------------------------------------------
- * Special feature: Use Strikethrough markup to get
- * a big box around text. Works great on a single
- * letter.
- * --------------------------------------------------
- */
-aside > h3 > del {font-size:3rem;font-weight:900;color:var(--header-bg);margin:.25rem;padding:.25em;border:.5rem solid var(--header-bg);text-decoration:none;} 
-aside > h3 + p {margin-top:2rem;}
+aside > p {padding-bottom:1rem;font-size:.8rem;padding-right:.75em;padding-left:var(--sidebar-padding-left);}
+aside > h2 {padding:1rem;text-align:center;font-size:1.2rem;font-weight:700;white-space:nowrap;}
+aside > h3 {font-size:.75em;font-weight:bold;padding-bottom:2rem;}
+aside > h5 {text-align:center;font-weight:bold;margin-left:0;padding-left:0;padding-top:2rem;padding-bottom:1rem;}
+aside > h6  {font-weight:normal;font-style:italic;}
 
+aside > ul {text-align:right;padding-right:1rem;line-height:1.5em;}
+aside > ul > li {list-style-type:none;} 
+aside > ul > li > a,
+aside > ul > li > a:link,
+aside > ul > li > a:visited {text-decoration:none;font-size:1rem;line-height:2.5rem;font-weight:normal;padding-right:1em;} 
+/* For accessibility purposes show visual distinction when hovering or active */
+aside > ul > li > a:hover,
+aside > ul > li > a:active {font-weight:bold;} 
+
+aside > p > img {padding:0;padding-top:1rem;width:100%;}
 
 
 /* ******************************/
 /*  FOOTER                      */
 /* ******************************/
 
-/* FOOTER */
-footer {border-top: 1px solid var(--trim-fg);padding-bottom:1rem;} 
+
+/*
+ * --------------------------------------------------
+ * Simplest case: Branded name, nothing else
+ * Doesn't act like a link.
+ * --------------------------------------------------
+ */
+footer > p {font-size:var(--footer-branding-height);font-weight:900;display:inline;} 
+
+ 
 footer > h2 {text-align:center;}
 footer > table {font-size:calc(80%);}
-/* Give table columns to get some breathing room */
-footer > table > thead > tr > th {padding-right:2rem;} 
-footer > table > thead > tr > th {color:var(--trim-fg);background-color:var(--footer-bg);}
-footer > table > thead > tr > th {padding-top:1em;padding-right:2em;padding-bottom:1em;}
+footer > table > thead > tr > th {padding-right:2rem;text-align:left;padding-bottom:1em;}
 footer > table > tbody > tr > td {padding-right:3em;}
-
-/* Color of links in main rows (body) of table */
 footer > table > tbody > tr > td > a:link,
 footer > table > tbody > tr > td > a:visited
-	{color:var(--header-fg);text-decoration:none;}
+	{text-decoration:none;}
 footer > table > tbody > tr > td > a:hover,
 footer > table > tbody > tr > td > a:active
-	{color:var(--header-fg);text-decoration:underline;}
+	{text-decoration:underline;}
 
+/*
+ * --------------------------------------------------
+ * If you have more than one item, use an unordered list. 
+ * These styles show the first item with branding applied,
+ * any number of links following, still slightly
+ * larger than body text, and a last link that
+ * looks like a button.
+ * --------------------------------------------------
+ */
+footer > ul {line-height:var(--footer-height);}
+footer > ul {list-style-type:none;display:inline;}
+footer > ul > li{display:inline;padding-right:1rem;font-size:1.25rem;} 
+footer > ul > li > a,
+footer > ul > li > a:link,
+footer > ul > li > a:visited
+	{font-weight:400;text-decoration:none;}
+footer > ul > li > a:hover,
+footer > ul > li > a:active
+	{text-decoration:underline;}
+
+/*
+ * --------------------------------------------------
+ * Special feature: First item in list has biggest
+ * branding
+ * --------------------------------------------------
+ */
+footer > ul > li:first-child > a {font-size:var(--footer-branding-height);font-weight:900;}
 
