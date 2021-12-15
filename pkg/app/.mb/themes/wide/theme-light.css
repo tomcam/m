@@ -35,7 +35,7 @@
 
     /* Secondary foreground (text) and background colors for accents. */
     --trim-fg:var(--fg); 
-    --trim-bg:var(--bg);
+    --trim-bg:var(--article-bg);
     
     /* Primary foreground (text) and background colors in header */
     --header-fg: white;
@@ -49,7 +49,7 @@
 
     /* Primary foreground (text) and background colors in navbar */
     --nav-fg:#CD433F;
-    --nav-bg:var(--bg);
+    --nav-bg:var(--article-bg);
     /* Link colors specific to navbar */
     --a-nav: var(--a); 
     --a-nav-link:  var(--a);
@@ -72,7 +72,7 @@
 
     /* Default foreground (text) and background colors in aside */
     --sidebar-fg: var(--fg);
-    --sidebar-bg: white;
+    --sidebar-bg: var(--article-bg);
     /* Link colors specific to sidebar */
     --a-sidebar: var(--a); 
     --a-sidebar-visited:  var(--a);
