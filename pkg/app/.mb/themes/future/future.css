@@ -1,5 +1,5 @@
 /* System fonts always look best so it's a good default */
-html,body,p {font-family:var(--informal),sans-serif;font-size:22px;}
+html,body,p {font-family:'Roboto Condensed',var(--informal),sans-serif;font-size:22px;}
 /* OTOH Courier is a lousy code font by default */
 code,pre{font-family:var(--code),monospace;}
 
@@ -177,9 +177,9 @@ article > table > tbody > tr > td {padding:1rem;}
 /* ******************************/
 /*  SIDEBAR (ASIDE TAG)         */
 /* ******************************/
-aside > h2 {font-family:'Nova Mono',var(--informal);}
+aside > h2, aside > h3, aside > h3, aside > h4, aside > h5 {font-family:'Nova Mono',var(--informal);}
 aside > p {padding-bottom:1rem;font-size:.8rem;padding-right:.75em;padding-left:var(--sidebar-padding-left);}
-aside > h2 {padding:1rem;text-align:center;font-size:1.2rem;font-weight:700;white-space:nowrap;}
+aside > h2 {padding:.5rem;text-align:center;font-size:1.2rem;white-space:nowrap;border-left:.25rem solid var(--header-bg);}
 aside > h3 {font-size:.75em;font-weight:bold;padding-bottom:2rem;}
 aside > h5 {text-align:center;font-weight:bold;margin-left:0;padding-left:0;padding-top:2rem;padding-bottom:1rem;}
 aside > h6  {font-weight:normal;font-style:italic;}
