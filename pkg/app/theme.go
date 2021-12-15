@@ -4,8 +4,6 @@ import (
 	"github.com/tomcam/m/pkg/default"
 	"github.com/tomcam/m/pkg/util"
 	"gopkg.in/yaml.v3"
-	//"io"
-	//"io/fs"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -13,6 +11,10 @@ import (
 )
 
 type Theme struct {
+  // Determines what Metabuzz Theme Framework features
+  // are supported by this theme.
+  Supports supports
+
 	// Themes can be nested, e.g. debut/gallery/item.
 	// Each level get its own entry here.
 	levels []string
@@ -72,6 +74,19 @@ type Theme struct {
 	Sidebar layoutElement `yaml:"Sidebar"`
 } // type Theme
 
+// Describes what elements of the
+// Metabuzz Theme Framework (MTF) this theme supports.
+type supports struct {
+	// Supports the theme framework itself
+	// If this is false then all the rest are false
+	MTF bool `yaml:"MTF"`
+
+  Mode    bool `yaml:"Mode"`
+	Header  bool `yaml:"Header"`
+	Nav     bool `yaml:"Nav"`
+	Sidebar bool `yaml:"Sidebar"`
+	Footer  bool `yaml:"Footer"`
+}
 type layoutElement struct {
 	// Inline HTML
 	HTML string `yaml:"HTML"`
