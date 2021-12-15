@@ -248,14 +248,13 @@
   /* --article-width is width of article plus sidebar */
   --article-width:60%;
 
-  /* TC: */ --left-margin:var(--sidebar-width);
+  --left-margin:var(--sidebar-width);
   --right-margin:0%;
 
 
   /* --alt-article-width is width of article WITHOUT sidebar 
    * Added to --sidebar-width it should always sum up to
    * --article-width */
-  /* TC */
   --alt-article-width:var(--article-width);
 
   /* --sidebar-width must be the same as
@@ -264,7 +263,6 @@
   --sidebar-width:20%;
 
   /* --text-start is a padding value not a margin */
-  /* TC: old version */--text-start:var(--sidebar-width);
   --text-start:0;
 
   --text-end:2em;
