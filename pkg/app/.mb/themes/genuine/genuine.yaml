@@ -1,30 +1,29 @@
-Branding: 'Genuine'
-Description: 'A clean, text-based pillar theme in cheerful colors. Good for a personal blog or technical reference documentation.'
+Name: ""
+Branding: ""
+Description: ""
 Stylesheets:
-  - reset.css
-  - fonts.css
-  - bind.css
-  - sizes.css
-  - theme-light.css
-  - layout.css
-  - genuine.css
-  - responsive.css
-PathName: ''
-Version: 1.2.3
+    - reset.css
+    - fonts.css
+    - bind.css
+    - sizes.css
+    - theme-light.css
+    - layout.css
+    - genuine.css
+    - responsive.css
+License: ""
+Author: ""
 Nav:
-  HTML: ''
-    #File: 'nav.md' 
-  File: '' 
+    HTML: ""
+    File: ""
 Header:
-  HTML: ''
-  File: header.md
+    HTML: ""
+    File: header.md
 Article:
-  HTML: ''
-  File: ''
+    HTML: ""
+    File: ""
 Footer:
-  HTML: ''
-  File: footer.md
+    HTML: ""
+    File: footer.md
 Sidebar:
-  HTML: ''
-  File: sidebar.md
-
+    HTML: ""
+    File: sidebar.md

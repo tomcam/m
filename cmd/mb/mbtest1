@@ -15,6 +15,7 @@ cp eastside-emerald-64x64.png $DIR
 declare -a themes=(
 	'wide'
 	'pillar'
+  'chill'
   'future'
   'genuine'
   'debut'

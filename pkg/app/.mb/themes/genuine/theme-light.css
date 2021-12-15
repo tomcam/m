@@ -21,37 +21,25 @@
 
     /* Default foreground (text) and background colors  */
     --fg:black;
-    --bg:white;
+    --bg:var(--article-bg);
     /* Default link colors */
-    --a:red;
-    --a-link:var(--a);
-    --a-visited:var(--a);
-    --a-hover:var(--a);
-    --a-active:var(--a);
+    --a:var(--nav-fg); /*441997; */ /* var(--trim-fg); */
+    --a-link: var(--a);
+    --a-visited: var(--a);
+    --a-hover: var(--a);
+    --a-active: var(--a);
 
-    /* Same as article > h1 { color: } */
-    --article-h1-fg:var(--fg);
-    --article-h2-fg:darkblue;
-    --article-h3-fg:var(--fg);
-    --article-h4-fg:var(--fg);
-    --article-h5-fg:var(--fg);
-    --article-h6-fg:var(--fg);
+   /* Code listings */                                                         
+    --code-fg:var(--fg);                                             
+    --code-bg:#F0F0F0;
 
-    /* Same as article > h1 { background-color: } */
-    --article-h1-bg:var(--article-bg);
-    --article-h2-bg:var(--article-bg);
-    --article-h3-bg:var(--article-bg);
-    --article-h4-bg:var(--article-bg);
-    --article-h5-bg:var(--article-bg);
-    --article-h6-bg:var(--article-bg);
-
-     /* Secondary foreground (text) and background colors for accents. */
-    --trim-fg:#969598; 
-    --trim-bg:white;
+    /* Secondary foreground (text) and background colors for accents. */
+    --trim-fg:red;/* #CD433F;  */
+    --trim-bg:var(--article-bg);
     
     /* Primary foreground (text) and background colors in header */
-    --header-fg:darkblue;
-    --header-bg:white;
+    --header-fg: darkblue;
+    --header-bg: var(--article-bg);/* #010085; */
     /* Link colors specific to header */
     --a-header: var(--header-fg); 
     --a-header-link:  var(--header-fg);
@@ -60,8 +48,8 @@
     --a-header-active:  var(--header-fg);
 
     /* Primary foreground (text) and background colors in navbar */
-    --nav-fg:#CD433F;
-    --nav-bg:white;
+    --nav-fg:var(--trim-fg);
+    --nav-bg:var(--article-bg);
     /* Link colors specific to navbar */
     --a-nav: var(--a); 
     --a-nav-link:  var(--a);
@@ -71,7 +59,7 @@
 
     /* Default foreground (text) and background colors in article */
     --article-fg: var(--fg);
-    --article-bg:white;
+    --article-bg: white;
     /* Link colors specific to article */
     --a-article: var(--a); 
     --a-article-link:  var(--a);
@@ -84,7 +72,7 @@
 
     /* Default foreground (text) and background colors in aside */
     --sidebar-fg: var(--fg);
-    --sidebar-bg: white;
+    --sidebar-bg: var(--article-bg);
     /* Link colors specific to sidebar */
     --a-sidebar: var(--a); 
     --a-sidebar-visited:  var(--a);
@@ -93,7 +81,7 @@
 
     /* Primary foreground (text) and background colors in footer */
     --footer-fg:var(--fg);
-    --footer-bg:white;
+    --footer-bg:var(--header-bg);
     /* Link colors specific to footer */
     --a-footer: var(--a);
     --a-footer-link: var(--a);
@@ -146,12 +134,15 @@ nav > p > a:visited {color:var(--nav-fg);}
 /*  ARTICLE COLORS AND BORDERS  */
 /* ******************************/
 
-article > p > code, article > code, article > pre, article > pre > code 
-  {background-color:#F0F0F0;}    
+article > p > code, article > code, article > pre, article > pre > code {background-color:var(--code-bg);}   
+article > h2 {color:var(--header-fg);}
 article > h4 {color:gray;} 
 article > h4 > strong {color:black; } 
 article > table > thead > tr > th {color:var(--header-bg);background-color:var(--header-fg);}
 article > table > tbody > tr > td {border-bottom:.1px solid gray;}
+article > blockquote > p:before {color:var(--trim-fg);}
+article > blockquote > p:after {color:var(--trim-fg);}
+
 
 /* Colors in all levels of lists, including links */
 article a,
@@ -174,6 +165,8 @@ article ul a:hover,
 article ul a:active
   {text-decoration:none;border-bottom:none;}
 
+article > hr {border-bottom:1px solid lightgray;}
+
 /*
  * --------------------------------------------------
  * Images: light drop shadow 
@@ -188,17 +181,18 @@ article > img, article > p > img {
 /*  SIDEBAR COLORS AND BORDERS  */
 /* ******************************/
 
-aside > h2 {color:black;background-color:var(--article-bg);}
+aside > h2 {color:var(--article-fg);background-color:var(--article-bg);}
 aside > h4 {color:var(--header-bg);background-color:var(--header-fg)}
-
+aside > a:visited, aside > p > a:visited {color:var(--a-sidebar-visited);}
+aside > a:hover, aside > p > a:hover{color:var(--a-sidebar-hover);}
+aside > a:active, aside > p > a:active{color:var(--a-sidebar-active);}
+ 
 
 /* ******************************/
 /*  FOOTER COLORS AND BORDERS   */
 /* ******************************/
 
-footer {border-top: 1px solid var(--trim-fg);} 
-
-footer > table > thead > tr > th {color:var(--footer-fg);background-color:var(--footer-bg);}
+footer > table > thead > tr > th {color:var(--header-fg);background-color:var(--footer-bg);}
 /* Color of links in main rows (body) of table */
 footer > table > tbody > tr > td > a:link,
 footer > table > tbody > tr > td > a:visited
@@ -208,9 +202,10 @@ footer > table > tbody > tr > td > a:active
 	{color:var(--header-fg);}
 
 footer > ul > li:first-child > a {color:var(--trim-fg);}
-
-footer > ul > li > a,
+footer > table > thead > tr > th {color:var(--header-fg);}
 footer > ul > li > a:link,
 footer > ul > li > a:visited
 	{color:var(--trim-fg);}
-
+footer > a:visited, footer > p > a:visited {color:var(--a-footer-visited);}
+footer > a:hover, footer > p > a:hover{color:var(--a-footer-hover);}
+footer > a:active, footer > p > a:active{color:var(--a-footer-active);}
