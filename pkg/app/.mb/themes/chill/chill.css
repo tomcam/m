@@ -1,12 +1,12 @@
 /* System fonts always look best so it's a good default */
-html,body,p {font-family:'Lato';var(--informal),sans-serif;font-size:20px;}
+html,body,p {font-family:'Lato',var(--informal),sans-serif;font-size:20px;}
 /* OTOH Courier is a lousy code font by default */
 code,pre{font-family:var(--code),monospace;}
 
 /* ****************************/
 /*  HEADER BRANDING AND LINKS */
 /* ****************************/
-header > ul > li:first-child > a  {font-family:'Fredoka One';sans-serif} 
+header > ul > li:first-child > a  {font-family:'Fredoka One',sans-serif} 
 header > ul > li:first-child > a > del, header > p > del {color:var(--nav-fg);text-decoration:none;}
 /*
  * --------------------------------------------------
@@ -40,7 +40,7 @@ header > ul > li > a:visited
  * branding
  * --------------------------------------------------
  */
-header > ul > li:first-child > a {font-family:'Fredoka One';sans-serif;font-size:var(--branding-height);font-weight:900;padding-right:1rem;}
+header > ul > li:first-child > a {font-family:'Fredoka One',sans-serif;font-size:var(--branding-height);font-weight:900;padding-right:1rem;}
 
 /*
  * --------------------------------------------------
