@@ -14,7 +14,7 @@ code,pre{font-family:var(--code),monospace;}
  * Doesn't act like a link.
  * --------------------------------------------------
  */
-header > p {font-size:var(--branding-height);font-weight:var(--branding-weight);;display:inline;} 
+header > p {font-size:var(--branding-height);font-weight:var(--branding-weight);display:inline;} 
 
  
 /*
