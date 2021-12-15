@@ -1,4 +1,8 @@
-{{ toc }}
+# CSS snippets
+
+Here's some code you can copy and paste for your
+own themes. Most of this appears in Metabuzz
+themes.
 
 ## Special effects
 
@@ -16,10 +20,39 @@
 header > ul > li:last-child > a {border: 2px solid var(--header-fg);color:var(--header-fg);padding:.5rem;}
 ```
 
+
+### Usage example
+
+In the following example a header has a menu with `Metabuzz`, `Try it free`, and `Gallery`. The last item would appear with a border as shown
+in the CSS code. 
+
+##### file: header.md
+
+```
+* Metabuzz
+* Try it free
+* Gallery
+```
+
+### Important note: You can omit the special CSS easily
+
+If you don't want the last item to be circled, just include
+an extra asterisk with nothing following.
+
+```
+* Metabuzz
+* Try it free
+* Gallery
+*
+```
+
+
 ## Sidebar 
 
 Show unordered list in a sidebar as circled numbers. Works well for a news-type section
+
 ```
+
 /*
  * --------------------------------------------------
  * Sidebar unordered list for breaking news
@@ -59,12 +92,14 @@ aside > ul > li > ul > li {
   line-height:1.5em;
   padding-bottom:1em;
 }
+
 aside > ul >li {
   font-weight:bold;
   position:relative;
   padding: .5em 1em 0rem 3em;
   border:none;
 } 
+
 aside > ul > li:before {
   background-color:var(--fg);
   content:counter(li;
