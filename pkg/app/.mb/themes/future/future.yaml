@@ -1,26 +1,29 @@
-Branding: ''
-Description: ''
+Name: ""
+Branding: ""
+Description: ""
 Stylesheets:
-  - reset.css
-  - fonts.css
-  - layout.css
-  - theme-light.css
-  - sizes.css
-  - future.css
-PathName: ''
+    - reset.css
+    - fonts.css
+    - bind.css
+    - sizes.css
+    - theme-light.css
+    - layout.css
+    - future.css
+    - responsive.css
+License: ""
+Author: ""
 Nav:
-  HTML: ''
-  File: nav.md
+    HTML: ""
+    File: nav.md
 Header:
-  HTML: ''
-  File: header.md
+    HTML: ""
+    File: header.md
 Article:
-  HTML: ''
-  File: ''
+    HTML: ""
+    File: ""
 Footer:
-  HTML: ''
-  File: footer.md
+    HTML: ""
+    File: footer.md
 Sidebar:
-  HTML: ''
-  File: sidebar.md
-
+    HTML: ""
+    File: sidebar.md

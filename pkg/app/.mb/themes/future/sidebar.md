@@ -1,8 +1,17 @@
-[![Twitter logo](twitter-black-30x30.svg)]({{ .Site.Social.Twitter }})
+## In the News
+Paris had an uptick in civil unrest as a sanitation worker strike drags into its third month.
+[MORE](/)
 
-[![Facebook logo](facebook-black-30x30.svg)]({{ .Site.Social.Facebook }})
+##### AROUND TOWN
+Cherry Poppin' Daddies reunite to reproduce their 1997 hit "Zoot Suit Riot" in its entirety this Saturday at Nate's.
+[MORE](/)
 
-[![LinkedIn logo](linkedin-black-30x30.svg)]({{ .Site.Social.LinkedIn }})
+Best Szechuan restaurant in town? You might be surprised
+[MORE](/)
 
-[![Instagram logo](instagram-black-30x30.svg)]({{ .Site.Social.Instagram }})
+Springfield Park reopens with a restored bandshell
+[MORE](/)
+
+{{- /* the sidebar element doesn't resize the way we'd like. This keeps it filling the height as it should */ -}}
+
 
