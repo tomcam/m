@@ -229,7 +229,7 @@
   --footer-width:100%;
 
   /* ******************************
-   *  Make theme wide (vs pillar) *
+   *  Make theme pillar (vs wide) *
    * ******************************/
 
   /*  IMPORTANT
@@ -246,25 +246,24 @@
   */
 
   /* --article-width is width of article plus sidebar */
-  --article-width:100%;
+  --article-width:80%;
 
-  --left-margin:0%;
-  --right-margin:0%;
+  --left-margin:10%;
+  --right-margin:10%;
 
 
   /* --alt-article-width is width of article WITHOUT sidebar 
    * Added to --sidebar-width it should always sum up to
    * --article-width */
-  --alt-article-width:75%;
+  --alt-article-width:60%;
 
   /* --sidebar-width must be the same as
    * --article-width MINUS --alt-article-width
    */
-  --sidebar-width:25%;
+  --sidebar-width:20%;
 
   /* --text-start is a padding value not a margin */
-  --text-start:var(--sidebar-width);
+  --text-start:var(--sidebar-width); 
 
   --text-end:2em;
-
 }
