@@ -1,0 +1,37 @@
+Name: ""
+Branding: Scribble
+Description: The perfect hack for site designers. It makes customers concentrate on content instead of design.
+Supports:
+    MTF: true
+    Mode: true
+    Header: true
+    Nav: true
+    Sidebar: true
+    Footer: true
+Stylesheets:
+  - reset.css
+  - fonts.css
+  - bind.css
+  - sizes.css
+  - theme-light.css
+  - layout.css
+  - "https://unpkg.com/papercss@1.6.1/dist/paper.min.css"
+  - scribble.css
+  - responsive.css
+License: ""
+Author: ""
+Nav:
+    HTML: ""
+    File: ""
+Header:
+    HTML: ""
+    File: header.md
+Article:
+    HTML: ""
+    File: ""
+Footer:
+    HTML: ""
+    File: footer.md
+Sidebar:
+    HTML: ""
+    File: sidebar.md

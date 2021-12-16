@@ -1,7 +1,9 @@
+/*@import url('https://fonts.googleapis.com/css2?family=Short+Stack&display=swap'); */
 /* font @imports should appear here ABOVE :root */
 :root
 {
 
+    html,body,p{font-family:"Neucha",var(--informal),sans-serif;}
 		/* Docset adds the styles formal, informal, and code */
 		/* to the existing serif, sans-serif, and monospace for  */
 		/* improved appearance per operating system.  */
@@ -40,8 +42,6 @@
 			"serif";
 }
 
-/* System fonts always look best so it's a good default */
-html,body,p {font-family:var(--informal),sans-serif;}
 /* OTOH Courier is a lousy code font by default */
 code,pre{font-family:var(--code),monospace;}
 

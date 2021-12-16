@@ -29,9 +29,13 @@
     --a-active:var(--a);
 
     
+    /* Code listings */                                                         
+    --code-fg:var(--fg);                                             
+    --code-bg:#F0F0F0;    
+
     /* Secondary foreground (text) and background colors for branding. */
-    --branding-fg:darkblue; 
-    --branding-bg:white;
+    --branding-fg:var(--fg); 
+    --branding-bg:var(--bg);
 
     
     /* Primary foreground (text) and background colors in header */
@@ -46,8 +50,8 @@
 
 
     /* Primary foreground (text) and background colors in navbar */
-    --nav-fg:var(--branding-fg);
-    --nav-bg:var(--branding-bg);
+    --nav-fg:var(--fg);
+    --nav-bg:var(--bg);
     /* Link colors specific to navbar */
     --a-nav:var(--nav-fg); 
     --a-nav-link:var(--nav-fg);
@@ -79,14 +83,14 @@
 
 
     /* Primary foreground (text) and background colors in footer */
-    --footer-fg: var(--header-fg);
-    --footer-bg: var(--header-bg);
+    --footer-fg:gray;
+    --footer-bg:var(--header-bg);
     /* Link colors specific to footer */
-    --a-footer: var(--a); 
-    --a-footer-link: var(--a);
-    --a-footer-visited: var(--a);
-    --a-footer-hover: var(--a); 
-    --a-footer-active: var(--a);
+    --a-footer:var(--footer-fg); 
+    --a-footer-link:var(--a);
+    --a-footer-visited:var(--a);
+    --a-footer-hover:var(--a); 
+    --a-footer-active:var(--a);
 }
 
 /* HEADER colors */

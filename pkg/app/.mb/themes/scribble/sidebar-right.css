@@ -1,6 +1,4 @@
-/* Put sidebar on the right side of the page. Article area floats to the left. */
-:root 
-{
-}
-article, aside {float:left}
+article {width:var(--alt-article-width);margin-right:0;}
+/*aside {padding-right:var(--sidebar-padding-right);padding-left:1rem;margin-left:0;}*/
+aside {padding-right:var(--sidebar-padding-right);margin-left:0;}
 
