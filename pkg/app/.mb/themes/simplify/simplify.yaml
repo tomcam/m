@@ -1,5 +1,12 @@
 Branding: 'Simplify'
 Description: 'A minimalist, two-color wide theme suitable for blogs and technical releases'
+Supports:
+  MTF: true
+  Mode: true
+  Header: true
+  Nav: true
+  Sidebar: true
+  Footer: true
 Stylesheets:
   - reset.css
   - fonts.css

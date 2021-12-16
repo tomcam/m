@@ -1,5 +1,12 @@
 Branding: ''
 Description: ''
+Supports:
+  MTF: true
+  Mode: true
+  Header: true
+  Nav: true
+  Sidebar: true
+  Footer: true
 Stylesheets:
   - reset.css
   - fonts.css
