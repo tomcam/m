@@ -82,7 +82,7 @@ func (app *App) generate(pathname string) error {
 }
 
 func (app *App) starterCollection(name string, starter Starter) error {
-	app.Note("\n\nstarterCollection(%v)", name)
+	app.Debug("\n\nstarterCollection(%v)", name)
 	// The name is a path to the file or collection.
 	// It may also be a permalink.
 	path := name
@@ -114,10 +114,10 @@ func (app *App) starterCollection(name string, starter Starter) error {
 
 	// Create the specified folder as a subdirectory
 	// of the current project.
-  // The base directory is everything up to the first
-  // colon. Since permalink is guaranteed to start
-  // with a directory separater
-  dir := permalink[1:strings.IndexRune(permalink, ':')]
+	// The base directory is everything up to the first
+	// colon. Since permalink is guaranteed to start
+	// with a directory separater
+	dir := permalink[1:strings.IndexRune(permalink, ':')]
 
 	err = os.MkdirAll(dir, defaults.ProjectFilePermissions)
 	if err != nil {

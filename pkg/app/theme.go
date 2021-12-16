@@ -11,9 +11,9 @@ import (
 )
 
 type Theme struct {
-  // Determines what Metabuzz Theme Framework features
-  // are supported by this theme.
-  Supports supports
+	// Determines what Metabuzz Theme Framework features
+	// are supported by this theme.
+	Supports supports `yaml:"Supports"`
 
 	// Themes can be nested, e.g. debut/gallery/item.
 	// Each level get its own entry here.
@@ -81,10 +81,19 @@ type supports struct {
 	// If this is false then all the rest are false
 	MTF bool `yaml:"MTF"`
 
-  Mode    bool `yaml:"Mode"`
+  // Theme supports dark mode/light mode
+	Mode    bool `yaml:"Mode"`
+
+  // Theme supports header
 	Header  bool `yaml:"Header"`
+
+  // Theme suports navbar
 	Nav     bool `yaml:"Nav"`
+
+  // Theme supports sidebar
 	Sidebar bool `yaml:"Sidebar"`
+
+  // Theme supports footer.
 	Footer  bool `yaml:"Footer"`
 }
 type layoutElement struct {
@@ -217,7 +226,6 @@ func (app *App) loadThemeLevel(source string, dest string, level int) error {
 		return ErrCode("1028", source)
 	}
 
-	//app.Page.Theme.publishPath = dest
 	if err := app.loadThemeConfig(source); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
@@ -324,6 +332,36 @@ func (app *App) getMode(stylesheet string) string {
 	return stylesheet
 }
 
+// yamlIsTrue() Takes a prospective YAML boolean
+// (see https://yaml.org/type/bool.html) and
+// converts it to to the real thing.
+func yamlIsTrue(yamlBool string) bool {
+	switch yamlBool {
+	default:
+		return false
+	case "y", "Y", "yes", "Yes", "YES", "true", "True", "TRUE", "on", "On", "ON":
+		return true
+	}
+}
+
+// typeCheckYAMLTheme() understands that YAML allows many
+// kinds of values for booleans, so typecheck the YAML
+// values in this theme.
+func (app *App) typeCheckYAMLTheme(theme *Theme) {
+	//app.Print("typeCheckYAMLTheme() theme %s, %#v", theme.Name, theme.Supports)
+	app.Print("\n**typeCheckYAMLTheme() theme %s, %#v", theme.Name, theme)
+	/*
+		theme.Supports.MTF = yamlIsTrue(theme.Supports.MTFSupported)
+		theme.Supports.Mode = yamlIsTrue(theme.Supports.ModeSupported)
+		theme.Supports.Header = yamlIsTrue(theme.Supports.HeaderSupported)
+		theme.Supports.Nav = yamlIsTrue(theme.Supports.NavSupported)
+		theme.Supports.Sidebar = yamlIsTrue(theme.Supports.SidebarSupported)
+		theme.Supports.Footer = yamlIsTrue(theme.Supports.FooterSupported)
+	*/
+}
+
+// xxx
+
 // loadThemeConfig reads the theme's config file, so
 // if the theme is named "debut" that file would be
 // named debut.yaml. Write to app.Page.Theme
@@ -337,7 +375,7 @@ func (app *App) getMode(stylesheet string) string {
 //   Users/tom/mb/foo/.mb/pub/themes/wide/wide.yaml
 func (app *App) loadThemeConfig(path string) error {
 
-	// Add YAML or whatver to the base directory because that's the
+	// Add YAML or whatever to the base directory because that's the
 	// base of the filename. Then add the rest to the
 	// filename, which is the theme name + ".yaml"
 	filename := filepath.Join(path, filepath.Base(path)+"."+defaults.ConfigFileDefaultExt)
@@ -355,8 +393,8 @@ func (app *App) loadThemeConfig(path string) error {
 		// TODO: Handle error properly & and document error code
 		return err
 	}
+	app.Print("loadThemeConfig: %#v", string(b))
 
-	// TODO: Start using this to prevent multiple copies of the theme
 	// Save the current theme. Force to lowercase because
 	// it's  filename
 	theme := strings.ToLower(app.Page.FrontMatter.Theme)
@@ -365,7 +403,13 @@ func (app *App) loadThemeConfig(path string) error {
 	app.Page.Theme.publishPath = path
 	// TODO: This doesn't seem to be used
 	app.Site.publishedThemes[path] = true
-
+	// Unfortunately YAML doesn't seem to understand
+	// boolean values the way I do, so type-check them
+	// as best I can.
+	// TODO: xxx: this may need to come later
+	// TODO: May need to remove
+	// app.typeCheckYAMLTheme(&app.Page.Theme)
+	app.Print("Theme: %#v", app.Page.Theme)
 	return nil
 
 }
@@ -439,7 +483,6 @@ func (app *App) newTheme(from, to string) error {
 
 	// The destination theme has been copied but it still has the old
 	// names inside.
-	// xxx
 	if err := app.copyThemeUpdate(source, dest); err != nil {
 		return ErrCode("0930", "from '"+source+"' to '"+dest+"'")
 	}
@@ -528,7 +571,6 @@ func (app *App) copyThemeUpdate(source, dest string) error {
 		return ErrCode("0225", destCfgFile)
 	}
 
-	// xxx
 	return nil
 
 }

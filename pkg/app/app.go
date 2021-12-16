@@ -2,16 +2,6 @@ package app
 
 import (
 	"embed"
-	"io"
-	"io/fs"
-	"io/ioutil"
-	/*
-			"github.com/yuin/goldmark-meta"
-		  "github.com/yuin/goldmark/renderer"
-		  "github.com/yuin/goldmark/renderer/html"
-			"github.com/yuin/goldmark/extension"
-		 	highlighting "github.com/yuin/goldmark-highlighting"
-	*/
 	"errors"
 	"fmt"
 	"github.com/spf13/cobra"
@@ -19,6 +9,9 @@ import (
 	"github.com/tomcam/m/pkg/default"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/parser"
+	"io"
+	"io/fs"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"reflect"

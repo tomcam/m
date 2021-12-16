@@ -146,7 +146,7 @@ func (app *App) publishMarkdownFile(filename string) error {
 	// TODO: May be unnecessary
 	app.Page.Theme = Theme{}
 	app.Site.publishedThemes = map[string]bool{}
-	app.Page.FrontMatter = FrontMatter{}
+	//app.Page.FrontMatter = FrontMatter{}
 	return nil
 }
 
@@ -409,48 +409,48 @@ func (app *App) article(body []byte, params ...string) string {
 }
 
 func (app *App) header() (string, error) {
-  // If this feature isn't supported by the
-  // Metabuzz Theme Framework, don't bother.
-  if !app.Page.Theme.Supports.MTF {
-    return "", nil
-  }
+	// If this feature isn't supported by the
+	// Metabuzz Theme Framework, don't bother.
+	if !app.Page.Theme.Supports.MTF || !app.Page.Theme.Supports.Header {
+		return "", nil
+	}
 	return app.layoutElementToHTML("header")
 }
 
 func (app *App) nav() (string, error) {
-  // If this feature isn't supported by the
-  // Metabuzz Theme Framework, don't bother.
-  if !app.Page.Theme.Supports.MTF {
-    return "", nil
-  }
+	// If this feature isn't supported by the
+	// Metabuzz Theme Framework, don't bother.
+	if !app.Page.Theme.Supports.MTF || !app.Page.Theme.Supports.Nav {
+		return "", nil
+	}
 	return app.layoutElementToHTML("nav")
 }
 
 func (app *App) sidebar() (string, error) {
-  // If this feature isn't supported by the
-  // Metabuzz Theme Framework, don't bother.
-  if !app.Page.Theme.Supports.MTF {
-    return "", nil
-  }
+	// If this feature isn't supported by the
+	// Metabuzz Theme Framework, don't bother.
+	if !app.Page.Theme.Supports.MTF || !app.Page.Theme.Supports.Sidebar {
+		return "", nil
+	}
 	return (app.layoutElementToHTML("sidebar"))
 }
 
 func (app *App) footer() (string, error) {
-  // If this feature isn't supported by the
-  // Metabuzz Theme Framework, don't bother.
-  if !app.Page.Theme.Supports.MTF {
-    return "", nil
-  }
+	// If this feature isn't supported by the
+	// Metabuzz Theme Framework, don't bother.
+	if !app.Page.Theme.Supports.MTF || !app.Page.Theme.Supports.Footer {
+		return "", nil
+	}
 	return app.layoutElementToHTML("footer")
 }
 
 // darkMode() returns true if dark mode has been specified
 func (app *App) darkMode() bool {
-  // If this feature isn't supported by the
-  // Metabuzz Theme Framework, don't bother.
-  if !app.Page.Theme.Supports.MTF {
-    return false
-  }
+	// If this feature isn't supported by the
+	// Metabuzz Theme Framework, don't bother.
+	if !app.Page.Theme.Supports.MTF || !app.Page.Theme.Supports.Mode {
+		return false
+	}
 	// TODO: Maket this a cfg value, bcause like Theme it can also be
 	// set in other areas
 	if strings.ToLower(app.Page.FrontMatter.Mode) == "dark" {
