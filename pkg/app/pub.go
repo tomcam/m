@@ -519,6 +519,11 @@ func (app *App) publishStylesheets() error {
 		app.Debug("\t\t\t\ttheme is: %#v", theme.level)
 		app.Debug("\t\t\t\tpublishStylesheets: %#v", theme.publishStylesheets)
 		for _, stylesheet := range theme.publishStylesheets {
+      if strings.HasPrefix(strings.ToLower(stylesheet), "http") {
+		    stylesheet = stylesheetTag(stylesheet)
+			  stylesheets.WriteString(stylesheet)
+        continue
+      }
 			source = filepath.Join(theme.sourcePath, stylesheet)
 			dest = filepath.Join(app.themePublishDir(theme.level), stylesheet)
 

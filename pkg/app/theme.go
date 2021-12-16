@@ -331,35 +331,6 @@ func (app *App) getMode(stylesheet string) string {
 	}
 	return stylesheet
 }
-
-// yamlIsTrue() Takes a prospective YAML boolean
-// (see https://yaml.org/type/bool.html) and
-// converts it to to the real thing.
-func yamlIsTrue(yamlBool string) bool {
-	switch yamlBool {
-	default:
-		return false
-	case "y", "Y", "yes", "Yes", "YES", "true", "True", "TRUE", "on", "On", "ON":
-		return true
-	}
-}
-
-// typeCheckYAMLTheme() understands that YAML allows many
-// kinds of values for booleans, so typecheck the YAML
-// values in this theme.
-func (app *App) typeCheckYAMLTheme(theme *Theme) {
-	//app.Print("typeCheckYAMLTheme() theme %s, %#v", theme.Name, theme.Supports)
-	app.Print("\n**typeCheckYAMLTheme() theme %s, %#v", theme.Name, theme)
-	/*
-		theme.Supports.MTF = yamlIsTrue(theme.Supports.MTFSupported)
-		theme.Supports.Mode = yamlIsTrue(theme.Supports.ModeSupported)
-		theme.Supports.Header = yamlIsTrue(theme.Supports.HeaderSupported)
-		theme.Supports.Nav = yamlIsTrue(theme.Supports.NavSupported)
-		theme.Supports.Sidebar = yamlIsTrue(theme.Supports.SidebarSupported)
-		theme.Supports.Footer = yamlIsTrue(theme.Supports.FooterSupported)
-	*/
-}
-
 // xxx
 
 // loadThemeConfig reads the theme's config file, so
@@ -393,7 +364,6 @@ func (app *App) loadThemeConfig(path string) error {
 		// TODO: Handle error properly & and document error code
 		return err
 	}
-	app.Print("loadThemeConfig: %#v", string(b))
 
 	// Save the current theme. Force to lowercase because
 	// it's  filename
@@ -403,13 +373,6 @@ func (app *App) loadThemeConfig(path string) error {
 	app.Page.Theme.publishPath = path
 	// TODO: This doesn't seem to be used
 	app.Site.publishedThemes[path] = true
-	// Unfortunately YAML doesn't seem to understand
-	// boolean values the way I do, so type-check them
-	// as best I can.
-	// TODO: xxx: this may need to come later
-	// TODO: May need to remove
-	// app.typeCheckYAMLTheme(&app.Page.Theme)
-	app.Print("Theme: %#v", app.Page.Theme)
 	return nil
 
 }
