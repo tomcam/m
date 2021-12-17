@@ -304,18 +304,23 @@ func stylesheetTag(stylesheet string) string {
 // but we don't know whether's a Markdown file, inline HTML, whatever.
 func (app *App) layoutElementToHTML(tag string) (string, error) {
 	app.Debug("\tlayoutElementToHTML(%v)", tag)
+  // tag is forced lowercase already
 	html := ""
 	var err error
-	switch tag {
+	switch tag{
 	default:
 		html = ""
 	case "header", "nav", "footer":
+    app.Debug("\t\tAttempting to generate HTML for %v", tag)
 		if html, err = app.layoutElement(tag); err != nil {
+      app.Debug("\t\t%s failed", tag)
 			return "", err
 		}
 		if html != "" {
+      app.Debug("\t\tHTML: %s", html)
 			return wrapTag("<"+tag+">", html, true), nil
 		}
+    app.Debug("\t\tNo HTML generated")
 	case "sidebar":
 		html, err = app.layoutElement(tag)
 		if html != "" {
@@ -347,6 +352,7 @@ func (app *App) layoutElement(tag string) (string, error) {
 	case "footer":
 		l = app.Page.Theme.Footer
 	}
+  app.Debug("\t\t\tlayoutElement(%v). %#v", tag, l)
 	return app.layoutEl(l)
 }
 
@@ -411,7 +417,7 @@ func (app *App) article(body []byte, params ...string) string {
 func (app *App) header() (string, error) {
 	// If this feature isn't supported by the
 	// Metabuzz Theme Framework, don't bother.
-	if !app.Page.Theme.Supports.MTF || !app.Page.Theme.Supports.Header {
+	if !app.Page.Theme.Supports.MTF || !app.Page.Theme.Supports.Header || strings.Contains(strings.ToLower(app.Page.FrontMatter.Suppress), "header") {
 		return "", nil
 	}
 	return app.layoutElementToHTML("header")
@@ -420,7 +426,7 @@ func (app *App) header() (string, error) {
 func (app *App) nav() (string, error) {
 	// If this feature isn't supported by the
 	// Metabuzz Theme Framework, don't bother.
-	if !app.Page.Theme.Supports.MTF || !app.Page.Theme.Supports.Nav {
+	if !app.Page.Theme.Supports.MTF || !app.Page.Theme.Supports.Nav  || strings.Contains(strings.ToLower(app.Page.FrontMatter.Suppress), "nav") {
 		return "", nil
 	}
 	return app.layoutElementToHTML("nav")
@@ -429,7 +435,7 @@ func (app *App) nav() (string, error) {
 func (app *App) sidebar() (string, error) {
 	// If this feature isn't supported by the
 	// Metabuzz Theme Framework, don't bother.
-	if !app.Page.Theme.Supports.MTF || !app.Page.Theme.Supports.Sidebar {
+	if !app.Page.Theme.Supports.MTF || !app.Page.Theme.Supports.Sidebar  ||  strings.Contains(strings.ToLower(app.Page.FrontMatter.Suppress), "sidebar") {
 		return "", nil
 	}
 	return (app.layoutElementToHTML("sidebar"))
@@ -438,7 +444,7 @@ func (app *App) sidebar() (string, error) {
 func (app *App) footer() (string, error) {
 	// If this feature isn't supported by the
 	// Metabuzz Theme Framework, don't bother.
-	if !app.Page.Theme.Supports.MTF || !app.Page.Theme.Supports.Footer {
+	if !app.Page.Theme.Supports.MTF || !app.Page.Theme.Supports.Footer  || strings.Contains(strings.ToLower(app.Page.FrontMatter.Suppress), "footer")  {
 		return "", nil
 	}
 	return app.layoutElementToHTML("footer")

@@ -81,20 +81,20 @@ type supports struct {
 	// If this is false then all the rest are false
 	MTF bool `yaml:"MTF"`
 
-  // Theme supports dark mode/light mode
-	Mode    bool `yaml:"Mode"`
+	// Theme supports dark mode/light mode
+	Mode bool `yaml:"Mode"`
 
-  // Theme supports header
-	Header  bool `yaml:"Header"`
+	// Theme supports header
+	Header bool `yaml:"Header"`
 
-  // Theme suports navbar
-	Nav     bool `yaml:"Nav"`
+	// Theme suports navbar
+	Nav bool `yaml:"Nav"`
 
-  // Theme supports sidebar
+	// Theme supports sidebar
 	Sidebar bool `yaml:"Sidebar"`
 
-  // Theme supports footer.
-	Footer  bool `yaml:"Footer"`
+	// Theme supports footer.
+	Footer bool `yaml:"Footer"`
 }
 type layoutElement struct {
 	// Inline HTML
@@ -331,6 +331,7 @@ func (app *App) getMode(stylesheet string) string {
 	}
 	return stylesheet
 }
+
 // xxx
 
 // loadThemeConfig reads the theme's config file, so

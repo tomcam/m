@@ -1,5 +1,14 @@
 package app
 
+/*
+type use struct {
+	Header  bool `yaml:"Header"`
+	Nav     bool `yaml:"Nav"`
+	Sidebar bool `yaml:"Sidebar"`
+	Footer  bool `yaml:"Footer"`
+}
+*/
+
 // type Page contains read-only information about the Markdown page currently
 // being processed.
 type Page struct {
@@ -25,24 +34,26 @@ type Page struct {
 
 type FrontMatter struct {
 	// Theme specified by user
-	Theme string `json:"theme"`
+	Theme string `yaml:"theme"`
 
 	// Generates a Description metatag on output
-	Description string `json:"description"`
+	Description string `yaml:"description"`
 
 	// Filenames to skip when publishing a theme
-	ExcludeFiles []string `json:"exclude-files"`
+	ExcludeFiles []string `yaml:"exclude-files"`
 
 	// Generates a Title tag on output
-	Title string `json:"title"`
+	Title string `yaml:"Title"`
 
 	// If Mode is "dark", use a dark theme.
-	Mode string
+	Mode string `yaml:"Mode"`
 
-	// Determine whether aside is on the
-	// right, left, or none
-	Sidebar string `json:"sidebar"`
+	// Disable features as needed on a per-page basis
+	Suppress string `yaml:"Suppress"`
 
+	// Determine whether sidebasr is on the
+	// "right", "left", or "none" on per-page basis
+  Sidebar string `yaml:"Sidebar"`
 	// If set to "off", don't execute templates on this page.
 	// Used for documentation purposes.
 	Templates string
