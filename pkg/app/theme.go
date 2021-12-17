@@ -149,7 +149,7 @@ func (app *App) themeNameToLower() string {
 // fully qualified directory source to the fully qualified
 // directory dest.
 func (app *App) copyTheme(source string, dest string) error {
-	app.Debug("\t\t\t\tcopyTheme(%v, %v)", source, dest)
+	app.Note("\t\t\t\tcopyTheme(%v, %v)", source, dest)
 	err := os.MkdirAll(dest, defaults.PublicFilePermissions)
 	if err != nil {
 		// TODO: Handle error properly & and document error code
@@ -157,10 +157,17 @@ func (app *App) copyTheme(source string, dest string) error {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	// TODO: See if there's a faster Go lib for this
+  if err := CopyDirectory(source, dest, false); err != nil {
+    app.Note("CopyDirectory(%s, %s, false) failed", source, dest)
+    // TODO: Problbably want a an original error code
+ 		return ErrCode("PREVIOUS", err.Error())
+ }
+ /*
 	if err := copyDirAll(source, dest); err != nil {
 		app.Debug("\t\t\t\tFAILED copyDirAll(%v, %v)", source, dest)
 		return ErrCode("PREVIOUS", err.Error())
 	}
+  */
 	return nil
 }
 
@@ -442,23 +449,14 @@ func (app *App) newTheme(from, to string) error {
 	}
 	app.Debug("About to copy %v to %v using %v", source, dest)
 	if err := app.copyTheme(source, dest); err != nil {
-		return ErrCode("0929", "from '"+source+"' to '"+dest+"'")
+		return ErrCode("0931", "from '"+source+"' to '"+dest+"'")
 	}
 
 	// The destination theme has been copied but it still has the old
-	// names inside.
+	// names inside. Maket those corrections.
 	if err := app.copyThemeUpdate(source, dest); err != nil {
 		return ErrCode("0930", "from '"+source+"' to '"+dest+"'")
 	}
-	/*
-		err = app.publishThemeAssets(source, app.Site.publishPath)
-		// TODO: May want to improve error handling
-		if err != nil {
-			return ErrCode("PREVIOUS", err.Error())
-		}
-
-	*/
-	//app.ShowInfo(".")
 	return nil
 }
 

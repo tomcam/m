@@ -151,6 +151,7 @@ var errMsgs = map[string]string{
 	"0928": "Unable to create a new post",
 	"0929": "Error copying theme",         // Custom message
 	"0930": "Error updating copied theme", // Custom message
+	"0931": "Error copying theme",         // Custom message
 	// 0950 - Something's already there
 	"0951": "Site already exists at",             // sitename
 	"0952": "Theme already exists at",            // sitename
