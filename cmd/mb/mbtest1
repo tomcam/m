@@ -18,8 +18,9 @@ declare -a themes=(
   'chill'
   'future'
   'genuine'
-  'debut'
-	'debut/gallery'
+  'scribble'
+  #'debut'
+	#'debut/gallery'
   'simplify'
   'tradesman'
 	)

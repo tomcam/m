@@ -1,5 +1,7 @@
 #!/bin/zsh
-OUTFILE="VNU_CHECK.TMP.HTML"
+[ ! -f $1 ] && echo "Please specify a file" &&  exit 1
+#OUTFILE="VNU_CHECK.TMP.HTML"
+OUTFILE=$1.TMP
 # Read the file named on the command line, which is $1, 
 # into the variable $INFILE.
 INFILE=$(<$1)
@@ -15,4 +17,5 @@ echo "$CONTENTS" > $OUTFILE
 echo $1:
 vnu $OUTFILE
 rm $OUTFILE
+exit 0
 

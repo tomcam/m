@@ -109,6 +109,8 @@ source file directory structure remains sacrosanct: a tree of Markdown files
 
 
 ## Document
+* FrontMatter.Supress
+  - Supress: header, footer
 * In a starter, if you don't specify the permalihnk format it's ":year/:monthnum/:day/:postname"
 * Permalink must start with a directory such as blog or news and end with :postname .
 That way a comman like mb new post /blog "Big news" will turn into `/blog/2022/06/21/big-news.md`
