@@ -1,0 +1,36 @@
+Supports:
+    MTF: true
+    Mode: true
+    Header: true
+    Nav: true
+    Sidebar: true
+    Footer: true
+Name: ""
+Branding: ""
+Description: ""
+Stylesheets:
+    - reset.css
+    - fonts.css
+    - bind.css
+    - sizes.css
+    - theme-light.css
+    - layout.css
+    - hero.css
+    - responsive.css
+License: ""
+Author: ""
+Nav:
+    HTML: ""
+    File: "nav.md"
+Header:
+    HTML: ""
+    File: header.md
+Article:
+    HTML: ""
+    File: ""
+Footer:
+    HTML: ""
+    File: footer.md
+Sidebar:
+    HTML: ""
+    File: sidebar.md
