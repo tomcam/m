@@ -1,14 +1,5 @@
 package app
 
-/*
-type use struct {
-	Header  bool `yaml:"Header"`
-	Nav     bool `yaml:"Nav"`
-	Sidebar bool `yaml:"Sidebar"`
-	Footer  bool `yaml:"Footer"`
-}
-*/
-
 // type Page contains read-only information about the Markdown page currently
 // being processed.
 type Page struct {
@@ -29,6 +20,9 @@ type Page struct {
 	// (for example, only sidebar-left.css
 	// or sidebar-right.css will be published)
 	stylesheets    []string
+
+  // List of stylesheets with full path designations and
+  // enclosed in HTML stylesheet tags.
 	stylesheetTags string
 }
 
