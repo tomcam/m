@@ -9,20 +9,24 @@ type Page struct {
 	// TODO: Marshal in front matter as a real struct
 	frontMatterRaw map[string]interface{}
 	FrontMatter    FrontMatter
-	Theme          Theme
-	// TODO: wtf. Did I lose all this? Anyway eventually
-	// I need to lose Theme
+
+	// Theme used by this page.
+	Theme Theme
+
+	// In case of a nested theme, such as "debut/gallery"
+	// or "debut/gallery/item", include them all here.
 	themes []Theme
+
 	// Fully qualified filename of this source file
 	filePath string
 
 	// List of stylesheets actually published
 	// (for example, only sidebar-left.css
 	// or sidebar-right.css will be published)
-	stylesheets    []string
+	stylesheets []string
 
-  // List of stylesheets with full path designations and
-  // enclosed in HTML stylesheet tags.
+	// List of stylesheets with full path designations and
+	// enclosed in HTML stylesheet tags.
 	stylesheetTags string
 }
 
@@ -47,7 +51,8 @@ type FrontMatter struct {
 
 	// Determine whether sidebasr is on the
 	// "right", "left", or "none" on per-page basis
-  Sidebar string `yaml:"Sidebar"`
+	Sidebar string `yaml:"Sidebar"`
+
 	// If set to "off", don't execute templates on this page.
 	// Used for documentation purposes.
 	Templates string

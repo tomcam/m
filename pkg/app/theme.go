@@ -157,17 +157,17 @@ func (app *App) copyTheme(source string, dest string) error {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	// TODO: See if there's a faster Go lib for this
-  if err := CopyDirectory(source, dest, false); err != nil {
-    app.Note("CopyDirectory(%s, %s, false) failed", source, dest)
-    // TODO: Problbably want a an original error code
- 		return ErrCode("PREVIOUS", err.Error())
- }
- /*
-	if err := copyDirAll(source, dest); err != nil {
-		app.Debug("\t\t\t\tFAILED copyDirAll(%v, %v)", source, dest)
+	if err := CopyDirectory(source, dest, false); err != nil {
+		app.Note("CopyDirectory(%s, %s, false) failed", source, dest)
+		// TODO: Problbably want a an original error code
 		return ErrCode("PREVIOUS", err.Error())
 	}
-  */
+	/*
+		if err := copyDirAll(source, dest); err != nil {
+			app.Debug("\t\t\t\tFAILED copyDirAll(%v, %v)", source, dest)
+			return ErrCode("PREVIOUS", err.Error())
+		}
+	*/
 	return nil
 }
 

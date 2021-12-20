@@ -281,6 +281,7 @@ func (m MdOptions) IsOptionSet(opt MdOptions) bool {
 // then renames the temp directory to the desired name
 // when completed.
 func (app *App) newSite(pathname string) error {
+  app.Print("newSite(%v)", pathname)
 	// Exit if there's already a project at specified location.
 	if isProject(pathname) {
 		return ErrCode("0951", pathname)
@@ -294,31 +295,54 @@ func (app *App) newSite(pathname string) error {
 	// it gets deleted. Extract the desired directory,
 	// then replace the filename with a temp fileame.
 	dir := filepath.Dir(pathname)
-	if dir == "." || dir == ".." {
+
+	// For case in which you already have the directory,
+	// are inside it, but it's not an existing project.
+	// For example, mkdir foo && cd foo && mb new site .
+	inProjectDir := false
+	if dir == "." /* || dir == ".." */ {
 		dir = currDir()
+    inProjectDir = true
 		requested = filepath.Join(dir, pathname)
 	}
-	var tmpDir string
+	if requested == currDir() {
+    inProjectDir = true
+  }
+  app.Note("inProjectDir: %v", inProjectDir) 
+  var tmpDir string
 	var err error
 	// Create the temporary directory. It starts with the
 	// Metabuzz product name abbreviation.
-	if tmpDir, err = os.MkdirTemp(dir, defaults.ProductShortName); err != nil {
-		msg := fmt.Sprintf("%s for project %s: %s", dir, pathname, err.Error())
-		return ErrCode("0414", msg)
+	if !inProjectDir {
+		if tmpDir, err = os.MkdirTemp(dir, defaults.ProductShortName); err != nil {
+			msg := fmt.Sprintf("%s for project %s: %s", dir, pathname, err.Error())
+			return ErrCode("0414", msg)
+		}
 	}
 	app.Debug("newSite(%v)", pathname)
 	// Create a project at the specified path
-	err = os.MkdirAll(tmpDir, defaults.ProjectFilePermissions)
-	if err != nil {
-		return ErrCode("0401", tmpDir)
-	}
-	if err = app.changeWorkingDir(tmpDir); err != nil {
-		return ErrCode("PREVIOUS", err.Error())
-	}
-
+	if !inProjectDir {
+		err = os.MkdirAll(tmpDir, defaults.ProjectFilePermissions)
+		if err != nil {
+			return ErrCode("0401", tmpDir)
+		}
+		if err = app.changeWorkingDir(tmpDir); err != nil {
+			return ErrCode("PREVIOUS", err.Error())
+		}
+	} else {
+		if err = app.changeWorkingDir(requested); err != nil {
+			return ErrCode("PREVIOUS", err.Error())
+		}
+  }
 	// Copy files required to populate the .mb directory
-	if err = app.copyMbDir(tmpDir); err != nil {
-		return ErrCode("PREVIOUS", err.Error())
+	if inProjectDir {
+		if err = app.copyMbDir(requested); err != nil {
+			return ErrCode("PREVIOUS", err.Error())
+		}
+	} else {
+		if err = app.copyMbDir(tmpDir); err != nil {
+			return ErrCode("PREVIOUS", err.Error())
+		}
 	}
 
 	// Get factory themes and copy to project. They will then
@@ -333,7 +357,11 @@ func (app *App) newSite(pathname string) error {
 		dir := filepath.Dir(app.Flags.Site)
 		if dir == ".." || dir == "." {
 			// Only filename, e.g. "--site foo.yaml", no path, so add path
-			filename = filepath.Join(tmpDir, defaults.CfgDir, app.Flags.Site)
+			if inProjectDir {
+				filename = filepath.Join(requested, defaults.CfgDir, app.Flags.Site)
+			} else {
+				filename = filepath.Join(tmpDir, defaults.CfgDir, app.Flags.Site)
+			}
 		} else {
 			// Fully qualified filename, e.g. "--site ~/foo.yaml",
 			// so no need to add path
@@ -341,13 +369,21 @@ func (app *App) newSite(pathname string) error {
 		}
 	} else {
 		// No site file specified, so use default
-		filename = filepath.Join(tmpDir, defaults.CfgDir, defaults.SiteConfigFilename)
+		if inProjectDir {
+			filename = filepath.Join(requested, defaults.CfgDir, defaults.SiteConfigFilename)
+		} else {
+			filename = filepath.Join(tmpDir, defaults.CfgDir, defaults.SiteConfigFilename)
+		}
 	}
 	if err = app.writeSiteConfig(filename); err != nil {
 		msg := fmt.Sprintf("%s: %s", filename, err.Error())
 		return ErrCode("0227", msg)
 	}
-	app.Site.path = tmpDir
+  if inProjectDir {
+	  app.Site.path = requested
+  } else {
+	  app.Site.path = tmpDir
+  }
 	// Generate stub pages/sections if specified
 	app.Site.name = filepath.Base(requested)
 	if app.Flags.Starters != "" {
@@ -372,21 +408,23 @@ func (app *App) newSite(pathname string) error {
 			return ErrCode("PREVIOUS", err.Error())
 		}
 	}
-	// Restore temp dir name to pathname  passed in
-	if err = os.Rename(tmpDir, requested); err != nil {
-		msg := fmt.Sprintf("%s to %s: %s", tmpDir, requested, err.Error())
-		return ErrCode("0226", msg)
+	// Restore temp dir name to pathname  passed in.
+	// Handle the case where the directory already exists.
+  if !inProjectDir {
+    if err = os.Rename(tmpDir, requested); err != nil {
+      msg := fmt.Sprintf("%s to %s: %s", tmpDir, requested, err.Error())
+      return ErrCode("0226", msg)
 
-		// TODO: This can't execute.
-		// It shoiuld run when os.Rename fails.
-		// At the moment I can't see why Rename is failing but
-		// I'm not getting an error
-		if err := os.RemoveAll(tmpDir); err != nil {
-			msg := fmt.Sprintf("System error attempting to delete temporary site directory %s: %s", tmpDir, err.Error())
-			return ErrCode("0601", msg)
-		}
-
-	}
+      // TODO: This can't execute.
+      // It shoiuld run when os.Rename fails.
+      // At the moment I can't see why Rename is failing but
+      // I'm not getting an error
+      if err := os.RemoveAll(tmpDir); err != nil {
+        msg := fmt.Sprintf("System error attempting to delete temporary site directory %s: %s", tmpDir, err.Error())
+        return ErrCode("0601", msg)
+      }
+    }
+  }
 	app.Site.path = requested
 	if err := app.changeWorkingDir(requested); err != nil {
 		msg := fmt.Sprintf("System error attempting to change to new site directory %s: %s", requested, err.Error())

@@ -250,10 +250,8 @@ func (app *App) descriptionTag() string {
 // should be a separate step
 func (app *App) MdFileToHTML(filename string) ([]byte, error) {
 	// Read file into a byte slice.
-	//app.src = util.FileToBytes(filename)
 	b := util.FileToBytes(filename)
 	app.src = b
-	//s := app.interps(filename, string(app.src))
 	s := app.interps(filename, string(b))
 	// Convert to HTML
 	return app.mdToHTML([]byte(s))
@@ -304,23 +302,23 @@ func stylesheetTag(stylesheet string) string {
 // but we don't know whether's a Markdown file, inline HTML, whatever.
 func (app *App) layoutElementToHTML(tag string) (string, error) {
 	app.Debug("\tlayoutElementToHTML(%v)", tag)
-  // tag is forced lowercase already
+	// tag is forced lowercase already
 	html := ""
 	var err error
-	switch tag{
+	switch tag {
 	default:
 		html = ""
 	case "header", "nav", "footer":
-    app.Debug("\t\tAttempting to generate HTML for %v", tag)
+		app.Debug("\t\tAttempting to generate HTML for %v", tag)
 		if html, err = app.layoutElement(tag); err != nil {
-      app.Debug("\t\t%s failed", tag)
+			app.Debug("\t\t%s failed", tag)
 			return "", err
 		}
 		if html != "" {
-      app.Debug("\t\tHTML: %s", html)
+			app.Debug("\t\tHTML: %s", html)
 			return wrapTag("<"+tag+">", html, true), nil
 		}
-    app.Debug("\t\tNo HTML generated")
+		app.Debug("\t\tNo HTML generated")
 	case "sidebar":
 		html, err = app.layoutElement(tag)
 		if html != "" {
@@ -352,7 +350,7 @@ func (app *App) layoutElement(tag string) (string, error) {
 	case "footer":
 		l = app.Page.Theme.Footer
 	}
-  app.Debug("\t\t\tlayoutElement(%v). %#v", tag, l)
+	app.Debug("\t\t\tlayoutElement(%v). %#v", tag, l)
 	return app.layoutEl(l)
 }
 
@@ -426,7 +424,7 @@ func (app *App) header() (string, error) {
 func (app *App) nav() (string, error) {
 	// If this feature isn't supported by the
 	// Metabuzz Theme Framework, don't bother.
-	if !app.Page.Theme.Supports.MTF || !app.Page.Theme.Supports.Nav  || strings.Contains(strings.ToLower(app.Page.FrontMatter.Suppress), "nav") {
+	if !app.Page.Theme.Supports.MTF || !app.Page.Theme.Supports.Nav || strings.Contains(strings.ToLower(app.Page.FrontMatter.Suppress), "nav") {
 		return "", nil
 	}
 	return app.layoutElementToHTML("nav")
@@ -435,7 +433,7 @@ func (app *App) nav() (string, error) {
 func (app *App) sidebar() (string, error) {
 	// If this feature isn't supported by the
 	// Metabuzz Theme Framework, don't bother.
-	if !app.Page.Theme.Supports.MTF || !app.Page.Theme.Supports.Sidebar  ||  strings.Contains(strings.ToLower(app.Page.FrontMatter.Suppress), "sidebar") {
+	if !app.Page.Theme.Supports.MTF || !app.Page.Theme.Supports.Sidebar || strings.Contains(strings.ToLower(app.Page.FrontMatter.Suppress), "sidebar") {
 		return "", nil
 	}
 	return (app.layoutElementToHTML("sidebar"))
@@ -444,7 +442,7 @@ func (app *App) sidebar() (string, error) {
 func (app *App) footer() (string, error) {
 	// If this feature isn't supported by the
 	// Metabuzz Theme Framework, don't bother.
-	if !app.Page.Theme.Supports.MTF || !app.Page.Theme.Supports.Footer  || strings.Contains(strings.ToLower(app.Page.FrontMatter.Suppress), "footer")  {
+	if !app.Page.Theme.Supports.MTF || !app.Page.Theme.Supports.Footer || strings.Contains(strings.ToLower(app.Page.FrontMatter.Suppress), "footer") {
 		return "", nil
 	}
 	return app.layoutElementToHTML("footer")
@@ -525,11 +523,11 @@ func (app *App) publishStylesheets() error {
 		app.Debug("\t\t\t\ttheme is: %#v", theme.level)
 		app.Debug("\t\t\t\tpublishStylesheets: %#v", theme.publishStylesheets)
 		for _, stylesheet := range theme.publishStylesheets {
-      if strings.HasPrefix(strings.ToLower(stylesheet), "http") {
-		    stylesheet = stylesheetTag(stylesheet)
-			  stylesheets.WriteString(stylesheet)
-        continue
-      }
+			if strings.HasPrefix(strings.ToLower(stylesheet), "http") {
+				stylesheet = stylesheetTag(stylesheet)
+				stylesheets.WriteString(stylesheet)
+				continue
+			}
 			source = filepath.Join(theme.sourcePath, stylesheet)
 			dest = filepath.Join(app.themePublishDir(theme.level), stylesheet)
 
