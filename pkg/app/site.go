@@ -300,15 +300,14 @@ func (app *App) newSite(pathname string) error {
 	// are inside it, but it's not an existing project.
 	// For example, mkdir foo && cd foo && mb new site .
 	inProjectDir := false
-	if dir == "." /* || dir == ".." */ {
-		dir = currDir()
+	if requested == "." /* || dir == ".." */ {
+		requested = currDir()
     inProjectDir = true
-		requested = filepath.Join(dir, pathname)
+		requested = filepath.Join(requested, pathname)
 	}
 	if requested == currDir() {
     inProjectDir = true
   }
-  app.Note("inProjectDir: %v", inProjectDir) 
   var tmpDir string
 	var err error
 	// Create the temporary directory. It starts with the
@@ -319,29 +318,41 @@ func (app *App) newSite(pathname string) error {
 			return ErrCode("0414", msg)
 		}
 	}
-	app.Debug("newSite(%v)", pathname)
+	app.Print("newSite(%v)", pathname)
 	// Create a project at the specified path
 	if !inProjectDir {
+    app.Print("\t in project directory")
 		err = os.MkdirAll(tmpDir, defaults.ProjectFilePermissions)
 		if err != nil {
 			return ErrCode("0401", tmpDir)
 		}
+    app.Note("\tCreated %v", tmpDir)
 		if err = app.changeWorkingDir(tmpDir); err != nil {
-			return ErrCode("PREVIOUS", err.Error())
+      msg := fmt.Sprintf("System error attempting to change to new site directory %s: %s", requested, err.Error())
+        return ErrCode("1111", msg)
 		}
+    // xxx 
+    app.Note("\tChanged to %v", tmpDir)
 	} else {
+    /// xxx this is where the magic fails
 		if err = app.changeWorkingDir(requested); err != nil {
-			return ErrCode("PREVIOUS", err.Error())
+      // TODO: REMOPVE
+		  msg := fmt.Sprintf("System error attempting to change to new site directory %s: %s", requested, err.Error())
+		    return ErrCode("1112", msg)
 		}
   }
 	// Copy files required to populate the .mb directory
 	if inProjectDir {
 		if err = app.copyMbDir(requested); err != nil {
-			return ErrCode("PREVIOUS", err.Error())
+		  msg := fmt.Sprintf("System error attempting to change to new site directory %s: %s", requested, err.Error())
+		    return ErrCode("1112", msg)
+			//return ErrCode("PREVIOUS", err.Error())
 		}
 	} else {
 		if err = app.copyMbDir(tmpDir); err != nil {
-			return ErrCode("PREVIOUS", err.Error())
+		  msg := fmt.Sprintf("System error attempting to change to new temp directory %s: %s", tmpDir, err.Error())
+		    return ErrCode("1113", msg)
+			//return ErrCode("PREVIOUS", err.Error())
 		}
 	}
 

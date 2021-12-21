@@ -17,20 +17,9 @@ import (
 // sense upon site creation).
 type Starter struct {
 	Type string `yaml:"Type"` // e.g. Page, Collection
-	//Name string `yaml:"Name"`
-
-	// Derived from the map key name if not given here
-	//Filename string `yaml:"Filename"`
-
-	// Directory this should appear in
-	//Folder string `yaml:"Folder"`
 
 	// Sort order if collection
 	Sort string `yaml:"Sort"`
-
-	// If specified, the Permalink template makes it post
-	// and not a page
-	//Permalink string `yaml:"Permalink"`
 
 	// For title tag
 	Title string `yaml:"Title"`
@@ -78,9 +67,13 @@ func (app *App) generate(pathname string) error {
 		}
 
 	}
+  app.Note("Collections: %v", app.Site.Collections) 
 	return nil
 }
 
+// starterCollection() creates a collection from the path and/or
+// permalink described in name, for example, 
+// "/blog/:year/:monthnum/:daynum"
 func (app *App) starterCollection(name string, starter Starter) error {
 	app.Debug("\n\nstarterCollection(%v)", name)
 	// The name is a path to the file or collection.
@@ -175,7 +168,7 @@ func fixPermalink(permalink string) (string, error) {
 			segments[i] = slug.Make(seg)
 		}
 		// If the permalink didn't include post name
-		// we'll have to fix append it.
+		// then append it.
 		if segments[i] == ":postname" {
 			postnamePresent = true
 			postnameIndex = i
@@ -195,7 +188,7 @@ func fixPermalink(permalink string) (string, error) {
 		segments = append(segments, ":postname")
 	}
 
-	// Collapse everything pack to what should now be
+	// Collapse everything back to what should now be
 	// a usable directory designation.
 	clean := strings.Join(segments, "/")
 	return clean, nil

@@ -266,12 +266,12 @@ func (app *App) setPaths() {
 // changeWorkingDir() changes to the specified
 // directory and sets app.Site.path accordingly.
 func (app *App) changeWorkingDir(dir string) error {
-	app.Debug("\tchangeWorkingDir(%v)", dir)
+	app.Note("\tchangeWorkingDir(%v)", dir)
 	if dir == "." || dir == "" {
 	} else {
 		if err := os.Chdir(dir); err != nil {
 			app.Debug("\t\tos.ChDir(%v) failed", dir)
-			return ErrCode("1108", "PREVIOUS", err.Error())
+			return ErrCode("1108", err.Error())
 		}
 	}
 	app.Site.path = currDir()

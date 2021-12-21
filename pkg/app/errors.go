@@ -2,6 +2,13 @@ package app
 
 // Example usage
 //
+//
+//	if err = app.changeWorkingDir(tmpDir); err != nil {
+//    msg := fmt.Sprintf("System error attempting to change to new site directory %s: %s", requested, err.Error())
+//    return ErrCode("1111", msg)
+//  }	
+//	msg := fmt.Sprintf("%s for project %s: %s", dir, pathname, err.Error())
+//	  return ErrCode("0414", msg)
 //   return ErrCode("1234", err.Error())
 //
 //   return ErrCode("PREVIOUS", err.Error())
@@ -152,6 +159,7 @@ var errMsgs = map[string]string{
 	"0929": "Error copying theme",         // Custom message
 	"0930": "Error updating copied theme", // Custom message
 	"0931": "Error copying theme",         // Custom message
+  "0932": "Error populating the " + defaults.CfgDir + " directory",
 	// 0950 - Something's already there
 	"0951": "Site already exists at",             // sitename
 	"0952": "Theme already exists at",            // sitename
@@ -192,6 +200,7 @@ var errMsgs = map[string]string{
 	"1109": "Can't change to site directory for interview",         // directory name
 	"1110": "Can't change to site directory to copy theme",         // directory name
 	"1111": "System error changing to newly create site directory", // directory name
+	"1112": "System error changing to newly create site directory", // directory name
 	// 1200 - Syntax error!
 	"1204": "Unknown dot value in Go template function ", //
 	"1205": "Error generating table of contents",         //

@@ -3,6 +3,7 @@ package app
 import (
 	"github.com/spf13/cobra"
 	"github.com/tomcam/m/pkg/default"
+	"path/filepath"
 )
 
 func (app *App) addCommands() {
@@ -168,6 +169,7 @@ create theme based on an existing one.
 `,
 			Run: func(cmd *cobra.Command, args []string) {
 				var pathname string
+        var err error
 				// See if the user specfied a directory name.
 				if len(args) > 0 {
 					pathname = args[0]
@@ -178,11 +180,15 @@ create theme based on an existing one.
 					pathname = promptString("Name of site to create?")
 				}
 				// Site.new() requires a fully qualified filename.
+        /*
 				if pathname == "" || pathname == "." {
 					pathname = currDir()
 				}
-				err := app.newSite(pathname)
-				if err != nil {
+        */
+        if pathname, err = filepath.Abs(pathname); err != nil {
+ 					app.QuitError(ErrCode("PREVIOUS", err.Error()))
+        }
+				if err = app.newSite(pathname); err != nil {
 					//app.QuitError(ErrCode("0924", pathname))
 					//app.QuitError(ErrCode("0924", "PREVIOUS", err.Error()))
 					app.QuitError(ErrCode("PREVIOUS", err.Error()))
