@@ -266,7 +266,6 @@ func (app *App) setPaths() {
 // changeWorkingDir() changes to the specified
 // directory and sets app.Site.path accordingly.
 func (app *App) changeWorkingDir(dir string) error {
-	app.Note("\tchangeWorkingDir(%v)", dir)
 	if dir == "." || dir == "" {
 	} else {
 		if err := os.Chdir(dir); err != nil {

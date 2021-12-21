@@ -281,7 +281,7 @@ func (m MdOptions) IsOptionSet(opt MdOptions) bool {
 // then renames the temp directory to the desired name
 // when completed.
 func (app *App) newSite(pathname string) error {
-  app.Print("newSite(%v)", pathname)
+  app.Debug("newSite(%v)", pathname)
 	// Exit if there's already a project at specified location.
 	if isProject(pathname) {
 		return ErrCode("0951", pathname)
@@ -318,23 +318,18 @@ func (app *App) newSite(pathname string) error {
 			return ErrCode("0414", msg)
 		}
 	}
-	app.Print("newSite(%v)", pathname)
 	// Create a project at the specified path
 	if !inProjectDir {
-    app.Print("\t in project directory")
 		err = os.MkdirAll(tmpDir, defaults.ProjectFilePermissions)
 		if err != nil {
 			return ErrCode("0401", tmpDir)
 		}
-    app.Note("\tCreated %v", tmpDir)
 		if err = app.changeWorkingDir(tmpDir); err != nil {
       msg := fmt.Sprintf("System error attempting to change to new site directory %s: %s", requested, err.Error())
         return ErrCode("1111", msg)
 		}
     // xxx 
-    app.Note("\tChanged to %v", tmpDir)
 	} else {
-    /// xxx this is where the magic fails
 		if err = app.changeWorkingDir(requested); err != nil {
       // TODO: REMOPVE
 		  msg := fmt.Sprintf("System error attempting to change to new site directory %s: %s", requested, err.Error())
@@ -487,9 +482,8 @@ func (app *App) writeSiteConfig(path ...string) error {
 		filename = path[0]
 	}
 	if err := writeYamlFile(filename, app.Site); err != nil {
-		// TODO: Better error handling?
-		app.Note("writesiteconfig failed")
-		return err
+    msg := fmt.Sprintf("%s: %s", filename, err.Error())
+    return ErrCode("0228", msg)
 	}
 	return nil
 }

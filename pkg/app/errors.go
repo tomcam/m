@@ -101,6 +101,7 @@ var errMsgs = map[string]string{
 	"0225": "Unable to create config file for new theme",                 // filename
 	"0226": "System error attempting to rename temporary site directory", // custom message
 	"0227": "System error attempting to write site config file to",       // custom message
+  "0228": "System error attempting to create YAML file",
 	// 0250 - Error closing file
 	// Old errors stopped at 0252
 

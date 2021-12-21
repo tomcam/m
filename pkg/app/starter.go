@@ -75,7 +75,7 @@ func (app *App) generate(pathname string) error {
 // permalink described in name, for example, 
 // "/blog/:year/:monthnum/:daynum"
 func (app *App) starterCollection(name string, starter Starter) error {
-	app.Debug("\n\nstarterCollection(%v)", name)
+	app.Note("\t\tstarterCollection(%v)", name)
 	// The name is a path to the file or collection.
 	// It may also be a permalink.
 	path := name
@@ -96,13 +96,16 @@ func (app *App) starterCollection(name string, starter Starter) error {
 	var err error
 	// TODO: Need test case
 	if permalink, err = fixPermalink(path); err != nil {
+    app.Print("\t\t\tFailed fixPermalink(%v)", path)
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	// TODO: This should come later after it's been cleaned
 	if app.Site.Collections[permalink].path == permalink {
+    app.Print("\t\t\tFailed adding permalink")
 		return ErrCode("0953", path)
 	}
 	c.path = permalink
+	app.Print("\t\t\tapp.Site.Collections[%v] = %v", permalink, c)
 	app.Site.Collections[permalink] = c
 
 	// Create the specified folder as a subdirectory
