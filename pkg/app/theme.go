@@ -149,7 +149,7 @@ func (app *App) themeNameToLower() string {
 // fully qualified directory source to the fully qualified
 // directory dest.
 func (app *App) copyTheme(source string, dest string) error {
-	app.Note("\t\t\t\tcopyTheme(%v, %v)", source, dest)
+	app.Debug("\t\t\t\tcopyTheme(%v, %v)", source, dest)
 	err := os.MkdirAll(dest, defaults.PublicFilePermissions)
 	if err != nil {
 		// TODO: Handle error properly & and document error code
@@ -158,7 +158,7 @@ func (app *App) copyTheme(source string, dest string) error {
 	}
 	// TODO: See if there's a faster Go lib for this
 	if err := CopyDirectory(source, dest, false); err != nil {
-		app.Note("CopyDirectory(%s, %s, false) failed", source, dest)
+		app.Debug("CopyDirectory(%s, %s, false) failed", source, dest)
 		// TODO: Problbably want a an original error code
 		return ErrCode("PREVIOUS", err.Error())
 	}
@@ -184,8 +184,6 @@ func (app *App) publishThemeAssets(from string, to string) error {
 		return (ErrCode("1033", from, err.Error()))
 	}
 	excludeFromDir := util.NewSearchInfo(app.Page.FrontMatter.ExcludeFiles)
-	//jlkapp.Note("\t\t\t\tpublishThemeAssets: exclude files %v",app.Page.FrontMatter.ExcludeFiles)
-	//app.Note("\t\t\t\tpublishThemeAssets: FrontMatter: %#v",app.Page.FrontMatter)
 	for _, file := range candidates {
 		if file.IsDir() {
 			break
