@@ -111,7 +111,7 @@
   --h1-margin-right:0rem;
   --h1-margin-left:0rem;
   --h1-padding-top:2rem;
-  --h1-padding-bottom:0rem;
+  --h1-padding-bottom:1rem;
   --h1-padding-right:0rem;
   --h1-padding-left:0rem;
 
@@ -122,8 +122,8 @@
   --h2-margin-bottom:0rem;
   --h2-margin-right:0rem;
   --h2-margin-left:0rem;
-  --h2-padding-top:.75rem;
-  --h2-padding-bottom:0rem;
+  --h2-padding-top:1rem;
+  --h2-padding-bottom:.75rem;
   --h2-padding-right:0rem;
   --h2-padding-left:0rem;
 

@@ -96,11 +96,6 @@ nav > ul > li > a:active {text-decoration:underline;}
 
 article > p, 
   article > p > a,
-  /*
-  article > ul, 
-  article > ol, 
-  article > li, 
-  */
   article > dd, 
   article > dl{
   font-size:var(--p-font-size);padding-top:var(--p-padding-top);padding-bottom:var(--p-padding-bottom);margin-top:var(--p-margin-top);margin-bottom:var(--p-margin-bottom);}
@@ -111,11 +106,6 @@ article > h4 > strong {font-weight:bold;} /* Byline */
 article > p > strong {font-weight:700;}
 
 article > p, 
-/*
-  article > ul, 
-  article > ol, 
-  article > li, 
-  */
   article > dd, 
   article > dl,
   article > hr {
@@ -124,6 +114,7 @@ article > p,
 
 article > hr {height:.125em;}
 
+article > ul > li {line-height:1.5rem;}
 article > li {margin-left:1rem;}
 
 /* Indent lists */
@@ -175,10 +166,10 @@ article > img, article > p > img {
 
 article > p > code, article > code, article > pre, article > pre > code {
 		font-family:var(--code);
-		font-size:var(--p-font-size);
+		font-size:.7rem;
 		overflow:auto;
 } 
-article > pre {line-height:1.5em;font-size:1.1em;}
+article > pre {line-height:1.5em;font-size:.7rem;}
 
 article > table {padding-top:1em;padding-bottom:1.5em;}
 article > table > td,th {padding-right:1rem;}
