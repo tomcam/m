@@ -21,7 +21,7 @@
 
     /* Default foreground (text) and background colors  */
     --fg:black;
-    --bg:#F6F3EC;
+    --bg:var(--article-bg);
     /* Default link colors */
     --a:var(--nav-fg); /*441997; */ /* var(--trim-fg); */
     --a-link: var(--a);
@@ -39,7 +39,7 @@
     
     /* Primary foreground (text) and background colors in header */
     --header-fg: white;
-    --header-bg: #441997;
+    --header-bg: #000085;
     /* Link colors specific to header */
     --a-header: var(--header-fg); 
     --a-header-link:  var(--header-fg);
@@ -105,7 +105,7 @@ header > p {color:var(--header-fg);background-color:var(--header-bg);}
 header > ul > li > a,
 header > ul > li > a:link,
 header > ul > li > a:visited
-	{color:var(--header-fg);}
+	{color:var(--header-fg);padding-right:1.5em;}
 header > ul > li > a:hover,
 header > ul > li > a:active
 	{color:var(--header-fg);}
@@ -117,6 +117,19 @@ header > ul > li > a:active
  * --------------------------------------------------
  */
 header > ul > li:first-child > a {color:var(--header-fg);}
+
+/*
+ * --------------------------------------------------
+ * Special feature: Last item in list is styled like
+ * a button. Just leave omit text after the
+ * bullet character (asterisk) in your Markdown
+ * if you don't want the effect. (Or just remove
+ * these lines of CSS.)
+ * --------------------------------------------------
+ */
+/* Make the last item look and act like a button */
+header > ul > li:last-child > a {border: 2px solid var(--header-fg);border-radius:.25rem;padding: .25rem;padding: .5rem .75rem;text-decoration: none;font-weight:bold;}
+header > ul > li:last-child > a:hover {cursor: pointer;}
 
 /* ******************************/
 /*  NAVBAR COLORS AND BORDERS   */
