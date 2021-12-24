@@ -45,6 +45,9 @@ type Site struct {
 	// Full pathname of common directory. Derived from CommonSubDir
 	commonPath string
 
+	// True if the config file has already been read in
+	configLoaded bool
+
 	// Company name & other info user specifies in site.toml
 	Company company `yaml:"Company"`
 
@@ -168,8 +171,6 @@ type Site struct {
 	// List of all directories of type Collection
 	Collections map[string]Collection `yaml:"Collections"`
 
-	// IMPORTANT
-	// LIST ALWAYS GOES AT THE END OF THE FILE/DATA STRUCTURE
 	// User data.
 	List interface{} `yaml:"List"`
 }
@@ -185,7 +186,7 @@ type company struct {
 	URL        string `yaml:"URL"`
 
 	// Logo file for the header
-	HeaderLogo string `yaml:"Header-Logo"`
+	HeaderLogo string `yaml:"HeaderLogo"`
 }
 type author struct {
 	FullName string `yaml:"FullName"`
@@ -386,12 +387,12 @@ func (app *App) newSite(pathname string) error {
 			filename = filepath.Join(tmpDir, defaults.CfgDir, defaults.SiteConfigFilename)
 		}
 	}
-  /*
-	if err = app.writeSiteConfig(filename); err != nil {
-		msg := fmt.Sprintf("%s: %s", filename, err.Error())
-		return ErrCode("0227", msg)
-	}
-  */
+	/*
+		if err = app.writeSiteConfig(filename); err != nil {
+			msg := fmt.Sprintf("%s: %s", filename, err.Error())
+			return ErrCode("0227", msg)
+		}
+	*/
 	if inProjectDir {
 		app.Site.path = requested
 	} else {
@@ -466,7 +467,7 @@ func (app *App) readSiteConfig() error {
 	var err error
 	var b []byte
 	if app.Site.Filename == "" {
-		return ErrCode("1063", "")
+		return ErrCode("1036", "")
 	}
 	if b, err = ioutil.ReadFile(app.Site.Filename); err != nil {
 		// TODO: Handle error properly & and document error code
@@ -478,6 +479,7 @@ func (app *App) readSiteConfig() error {
 		// TODO: Handle error properly & and document error code
 		return err
 	}
+	app.Site.configLoaded = true
 	app.Debug("readSiteConfig(%v): Site is %#v", app.Site.Filename, app.Site)
 
 	return nil

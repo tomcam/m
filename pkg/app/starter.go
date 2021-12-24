@@ -40,6 +40,7 @@ type Starter struct {
 // generate() creates files specified in the
 // specified starter config file.
 func (app *App) generate(pathname string) error {
+	app.Debug("generate(%s)", pathname)
 	var starters map[string]Starter
 	b, err := ioutil.ReadFile(pathname)
 	if err != nil {
@@ -66,7 +67,7 @@ func (app *App) generate(pathname string) error {
 			}
 		}
 	}
-	app.Note("Collections: %v", app.Site.Collections)
+	app.Debug("\tCollections: %v", app.Site.Collections)
 	return nil
 }
 
@@ -77,7 +78,7 @@ func (app *App) generate(pathname string) error {
 // filename is the name of the starter file. If interactive,
 // just pass ""
 func (app *App) newCollection(name string, starter Starter, filename string) error {
-	app.Note("\t\tnewCollection(%v)", name)
+	app.Debug("newCollection(%v)", name)
 	// The name is a path to the file or collection.
 	// It may also be a permalink.
 	path := name
@@ -101,44 +102,39 @@ func (app *App) newCollection(name string, starter Starter, filename string) err
 		return ErrCode("PREVIOUS", err.Error())
 	}
 
-  // The key to the collection will be the base directory
-  // (everything up to the first permalink variable)
-  base := permalinkBase(permalink)
+	// The key to the collection will be the base directory
+	// (everything up to the first permalink variable)
+	base := permalinkBase(permalink)
 
 	// Quit if this is a duplicate
-	if app.Site.Collections[base].permalink == permalink {
-    msg := ""
-    if filename != "" {
-      msg = fmt.Sprintf("Starter file %s already has a collection named %s", filename, base)
-    } else {
-      msg = fmt.Sprintf("Collection named %s already exists", base)
-    }
-		// xxx msg := fmt.Sprintf("%s: %s", pathname, err.Error())
+	if app.Site.Collections[base].Permalink == permalink {
+		msg := ""
+		if filename != "" {
+			msg = fmt.Sprintf("Starter file %s already has a collection named %s", filename, base)
+		} else {
+			msg = fmt.Sprintf("Collection named %s already exists", base)
+		}
 		return ErrCode("0954", msg)
 	}
-	app.Print("\t\t\tapp.Site.Collections[%v] = %v", permalink, c)
-  c.permalink = permalink
-  app.Print("\t\t\tAbout to add %#v to %#v", c, app.Site.Collections)
+	c.Permalink = permalink
+	app.Debug("\tAbout to add %#v to %#v at %v", c, app.Site.Collections, base)
 	app.Site.Collections[base] = c
-  //app.Print("Permalink: %v\n app.Site.Collections.[permalink]: %v\n. FirstDir: %v\n", permalink, app.Site.Collections[permalink], permalinkBase(permalink))
+	app.Debug("\tapp.Site.Collections[%v] is now %v", base, app.Site.Collections[base])
+	//app.Print("Permalink: %v\n app.Site.Collections.[permalink]: %v\n. FirstDir: %v\n", permalink, app.Site.Collections[permalink], permalinkBase(permalink))
 
 	// Create the specified folder as a subdirectory
 	// of the current project.
 	// The base directory is everything up to the first
 	// colon. Permalink is guaranteed to start
 	// with a directory separator.
-  // TODO: refactor with permalinkBase()?
+	// TODO: refactor with permalinkBase()?
 	dir := permalink[1:strings.IndexRune(permalink, ':')]
-  //dir := strings.TrimPrefix("/", base)
 	err = os.MkdirAll(dir, defaults.ProjectFilePermissions)
-	//err = os.MkdirAll(base, defaults.ProjectFilePermissions)
 	if err != nil {
 		return ErrCode("0415", dir)
-		//return ErrCode("0415", base)
 	}
 	//xxx
 
-	fmt.Println(app.Site.Collections)
 	if err = app.writeSiteConfig(); err != nil {
 		return ErrCode("1301", name)
 	}
@@ -157,25 +153,24 @@ func firstDir(permalink string) string {
 	return split[1]
 }
 
-// permalinkBase takes a permalink such as "/site/news/:year/:month/:postname" 
+// permalinkBase takes a permalink such as "/site/news/:year/:month/:postname"
 // and yields its bath bath, for example,  "/site/news/"
 func permalinkBase(permalink string) string {
-  return permalink[:strings.IndexRune(permalink, ':')]
+	return permalink[:strings.IndexRune(permalink, ':')]
 }
 
-
 // fixPermalink() ensures that
-// the proposed permalink can be used in a 
+// the proposed permalink can be used in a
 // collection-style directory
-// structure reliably. Among other things it ensures 
+// structure reliably. Among other things it ensures
 // that the first part of path is fixed, that it begins
-// with the path separator, and that :postname 
+// with the path separator, and that :postname
 // appears last. It will rewrite the permalink
 // if these conventions aren't followed.
 // So, "blog" would be transformed into "/blog/:permalink",
 // ":permalink/blog" would be transformed into
 // "/blog/:permalink", the empty string becomes
-// ":year/:monthnum/:daynum/:postname", 
+// ":year/:monthnum/:daynum/:postname",
 // "news/:year/:monthnum/:daynum/" is transformed
 // into "/news/:year/:monthnum/:daynum/:postname", etc.
 // TODO: Use above comment to generate test cases, and
@@ -203,7 +198,7 @@ func fixPermalink(permalink string) (string, error) {
 			segments[i] = seg
 		}
 		switch seg {
-      case ":year", ":month", ":monthnum", ":daynum", ":day", ":hour",
+		case ":year", ":month", ":monthnum", ":daynum", ":day", ":hour",
 			":minute", ":second", ":postname", ":author":
 			if i == 0 {
 				return "", ErrCode("1208", "")

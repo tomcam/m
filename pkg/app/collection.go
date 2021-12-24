@@ -3,12 +3,12 @@ package app
 // Repreents
 type Collection struct {
 	// Format used to generate a path to the post.
-	permalink string
+	Permalink string `yaml:"Permalink"`
 
 	// Directory path to the post.
 	// Derives its formatting from permalink.
-	path string
+	Path string `yaml:"Path"`
 
-  // Sort directory by filename, date, whatever 
-  sort string
+	// Sort directory by filename, date, whatever
+	Sort string `yaml:"Sort"`
 }

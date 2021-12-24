@@ -275,7 +275,8 @@ create theme based on an existing one.
 
 				err := app.newPost(collection, postname)
 				if err != nil {
-					app.QuitError(ErrCode("0928", postname))
+					//app.QuitError(ErrCode("0928", postname))
+					app.QuitError(ErrCode("PREVIOUS", err.Error()))
 				}
 				app.Debug("Created post %v in %v", postname, collection)
 			},

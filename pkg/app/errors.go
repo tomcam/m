@@ -164,9 +164,9 @@ var errMsgs = map[string]string{
 	"0931": "Error copying theme",         // Custom message
 	"0932": "Error populating the " + defaults.CfgDir + " directory",
 	// 0950 - Something's already there
-	"0951": "Site already exists at",             // sitename
-	"0952": "Theme already exists at",            // sitename
-  "0954": "Duplicate path for collection.", // posts directory name
+	"0951": "Site already exists at",         // sitename
+	"0952": "Theme already exists at",        // sitename
+	"0954": "Duplicate path for collection.", // posts directory name
 
 	// 1000	- Something's missing that should be there
 	"1001": "Missing front matter and markdown", // filename
@@ -204,6 +204,7 @@ var errMsgs = map[string]string{
 	"1110": "Can't change to site directory to copy theme",         // directory name
 	"1111": "System error changing to newly create site directory", // directory name
 	"1112": "System error changing to newly create site directory", // directory name
+	"1113": "Can't change to site directory to create new post at", // directory name
 
 	// 1200 - Syntax error!
 	"1204": "Unknown dot value in Go template function ", //
