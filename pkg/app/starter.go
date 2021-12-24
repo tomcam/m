@@ -49,7 +49,8 @@ func (app *App) generate(pathname string) error {
 	err = yaml.Unmarshal(b, &starters)
 	if err != nil {
 		// TODO: Improve error handling
-		return ErrCode("PREVIOUS", err.Error())
+		msg := fmt.Sprintf("%s: %s", pathname, err.Error())
+		return ErrCode("0135", msg)
 	}
 	for k, v := range starters {
 		switch strings.ToLower(v.Type) {
@@ -61,21 +62,25 @@ func (app *App) generate(pathname string) error {
 				return ErrCode("PREVIOUS", err.Error())
 			}
 		case "collection":
-			if err = app.starterCollection(k, v); err != nil {
+			//if err = app.starterCollection(k, v); err != nil {
+			if err = app.newCollection(k, pathname); err != nil {
 				return ErrCode("PREVIOUS", err.Error())
 			}
 		}
 
 	}
-  app.Note("Collections: %v", app.Site.Collections) 
+	app.Note("Collections: %v", app.Site.Collections)
 	return nil
 }
 
-// starterCollection() creates a collection from the path and/or
-// permalink described in name, for example, 
+// newCollection() creates a collection from the path and/or
+// permalink described in name, for example,
 // "/blog/:year/:monthnum/:daynum"
-func (app *App) starterCollection(name string, starter Starter) error {
-	app.Note("\t\tstarterCollection(%v)", name)
+// And adds it to Site.Collections
+// filename is the name of the starter file. If interactive,
+// just pass ""
+func (app *App) newCollection(name, filename string) error {
+	app.Note("\t\tnewCollection(%v)", name)
 	// The name is a path to the file or collection.
 	// It may also be a permalink.
 	path := name
@@ -96,23 +101,35 @@ func (app *App) starterCollection(name string, starter Starter) error {
 	var err error
 	// TODO: Need test case
 	if permalink, err = fixPermalink(path); err != nil {
-    app.Print("\t\t\tFailed fixPermalink(%v)", path)
 		return ErrCode("PREVIOUS", err.Error())
 	}
-	// TODO: This should come later after it's been cleaned
-	if app.Site.Collections[permalink].path == permalink {
-    app.Print("\t\t\tFailed adding permalink")
-		return ErrCode("0953", path)
+
+  // The key to the collection will be the base directory
+  // (everything up to the first permalink variable)
+  base := permalinkBase(permalink)
+
+	// Quit if this is a duplicate
+	if app.Site.Collections[base].permalink == permalink {
+    msg := ""
+    if filename != "" {
+      msg = fmt.Sprintf("Starter file %s already has a collection named %s", filename, base)
+    } else {
+      msg = fmt.Sprintf("Collection named %s already exists", base)
+    }
+		// xxx msg := fmt.Sprintf("%s: %s", pathname, err.Error())
+		return ErrCode("0954", msg)
 	}
-	c.path = permalink
-	app.Print("\t\t\tapp.Site.Collections[%v] = %v", permalink, c)
-	app.Site.Collections[permalink] = c
+	//app.Print("\t\t\tapp.Site.Collections[%v] = %v", permalink, c)
+  c.permalink = permalink
+	app.Site.Collections[base] = c
+  //app.Print("Permalink: %v\n app.Site.Collections.[permalink]: %v\n. FirstDir: %v\n", permalink, app.Site.Collections[permalink], permalinkBase(permalink))
 
 	// Create the specified folder as a subdirectory
 	// of the current project.
 	// The base directory is everything up to the first
-	// colon. Since permalink is guaranteed to start
-	// with a directory separater
+	// colon. Permalink is guaranteed to start
+	// with a directory separator.
+  // TODO: refactor with permalinkBase()?
 	dir := permalink[1:strings.IndexRune(permalink, ':')]
 
 	err = os.MkdirAll(dir, defaults.ProjectFilePermissions)
@@ -122,6 +139,9 @@ func (app *App) starterCollection(name string, starter Starter) error {
 	//xxx
 
 	fmt.Println(app.Site.Collections)
+	if err = app.writeSiteConfig(); err != nil {
+		return ErrCode("1301", name)
+	}
 	return nil
 }
 
@@ -137,9 +157,30 @@ func firstDir(permalink string) string {
 	return split[1]
 }
 
+// permalinkBase takes a permalink such as "/site/news/:year/:month/:postname" 
+// and yields its bath bath, for example,  "/site/news/"
+func permalinkBase(permalink string) string {
+  return permalink[:strings.IndexRune(permalink, ':')]
+}
+
+
 // fixPermalink() ensures that
-// the proposed permalink can be used in a directory
-// structure reliably.
+// the proposed permalink can be used in a 
+// collection-style directory
+// structure reliably. Among other things it ensures 
+// that the first part of path is fixed, that it begins
+// with the path separator, and that :postname 
+// appears last. It will rewrite the permalink
+// if these conventions aren't followed.
+// So, "blog" would be transformed into "/blog/:permalink",
+// ":permalink/blog" would be transformed into
+// "/blog/:permalink", the empty string becomes
+// ":year/:monthnum/:daynum/:postname", 
+// "news/:year/:monthnum/:daynum/" is transformed
+// into "/news/:year/:monthnum/:daynum/:postname", etc.
+// TODO: Use above comment to generate test cases, and
+// include test cases where the input is expected to be
+// the same as the output.
 func fixPermalink(permalink string) (string, error) {
 	defaultPermalink := ":year/:monthnum/:daynum/:postname"
 	if permalink == "" {
@@ -162,7 +203,7 @@ func fixPermalink(permalink string) (string, error) {
 			segments[i] = seg
 		}
 		switch seg {
-		case ":year", ":monthnum", ":daynum", ":day", ":hour",
+      case ":year", ":month", ":monthnum", ":daynum", ":day", ":hour",
 			":minute", ":second", ":postname", ":author":
 			if i == 0 {
 				return "", ErrCode("1208", "")

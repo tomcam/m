@@ -35,7 +35,7 @@ type Site struct {
 	// from its actual root. For example, GitHub Pages prefers
 	// the blog to start in /docs instead of root, but
 	// a URL would omit it.
-	BasePath string `yaml:"Base-Path"`
+	BasePath string `yaml:"BasePath"`
 
 	// Site's branding, any string, that user specifies in site.toml.
 	// So, for example, if the Name is 'my-project' this might be
@@ -60,10 +60,10 @@ type Site struct {
 	// Note that directory names starting with a "." are excluded too.
 	// DO NOT ACCESS DIRECTLY:
 	// Use excludedDirs() because it applies other information such as PublishDir()
-	ExcludeDirs []string `yaml:"Exclude-Dirs"`
+	ExcludeDirs []string `yaml:"ExcludeDirs"`
 
 	// List of file extensions to exclude. For example. [ ".css" ".go" ".php" ]
-	ExcludeExtensions []string `yaml:"Exclude-Extensions"`
+	ExcludeExtensions []string `yaml:"ExcludeExtensions"`
 
 	// Number of markdown files processed
 	fileCount uint
@@ -78,7 +78,7 @@ type Site struct {
 
 	// All these files are copied into the HTML header.
 	// Example: favicon links.
-	HeadTags []string `yaml:"Head-Tags"`
+	HeadTags []string `yaml:"HeadTags"`
 
 	// Full path of header tags for "code injection"
 	headTagsPath string
@@ -90,7 +90,7 @@ type Site struct {
 	Language string `yaml:"Language"`
 
 	// Flags indicating which non-CommonMark Markdown extensions to use
-	MarkdownOptions MarkdownOptions `yaml:"Markdown-Options"`
+	MarkdownOptions MarkdownOptions `yaml:"MarkdownOptions"`
 
 	// Mode ("dark" or "light") used by this site unless overridden in front matter
 	Mode string `yaml:"Mode"`
@@ -101,6 +101,12 @@ type Site struct {
 	// Preferably just alphanumerics, underline or hyphen, and
 	// no spaces, for example, 'my-project'
 	name string
+
+	// True if the site file needs to be rewritten. For example, a new collection has
+	// been added. It's in Site.Collections but that means it needs
+	// to be persisted to the site file at some point.
+	// TODO: Did I end up using this?
+	needsUpdating bool
 
 	// Home directory for the project. All other
 	// paths, such as location of publish directory,
@@ -160,7 +166,7 @@ type Site struct {
 	webPages map[string]WebPage
 
 	// List of all directories of type Collection
-	Collections map[string]Collection
+	Collections map[string]Collection `yaml:"Collections"`
 
 	// IMPORTANT
 	// LIST ALWAYS GOES AT THE END OF THE FILE/DATA STRUCTURE
@@ -171,18 +177,18 @@ type Site struct {
 type company struct {
 	// Company name, like "Metabuzz" or "Example Inc."
 	Name       string `yaml:"Name"`
-	Address    string `yaml:Address1`
-	Address2   string `yaml:Address2`
-	City       string `yaml:City`
-	Country    string `yaml:Country`
-	PostalCode string `yaml:PostalCode`
+	Address    string `yaml:"Address1"`
+	Address2   string `yaml:"Address2"`
+	City       string `yaml:"City"`
+	Country    string `yaml:"Country"`
+	PostalCode string `yaml:"PostalCode"`
 	URL        string `yaml:"URL"`
 
 	// Logo file for the header
 	HeaderLogo string `yaml:"Header-Logo"`
 }
 type author struct {
-	FullName string `yaml:"Full-Name"`
+	FullName string `yaml:"FullName"`
 	URL      string `yaml:"URL"`
 	Role     string `yaml:"Role"`
 }
@@ -195,7 +201,7 @@ type authors struct {
 // options used when converting markdown to HTML.
 type MarkdownOptions struct {
 	// If true, line breaks are significant
-	HardWraps bool `yaml:"Hard-Wraps"`
+	HardWraps bool `yaml:"HardWraps"`
 
 	// Name of color scheme used for code highlighting,
 	// for example, "monokai"
@@ -203,10 +209,10 @@ type MarkdownOptions struct {
 	// https://github.com/alecthomas/chroma/blob/master/README.md
 	// I believe the list of themes is here:
 	// https://github.com/alecthomas/chroma/tree/master/styles
-	HighlightStyle string `yaml:"Highlight-Style"`
+	HighlightStyle string `yaml:"HighlightStyle"`
 
 	// Create id= attributes for all headers automatically
-	HeadingIDs bool `yaml:"Heading-IDs"`
+	HeadingIDs bool `yaml:"HeadingIDs"`
 }
 
 // Indicates whether it's directory, a directory containing
@@ -219,7 +225,7 @@ type dirInfo struct {
 }
 
 type social struct {
-	DeviantArt string `yaml:"Deviant-Art"`
+	DeviantArt string `yaml:"DeviantArt"`
 	Facebook   string `yaml:"Facebook"`
 	GitHub     string `yaml:"GitHub"`
 	Gitlab     string `yaml:"GitLab"`
@@ -281,7 +287,7 @@ func (m MdOptions) IsOptionSet(opt MdOptions) bool {
 // then renames the temp directory to the desired name
 // when completed.
 func (app *App) newSite(pathname string) error {
-  app.Debug("newSite(%v)", pathname)
+	app.Debug("newSite(%v)", pathname)
 	// Exit if there's already a project at specified location.
 	if isProject(pathname) {
 		return ErrCode("0951", pathname)
@@ -302,13 +308,13 @@ func (app *App) newSite(pathname string) error {
 	inProjectDir := false
 	if requested == "." /* || dir == ".." */ {
 		requested = currDir()
-    inProjectDir = true
+		inProjectDir = true
 		requested = filepath.Join(requested, pathname)
 	}
 	if requested == currDir() {
-    inProjectDir = true
-  }
-  var tmpDir string
+		inProjectDir = true
+	}
+	var tmpDir string
 	var err error
 	// Create the temporary directory. It starts with the
 	// Metabuzz product name abbreviation.
@@ -325,28 +331,28 @@ func (app *App) newSite(pathname string) error {
 			return ErrCode("0401", tmpDir)
 		}
 		if err = app.changeWorkingDir(tmpDir); err != nil {
-      msg := fmt.Sprintf("System error attempting to change to new site directory %s: %s", requested, err.Error())
-        return ErrCode("1111", msg)
+			msg := fmt.Sprintf("System error attempting to change to new site directory %s: %s", requested, err.Error())
+			return ErrCode("1111", msg)
 		}
-    // xxx 
+		// xxx
 	} else {
 		if err = app.changeWorkingDir(requested); err != nil {
-      // TODO: REMOPVE
-		  msg := fmt.Sprintf("System error attempting to change to new site directory %s: %s", requested, err.Error())
-		    return ErrCode("1112", msg)
+			// TODO: REMOPVE
+			msg := fmt.Sprintf("System error attempting to change to new site directory %s: %s", requested, err.Error())
+			return ErrCode("1112", msg)
 		}
-  }
+	}
 	// Copy files required to populate the .mb directory
 	if inProjectDir {
 		if err = app.copyMbDir(requested); err != nil {
-		  msg := fmt.Sprintf("System error attempting to change to new site directory %s: %s", requested, err.Error())
-		    return ErrCode("1112", msg)
+			msg := fmt.Sprintf("System error attempting to change to new site directory %s: %s", requested, err.Error())
+			return ErrCode("1112", msg)
 			//return ErrCode("PREVIOUS", err.Error())
 		}
 	} else {
 		if err = app.copyMbDir(tmpDir); err != nil {
-		  msg := fmt.Sprintf("System error attempting to change to new temp directory %s: %s", tmpDir, err.Error())
-		    return ErrCode("1113", msg)
+			msg := fmt.Sprintf("System error attempting to change to new temp directory %s: %s", tmpDir, err.Error())
+			return ErrCode("1113", msg)
 			//return ErrCode("PREVIOUS", err.Error())
 		}
 	}
@@ -385,11 +391,11 @@ func (app *App) newSite(pathname string) error {
 		msg := fmt.Sprintf("%s: %s", filename, err.Error())
 		return ErrCode("0227", msg)
 	}
-  if inProjectDir {
-	  app.Site.path = requested
-  } else {
-	  app.Site.path = tmpDir
-  }
+	if inProjectDir {
+		app.Site.path = requested
+	} else {
+		app.Site.path = tmpDir
+	}
 	// Generate stub pages/sections if specified
 	app.Site.name = filepath.Base(requested)
 	if app.Flags.Starters != "" {
@@ -416,21 +422,21 @@ func (app *App) newSite(pathname string) error {
 	}
 	// Restore temp dir name to pathname  passed in.
 	// Handle the case where the directory already exists.
-  if !inProjectDir {
-    if err = os.Rename(tmpDir, requested); err != nil {
-      msg := fmt.Sprintf("%s to %s: %s", tmpDir, requested, err.Error())
-      return ErrCode("0226", msg)
+	if !inProjectDir {
+		if err = os.Rename(tmpDir, requested); err != nil {
+			msg := fmt.Sprintf("%s to %s: %s", tmpDir, requested, err.Error())
+			return ErrCode("0226", msg)
 
-      // TODO: This can't execute.
-      // It shoiuld run when os.Rename fails.
-      // At the moment I can't see why Rename is failing but
-      // I'm not getting an error
-      if err := os.RemoveAll(tmpDir); err != nil {
-        msg := fmt.Sprintf("System error attempting to delete temporary site directory %s: %s", tmpDir, err.Error())
-        return ErrCode("0601", msg)
-      }
-    }
-  }
+			// TODO: This can't execute.
+			// It shoiuld run when os.Rename fails.
+			// At the moment I can't see why Rename is failing but
+			// I'm not getting an error
+			if err := os.RemoveAll(tmpDir); err != nil {
+				msg := fmt.Sprintf("System error attempting to delete temporary site directory %s: %s", tmpDir, err.Error())
+				return ErrCode("0601", msg)
+			}
+		}
+	}
 	app.Site.path = requested
 	if err := app.changeWorkingDir(requested); err != nil {
 		msg := fmt.Sprintf("System error attempting to change to new site directory %s: %s", requested, err.Error())
@@ -482,8 +488,8 @@ func (app *App) writeSiteConfig(path ...string) error {
 		filename = path[0]
 	}
 	if err := writeYamlFile(filename, app.Site); err != nil {
-    msg := fmt.Sprintf("%s: %s", filename, err.Error())
-    return ErrCode("0228", msg)
+		msg := fmt.Sprintf("%s: %s", filename, err.Error())
+		return ErrCode("0228", msg)
 	}
 	return nil
 }

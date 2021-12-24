@@ -177,6 +177,10 @@ article > p > code, article > code, article > pre, article > pre > code {
 * Add: sitemap
 * Add: Generate empty YAML files for site, theme, starter
 * Add to glossary: `command` means a command-line verb such as `new theme` or `new site`
+* Add and document what an orderly shutdown means. For example, suppose a starter file
+  or new collection command causes Site.Collections to be updated. Right now I'm 
+  rewriting the site file on the spot but it would be better to check
+  Site.needsUpdating and, upon shutdown, write it out then.
 * Ensure mdToHTML and mdFileToHTML return errors and use application error handling
 * Incomplete list of things that need to be handled once I start accepting
 options other than the front matter:

@@ -6,7 +6,7 @@ package app
 //	if err = app.changeWorkingDir(tmpDir); err != nil {
 //    msg := fmt.Sprintf("System error attempting to change to new site directory %s: %s", requested, err.Error())
 //    return ErrCode("1111", msg)
-//  }	
+//  }
 //	msg := fmt.Sprintf("%s for project %s: %s", dir, pathname, err.Error())
 //	  return ErrCode("0414", msg)
 //   return ErrCode("1234", err.Error())
@@ -59,6 +59,7 @@ import (
 //	1000	- Something's missing that should be there
 //	1100	- Problem changing to a directory
 //  1200  - Syntax error!
+//  1300  - Error writing to file
 //
 // The reason many of these error codes have identical text is that
 // the same error occurs but in different places. Since the
@@ -85,6 +86,7 @@ var errMsgs = map[string]string{
 	"0132": "Unable to open theme configuration file",     // filename
 	"0133": "Unable to open theme configuration file",     // filename
 	"0134": "Error unmarshalling YAML for new theme file", // filename
+	"0135": "Error in starter file",                       // custom message
 
 	// 0200	- Error creating file
 	"0209": "Unable to copy file to", // filename
@@ -101,7 +103,7 @@ var errMsgs = map[string]string{
 	"0225": "Unable to create config file for new theme",                 // filename
 	"0226": "System error attempting to rename temporary site directory", // custom message
 	"0227": "System error attempting to write site config file to",       // custom message
-  "0228": "System error attempting to create YAML file",
+	"0228": "System error attempting to create YAML file",
 	// 0250 - Error closing file
 	// Old errors stopped at 0252
 
@@ -160,11 +162,11 @@ var errMsgs = map[string]string{
 	"0929": "Error copying theme",         // Custom message
 	"0930": "Error updating copied theme", // Custom message
 	"0931": "Error copying theme",         // Custom message
-  "0932": "Error populating the " + defaults.CfgDir + " directory",
+	"0932": "Error populating the " + defaults.CfgDir + " directory",
 	// 0950 - Something's already there
 	"0951": "Site already exists at",             // sitename
 	"0952": "Theme already exists at",            // sitename
-	"0953": "There is already a directory named", // posts directory name
+  "0954": "Duplicate path for collection.", // posts directory name
 
 	// 1000	- Something's missing that should be there
 	"1001": "Missing front matter and markdown", // filename
@@ -202,6 +204,7 @@ var errMsgs = map[string]string{
 	"1110": "Can't change to site directory to copy theme",         // directory name
 	"1111": "System error changing to newly create site directory", // directory name
 	"1112": "System error changing to newly create site directory", // directory name
+
 	// 1200 - Syntax error!
 	"1204": "Unknown dot value in Go template function ", //
 	"1205": "Error generating table of contents",         //
@@ -209,6 +212,10 @@ var errMsgs = map[string]string{
 	// Old errors stopped at 1206
 	"1207": "Don't understand the starter type", // Name of type in a starter file
 	"1208": "Your path must start with a normal directory name, for example, `blog` or `news`",
+
+	// 1300 -  Error writing to file
+	"1301": "Unable to update site file with collection", // Collection name
+
 }
 
 type ErrMsg struct {

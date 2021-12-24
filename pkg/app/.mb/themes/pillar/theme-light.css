@@ -21,7 +21,7 @@
 
     /* Default foreground (text) and background colors  */
     --fg:black;
-    --bg:var(--article-bg);
+    --bg:whitesmoke;
     /* Default link colors */
     --a:var(--nav-fg); /*441997; */ /* var(--trim-fg); */
     --a-link: var(--a);
