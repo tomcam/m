@@ -48,7 +48,6 @@ func (app *App) generate(pathname string) error {
 	}
 	err = yaml.Unmarshal(b, &starters)
 	if err != nil {
-		// TODO: Improve error handling
 		msg := fmt.Sprintf("%s: %s", pathname, err.Error())
 		return ErrCode("0135", msg)
 	}
@@ -62,12 +61,10 @@ func (app *App) generate(pathname string) error {
 				return ErrCode("PREVIOUS", err.Error())
 			}
 		case "collection":
-			//if err = app.starterCollection(k, v); err != nil {
-			if err = app.newCollection(k, pathname); err != nil {
+			if err = app.newCollection(k, v, pathname); err != nil {
 				return ErrCode("PREVIOUS", err.Error())
 			}
 		}
-
 	}
 	app.Note("Collections: %v", app.Site.Collections)
 	return nil
@@ -79,7 +76,7 @@ func (app *App) generate(pathname string) error {
 // And adds it to Site.Collections
 // filename is the name of the starter file. If interactive,
 // just pass ""
-func (app *App) newCollection(name, filename string) error {
+func (app *App) newCollection(name string, starter Starter, filename string) error {
 	app.Note("\t\tnewCollection(%v)", name)
 	// The name is a path to the file or collection.
 	// It may also be a permalink.
@@ -119,8 +116,9 @@ func (app *App) newCollection(name, filename string) error {
 		// xxx msg := fmt.Sprintf("%s: %s", pathname, err.Error())
 		return ErrCode("0954", msg)
 	}
-	//app.Print("\t\t\tapp.Site.Collections[%v] = %v", permalink, c)
+	app.Print("\t\t\tapp.Site.Collections[%v] = %v", permalink, c)
   c.permalink = permalink
+  app.Print("\t\t\tAbout to add %#v to %#v", c, app.Site.Collections)
 	app.Site.Collections[base] = c
   //app.Print("Permalink: %v\n app.Site.Collections.[permalink]: %v\n. FirstDir: %v\n", permalink, app.Site.Collections[permalink], permalinkBase(permalink))
 
@@ -131,10 +129,12 @@ func (app *App) newCollection(name, filename string) error {
 	// with a directory separator.
   // TODO: refactor with permalinkBase()?
 	dir := permalink[1:strings.IndexRune(permalink, ':')]
-
+  //dir := strings.TrimPrefix("/", base)
 	err = os.MkdirAll(dir, defaults.ProjectFilePermissions)
+	//err = os.MkdirAll(base, defaults.ProjectFilePermissions)
 	if err != nil {
 		return ErrCode("0415", dir)
+		//return ErrCode("0415", base)
 	}
 	//xxx
 

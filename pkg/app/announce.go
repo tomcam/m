@@ -29,27 +29,30 @@ func (app *App) ShowInfo(pathname string) error {
 	if err := app.changeWorkingDir(pathname); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
+	if err := app.readSiteConfig(); err != nil {
+		return ErrCode("PREVIOUS", err.Error())
+	}
 	table.DefaultHeaderFormatter = func(format string, vals ...interface{}) string {
 		return strings.ToUpper(fmt.Sprintf(format, vals...))
 	}
 
 	tbl := table.New("Site Directories", "")
 	tbl.AddRow("Project name", app.Site.name)
-	tbl.AddRow("Project directory", app.Site.path)
 	tbl.AddRow("Project directory", exists("", app.Site.path))
-	tbl.AddRow("Config file directory", app.cfgPath)
+  tbl.AddRow("Collections", app.Site.Collections)
+	tbl.AddRow("Config file directory", exists("", app.cfgPath))
 	tbl.AddRow("Site file", exists("", app.Site.Filename))
-	tbl.AddRow("Asset path", app.Site.assetPath)
-	tbl.AddRow("Image path", app.Site.imagePath)
-	tbl.AddRow("Common path", app.Site.commonPath)
-	tbl.AddRow("Head tags path", app.Site.headTagsPath)
-	tbl.AddRow("Publish path", app.Site.publishPath)
-	tbl.AddRow("CSS publish path", app.Site.cssPublishPath)
-	tbl.AddRow("Factory themes path", app.Site.factoryThemesPath)
-	tbl.AddRow("Site themes path", app.Site.siteThemesPath)
+	//tbl.AddRow("Asset path", app.Site.assetPath)
+	//tbl.AddRow("Image path", app.Site.imagePath)
+	tbl.AddRow("Common path", exists("", app.Site.commonPath))
+	tbl.AddRow("Head tags path", exists("", app.Site.headTagsPath))
+	tbl.AddRow("Publish path", exists("", app.Site.publishPath))
+	//tbl.AddRow("CSS publish path", app.Site.cssPublishPath)
+	tbl.AddRow("Factory themes path", exists("", app.Site.factoryThemesPath))
+	tbl.AddRow("Site themes path", exists("", app.Site.siteThemesPath))
 	tbl.AddRow("", "")
 	tbl.AddRow("APPLICATION DATA", "")
-	tbl.AddRow("User application data", app.applicationDataPath)
+	tbl.AddRow("User application data", exists("", app.applicationDataPath))
 	tbl.Print()
 	//tbl = table.New("Application Directories", "")
 	return nil

@@ -8,4 +8,7 @@ type Collection struct {
 	// Directory path to the post.
 	// Derives its formatting from permalink.
 	path string
+
+  // Sort directory by filename, date, whatever 
+  sort string
 }

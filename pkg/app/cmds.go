@@ -254,52 +254,32 @@ create theme based on an existing one.
 		CmdNewPost = &cobra.Command{
 			Use:   "post {postname}",
 			Short: "post",
-			Long: `new post {"postname"}
-      Where {postname} is a name in quotes.
+			Long: `new post "{collection}" "{postname}"
+      Where both {postname} and {collection} are either a single word, or a quoted string value.
       mb new post "
 `,
 			Run: func(cmd *cobra.Command, args []string) {
-				var postname string
-				// See if the user specfied a page name.
-				if len(args) > 0 {
-					postname = args[0]
-				} else {
-					postname = promptString("Name of post to create?")
+				var collection, postname string
+
+				switch len(args) {
+				case 0:
+					collection = promptString("Directory (collection) to post to?")
+					postname = promptString("Title of post?")
+				case 1:
+					collection = args[0]
+					postname = promptString("Title of post for %v?", collection)
+				case 2:
+					collection = args[0]
+					postname = args[1]
 				}
-				err := app.createPost(postname)
+
+				err := app.newPost(collection, postname)
 				if err != nil {
 					app.QuitError(ErrCode("0928", postname))
 				}
-				app.Debug("Created post %v", postname)
+				app.Debug("Created post %v in %v", postname, collection)
 			},
 		}
-
-		/* NEW PAGE
-
-		   		CmdNewSite = &cobra.Command{
-		   			Use:   "page {pagename}",
-		   			Short: "new page headlines",
-		   			Long: `new page {pagename}
-		         Where {pagename} is a valid filename. An .md extension is supplied if you omit it. For example:
-		         mb new page headlines
-		   `,
-		   			Run: func(cmd *cobra.Command, args []string) {
-		   				var pathname string
-		   				// See if the user specfied a page name.
-		   				if len(args) > 0 {
-		   					pathname = args[0]
-		   				} else {
-		   					pathname = promptString("Name of page to create?")
-		   				}
-		   				err := app.newSite(pathname)
-		   				if err != nil {
-		   					app.QuitError(ErrCode("0927", pathname))
-		   				}
-		   				app.Debug("Created page %v", pathname)
-		   			},
-		   		}
-
-		*/
 
 		/*****************************************************
 		END TOP LEVEL COMMANDS

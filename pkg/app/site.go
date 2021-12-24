@@ -334,7 +334,6 @@ func (app *App) newSite(pathname string) error {
 			msg := fmt.Sprintf("System error attempting to change to new site directory %s: %s", requested, err.Error())
 			return ErrCode("1111", msg)
 		}
-		// xxx
 	} else {
 		if err = app.changeWorkingDir(requested); err != nil {
 			// TODO: REMOPVE
@@ -387,10 +386,12 @@ func (app *App) newSite(pathname string) error {
 			filename = filepath.Join(tmpDir, defaults.CfgDir, defaults.SiteConfigFilename)
 		}
 	}
+  /*
 	if err = app.writeSiteConfig(filename); err != nil {
 		msg := fmt.Sprintf("%s: %s", filename, err.Error())
 		return ErrCode("0227", msg)
 	}
+  */
 	if inProjectDir {
 		app.Site.path = requested
 	} else {
@@ -438,9 +439,14 @@ func (app *App) newSite(pathname string) error {
 		}
 	}
 	app.Site.path = requested
-	if err := app.changeWorkingDir(requested); err != nil {
-		msg := fmt.Sprintf("System error attempting to change to new site directory %s: %s", requested, err.Error())
+	//if err := app.changeWorkingDir(requested); err != nil {
+	if err := app.changeWorkingDir(app.Site.path); err != nil {
+		msg := fmt.Sprintf("System error attempting to change to new site directory %s: %s", app.Site.path, err.Error())
 		return ErrCode("1111", msg)
+	}
+	if err = app.writeSiteConfig(app.Site.Filename); err != nil {
+		msg := fmt.Sprintf("%s: %s", app.Site.Filename, err.Error())
+		return ErrCode("0227", msg)
 	}
 	// xxx
 	return nil
