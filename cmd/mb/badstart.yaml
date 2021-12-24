@@ -1,0 +1,6 @@
+blog:
+  Type: collection 
+
+/site/news/:year/:month:
+  Type: collection
+

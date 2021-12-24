@@ -1,6 +1,21 @@
 # Internals: How Metabuzz builds, starts, and runs
 * Project init
-  - I think this may be necessary
+  - This version is for something like new post, which requires you to be in the current dir
+```
+// Ensure site is initialized properly
+if !app.Site.configLoaded {
+  if err := app.changeWorkingDir(currDir()); err != nil {
+    app.Debug("\tUnable to change to directory (%v)", currDir())
+    return ErrCode("1109", currDir())
+  }
+  if err := app.readSiteConfig(); err != nil {
+    app.Note("FAIL")
+    return ErrCode("PREVIOUS", err.Error())
+  }
+}
+```
+
+Older version:
 ```
     dir := currDir()
 		if err := os.Chdir(dir); err != nil { // TODO: Handle error properly & and document error code
