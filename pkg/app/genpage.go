@@ -11,7 +11,7 @@ import (
 // directory.
 func (app *App) createStubIndex() error {
 	page := fmt.Sprintf("# Welcome to %s\nhello, world.", app.Site.name)
-	if !fileExists(filepath.Join(app.Site.path, "index.md")) {
+	if !fileExists(filepath.Join(app.Site.path, "index" + defaults.DefaultMarkdownExtension)) {
 		return app.createSimplePage("index.md", "", page)
 	}
 	// index already exists

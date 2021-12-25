@@ -187,6 +187,8 @@ var errMsgs = map[string]string{
 	"1035": "Missing name of theme to copy",                          // filename
 	"1036": "No site configuration file was specified",
 	"1037": "Filename missing to create page",
+	"1038": "Can't find the permalink for",       // custom message
+	"1039": "Author name missing from permalink", // permalink
 	// TODO: Get rid of the line below
 	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
 
@@ -205,6 +207,7 @@ var errMsgs = map[string]string{
 	"1111": "System error changing to newly create site directory", // directory name
 	"1112": "System error changing to newly create site directory", // directory name
 	"1113": "Can't change to site directory to create new post at", // directory name
+	"1114": "Can't change to site directory to create new post at", // directory name
 
 	// 1200 - Syntax error!
 	"1204": "Unknown dot value in Go template function ", //

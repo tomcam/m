@@ -52,6 +52,7 @@ func (app *App) generate(pathname string) error {
 		msg := fmt.Sprintf("%s: %s", pathname, err.Error())
 		return ErrCode("0135", msg)
 	}
+	app.Site.starterFile = pathname
 	for k, v := range starters {
 		switch strings.ToLower(v.Type) {
 		default:
@@ -67,7 +68,6 @@ func (app *App) generate(pathname string) error {
 			}
 		}
 	}
-	app.Debug("\tCollections: %v", app.Site.Collections)
 	return nil
 }
 

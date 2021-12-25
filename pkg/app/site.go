@@ -146,6 +146,9 @@ type Site struct {
 	// a page specifies otherwise
 	Sidebar string `yaml:"Sidebar"`
 
+	// Name of starter file, if any
+	starterFile string
+
 	// Name (not path) of Theme used by this site unless overridden in front matter.
 	Theme string `yaml:"Theme"`
 
