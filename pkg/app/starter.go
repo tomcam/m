@@ -59,7 +59,7 @@ func (app *App) generate(pathname string) error {
 			return ErrCode("1207", v.Type)
 		case "page":
 			// TODO: Improve error handling
-			if err = app.starterPage(k, v); err != nil {
+			if err = app.createStarterPage(k, v); err != nil {
 				return ErrCode("PREVIOUS", err.Error())
 			}
 		case "collection":
@@ -133,7 +133,6 @@ func (app *App) newCollection(name string, starter Starter, filename string) err
 	if err != nil {
 		return ErrCode("0415", dir)
 	}
-	//xxx
 
 	if err = app.writeSiteConfig(); err != nil {
 		return ErrCode("1301", name)
@@ -240,9 +239,10 @@ func fixPermalink(permalink, filename string) (string, error) {
 	return clean, nil
 }
 
-// starterPage() creates a stub page from a description
+// createStarterPage() generates a stub page from a description
 // in a YAML file with startup pages
-func (app *App) starterPage(name string, starter Starter) error {
+// Creates it directory if need be.
+func (app *App) createStarterPage(name string, starter Starter) error {
 	dir := filepath.Dir(name)
 	if name == "" {
 		return ErrCode("1104", dir)
@@ -262,14 +262,14 @@ func (app *App) starterPage(name string, starter Starter) error {
 	if err != nil {
 		return ErrCode("0410", dir)
 	}
-	app.Debug("\tDir: %v", dir)
 
 	filename = slug.Make(filename)
 
 	// Get the fully qualified filename to generate
 	filename = filepath.Join(dir, filename)
 
-	// Create the front matterl
+  /*
+	// Create the front matter
 	theme := ""
 	if starter.Theme != "" {
 		theme = "Theme: " + starter.Theme + "\n"
@@ -286,21 +286,24 @@ func (app *App) starterPage(name string, starter Starter) error {
 		title = "Description: " + starter.Description + "\n"
 	}
 
+
 	frontMatter :=
 		"---\n" +
 			theme +
 			title +
 			description +
 			"---\n"
-
+  */
+  var frontMatter FrontMatter
+  frontMatter.Theme = starter.Theme
+  frontMatter.Title = starter.Title
+  frontMatter.Description = starter.Description
+  frontMatter.Sidebar = starter.Sidebar
+ /// xxx
 	// See if the filename has a Markdown extension
 	if !isMarkdownFile(filename) {
 		filename = filename + ".md"
 	}
-	article := frontMatter + starter.Article
+  return app.createPageFrontMatter(filename, starter.Article, frontMatter)
 
-	if err := writeTextFile(filename, article); err != nil {
-		return ErrCode("0410", filename)
-	}
-	return nil
 }

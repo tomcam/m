@@ -186,7 +186,6 @@ func dirExists(path string) bool {
 
 // exists() is a helper utility that simply displays a filename and
 // shows if it's actually present
-
 func exists(description, filename string) string {
 	found := false
 	if isDirectory(filename) {
