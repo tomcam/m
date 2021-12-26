@@ -12,7 +12,6 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"reflect"
 	"strings"
 	"syscall"
 )
@@ -236,23 +235,6 @@ func Oldexists(description, filename string) {
 	}
 }
 
-// fieldIsStringType() determines whether the struct passed in the
-// argument has a field named in the second argument of type string.
-func fieldIsStringType(obj interface{}, key string) bool {
-	if reflect.TypeOf(obj).Kind() != reflect.Struct {
-		return false
-	}
-	t := reflect.TypeOf(obj)
-	v := reflect.ValueOf(obj)
-	for i := 0; i < t.NumField(); i++ {
-		fieldType := fmt.Sprint(v.Field(i).Type())
-		if fieldType == "string" && v.Type().Field(i).Name == key {
-			return true
-		}
-	}
-	return false
-}
-
 // fileExists() returns true, well, if the named file exists
 func fileExists(filename string) bool {
 	info, err := os.Stat(filename)
@@ -446,31 +428,6 @@ func replaceExtension(filename string, newExtension string) string {
 
 }
 
-// structFieldByNameStrMust() takes any struct and field name (as a string)
-// passed in at runtime and returns the string value of that field.
-// It returns an empty string if the
-// object passed in isn't a struct, or if the named field isn't a struct.
-func structFieldByNameStrMust(obj interface{}, field string) string {
-	v := reflect.ValueOf(obj)
-	if v.Kind() != reflect.Struct {
-		return ""
-	}
-	kind := v.FieldByName(field).Kind()
-	if kind != reflect.String {
-		return ""
-	}
-	return (fmt.Sprint(v.FieldByName(field)))
-}
-
-// structHasField() returns true if a struct passed to it at runtime contains a field name passed as a string
-func structHasField(obj interface{}, field string) bool {
-	v := reflect.ValueOf(obj)
-	if reflect.TypeOf(obj).Kind() != reflect.Struct {
-		return false
-	}
-	return reflect.Indirect(v).FieldByName(field).IsValid()
-}
-
 // userConfigPath() returns the location used to store
 // application data for this user. For example, this is
 // includes the subdirectory where themes get copied when
@@ -568,9 +525,9 @@ func readYAMLToStruct(filename string, i interface{}) error {
 	return nil
 }
 
-/// xxx
-// if keepDirs is false, does a flat copy--one level of directory
-// only.
+// CopyDirectory() does a recursive deep copy 
+// unless keepDirs is true,
+// in which case it copies only 1 level of directory.
 // Slightly modified from:
 // https://stackoverflow.com/questions/51779243/copy-a-folder-in-go
 func CopyDirectory(scrDir, dest string, keepDirs bool) error {

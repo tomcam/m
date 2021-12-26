@@ -1,5 +1,14 @@
 # Internals: How Metabuzz builds, starts, and runs
-* Project init
+
+## Things to remember
+- See cfgBool() as a way to obtain configuration file/environemnt/etc value
+
+## Conventions
+* Should probably name functions something like this
+  - newXXX() allocates a thing in memory, fo rexample, newSite()
+  - createXXX() generates something persistable to the user, for example, createPage()
+
+## Project init
   - This version is for something like new post, which requires you to be in the current dir
 ```
 // Ensure site is initialized properly
@@ -29,12 +38,13 @@ Older version:
 	}
 
 ```
-* Looping through themes
+### Looping through themes
 
 	for level := 0; level < len(app.Page.Theme.levels); level++ {
     theme := app.Page.themes[level]
   }
- ## Publishing a project
+
+## Publishing a project
 * Starts with build(path), where path is the name of a directory (which is assumed but not expected to contain a valid project)
   - It changes to the directory specified by path
   - It reads the site config file

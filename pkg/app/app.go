@@ -2,8 +2,6 @@ package app
 
 import (
 	"embed"
-	"errors"
-	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/tomcam/m/pkg/default"
@@ -14,7 +12,6 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"reflect"
 	"strings"
 )
 
@@ -350,55 +347,6 @@ func (app *App) frontMatterRawToStruct() {
 	for k, v := range app.Page.frontMatterRaw {
 		setFieldMust(&app.Page.FrontMatter, k, v)
 	}
-}
-
-// Based on https://stackoverflow.com/a/26746461
-func setField(obj interface{}, name string, value interface{}) error {
-	structValue := reflect.ValueOf(obj).Elem()
-	structFieldValue := structValue.FieldByName(name)
-
-	if !structFieldValue.IsValid() {
-		return fmt.Errorf("No such field: %s in obj", name)
-	}
-
-	if !structFieldValue.CanSet() {
-		return fmt.Errorf("Cannot set %s field value", name)
-	}
-
-	structFieldType := structFieldValue.Type()
-	val := reflect.ValueOf(value)
-	if structFieldType != val.Type() {
-		return errors.New("Provided value type didn't match obj field type")
-	}
-
-	structFieldValue.Set(val)
-	return nil
-}
-
-// setFieldMust() is identical to setField but strips the
-// error checking.
-// Use in cases like frontMatterRawtoStruct()
-// where the structure type is known in advance.
-func setFieldMust(obj interface{}, name string, value interface{}) {
-	structValue := reflect.ValueOf(obj).Elem()
-	structFieldValue := structValue.FieldByName(name)
-
-	if !structFieldValue.IsValid() {
-		return
-	}
-
-	if !structFieldValue.CanSet() {
-		return
-	}
-
-	structFieldType := structFieldValue.Type()
-	val := reflect.ValueOf(value)
-	if structFieldType != val.Type() {
-		return
-	}
-
-	structFieldValue.Set(val)
-	return
 }
 
 // TODO: This should probably replace copyFactoryThemes()

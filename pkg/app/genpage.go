@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+  "reflect"
 	"github.com/tomcam/m/pkg/default"
 	"os"
 	"path/filepath"
@@ -10,6 +11,9 @@ import (
 // createSubIndex() generates a simple index.md in the root
 // directory.
 func (app *App) createStubIndex() error {
+  app.Page.FrontMatter.Theme = "wide"
+  app.createPageFrontMatter("", "", app.Page.FrontMatter)
+
 	page := fmt.Sprintf("# Welcome to %s\nhello, world.", app.Site.name)
 	if !fileExists(filepath.Join(app.Site.path, "index"+defaults.DefaultMarkdownExtension)) {
 		return app.createSimplePage("index.md", "", page)
@@ -49,4 +53,63 @@ func (app *App) createSimplePage(filename string, dir string, contents string) e
 		return ErrCode("0413", filename)
 	}
 	return nil
+}
+
+func isZero(v reflect.Value) bool {
+	return !v.IsValid() || reflect.DeepEqual(v.Interface(), reflect.Zero(v.Type()).Interface())
+}
+
+// Hmm... see https://stackoverflow.com/a/66511341
+
+func (app *App) createPageFrontMatter(filename string, dir string, frontMatter interface{}) {
+  app.Print("FrontMatter:\n%s", frontMatterToString(app.Page.FrontMatter))
+
+
+  fields := reflect.ValueOf(frontMatter)
+  for i:= 0; i < fields.NumField(); i++ {
+    k := fields.Type().Field(i).Name
+    //v := fields.Field(i)
+    contents := structFieldByNameStrMust(frontMatter, k)
+    if contents != "" {
+      app.Print("%s: %s", k, contents)
+    }
+  }
+  /*
+  reflected := reflect.ValueOf(frontMatter)
+  values := make([]interface{}, reflected.NumField())
+  for i := 0; i < reflected.NumField(); i++ {
+    v := values[i]
+    //k := reflected.Field(i).Name
+    k := v.Field(i).Name
+		if isZero(v) {
+      app.Note("Key %s is empty", k)
+    }else {
+      app.Note("Key %v has value %v", k, v)
+    }
+	}
+  */
+}
+
+// frontMatterToString  generates the front matter 
+// section of a page in "sparse" format, that is,
+// without a bunch of empty fields.
+// Extract only the string fields with contents
+// and include those.
+// If nothing in the front matter is set, returns
+// an empty string.
+func frontMatterToString(f FrontMatter) string {
+  fields := reflect.ValueOf(f)
+  frontMatter := ""
+  for i:= 0; i < fields.NumField(); i++ {
+    k := fields.Type().Field(i).Name
+    contents := structFieldByNameStrMust(f, k)
+    if contents != "" {
+      // TODO: stringbuilder
+      frontMatter += k + ": " + contents + "\n"
+    }
+  }
+  if frontMatter != "" {
+    frontMatter = "---" + "\n" + frontMatter + "---" + "\n"
+  }
+  return frontMatter
 }

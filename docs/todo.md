@@ -1,5 +1,5 @@
 # To do
-# START IUSIG\
+# START USING
 * filepath.Abs
  os.PathSeparator
 ## Updating themes
