@@ -214,8 +214,9 @@ var errMsgs = map[string]string{
 	"1205": "Error generating table of contents",         //
 	// TODO: Get rid of the line below
 	// Old errors stopped at 1206
-	"1207": "Don't understand the starter type", // Name of type in a starter file
-	"1208": "Your path must start with a normal directory name, for example, `blog` or `news`",
+	"1207": "Don't understand the starter type",                                                                                           // Name of type in a starter file
+	"1208": "Your path must start with a normal directory name, for example, `blog` or `news`, but it starts with the permalink variable", // Permalink variable
+	"1209": "Starter file",                                                                                                                // has Unknown permalink variable
 
 	// 1300 -  Error writing to file
 	"1301": "Unable to update site file with collection", // Collection name

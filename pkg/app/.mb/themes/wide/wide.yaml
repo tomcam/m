@@ -16,6 +16,7 @@ Stylesheets:
   - layout.css
   - wide.css
   - responsive.css
+HighlightStyle: github
 PathName: ''
 Version: 1.2.3
 Nav:

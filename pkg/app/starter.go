@@ -98,7 +98,7 @@ func (app *App) newCollection(name string, starter Starter, filename string) err
 	var permalink string
 	var err error
 	// TODO: Need test case
-	if permalink, err = fixPermalink(path); err != nil {
+	if permalink, err = fixPermalink(path, filename); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 
@@ -176,7 +176,8 @@ func permalinkBase(permalink string) string {
 // TODO: Use above comment to generate test cases, and
 // include test cases where the input is expected to be
 // the same as the output.
-func fixPermalink(permalink string) (string, error) {
+// filename is the name of the starter file, if any
+func fixPermalink(permalink, filename string) (string, error) {
 	defaultPermalink := ":year/:monthnum/:daynum/:postname"
 	if permalink == "" {
 		permalink = defaultPermalink
@@ -201,9 +202,15 @@ func fixPermalink(permalink string) (string, error) {
 		case ":year", ":month", ":monthnum", ":daynum", ":day", ":hour",
 			":minute", ":second", ":postname", ":author":
 			if i == 0 {
-				return "", ErrCode("1208", "")
+				return "", ErrCode("1208", seg)
 			}
 		default:
+			if strings.HasPrefix(seg, ":") {
+				// Unrecognized permalink variable
+				msg := fmt.Sprintf("%s has unknown permalink variable %s", filename, seg)
+				return "", ErrCode("1209", msg)
+
+			}
 			segments[i] = slug.Make(seg)
 		}
 		// If the permalink didn't include post name

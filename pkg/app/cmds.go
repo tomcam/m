@@ -78,39 +78,6 @@ func (app *App) addCommands() {
 		}
 
 		/*****************************************************
-		TOP LEVEL COMMAND: update
-		*****************************************************/
-
-		cmdUpdate = &cobra.Command{
-			Use:   "update",
-			Short: "Update one or more factory themes",
-			Long:  "Update one or more factory themes",
-			Run: func(cmd *cobra.Command, args []string) {
-			},
-		}
-
-		/*****************************************************
-		    Subcommand: update themes
-		*****************************************************/
-
-		cmdUpdateThemes = &cobra.Command{
-			Use:   "themes",
-			Short: "update themes",
-			Long: `update themes
-      Replaces local copy of factory themes:
-
-      mb update themes
-`,
-			Run: func(cmd *cobra.Command, args []string) {
-				err := app.updateThemes()
-				if err != nil {
-					app.QuitError(err)
-				}
-				app.Note("Updated all factory themes")
-			},
-		}
-
-		/*****************************************************
 		TOP LEVEL COMMAND: build
 		*****************************************************/
 
@@ -306,24 +273,10 @@ create theme based on an existing one.
 		*****************************************************/
 	app.RootCmd.AddCommand(CmdNew)
 	app.RootCmd.AddCommand(cmdKitchenSink)
-	app.RootCmd.AddCommand(cmdUpdate)
 	app.RootCmd.AddCommand(cmdInterview)
 	CmdNew.AddCommand(CmdNewSite)
 	CmdNew.AddCommand(CmdNewTheme)
 	CmdNew.AddCommand(CmdNewPost)
-	cmdUpdate.AddCommand(cmdUpdateThemes)
 	app.RootCmd.AddCommand(cmdInfo)
 	app.RootCmd.AddCommand(cmdBuild)
-}
-
-// updateConfig() determines where configuration file (and other
-// forms of configuration info, such as
-// environment variables) can be found, then reads in
-// all that info. It overrides defaults established
-// in NewApp(). It isn't necessary. That us, NewApp()
-// will have initialized the App data structure sufficiently
-// to create a new project in the absence of any
-// overriding config information.
-func (app *App) updateConfig() {
-	app.Note("\nupdateConfig()")
 }

@@ -80,8 +80,8 @@ Welcome to %s
 	// Excluded from publishing.
 	DefaultPublishPath = "pub"
 
-  // Automatically appeneded to Markdown source files when they're generated.
-  DefaultMarkdownExtension = ".md"
+	// Automatically appeneded to Markdown source files when they're generated.
+	DefaultMarkdownExtension = ".md"
 
 	// Name of subdirectory containing shortcode files
 	// Excluded from publishing.

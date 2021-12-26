@@ -510,6 +510,7 @@ func (app *App) writeSiteConfig(path ...string) error {
 // to a site config file, or initialized
 // by another site config file.
 func (app *App) setSiteDefaults() {
+	app.Site.Author.FullName = ""
 	app.Site.Language = defaults.Language
 	app.Site.MarkdownOptions.HighlightStyle = defaults.ChromaDefault
 	app.setPaths()

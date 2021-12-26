@@ -169,14 +169,14 @@ func (app *App) initConfig() {
 
 		// Make the config file name obvious but "." to
 		// hide it.
-		viper.SetConfigName("." + defaults.ProductName)
+		viper.SetConfigName(defaults.SourcePathConfigFilename)
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
-		app.Note("Using config file:", viper.ConfigFileUsed())
+		//app.Note("Using config file:", viper.ConfigFileUsed())
 	}
 
 	// Parser couldn't be initialized until command line and
@@ -201,6 +201,8 @@ func (app *App) initConfig() {
 // version of Metabuzz.
 func (app *App) setPaths() {
 	app.Debug("setPaths")
+
+	//homeDir()j/Users/tom/metabuzz.yaml
 	app.Site.name = filepath.Base(app.Site.path)
 	// Compute location of base directory used for all
 	// config info, which includes directories for

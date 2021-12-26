@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"github.com/rodaine/table"
+	"github.com/spf13/viper"
 	//"github.com/tomcam/m/pkg/default"
 	//"os"
 	"strings"
@@ -16,6 +17,7 @@ func (app *App) ShowFrontMatter() {
 
 // ShowInfo() displays debug information about the app and site.
 func (app *App) ShowInfo(pathname string) error {
+	app.Print("unique: %v", viper.GetString("Unique"))
 	// Change to specified directory.
 	// Update app.Site.path and build all related directories
 	if pathname == "" || pathname == "." {
