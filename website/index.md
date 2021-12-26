@@ -1,5 +1,5 @@
 # Metabuzz manual
 
-[Documentation](docs/index.html)
+[Documentation](docs/README.html)
 
 

@@ -3,20 +3,15 @@ Author:
     URL: ""
     Role: ""
 Authors: []
-Base-Path: ""
 Branding: "Metabuzz, Inc."
 Company:
-    Name: ""
-    URL: ""
+    Name: "Metabuzz"
+    URL: "https://metabuzz.com"
     headerlogo: ""
 Exclude-Dirs: []
 Exclude-Extensions: []
 Ganalytics: ""
 Head-Tags: []
-HTML-start-file: <!DOCTYPE html><HTML lang=
-HTML-end-file: |-
-    </body>
-    </html>
 Language: en
 Mode: ""
 Social:
@@ -34,14 +29,5 @@ Social:
     YouTube: ""
 Sidebar: ""
 Theme: ""
-Generate:
-  About:
-    Title: About page
-    Filename: about.md
-    Description: Learn about our company
-  /News/articles:
-    Title: About page
-    Filename: about.md
-    Description: Learn about our company
 List: null
 #generate: {}

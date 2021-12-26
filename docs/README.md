@@ -1,6 +1,10 @@
 # Metabuzz
 
+[Glossary](glossary.html)
+
 [Internals](internals.html)
+
+[Metabuzz Theme Framework](theme-framework.html)
 
 Overview of Metabuzz for advanced users and for programmers.
 
@@ -13,10 +17,6 @@ Wish list and requirements for the next release
 Plans for upcoming releases. No promises.
 
 ## Workflow
-
-* `bu` backs up to a Sandisk flash drive
-
-* `gf` formats everyting in the project if run from root
 
 [Documentation conventions](conventions.html)
 

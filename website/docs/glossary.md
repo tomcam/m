@@ -110,51 +110,5 @@ A theme is technically a [pagetype](#pagetype). The only difference between the 
 
 A theme is assembled from components described in its [theme TOML file](#theme-toml-file).
 
-See also [pagetype](#pagetype)
-
-## Theme TOML file
-
-Each HTML file Metabuzz generates is assembled from one or more of the following HTML [layout elements](#layout-element): 
-`<header>`, `<nav>`, `<aside>`, `<article>`, and `<footer>`. 
-
-The theme TOML file directs how files are generated for each tag. For example,
-the  `<header>` tag is generated from a source listed under `[Header]` and the
-`<aside>` tag (normally called a sidebar) is generated from a source listed
-under `[Sidebar]`. Here's a complete list of the layout elements in a 
-theme TOML file and what rules generate them:
-
-| Layout element  | Theme TOML  | Function   |
-| :-------------- | :--------   |:-----------|
-| `<header>`      | `[header]`  | Header     |
-| `<nav>`         | `[nav]`     | Navbar     |
-| `<aside>`       | `[sidebar]` | One sidebar (an HTML document can only have 1 `article` tag) |
-| `<article>`    | `[article]`  | Body of document |
-| `<footer>`     | `[footer]`  | Footer     |
-
-
-```
-[Header]
-  HTML = "<header>News of the Day</header>"
-  File = "header.md"
-
-[Nav] 
-  HTML = ""
-  File = "nav.md"
-
-[Article]
-  HTML = ""
-  File = ""
-
-[Sidebar]
-  HTML = ""
-  File = "sidebar.md"
-
-[Footer]
-  HTML = ""
-  File = "footer.md"
-```
-
-See also [Theme TOML file](theme-toml-file.html)
-
 
 

@@ -5,6 +5,7 @@
 ## Updating themes
 
 * Clear out any graphic or other assets the theme doesn't use
+* Consider changing generate part of YAML file 
 * Old theme directory
 https://github.com/tomcam/mb/tree/master/.mb/.themes
 * Delete themename.toml
@@ -29,6 +30,7 @@ Footer: {File: footer.md, HTML:}
 Language: en
 
 ## Priority 1: Showstoppers--required for the next release
+* There's some overlap between /Users/tom/code/m/website and /Users/tom/code/m/website/docs
 * I tihnk I need to add Page.URL
 * Change app.go setPaths like this and it almost works with relative directories. I tink publshing stylesheets
 is the only broken thing
@@ -148,6 +150,7 @@ You can do a header like this, which gives you an optional logo
 Same with w-based themes.
 * To change the root text (rem) size, 
 ## Priority 2: Desired but not required for the next release
+* Rework comments according to [godoc](https://go.dev/blog/godoc) rules
 * Fix naming conventions. Anything that generates a file should be called create. new should be used to allocate new data objects.
 * Add: new page command
 * Add: Generate index.md for new site
