@@ -126,7 +126,7 @@ func (app *App) newPost(collection, postname string) error {
 		app.Note("Creating directory %v", dir)
 		err := os.MkdirAll(dir, defaults.ProjectFilePermissions)
 		if err != nil {
-			return ErrCode("0412", dir)
+			return ErrCode("0416", dir)
 		}
 	}
 	/// xxxjlk/m

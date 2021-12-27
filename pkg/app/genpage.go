@@ -21,6 +21,8 @@ func (app *App) createStubIndex() error {
 
 // createSimplePage generates a page of text.
 // Creates dir if it doesn't exist
+// Try to use use createPageFrontMatter() but this is
+// perfect for generating a sub index page.
 func (app *App) createSimplePage(filename string, dir string, contents string) error {
 	app.Debug("simplePage(%v, %v, %v)", filename, dir, contents)
 	if filename == "" {
@@ -35,6 +37,7 @@ func (app *App) createSimplePage(filename string, dir string, contents string) e
 	dir = filepath.Join(app.Site.path, dir)
 	// Create the specified folder as a subdirectory
 	// of the current project.
+  // TODO: Could probably remove this
 	err := os.MkdirAll(dir, defaults.ProjectFilePermissions)
 	if err != nil {
 		return ErrCode("0412", dir)
@@ -45,21 +48,17 @@ func (app *App) createSimplePage(filename string, dir string, contents string) e
 
 	app.Debug("\tAbout to write file %v", filename)
 	if err := writeTextFile(filename, contents); err != nil {
-		// TODO: Ensure all erroc odes in this function are unique
-		return ErrCode("0413", filename)
+		return ErrCode("1302", filename)
 	}
 	return nil
 }
 
-func isZero(v reflect.Value) bool {
-	return !v.IsValid() || reflect.DeepEqual(v.Interface(), reflect.Zero(v.Type()).Interface())
-}
 
-
-//func (app *App) createPageFrontMatter(filename string, dir string, frontMatter interface{}) {
+// createPageFrontMatter generates a page located at 
+// fully qualified pathname (assumes the directory has been created
+// before calling), with text of article and a filled-in FrontMatter
 // Pre: pathname may contain a directory but it's already been created
 func (app *App) createPageFrontMatter(pathname string, article string, frontMatter FrontMatter) error {
-  //app.Print("FrontMatter:\n%s", frontMatterToString(app.Page.FrontMatter))
   f := frontMatterToString(frontMatter)
 	if err := writeTextFile(pathname, f + article); err != nil {
 		return ErrCode("0410", pathname)
@@ -67,9 +66,20 @@ func (app *App) createPageFrontMatter(pathname string, article string, frontMatt
   return nil
 }
 
-// frontMatterToString  generates the front matter 
+// frontMatterToString generates the front matter 
 // section of a page in "sparse" format, that is,
 // without a bunch of empty fields.
+// So it might create something like this if called
+// from a starter. Could have even fewer
+// fields; simply depends on what nonempty values
+// are in the FrontMatter struct.
+//
+//   ---
+//   Theme: hero
+//   Title: Assemble
+//   Sidebar: left
+//   ---
+//
 // Extract only the string fields with contents
 // and include those, for example, 
 // FrontMatter.Theme or FrontMatter.Mode

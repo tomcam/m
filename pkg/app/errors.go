@@ -125,6 +125,7 @@ var errMsgs = map[string]string{
 	"0413": "Error creating directory for new theme",   // Fully qualified pathname
 	"0414": "System error creating temp directory in ", // custom message
 	"0415": "Error creating directory for posts",       // directory
+	"0416": "Error creating directory for a post", // directory
 	// TODO: Get rid of the line below
 	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
 
@@ -220,6 +221,7 @@ var errMsgs = map[string]string{
 
 	// 1300 -  Error writing to file
 	"1301": "Unable to update site file with collection", // Collection name
+  "1032": "Error creating page", // filename
 
 }
 
