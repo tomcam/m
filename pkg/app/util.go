@@ -427,6 +427,17 @@ func replaceExtension(filename string, newExtension string) string {
 
 }
 
+// Remove the first character from a string
+// Thank you, peter SO: https://stackoverflow.com/questions/48798588/how-do-you-remove-the-first-character-of-a-string#comment84610200_48801414
+func trimFirstChar(s string) string {
+	for i := range s {
+		if i > 0 {
+			return s[i:]
+		}
+	}
+	return s[:0]
+}
+
 // userConfigPath() returns the location used to store
 // application data for this user. For example, this is
 // includes the subdirectory where themes get copied when
@@ -524,7 +535,7 @@ func readYAMLToStruct(filename string, i interface{}) error {
 	return nil
 }
 
-// CopyDirectory() does a recursive deep copy 
+// CopyDirectory() does a recursive deep copy
 // unless keepDirs is true,
 // in which case it copies only 1 level of directory.
 // Slightly modified from:

@@ -104,7 +104,7 @@ func (app *App) addCommands() {
 		// TODO: Do/correct all the help text on all of these
 		CmdNew = &cobra.Command{
 			Use:   "new",
-			Short: "new commands: new site|theme|page",
+			Short: "new commands: new site|theme|page|collection",
 			Long: `site: Use new site to start a new project. Use new theme to 
 create theme based on an existing one. 
       Typical usage of new site:
@@ -215,14 +215,14 @@ create theme based on an existing one.
 		}
 
 		/*****************************************************
-		    Subcommand: new page
+		    Subcommand: new post
 		*****************************************************/
 
 		CmdNewPost = &cobra.Command{
-			Use:   "post {postname}",
+			Use:   "post {directory} {postname}",
 			Short: "post",
-			Long: `new post "{collection}" "{postname}"
-      Where both {postname} and {collection} are either a single word, or a quoted string value.
+			Long: `new post "{directory}" "{postname}"
+      Where both {directory} and {collection} are either a single word, or a quoted string value.
       mb new post "
 `,
 			Run: func(cmd *cobra.Command, args []string) {
@@ -246,6 +246,42 @@ create theme based on an existing one.
 					app.QuitError(ErrCode("PREVIOUS", err.Error()))
 				}
 				app.Debug("Created post %v in %v", postname, collection)
+			},
+		}
+
+		/*****************************************************
+		    Subcommand: new collection
+		*****************************************************/
+
+		CmdNewCollection = &cobra.Command{
+			Use:   "collection {permalink}",
+			Short: "collection",
+			Long: `new collection "{permalink}"
+      Example: new collection blog 
+`,
+			Run: func(cmd *cobra.Command, args []string) {
+				var collection string
+
+				switch len(args) {
+				case 0:
+					collection = promptString("Directory (collection) to post to?")
+					//postname = promptString("Title of post?")
+				case 1:
+					collection = args[0]
+					//postname = promptString("Title of post for %v?", collection)
+					/*
+						case 2:
+							collection = args[0]
+							postname = args[1]
+					*/
+				}
+
+				err := app.newCollection(collection, "")
+				if err != nil {
+					//app.QuitError(ErrCode("0928", postname))
+					app.QuitError(ErrCode("PREVIOUS", err.Error()))
+				}
+				app.Debug("Created post %v in %v", collection)
 			},
 		}
 
@@ -277,6 +313,7 @@ create theme based on an existing one.
 	CmdNew.AddCommand(CmdNewSite)
 	CmdNew.AddCommand(CmdNewTheme)
 	CmdNew.AddCommand(CmdNewPost)
+	CmdNew.AddCommand(CmdNewCollection)
 	app.RootCmd.AddCommand(cmdInfo)
 	app.RootCmd.AddCommand(cmdBuild)
 }

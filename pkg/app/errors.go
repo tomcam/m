@@ -56,6 +56,7 @@ import (
 //	0700	- Error reading directory
 //	0800	- Can't determine the name of something
 //	0900	- Problem generating something
+//  0950 - Something's already there
 //	1000	- Something's missing that should be there
 //	1100	- Problem changing to a directory
 //  1200  - Syntax error!
@@ -104,6 +105,8 @@ var errMsgs = map[string]string{
 	"0226": "System error attempting to rename temporary site directory", // custom message
 	"0227": "System error attempting to write site config file to",       // custom message
 	"0228": "System error attempting to create YAML file",
+	"0229": "Unable to create post file", // filename
+
 	// 0250 - Error closing file
 	// Old errors stopped at 0252
 
@@ -116,8 +119,8 @@ var errMsgs = map[string]string{
 	"0401": "Unable to create project directory", // filename
 	"0403": "Unable to create publish directory",
 	"0406": "Unable to copy site directory",
-	"0409": "Error creating directory for theme",   // Fully qualified pathname
-	"0410": "Error creating directory for starter", // directory
+	"0409": "Error creating directory for theme", // Fully qualified pathname
+	"0410": "Error creating directory",           // directory
 	// TODO: Get rid of the line below
 	// Old errors stopped at 0410
 	"0411": "Unable to copy theme directory",
@@ -125,7 +128,8 @@ var errMsgs = map[string]string{
 	"0413": "Error creating directory for new theme",   // Fully qualified pathname
 	"0414": "System error creating temp directory in ", // custom message
 	"0415": "Error creating directory for posts",       // directory
-	"0416": "Error creating directory for a post", // directory
+	"0416": "Error creating directory for a post",      // directory
+	"0417": "Error creating directory for starter",     // directory
 	// TODO: Get rid of the line below
 	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
 
@@ -168,6 +172,7 @@ var errMsgs = map[string]string{
 	"0951": "Site already exists at",         // sitename
 	"0952": "Theme already exists at",        // sitename
 	"0954": "Duplicate path for collection.", // posts directory name
+	"0955": "There is already a file named",  // post name
 
 	// 1000	- Something's missing that should be there
 	"1001": "Missing front matter and markdown", // filename
@@ -203,25 +208,28 @@ var errMsgs = map[string]string{
 	// TODO: Get rid of the line below
 	"1107": "Can't change to site directory", // project name
 	"1108": "Can't change to site directory",
-	"1109": "Can't change to site directory for interview",         // directory name
-	"1110": "Can't change to site directory to copy theme",         // directory name
-	"1111": "System error changing to newly create site directory", // directory name
-	"1112": "System error changing to newly create site directory", // directory name
-	"1113": "Can't change to site directory to create new post at", // directory name
-	"1114": "Can't change to site directory to create new post at", // directory name
+	"1109": "Can't change to site directory for interview",                             // directory name
+	"1110": "Can't change to site directory to copy theme",                             // directory name
+	"1111": "System error changing to newly create site directory",                     // directory name
+	"1112": "System error changing to newly create site directory",                     // directory name
+	"1113": "Can't change to site directory to create new post at",                     // directory name
+	"1114": "Can't change to site directory to create new post at",                     // directory name
+	"1115": ":author permalink variable specified but no author has been specified in", // collection
 
 	// 1200 - Syntax error!
 	"1204": "Unknown dot value in Go template function ", //
 	"1205": "Error generating table of contents",         //
 	// TODO: Get rid of the line below
 	// Old errors stopped at 1206
-	"1207": "Don't understand the starter type",                                                                                           // Name of type in a starter file
-	"1208": "Your path must start with a normal directory name, for example, `blog` or `news`, but it starts with the permalink variable", // Permalink variable
-	"1209": "Starter file",                                                                                                                // has Unknown permalink variable
+	"1207": "Don't understand the starter type", // Name of type in a starter file
+	///"1208": "Your path must start with a normal directory name, for example, `blog` or `news`, but it starts with the permalink variable", // Permalink variable
+	"1208": "Path to collection starts with", // custom message
+	"1209": "Starter file",                   // has Unknown permalink variable
 
 	// 1300 -  Error writing to file
 	"1301": "Unable to update site file with collection", // Collection name
-  "1032": "Error creating page", // filename
+	"1032": "Error creating page",                        // filename
+	"1303": "Error creating page",                        // filename
 
 }
 

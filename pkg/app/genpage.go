@@ -2,10 +2,10 @@ package app
 
 import (
 	"fmt"
-  "reflect"
 	"github.com/tomcam/m/pkg/default"
 	"os"
 	"path/filepath"
+	"reflect"
 )
 
 // createSubIndex() generates a simple index.md in the root
@@ -22,7 +22,7 @@ func (app *App) createStubIndex() error {
 // createSimplePage generates a page of text.
 // Creates dir if it doesn't exist
 // Try to use use createPageFrontMatter() but this is
-// perfect for generating a sub index page.
+// perfect for generating a simple index page.
 func (app *App) createSimplePage(filename string, dir string, contents string) error {
 	app.Debug("simplePage(%v, %v, %v)", filename, dir, contents)
 	if filename == "" {
@@ -37,7 +37,7 @@ func (app *App) createSimplePage(filename string, dir string, contents string) e
 	dir = filepath.Join(app.Site.path, dir)
 	// Create the specified folder as a subdirectory
 	// of the current project.
-  // TODO: Could probably remove this
+	// TODO: Could probably remove this
 	err := os.MkdirAll(dir, defaults.ProjectFilePermissions)
 	if err != nil {
 		return ErrCode("0412", dir)
@@ -53,20 +53,25 @@ func (app *App) createSimplePage(filename string, dir string, contents string) e
 	return nil
 }
 
-
-// createPageFrontMatter generates a page located at 
+// createPageFrontMatter generates a page located at
 // fully qualified pathname (assumes the directory has been created
 // before calling), with text of article and a filled-in FrontMatter
 // Pre: pathname may contain a directory but it's already been created
 func (app *App) createPageFrontMatter(pathname string, article string, frontMatter FrontMatter) error {
-  f := frontMatterToString(frontMatter)
-	if err := writeTextFile(pathname, f + article); err != nil {
-		return ErrCode("0410", pathname)
+	f := frontMatterToString(frontMatter)
+	// TODO: Is removing the first char like this brittle? Is there a case
+	// in which there would be no path separator?
+	if pathname[0:1] == string(os.PathSeparator) {
+		pathname = trimFirstChar(pathname)
 	}
-  return nil
+	if err := writeTextFile(pathname, f+article); err != nil {
+		// xxx
+		return ErrCode("0229", pathname)
+	}
+	return nil
 }
 
-// frontMatterToString generates the front matter 
+// frontMatterToString generates the front matter
 // section of a page in "sparse" format, that is,
 // without a bunch of empty fields.
 // So it might create something like this if called
@@ -81,24 +86,24 @@ func (app *App) createPageFrontMatter(pathname string, article string, frontMatt
 //   ---
 //
 // Extract only the string fields with contents
-// and include those, for example, 
+// and include those, for example,
 // FrontMatter.Theme or FrontMatter.Mode
 // If nothing in the front matter is set, returns
 // an empty string.
 // Hmm... see https://stackoverflow.com/a/66511341
 func frontMatterToString(f FrontMatter) string {
-  fields := reflect.ValueOf(f)
-  frontMatter := ""
-  for i:= 0; i < fields.NumField(); i++ {
-    k := fields.Type().Field(i).Name
-    contents := structFieldByNameStrMust(f, k)
-    if contents != "" {
-      // TODO: stringbuilder
-      frontMatter += k + ": " + contents + "\n"
-    }
-  }
-  if frontMatter != "" {
-    frontMatter = "---" + "\n" + frontMatter + "---" + "\n"
-  }
-  return frontMatter
+	fields := reflect.ValueOf(f)
+	frontMatter := ""
+	for i := 0; i < fields.NumField(); i++ {
+		k := fields.Type().Field(i).Name
+		contents := structFieldByNameStrMust(f, k)
+		if contents != "" {
+			// TODO: stringbuilder
+			frontMatter += k + ": " + contents + "\n"
+		}
+	}
+	if frontMatter != "" {
+		frontMatter = "---" + "\n" + frontMatter + "---" + "\n"
+	}
+	return frontMatter
 }

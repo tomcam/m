@@ -17,7 +17,7 @@ func (app *App) ShowFrontMatter() {
 
 // ShowInfo() displays debug information about the app and site.
 func (app *App) ShowInfo(pathname string) error {
-	app.Print("unique: %v", viper.GetString("Unique"))
+	app.Print("Default theme: %v", viper.GetString("Theme"))
 	// Change to specified directory.
 	// Update app.Site.path and build all related directories
 	if pathname == "" || pathname == "." {

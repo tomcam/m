@@ -2,7 +2,6 @@ package app
 
 import (
 	"bytes"
-	"strings"
 	"text/template"
 )
 
@@ -14,7 +13,8 @@ import (
 // source file parsing errors that occur.
 // Skips if frontmatter.Templates is set to "off"
 func (app *App) interps(filename string, input string) string {
-	if strings.ToLower(app.Page.FrontMatter.Templates) != "off" {
+	//if strings.ToLower(app.Page.FrontMatter.Templates) != "off" {
+	if !app.Page.FrontMatter.Templates {
 		return app.execute(filename, input, app.funcs)
 	}
 	return input

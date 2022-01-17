@@ -1,5 +1,9 @@
 package app
 
+import (
+	"time"
+)
+
 // type Page contains read-only information about the Markdown page currently
 // being processed.
 type Page struct {
@@ -32,13 +36,16 @@ type Page struct {
 
 type FrontMatter struct {
 	// Theme specified by user
-	Theme string `yaml:"theme"`
+	Theme string `yaml:"Theme"`
 
 	// Generates a Description metatag on output
-	Description string `yaml:"description"`
+	Description string `yaml:"Description"`
+
+	// Date this document was created
+	Created time.Time `yaml:"Created"`
 
 	// Filenames to skip when publishing a theme
-	ExcludeFiles []string `yaml:"exclude-files"`
+	ExcludeFiles []string `yaml:"ExcludeFiles"`
 
 	// Generates a Title tag on output
 	Title string `yaml:"Title"`
@@ -55,5 +62,5 @@ type FrontMatter struct {
 
 	// If set to "off", don't execute templates on this page.
 	// Used for documentation purposes.
-	Templates string
+	Templates bool `yaml:"Templates"`
 }

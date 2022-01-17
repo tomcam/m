@@ -63,79 +63,10 @@ func (app *App) generate(pathname string) error {
 				return ErrCode("PREVIOUS", err.Error())
 			}
 		case "collection":
-			if err = app.newCollection(k, v, pathname); err != nil {
+			if err = app.newCollection(k /* v, */, pathname); err != nil {
 				return ErrCode("PREVIOUS", err.Error())
 			}
 		}
-	}
-	return nil
-}
-
-// newCollection() creates a collection from the path and/or
-// permalink described in name, for example,
-// "/blog/:year/:monthnum/:daynum"
-// And adds it to Site.Collections
-// filename is the name of the starter file. If interactive,
-// just pass ""
-func (app *App) newCollection(name string, starter Starter, filename string) error {
-	app.Debug("newCollection(%v)", name)
-	// The name is a path to the file or collection.
-	// It may also be a permalink.
-	path := name
-	// If no folder is given, assume project root.
-	// Remember Go uses Unix folder conventions even
-	// under Windows
-	if path == "" {
-		path = "/"
-	}
-
-	// Ensure it has a leading "/" unless preceded with a dot
-	if !strings.HasPrefix(path, "/") && !strings.HasPrefix(path, ".") {
-		path = filepath.Join("/", path)
-	}
-
-	var c Collection
-	var permalink string
-	var err error
-	// TODO: Need test case
-	if permalink, err = fixPermalink(path, filename); err != nil {
-		return ErrCode("PREVIOUS", err.Error())
-	}
-
-	// The key to the collection will be the base directory
-	// (everything up to the first permalink variable)
-	base := permalinkBase(permalink)
-
-	// Quit if this is a duplicate
-	if app.Site.Collections[base].Permalink == permalink {
-		msg := ""
-		if filename != "" {
-			msg = fmt.Sprintf("Starter file %s already has a collection named %s", filename, base)
-		} else {
-			msg = fmt.Sprintf("Collection named %s already exists", base)
-		}
-		return ErrCode("0954", msg)
-	}
-	c.Permalink = permalink
-	app.Debug("\tAbout to add %#v to %#v at %v", c, app.Site.Collections, base)
-	app.Site.Collections[base] = c
-	app.Debug("\tapp.Site.Collections[%v] is now %v", base, app.Site.Collections[base])
-	//app.Print("Permalink: %v\n app.Site.Collections.[permalink]: %v\n. FirstDir: %v\n", permalink, app.Site.Collections[permalink], permalinkBase(permalink))
-
-	// Create the specified folder as a subdirectory
-	// of the current project.
-	// The base directory is everything up to the first
-	// colon. Permalink is guaranteed to start
-	// with a directory separator.
-	// TODO: refactor with permalinkBase()?
-	dir := permalink[1:strings.IndexRune(permalink, ':')]
-	err = os.MkdirAll(dir, defaults.ProjectFilePermissions)
-	if err != nil {
-		return ErrCode("0415", dir)
-	}
-
-	if err = app.writeSiteConfig(); err != nil {
-		return ErrCode("1301", name)
 	}
 	return nil
 }
@@ -145,7 +76,7 @@ func (app *App) newCollection(name string, starter Starter, filename string) err
 // https://stackoverflow.com/a/70342730/478311
 // Thanks for saving my remaining sanity on this, stt106!
 // Turned out not to be useful because I forgot about
-// the fact that yiou may have something like
+// the fact that one may have something like
 // dir1/dir2/:year/:monthum/:daynum
 func firstDir(permalink string) string {
 	split := strings.Split(permalink, string(os.PathSeparator))
@@ -155,7 +86,11 @@ func firstDir(permalink string) string {
 // permalinkBase takes a permalink such as "/site/news/:year/:month/:postname"
 // and yields its bath bath, for example,  "/site/news/"
 func permalinkBase(permalink string) string {
-	return permalink[:strings.IndexRune(permalink, ':')]
+	if strings.Contains(permalink, ":") {
+		return permalink[:strings.IndexRune(permalink, ':')]
+	} else {
+		return permalink
+	}
 }
 
 // fixPermalink() ensures that
@@ -178,8 +113,8 @@ func permalinkBase(permalink string) string {
 // filename is the name of the starter file, if any
 func fixPermalink(permalink, filename string) (string, error) {
 	defaultPermalink := ":year/:monthnum/:daynum/:postname"
-	if permalink == "" {
-		permalink = defaultPermalink
+	if permalinkBase(permalink) == permalink {
+		permalink = filepath.Join(permalink, defaultPermalink)
 	}
 	// Break the description up into segments.
 	segments := strings.Split(permalink, "/")
@@ -201,7 +136,8 @@ func fixPermalink(permalink, filename string) (string, error) {
 		case ":year", ":month", ":monthnum", ":daynum", ":day", ":hour",
 			":minute", ":second", ":postname", ":author":
 			if i == 0 {
-				return "", ErrCode("1208", seg)
+				msg := fmt.Sprintf( /* Unknown permalink variable*/ " %s (filename %s)", seg, filename)
+				return "", ErrCode("1208", msg)
 			}
 		default:
 			if strings.HasPrefix(seg, ":") {
@@ -260,7 +196,7 @@ func (app *App) createStarterPage(name string, starter Starter) error {
 	dir = filepath.Join(app.Site.path, dir)
 	err := os.MkdirAll(dir, defaults.ProjectFilePermissions)
 	if err != nil {
-		return ErrCode("0410", dir)
+		return ErrCode("0417", dir)
 	}
 
 	filename = slug.Make(filename)
@@ -268,42 +204,15 @@ func (app *App) createStarterPage(name string, starter Starter) error {
 	// Get the fully qualified filename to generate
 	filename = filepath.Join(dir, filename)
 
-  /*
-	// Create the front matter
-	theme := ""
-	if starter.Theme != "" {
-		theme = "Theme: " + starter.Theme + "\n"
-	}
-	title := ""
-
-	if starter.Title != "" {
-		title = "Title: " + starter.Title + "\n"
-	}
-
-	// TODO: Stuff these things into a read FrontMatter to get it right
-	description := ""
-	if starter.Description != "" {
-		title = "Description: " + starter.Description + "\n"
-	}
-
-
-	frontMatter :=
-		"---\n" +
-			theme +
-			title +
-			description +
-			"---\n"
-  */
-  var frontMatter FrontMatter
-  frontMatter.Theme = starter.Theme
-  frontMatter.Title = starter.Title
-  frontMatter.Description = starter.Description
-  frontMatter.Sidebar = starter.Sidebar
- /// xxx
+	var frontMatter FrontMatter
+	frontMatter.Theme = starter.Theme
+	frontMatter.Title = starter.Title
+	frontMatter.Description = starter.Description
+	frontMatter.Sidebar = starter.Sidebar
 	// See if the filename has a Markdown extension
 	if !isMarkdownFile(filename) {
 		filename = filename + ".md"
 	}
-  return app.createPageFrontMatter(filename, starter.Article, frontMatter)
+	return app.createPageFrontMatter(filename, starter.Article, frontMatter)
 
 }

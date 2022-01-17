@@ -1,10 +1,11 @@
 package app
 
 import (
-  "reflect"
-  "errors"
-  "fmt"
+	"errors"
+	"fmt"
+	"reflect"
 )
+
 // fieldIsStringType() determines whether the struct passed in the
 // argument has a field named by key that is of type string.
 func fieldIsStringType(obj interface{}, key string) bool {
@@ -74,7 +75,6 @@ func setFieldMust(obj interface{}, name string, value interface{}) {
 	return
 }
 
-
 // structFieldByNameStrMust() takes any struct and field name (as a string)
 // passed in at runtime and returns the string value of that field.
 // It returns an empty string if the
@@ -99,5 +99,3 @@ func structHasField(obj interface{}, field string) bool {
 	}
 	return reflect.Indirect(v).FieldByName(field).IsValid()
 }
-
-
