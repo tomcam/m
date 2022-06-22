@@ -24,7 +24,8 @@ import (
 
 func (app *App) newPost(collection, postname string) error {
 	app.Debug("newPost(%v/%v)", collection, postname)
-	// TODO: probaly need to normalize collection name with leading and trailing  directory separators
+	h1 := postname
+	// TODO: probably need to normalize collection name with leading and trailing  directory separators
 	// Ensure site is initialized properly
 	if !app.Site.configLoaded {
 		dir := currDir()
@@ -43,7 +44,6 @@ func (app *App) newPost(collection, postname string) error {
 		collection = filepath.Join(pathSep, collection)
 	}
 	if !strings.HasSuffix(collection, pathSep) {
-		// TODO: This fails; seems to be by design.
 		// filepath.Join() just doesn't like the
 		// trailing directory separator.
 		// See: https://go.dev/play/p/42x3HiccT6_S
@@ -59,7 +59,6 @@ func (app *App) newPost(collection, postname string) error {
 	postname = slug.Make(postname)
 	//	":year", ":month", ":monthnum", ":daynum", ":day", ":hour", ":minute", ":second", ":postname", ":author":
 
-	//now := time.Now().Date()
 	now := time.Now()
 	day := now.Weekday().String()
 	//year, monthnum, daynum := time.Now().Date()
@@ -93,6 +92,7 @@ func (app *App) newPost(collection, postname string) error {
 
 	filename = strings.ReplaceAll(filename, ":author", author)
 	// TODO create directory
+	// Remove leading path separator
 	dir := filename[1:strings.IndexRune(filename, ':')]
 	dir = filepath.Join(app.Site.path, dir)
 	if !dirExists(dir) {
@@ -101,11 +101,35 @@ func (app *App) newPost(collection, postname string) error {
 			return ErrCode("0416", dir)
 		}
 	}
+
+	// Add the markdown extension, usually ".md"
 	filename = strings.ReplaceAll(filename, ":postname", postname) + defaults.DefaultMarkdownExtension
 	var f FrontMatter
-	f.Created = time.Now()
-	return app.createPageFrontMatter(filename, "", f)
+	f.DateCreated = time.Now().Format(time.RFC3339)
+	// Remove the leading slash to check the filename's existence
+	if fileExists(filename[1:]) {
+		return ErrCode("0956", filename)
+	}
+	if err := app.createPageFrontMatter(filename, "# "+h1+"\n", f); err != nil {
+		return ErrCode("PREVIOUS", filename)
+	}
+	app.Print("Created post %v\n", filename)
+	return nil
+}
 
-	/// xxx
+// createPageFrontMatter generates a page located at
+// fully qualified pathname (assumes the directory has been created
+// before calling), with text of article and a filled-in FrontMatter
+// Pre: pathname may contain a directory but it's already been created
+func (app *App) createPageFrontMatter(pathname string, article string, frontMatter FrontMatter) error {
+	f := frontMatterToString(frontMatter)
+	if pathname[0:1] == string(os.PathSeparator) {
+		pathname = trimFirstChar(pathname)
+	}
+	app.Print("About to create page: %v\n", f+article)
+	if err := writeTextFile(pathname, f+article); err != nil {
+		// xxx
+		return ErrCode("0229", pathname)
+	}
 	return nil
 }

@@ -1,18 +1,22 @@
 # Metabuzz
 
-[Glossary](glossary.html)
+This directory is for developer documentation. End-user
+documentation is in the website
+[../website/docs/index.html](Documentation) directory.
+
+[To do](todo.html)
+
+Requirements for the current release
+
+[Roadmap](roadmap.html)
+
+Rough idea of what's coming up next
 
 [Internals](internals.html)
 
 [Metabuzz Theme Framework](theme-framework.html)
 
 Overview of Metabuzz for advanced users and for programmers.
-
-[To do](todo.html)
-
-Wish list and requirements for the next release
-
-[Roadmap](roadmap.html)
 
 Plans for upcoming releases. No promises.
 

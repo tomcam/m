@@ -31,7 +31,6 @@ func (app *App) newCollection(name string /* starter Starter, */, filename strin
 			return ErrCode("1109", currDir())
 		}
 		if err := app.readSiteConfig(); err != nil {
-			app.Note("FAIL")
 			return ErrCode("PREVIOUS", err.Error())
 		}
 	}
@@ -59,7 +58,6 @@ func (app *App) newCollection(name string /* starter Starter, */, filename strin
 		return ErrCode("PREVIOUS", err.Error())
 	}
 
-	app.Note("\tPermalink went from %s to %v", name, permalink)
 	// The key to the collection will be the base directory
 	// (everything up to the first permalink variable)
 	base := permalinkBase(permalink)

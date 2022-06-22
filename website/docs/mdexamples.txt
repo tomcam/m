@@ -34,3 +34,23 @@ Semi-successful header
 * [Podcast](/)
 * [Subscribe](/)
 
+
+Enumerate list of authors and precede each with an asterisk:
+{{"{{"}} with .Site.CoAuthors {{"}}"}}                                             
+{{"{{"}} range $key, $value := . {{"}}"}}                                       
+* {{"{{"}} . {{"}}"}}  
+{{"{{"}} end {{"}}"}}                                                                     
+{{"{{"}} end {{"}}"}}
+
+##### file index.md
+
+```
+Show authors as a list:
+{{"{{"}} .Site.CoAuthors {{"}}"}}
+
+First author in the list:
+{{"{{"}} index .Site.CoAuthors 0 {{"}}"}}
+
+```
+
+

@@ -9,9 +9,10 @@
   - createXXX() generates something persistable to the user, for example, createPage()
 
 ## Project init
-  - This version is for something like new post, which requires you to be in the current dir
+  - This version is for command line commands such as new post, 
+    which require you to be initialized and in the current dir
 ```
-// Ensure site is initialized properly
+// Can be called from command line so make sure all is initialized
 if !app.Site.configLoaded {
   if err := app.changeWorkingDir(currDir()); err != nil {
     app.Debug("\tUnable to change to directory (%v)", currDir())

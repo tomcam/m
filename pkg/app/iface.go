@@ -84,10 +84,12 @@ func structFieldByNameStrMust(obj interface{}, field string) string {
 	if v.Kind() != reflect.Struct {
 		return ""
 	}
-	kind := v.FieldByName(field).Kind()
-	if kind != reflect.String {
-		return ""
-	}
+	/*
+		kind := v.FieldByName(field).Kind()
+		if kind != reflect.String {
+			return ""
+		}
+	*/
 	return (fmt.Sprint(v.FieldByName(field)))
 }
 

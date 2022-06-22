@@ -93,7 +93,8 @@ func (app *App) addCommands() {
 					err = app.build("")
 				}
 				if err != nil {
-					app.QuitError(ErrCode("0923", err.Error()))
+					//app.QuitError(ErrCode("0923", err.Error()))
+					app.QuitError(ErrCode("PREVIOUS", err.Error()))
 				}
 			},
 		}

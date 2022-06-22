@@ -29,7 +29,6 @@ func (app *App) publish(filename string) error {
 }
 
 func (app *App) publishMarkdownFile(filename string) error {
-	//app.Page.FrontMatter = FrontMatter{}
 	app.Page = Page{}
 	app.Debug("\tpublishMarkdownFile(%#v)", filename)
 	// Figure out this file's relative position in the output
@@ -43,14 +42,6 @@ func (app *App) publishMarkdownFile(filename string) error {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	app.Page.filePath = filename
-	//var err error
-	// Obtain site configuration from site.yaml
-	//app.readSiteConfig()
-	if err != nil {
-		app.Debug("\trSiteFileConfig() failed: %v", err.Error())
-		// TODO: Handle error properly & and document error code
-		return err
-	}
 	app.Page.dir = currDir()
 
 	// Take the input file name, e.g. myarticle.md or whatever,
@@ -483,6 +474,9 @@ func (app *App) sidebarType() string {
 	return sidebar
 }
 
+// publishStylesheet copies a file specified in the theme
+// configuration file to the publish directory used for
+// stylesheets.
 func (app *App) publishStylesheet(source string, dest string) error {
 	app.Debug("\t\t\t\tpublishStylesheet(%v, %v)", source, dest)
 	if source == dest {
@@ -496,9 +490,9 @@ func (app *App) publishStylesheet(source string, dest string) error {
 	}
 	err := Copy(source, dest)
 	if err != nil {
-		//return ErrCode("PREVIOUS", err.Error(), "Publishing stylesheet")
-		return ErrCode("1027", source)
+		return ErrCode("1027", app.Page.Theme.filename+" specifies a file named "+filepath.Base(source)+", which can't be found")
 	}
+	//xxx
 	// Keep list of stylesheets that got published
 	app.Page.stylesheets = append(app.Page.stylesheets, dest)
 	return nil

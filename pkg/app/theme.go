@@ -15,6 +15,9 @@ type Theme struct {
 	// are supported by this theme.
 	Supports supports `yaml:"Supports"`
 
+	// Full pathname to the theme file
+	filename string
+
 	// Themes can be nested, e.g. debut/gallery/item.
 	// Each level get its own entry here.
 	levels []string
@@ -25,7 +28,7 @@ type Theme struct {
 	// Tracks level of nesting for this theme. So if
 	// the theme is specified as debut/gallery/item,
 	// debut is 0, gallery is 1, and item is 2.
-	nestingLevel int
+	//nestingLevel int
 
 	// Location of theme files after they have been
 	// copied to the publish directory for themes
@@ -301,7 +304,7 @@ func (app *App) loadTheme() error {
 		app.Page.Theme.sourcePath = source
 		// TODO: I can probably remove nestingLevel entirely, unless i need it
 		// to detect latest sidebar or mode
-		app.Page.Theme.nestingLevel = level
+		//app.Page.Theme.nestingLevel = level
 		app.Page.Theme.level = themeName
 		// Finds the theme specified for this page.
 		// Copy the required files to the theme publish directory.
@@ -374,6 +377,7 @@ func (app *App) loadThemeConfig(path string) error {
 	// Save the current theme. Force to lowercase because
 	// it's  filename
 	theme := strings.ToLower(app.Page.FrontMatter.Theme)
+	app.Page.Theme.filename = filename
 	app.Page.FrontMatter.Theme = theme
 	app.Page.Theme.Name = theme
 	app.Page.Theme.publishPath = path

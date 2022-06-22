@@ -172,8 +172,8 @@ var errMsgs = map[string]string{
 	"0951": "Site already exists at",         // sitename
 	"0952": "Theme already exists at",        // sitename
 	"0954": "Duplicate path for collection.", // posts directory name
-	"0955": "There is already a file named",  // post name
-
+	"0955": "There is already a file named",  // filename
+	"0956": "There is already a post named",  // post name
 	// 1000	- Something's missing that should be there
 	"1001": "Missing front matter and markdown", // filename
 	"1002": "This isn't a project directory:",   // directoryname
@@ -182,15 +182,16 @@ var errMsgs = map[string]string{
 	"1013": "Please specify a site name",
 	// TODO: Get rid of the line below
 	// Old errors stopped at 1023
-	"1024": "Couldn't find stylesheet",                               //filename
-	"1025": "This isn't a project directory:",                        // directoryname
-	"1026": "This isn't a project directory:",                        // directoryname
-	"1027": "File specified in theme configuration file is missing:", // filename
-	"1028": "Can't find a theme named",                               // filename
-	"1029": "Can't find the theme file",                              // filename
-	"1033": "Unable to read theme directory",                         // filename
-	"1034": "Unable to find layout element file",                     // filename
-	"1035": "Missing name of theme to copy",                          // filename
+	"1024": "Couldn't find stylesheet",        //filename
+	"1025": "This isn't a project directory:", // directoryname
+	"1026": "This isn't a project directory:", // directoryname
+	//"1027": "File specified in theme configuration file is missing:", // filename
+	"1027": "Theme configuration file",           // filename
+	"1028": "Can't find a theme named",           // filename
+	"1029": "Can't find the theme file",          // filename
+	"1033": "Unable to read theme directory",     // filename
+	"1034": "Unable to find layout element file", // filename
+	"1035": "Missing name of theme to copy",      // filename
 	"1036": "No site configuration file was specified",
 	"1037": "Filename missing to create page",
 	"1038": "Can't find the permalink for",       // custom message

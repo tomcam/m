@@ -1,3 +1,6 @@
+blog:
+  Type: collection
+
 /index:
   Type: page
   Title: General Contractor and Home Repairs in Redmond, WA 

@@ -1,7 +1,18 @@
 # To do
+* Next commit
+  - fixed Error building File specified in theme configuration file is missing: /Users/tom/code/m/cmd/mb/foo/.mb/themes/hero/home/reset.css (error code mbz1027)
+  - Removed Theme.nestingLevel
+
+* Get Chris's theme
+* Create site for Chris
+* Finish blogging features: NOT NECESSARY for Chris's site 
+* Start writing test suites
+* Low pri: Consider optional local fonts to handle internet outages
 # START USING
 * filepath.Abs
  os.PathSeparator
+
+
 ## Updating themes
 
 * Clear out any graphic or other assets the theme doesn't use
@@ -30,8 +41,42 @@ Footer: {File: footer.md, HTML:}
 Language: en
 
 ## Priority 1: Showstoppers--required for the next release
-* There's some overlap between /Users/tom/code/m/website and /Users/tom/code/m/website/docs
-* I tihnk I need to add Page.URL
+* error 1027: Erorr message should include the name of the theme configuration file and the name of the missing file. It's the output you get if youare missing say reset.css, it's been specified in the theme file, and you use --verbose on the command line. Actually it's displaying a completely different message, complete with extraneous blank lines:
+```
+Error building File specified in theme configuration file is missing: /Users/tom/code/m/cmd/mb/foo/.mb/themes/hero/home/reset.css (error code mbz1027)
+
+
+ (error code mbz0923)
+
+```
+* This error should show the current filename, and also it's just badly worded: 
+
+```Error building Can't find a theme named /Users/tom/html/tom/.mb/themes/tomim (error code mbz1028)
+```
+* I need an update or update themes command, which copies over the latest themes & related assets
+* Bug: If you create the theme hero/home from hero, then specify a right sidebar, 2 problems emerge.
+  - It doesn't have the sidebar code from hero. You have to copy that code manually (feature, not a bug? Unsure)
+  - It won't have the code for hero/home/sidebar.md, but will silently use the hero/sidebar.md code instead.
+    Arguably not a bug. Inheritance with stylesheets means the previous directory's stylesheets are used
+    by default. It makes sense that the layout elementws would also .
+* Output like this isn't working. It would help for debug wbut I need to get Chrtis' site up an drunning
+  Hey! This is theme {{ .Page.FrontMatter.Theme }}
+  Which sidebar is being used? {{ .Page.FrontMatter.Sidebar }}
+
+
+* I created a theme called hero/home and had a misplaced comment in home.yaml. The error was "Error building yaml: line 17: did not find expected key (error code mbz0923)". Note that it didn't give the filename.
+* Echoing theme name doesn't work
+* Document: theme inheritance. Does hero/home inherit all of hero's files? Not sure it works with sidebar files.
+* Maybe document how to create test files
+* Start generating tests for things like
+  - Omitting layout elements
+  - All custom functions
+  - Supress
+* Merge /Users/tom/code/m/website/docs and /Users/tom/code/m/docs
+* Document: suppress
+* Document DateCreated. Example: DateCreated: 2022-01-17T17:24:29-08:00
+* Remove overlap between /Users/tom/code/m/website and /Users/tom/code/m/website/docs
+* I think I need to add Page.URL
 * Change app.go setPaths like this and it almost works with relative directories. I tink publshing stylesheets
 is the only broken thing
 ```
@@ -150,6 +195,7 @@ You can do a header like this, which gives you an optional logo
 Same with w-based themes.
 * To change the root text (rem) size, 
 ## Priority 2: Desired but not required for the next release
+* Error message for error code 1027 (triggered when a stylesheet from the theme config file can't be found) produces extra newlines
 * Rework comments according to [godoc](https://go.dev/blog/godoc) rules
 * Fix naming conventions. Anything that generates a file should be called create. new should be used to allocate new data objects.
 * Add: new page command
