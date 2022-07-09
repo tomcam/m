@@ -164,10 +164,21 @@ article > img, article > p > img {
  */
 
 article > p > code, article > code, article > pre, article > pre > code {
-		font-family:var(--code);
-		font-size:var(--p-font-size);
-		overflow:auto;
+  font-family:var(--code);
+  font-size:var(--p-code-font-size);                                   
+  line-height:var(--p-code-line-height);
+  padding-top:var(--p-code-padding-top);
+  padding-bottom:var(--p-code-padding-bottom);                         
+  padding-left:var(--p-code-padding-left);                       
+  padding-right:var(--p-code-padding-right);         
+  overflow:auto;
 }
+article > pre > code { display:block; }
+article > p > code {
+  padding-top:.4rem;
+  padding-bottom:.4rem;                              
+}
+
 article > table {padding-top:1em;padding-bottom:1.5em;}
 article > table > td,th {padding:1rem;}
 article > table > tbody > tr > td {padding:1rem;}

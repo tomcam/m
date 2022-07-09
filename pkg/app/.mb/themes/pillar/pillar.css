@@ -173,7 +173,7 @@ article > p > code, article > code, article > pre, article > pre > code {
   padding-right:var(--p-code-padding-right);        
   overflow:auto;
 }
-
+article > pre > code { display:block; }
 article > p > code {
   padding-top:.4rem;
   padding-bottom:.4rem;                              
