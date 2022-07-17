@@ -1,5 +1,5 @@
 ---
-Theme: genuine
+#Theme: genuine
 ---
 # Metabuzz Glossary and definitions
 # TODO: There are some duplicate definitions
@@ -43,7 +43,7 @@ See also layout elements
 See also [layout elements](layout-elements.html)
 
 ## Markdown
-Markdown is a sensible way to represent text files so that they read easily as plain text if printed out, but also carry enough semantic meaning that they can be converted into HTML. Markdown is technically known as a markup langauge, which means that it contains both text, e.g. hello, world, and easily distinguishable annotations about how the text is used, e.g. marking up *hello* to emphasize the word in italics--its markup. The name markdown is a play on the term markup. The name markdown is a play on the term markup. The name markdown is a play on the term markup.
+Markdown is a sensible way to represent text files so that they read easily as plain text if printed out as is, but which also carry enough semantic meaning that they can be converted into HTML. Markdown is technically known as a *markup langauge*, which means that it contains both text, e.g. hello, world, and easily distinguishable annotations about how the text is used, e.g. marking up *hello* to emphasize the word in italics--its markup. The name markdown is a play on the term markup. The name markdown is a play on the term markup. 
 
 The closest thing to an industry standard for Markdown is CommonMark. Metabuzz converts all CommonMark text according to specification, and includes extensions for things like tables, strikethrough, and autolinks. See the source to Goldmark for more information on extensions.
 
@@ -58,7 +58,7 @@ The above would be converted in HTML that looks like this.
 <h1>Introduction</h1>
 <p><em>hello</em>, world.</p>
 ```
-That means the # Introduction actually represents the HTML heading type h1, which is the hightest level of organization. ## Introduction would generated an h2 header, and so on.
+That means the `# Introduction` actually represents the HTML heading type h1, which is the hightest level of organization. `## Introduction` would generate an h2 header, and so on.
 
 The asterisk characters are replaced by the `<em>` tag pair, which means they have the semantic power of emphasis. This is represented by HTML as italics, although you could override it in CSS.
 
@@ -72,6 +72,9 @@ conventions used to generate your web pages. In these help pages it is synonomou
 Markdown, markup, and [CommonMark](#commonmark).
 
 Technically speaking HTML is also a markup language(https://en.wikipedia.org/wiki/Markup_language) but in the context of Metabuzz the term normally refers to Markdown.
+
+## Metabuzz Theme Framework
+
 
 ## Project
 

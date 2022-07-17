@@ -1,5 +1,14 @@
 # Metabuzz Theme Framework 
 
+* Is the `background` grey?
+
+## How code is displayed (inline code and code fences)
+
+
+## Metabuzz Theme Framework FAQ
+
+I modified my theme but the changes aren't showing up
+: TODO: You probably edited .mb/themes/mytheme (or whatever theme you modified) locally and didn't copy it back to the .mb/themes directory of an older project. Remember that each time you create a new project using `mb new site`  it copies the theme from a subdirectory under the Metabuzz executable.
 
 ## See also
 

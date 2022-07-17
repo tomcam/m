@@ -18,6 +18,11 @@ at [Example site file](site-file-example.html)
 ## Theme
 Theme used by all pages of the site unless specified otherwise in the page's [front matter](front-matter.html#theme)
 
+Example:
+
+```
+Theme: genuine
+```
 <a id="sidebar"></a>
 ## Sidebar
 

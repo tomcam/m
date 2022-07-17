@@ -1,6 +1,7 @@
 
 * [About](about.html)
 * [RELEASE CHECKLIST](release.html)
+* [Metabuzz Theme Framework](theme-framework.html)
 * [Collections](collections.html)
 * [Documentation conventions](conventions.html)
 * [Glossary](glossary.html)
