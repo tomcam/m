@@ -14,6 +14,32 @@
 
 
 ## Updating themes
+* Wide and Pillar now have these features, which need to be propagated to other themes
+
+  article > p > code, article > code, article > pre, article > pre > code {
+      font-family:var(--code);                                             
+      font-size:var(--p-code-font-size);                                   
+      line-height:var(--p-code-line-height);
+      padding-top:var(--p-code-padding-top);
+      padding-bottom:var(--p-code-padding-bottom);                         
+      padding-left:var(--p-code-padding-left);                       
+      padding-right:var(--p-code-padding-right);                           
+      overflow:auto;
+  }
+  article > pre > code { display:block; }
+  article > p > code {
+      padding-top:.4rem;
+      padding-bottom:.4rem;                              
+  }
+
+  sizes.css
+    /* Code listings  */
+    --p-code-font-size:.8rem;
+    --p-code-line-height:1.2rem;
+    --p-code-padding-top:.8rem;
+    --p-code-padding-bottom:.8rem;                       
+    --p-code-padding-left:.8rem;
+    --p-code-padding-right:.8rem;                        
 
 * Clear out any graphic or other assets the theme doesn't use
 * Consider changing generate part of YAML file 

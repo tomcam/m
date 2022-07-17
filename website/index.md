@@ -1,7 +1,7 @@
 # Metabuzz manual
 
-[Documentation](docs/index.html)
-
+[Documentation](docs/index.html)  
+[Gallery](gallery/index.html)
 
 [About](docs/about.html)  
 [Command-line interface](docs/cli.html)    
