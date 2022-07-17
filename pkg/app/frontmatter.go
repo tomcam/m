@@ -35,6 +35,10 @@ type FrontMatter struct {
 	// If set to "off", don't execute templates on this page.
 	// Used for documentation purposes.
 	Templates bool `yaml:"Templates"`
+
+	// User data--MUST REMAIN AT END
+	List interface{} `yaml:"List"`
+
 }
 
 // frontMatterToString generates the front matter

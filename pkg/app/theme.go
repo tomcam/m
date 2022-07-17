@@ -25,11 +25,6 @@ type Theme struct {
 	// TODO: Rename either this or levels
 	level string
 
-	// Tracks level of nesting for this theme. So if
-	// the theme is specified as debut/gallery/item,
-	// debut is 0, gallery is 1, and item is 2.
-	//nestingLevel int
-
 	// Location of theme files after they have been
 	// copied to the publish directory for themes
 	// used by this site.
@@ -229,10 +224,14 @@ func (app *App) publishThemeAssets(from string, to string) error {
 func (app *App) loadThemeLevel(source string, dest string, level int) error {
 	app.Debug("\t\t\tloadThemeLevel(%v, %v, %v)", source, dest, level)
 	// See if this theme has already been published.
-	// TODO: cache themes in app.Site.publishedThemes[dest]?
 	if !dirExists(source) {
-		return ErrCode("1028", source)
+		return ErrCode("1028", filepath.Base(source) )
+		//return ErrCode("1028", filepath.Base(source) + " in "+app.Page.filePath)
+		// return ErrCode("1028", filepath.Base(source))
+		//return ErrCode("1028", filepath.Base(source) + " in "+app.Page.fileBaseName)
+    // xxx
 	}
+
 
 	if err := app.loadThemeConfig(source); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
@@ -302,9 +301,6 @@ func (app *App) loadTheme() error {
 		source := filepath.Join(from, themeName)
 		dest := app.themePublishDir(themeName)
 		app.Page.Theme.sourcePath = source
-		// TODO: I can probably remove nestingLevel entirely, unless i need it
-		// to detect latest sidebar or mode
-		//app.Page.Theme.nestingLevel = level
 		app.Page.Theme.level = themeName
 		// Finds the theme specified for this page.
 		// Copy the required files to the theme publish directory.

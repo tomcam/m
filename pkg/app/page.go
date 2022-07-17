@@ -24,6 +24,9 @@ type Page struct {
 	// or "debut/gallery/item", include them all here.
 	themes []Theme
 
+  // Base filename of Markdown source. See also filePath
+  fileBaseName string
+
 	// Fully qualified filename of this source file
 	filePath string
 

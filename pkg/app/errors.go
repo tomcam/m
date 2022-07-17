@@ -15,6 +15,10 @@ package app
 //
 //   return ErrCode("0401", err.Error(), filename)
 //
+//	 if err != nil {
+//     return (ErrCode("1033", from, err.Error()))
+//   }
+//
 //   Example (a very good example) from util.go
 //	 if err != nil {
 //     return ErrCode("1234", "from '"+source+"' to '"+dest+"'", "")
@@ -90,7 +94,7 @@ var errMsgs = map[string]string{
 	"0135": "Error in starter file",                       // custom message
 
 	// 0200	- Error creating file
-	"0209": "Unable to copy file to", // filename
+	"0209": "Unable to create the file", // dest, source filenames
 	// TODO: Get rid of the line below
 	// Old errors stopped at 0215
 	"0217": "Can't publish stylesheet to same location",                  // filename
@@ -180,6 +184,8 @@ var errMsgs = map[string]string{
 	"1004": "Trying to publish nonexistent stylesheet",
 	"1005": "No publish directory specified for",
 	"1013": "Please specify a site name",
+  "1014": "No destination file specified when copying", // source file to copy
+
 	// TODO: Get rid of the line below
 	// Old errors stopped at 1023
 	"1024": "Couldn't find stylesheet",        //filename
@@ -187,7 +193,7 @@ var errMsgs = map[string]string{
 	"1026": "This isn't a project directory:", // directoryname
 	//"1027": "File specified in theme configuration file is missing:", // filename
 	"1027": "Theme configuration file",           // filename
-	"1028": "Can't find a theme named",           // filename
+	"1028": "Can't find a theme named",           // filename, theme name
 	"1029": "Can't find the theme file",          // filename
 	"1033": "Unable to read theme directory",     // filename
 	"1034": "Unable to find layout element file", // filename
@@ -379,6 +385,9 @@ func add(key string, previous string, extra ...string) error {
 // constraint, for example, fulfilling an interface method
 // that doesn't support this practice.
 func (a *App) QuitError(e error) {
+  if a.Page.fileBaseName != "" {
+    fmt.Print(a.Page.fileBaseName + ": ")
+  }
 	// Error message from an earlier error return needs to be seen.
 	displayError(e)
 	if e == nil {

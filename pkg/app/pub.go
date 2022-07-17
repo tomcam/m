@@ -18,14 +18,9 @@ func (app *App) publish(filename string) error {
 		// TODO: Perhaps better error context
 		return ErrCode("PREVIOUS", err.Error())
 	}
-	app.Page.filePath = filename
 	dest := filepath.Join(app.Site.publishPath, rel, filepath.Base(filename))
 	app.Debug("\t\tpublish(%v) to %v", filename, rel)
-	err = Copy(filename, dest)
-	if err != nil {
-		return ErrCode("PREVIOUS", err.Error())
-	}
-	return nil
+	return Copy(filename, dest)
 }
 
 func (app *App) publishMarkdownFile(filename string) error {
@@ -42,6 +37,7 @@ func (app *App) publishMarkdownFile(filename string) error {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	app.Page.filePath = filename
+  app.Page.fileBaseName = filepath.Base(filename)
 	app.Page.dir = currDir()
 
 	// Take the input file name, e.g. myarticle.md or whatever,
