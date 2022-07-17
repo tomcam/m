@@ -1,6 +1,7 @@
-# Metabuzz Markdown quic reference
+# Metabuzz Markdown quick reference
 
-When in the course of human events, it becomes necessary for one people to dissolve the political bands that connect one another 
+Quick refresher of almost all Markdown syntax recognized by Metabuzz
+
 ## Table of contents 
 
 * [Common text formatting](#common-text-formatting)
@@ -30,6 +31,7 @@ When in the course of human events, it becomes necessary for one people to disso
 Here's how markdown appears in the **{{.Page.FrontMatter.Theme }}** theme
 ## Common text formatting
 
+### Strong (**bold**),~~strikethrough~~, and emphasized (*italic*) text
 #### You type:
 ```
 Normal body text, **strong**, ~~strikethrough~~, and with *emphasis*.
@@ -38,17 +40,45 @@ Normal body text, **strong**, ~~strikethrough~~, and with *emphasis*.
 #### It shows as:
 Normal body text, **strong**, ~~strikethrough~~, and with *emphasis*.
 
-Horizontal rule:
+### Starting a new line of text
+
+It's a little hard to understand how lines work in Markdown, but they're
+modeled after how it works in HTML. Generally speaking, your Markdown
+text converts one or more spaces into a single space. It also does the
+same with new lines. Examples: 
 
 #### You type:
 ```
----
+hello,
+world.
 ```
-
 #### It shows as:
----
+hello, world.
 
-## Links
+#### You type:
+```
+hello,      world.
+```
+#### It shows as:
+hello, world.
+
+### Forcing a new line of text
+
+To make sure you start one line after another, add 2 spaces 
+to the end of the first line, like this:
+#### You type:
+```
+hello,  <--- Type 2 spaces at the end of the line
+world.
+```
+#### It shows as:
+hello,   
+world.
+
+
+
+
+### Links
 
 #### You type:
 ```
@@ -136,6 +166,16 @@ You can also link to an anchor to other websites, if they have anchors. Here's a
 #### It takes you right there:
 
 [History of futbol](https://en.wikipedia.org/wiki/Association_football#History)
+
+### Horizontal rule:
+
+#### You type:
+```
+---
+```
+
+#### It shows as:
+---
 
 
 ## Header styles
