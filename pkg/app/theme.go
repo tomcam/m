@@ -225,7 +225,11 @@ func (app *App) loadThemeLevel(source string, dest string, level int) error {
 	app.Debug("\t\t\tloadThemeLevel(%v, %v, %v)", source, dest, level)
 	// See if this theme has already been published.
 	if !dirExists(source) {
-		return ErrCode("1028", filepath.Base(source) )
+    // Using only the base filename doesn't work if
+		//return ErrCode("1028", app.Page.filePath)
+		 return ErrCode("1028", filepath.Base(source)+ " (expected in " + source + ")" )
+    // you're building from another directory
+		// return ErrCode("1028", filepath.Base(source) )
 		//return ErrCode("1028", filepath.Base(source) + " in "+app.Page.filePath)
 		// return ErrCode("1028", filepath.Base(source))
 		//return ErrCode("1028", filepath.Base(source) + " in "+app.Page.fileBaseName)
