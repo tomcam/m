@@ -385,8 +385,9 @@ func add(key string, previous string, extra ...string) error {
 // constraint, for example, fulfilling an interface method
 // that doesn't support this practice.
 func (a *App) QuitError(e error) {
-  if a.Page.fileBaseName != "" {
-    fmt.Print(a.Page.fileBaseName + ": ")
+  // Precede error message with name of file
+  if a.Page.filePath != "" {
+    fmt.Print(a.Page.filePath + ": ")
   }
 	// Error message from an earlier error return needs to be seen.
 	displayError(e)
