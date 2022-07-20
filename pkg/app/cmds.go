@@ -211,7 +211,7 @@ create theme based on an existing one.
 				if err != nil {
 					app.QuitError(err)
 				}
-				app.Print("Created theme %v", to)
+				app.Print("Created theme %v. Edit theme files in %v", to, filepath.Join(app.cfgPath, to))
 			},
 		}
 
