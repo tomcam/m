@@ -1,174 +1,118 @@
-#!/bin/zsh 
-# Generates all possible variations of each theme: 
-# - Left sidebar, right sidebar no sidebar
-# - Light or dark mode
-# On success it builds a site with an index that links
-# to each variation
-
-# Quit this script if an error occurs
+#!/bin/zsh
+# Exit if an error occurs
 set -e
-
-# Create an array of theme names
+DIR=~/code/m/cmd/mb/theme-test
+rm -rf $DIR
+./mb new site $DIR
+INDEX=$DIR/index.md
+LINKSECTION=$DIR/links.tmp
+THEMELIST=$DIR/themelist.tmp
+TMPFILE=$DIR/foobar.txt
+RAWFILE=$DIR/raw.tmp
+cp site.yaml $DIR/.mb
+cp eastside-emerald-64x64.png $DIR
+# Create an array of filenames
 declare -a themes=(
 	'wide'
-  'debut'
-  #'debut/gallery'
 	'pillar'
+  #'ridge'
+  'chill'
+  'future'
+  'genuine'
+  'scribble'
+  #'debut'
+	#'debut/gallery'
+  'simplify'
   'tradesman'
 	)
+rawthemes=$themes
+#
+# Since nest themes have slashes in their
+# names, like 'debut/gallery', convert
+# those slashes to dashes to generate
+# test filenames. Delimit filenames with newlines.
+for theme in "${themes[@]}";
+do
+  echo $theme >> $TMPFILE
+  echo $theme >> $RAWFILE
+done
+sed -i '' 's/\//\-/' $TMPFILE
 
-# Create an array of files required for this test
-# They'll get copied from the curent directory
-# to the new project
-declare -a required=(
-  'eastside-emerald-64x64.png'
-  'mbtest.inc'
-  'mbsite.yaml'
-  'homerepair.yaml'
-	)
+# Convert the list of filenames back
+# to an array.
+# I think I'm overcomplicating this. See https://stackoverflow.com/questions/6723426/looping-over-arrays-printing-both-index-and-value#comment65441853_6723516
+themes=()
+while IFS= read -r line; do
+  themes+=("$line")
+done < $TMPFILE
+
+rawthemes=()
+while IFS= read -r line; do
+  rawthemes+=("$line")
+done < $RAWFILE
 
 
-# Create an array of sidebar variations
+# Create an array of variations
 declare -a sidebars=(
   'left'
   'right'
-  'none'
+  'no'
   )
 
-# Light/dark modes
+# Array of modes
 declare -a modes=(
   'dark'
   'light'
 )
 
-DIR=~/code/m/cmd/mb/theme-test
-LINKSECTION=$DIR/links.tmp
-THEMELIST=$DIR/themelist.tmp
-TMPFILE=$DIR/foobar.txt
-
-INDEX=$DIR/index.md
-
-
-# Delete the previous dir if present
-[ -d $DIR ] && rm -rf $DIR
-mkdir $DIR
-
-# Convert the array into a file containing one name per line.
-for filename in "${required[@]}";
-do
-  cp $filename $DIR
-done
-
-
-mb new site --starters homerepair.yaml --site mbsite.yaml  $DIR
-cp mbtest.inc $DIR
-#
-# Create temporary filenames
-THEMENAMES=$DIR/themenames.tmp
-FILENAMES=$DIR/themefilenames.tmp
-
-# Delete the previous temp files if present
-[ -f $THEMENAMES ] && rm $THEMENAMES
-[ -f $FILENAMES ] && rm $FILENAMES
-INDEX=$DIR/index.md
-
-# Convert the array into a file containing one name per line.
+L=\<
+R=\>
+# Loop through the array
 for theme in "${themes[@]}";
 do
-  echo $theme >> $THEMENAMES
-done
-
-# Preserve the unchanged theme names
-cp $THEMENAMES $FILENAMES 
-
-# Search and replace theme names in the file to
-# become valid filenames, e.g. 'debut/gallery'
-# is transformed to 'debut-gallery'
-sed -i '' 's/\//\-/' $FILENAMES
-
-# Reinitialize the arrays
-themenames=()
-themefilenames=()
-
-# Read the contents of the array of names
-# from the file, one by one, and concatenate
-# to the array.
-while IFS= read -r line; do
-  themenames+=("$line")
-done < $THEMENAMES
-
-# Same for the file names, which are derived
-# from the theme names
-while IFS= read -r line; do
-  themefilenames+=("$line")
-done < $FILENAMES
-
-
-# Loop through all themes named originally in the $themes
-# array.
-for ((i = 1; i <= $#themenames; i++))
-do
-  theme=$themenames[$i] 
-  base=$themefilenames[$i] 
-  for sidebar in "${sidebars[@]}";
+  i=$((i+1))
+  echo "Theme: ${rawthemes[$i]}"
   echo "<a name=\"${theme}\"></a> " >> $LINKSECTION
+  #echo "### Theme: ${theme}" >> $LINKSECTION
   echo "<br />**${theme}** " >> $LINKSECTION
-  echo "[left sidebar](theme-${theme}-left-light.html) ([dark](theme-${theme}-left-dark.html)) [right sidebar](theme-${theme}-right-light.html) ([dark version](theme-${theme}-right-dark.html)) and [no sidebar](theme-${theme}-none-light.html) ([dark](theme-${theme}-none-dark.html)) " >> $LINKSECTION
+  echo "[left sidebar](theme-${theme}-left-light.html) ([dark](theme-${theme}-left-dark.html)) [right sidebar](theme-${theme}-right-light.html) ([dark version](theme-${theme}-right-dark.html)) and [no sidebar](theme-${theme}-no-light.html) ([dark](theme-${theme}-no-dark.html)) " >> $LINKSECTION
   echo "[${theme}](#${theme}) " >> $THEMELIST
 
   for sidebar in "${sidebars[@]}";
   do
     for mode in "${modes[@]}";
     do
-     # Generate a file name like "debut-right-dark"
-      # where "debut" is the name of the theme,
-      # and "dark" is the theme mode
-      # "right" means right sidebar", and "
-      FILENAME=theme-${base}-${sidebar}-${mode}
-
+      FILENAME=theme-${theme}-${sidebar}-${mode}
+      echo ${FILENAME}.md
 cat <<-EOM > $DIR/$FILENAME.md
 ---
-Theme: ${theme}
+Theme: ${rawthemes[$i]}
 Sidebar: ${sidebar}
 Mode: ${mode}
 ---
-# Auto-generated test for ${theme} theme
-{{ inc "./mbtest.inc" }}
+# About Metabuzz
+
+* Theme is **${theme}**. According to frontmatter it's **{{ .Page.FrontMatter.Theme }}**
+* Sidebar **${sidebar}**. According to frontmatter it's **{{ .Page.FrontMatter.Sidebar }}** 
+* Mode should be **${mode}**
+{{ toc }}
+{{ inc "common|mdemo.md" }}
+
+[Home](./index.html)
+
 EOM
+
     # A single variation has been generated
     done
     
-  # All variations on one theme have been generated
   done
+# All variations on one theme have been generated
   echo "[Home](./index.html)" >> $LINKSECTION
 
 # All test files have been generated
 done
 cat $THEMELIST >> $INDEX
 cat $LINKSECTION >> $INDEX
-#mb build  --site --testsite.yaml $DIR 
-#mb build  $DIR 
-mb build  $DIR 
-ls -lat $DIR
-echo "Press a key to view the site"
-read answer
-
+./mb build $DIR
 open $DIR/.mb/pub/index.html
-ls -lat $DIR
-echo "Created theme tests in ${DIR}"
-exit 0
-
-
-# This test suite generates all permuations of a theme
-# automatically. But what if a required theme-light.css
-# or sidebar-left.css doesn't exist, perhaps because it's
-# a nested theme? this genereates empty versions.
-addEmptyStylesheets () {
-  [ -f ${theme}-light.css ] && touch ${theme}-light.css
-  [ -f ${theme}-dark.css ] && touch ${theme}-dark.css
-  [ -f ${sidebar}-left.css ] && touch ${sidebar}-left.css
-  [ -f ${sidebar}-right.css ] && touch ${sidebar}-right.css
-}
-
-
 
