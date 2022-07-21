@@ -1,8 +1,11 @@
 package app
 
 import (
+	"bytes"
 	"github.com/tomcam/m/pkg/default"
 	"github.com/tomcam/m/pkg/util"
+	"github.com/yuin/goldmark-meta"
+	"github.com/yuin/goldmark/parser"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -36,8 +39,11 @@ func (app *App) publishMarkdownFile(filename string) error {
 		// TODO: Perhaps better error context
 		return ErrCode("PREVIOUS", err.Error())
 	}
+  // Save full pathname to file
 	app.Page.filePath = filename
+  // Save just the filename
   app.Page.fileBaseName = filepath.Base(filename)
+  // Save the current directory
 	app.Page.dir = currDir()
 
 	// Take the input file name, e.g. myarticle.md or whatever,
@@ -49,21 +55,36 @@ func (app *App) publishMarkdownFile(filename string) error {
 
 	var body []byte
 	// Convert Markdown file to a byte slice of HTML
-	// Return with YAML front matter in app.Page.frontMatter
-	if body, err = app.MdFileToHTML(filename); err != nil {
+	// Return with YAML front matter in app.Page.FrontMatter
+  // The body contains the text of a file, for example, 'foo.md', and
+  // the contents of its front matter. Other page layout elements, such
+  // as the footer and header, will be parsed later in App.layoutEl()
 		// TODO: Handle error properly & and document error code
-		return err
-	}
+	// xxx
+	if body, err = app.f1(filename, true); err != nil {
+    return err
+  }
+  /*
+ 	if body, err = app.MdFileToHTML2(filename, true); err != nil {
+    return err
+  }
+  */ 
+  /*
+	if body, err = app.bodyFrontMatter(filename, true); err != nil {
+    return err
+  }
+  */
+  // xxx
+  // List is not vaild
+  //app.Print("publishMarkdownFile: body is %v", string(body))
 
-	// Convert the FrontMatter map produced by Goldmark into
-	// the Page.FrontMatter struct.
-	app.frontMatterRawToStruct()
-
+  //app.Print("before loadTheme(): %+v", app.Page.FrontMatter.List)
 	// Theme has been named in Page.FrontMatter so load it.
 	if err = app.loadTheme(); err != nil {
 		// TODO: Handle error properly & and document error code
 		return err
 	}
+  //app.Print("after loadTheme(): %+v", app.Page.FrontMatter.List)
 
 	// Copy out stylesheets, graphics, and other assets
 	// required for this page.
@@ -93,7 +114,6 @@ func (app *App) publishMarkdownFile(filename string) error {
 		return ErrCode("PREVIOUS", err.Error())
 	}
 	var closeScripts string
-	// xxx
 	if closeScripts, err = app.insertScript(app.Site.scriptClosePath); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
 	}
@@ -133,7 +153,6 @@ func (app *App) publishMarkdownFile(filename string) error {
 	// TODO: May be unnecessary
 	app.Page.Theme = Theme{}
 	app.Site.publishedThemes = map[string]bool{}
-	//app.Page.FrontMatter = FrontMatter{}
 	return nil
 }
 
@@ -235,14 +254,93 @@ func (app *App) descriptionTag() string {
 // It may include optional front matter.
 // TODO: Document that it also runs interps, which perhaps
 // should be a separate step
+/*
 func (app *App) MdFileToHTML(filename string) ([]byte, error) {
 	// Read file into a byte slice.
 	b := util.FileToBytes(filename)
-	app.src = b
+	//app.src = b
 	s := app.interps(filename, string(b))
 	// Convert to HTML
 	return app.mdToHTML([]byte(s))
 }
+*/
+
+// mdFileToHTML2 converts the markdown file in filename to HTML.
+// It may include optional front matter.
+func (app *App) MdFileToHTML2(filename string, frontMatter bool) ([]byte, error) {
+	// Read file into a byte slice.
+	b := util.FileToBytes(filename)
+  // Execute Go templates
+	s := app.interps(filename, string(b))
+  //app.Print("MdFileToHTML2: s is %v", s)
+	// Convert Markdown source to HTML
+	return app.mdToHTML2([]byte(s), frontMatter)
+}
+
+
+
+// mdToHTML converts a Markdown source file in a byte
+// slice to HTML.
+// TODO: Too complicated, I think. See https://github.com/yuin/goldmark-meta/blob/master/meta_test.go
+/*
+func (app *App) mdToHTML(source []byte) ([]byte, error) {
+	var buf bytes.Buffer
+	if err := app.parser.Convert(source, &buf, parser.WithContext(app.parserCtx)); err != nil {
+		return buf.Bytes(), ErrCode("0920", err.Error())
+	}
+	// Obtain the parsed front matter as a raw
+	// interface, because of course meta doesn't
+  // know it's a FrontMatter struct
+	app.Page.frontMatterRaw = meta.Get(app.parserCtx)
+
+  app.Print("mdToHTML()")
+  app.Print("\tfrontMatterRaw: %+v", app.Page.frontMatterRaw)
+  app.Print("\tapp.Page.frontMatterRaw[List]: %+v", app.Page.frontMatterRaw["List"])
+  app.Page.FrontMatter.List = app.Page.frontMatterRaw["List"]
+
+  app.Print("\tapp.Page.FrontMatter.List: %+v", app.Page.FrontMatter.List)
+
+
+  //app.Print("mdToHTML. FrontMatter is: \t%+v\n", app.Page.FrontMatter)
+  //app.Print("mdToHTML. frontMatterRaw is: \t%+v\n", app.Page.frontMatterRaw)
+	return buf.Bytes(), nil
+}
+*/
+
+// xxx Like mdToHTML but gives you the option of parsing front matter
+func (app *App) mdToHTML2(source []byte, frontMatter bool) ([]byte, error) {
+	var buf bytes.Buffer
+	if err := app.parser.Convert(source, &buf, parser.WithContext(app.parserCtx)); err != nil {
+		return buf.Bytes(), ErrCode("0920", err.Error())
+	}
+	// Obtain the parsed front matter as a raw
+	// interface, because of course meta doesn't
+  // know it's a FrontMatter struct
+  //  TODO: Definitely doing this wrong. See https://github.com/yuin/goldmark-meta/blob/master/meta_test.go
+
+  if frontMatter {
+    app.Page.frontMatterRaw = meta.Get(app.parserCtx)
+    // Convert the FrontMatter map produced by Goldmark into
+    // the Page.FrontMatter struct.
+    // xxx
+    app.frontMatterRawToStruct()
+    app.Page.FrontMatter.List = app.Page.frontMatterRaw["List"]
+  }
+
+  /*
+  app.Print("mdToHTML2()")
+  app.Print("\tFrontMatter: %+v", app.Page.FrontMatter)
+  app.Print("\tfrontMatterRaw: %+v", app.Page.frontMatterRaw)
+  app.Print("\tapp.Page.frontMatterRaw[List]: %+v", app.Page.frontMatterRaw["List"])
+  app.Print("\tapp.Page.FrontMatter.List: %+v", app.Page.FrontMatter.List)
+*/
+	return buf.Bytes(), nil
+} // mdToHTML2
+
+
+
+
+
 
 // buildPublishDirs() creates a mirror of the source
 // directory in the publish directory and also adds
@@ -368,26 +466,32 @@ func (app *App) layoutEl(l layoutElement) (string, error) {
 		return "", ErrCode("1034", filename)
 	}
 
-	// Convert file contents to a byte slice of HTML
+  // TODO: code smell
 	if isMarkdownFile(filename) {
-		if html, err = app.MdFileToHTML(filename); err != nil {
+		//if html, err = app.MdFileToHTML(filename); err != nil { // Convert this page element to a byte slice of HTML. Execute Go template if any
+		if html, err = app.MdFileToHTML2(filename, false); err != nil { // Convert this page element to a byte slice of HTML. Execute Go template if any
 			return "", ErrCode("0925", filename)
 		} else {
 			return string(html), nil
 		}
+  // TODO: This necessary? Document it
 	} else {
 		html = fileToBuf(filename)
 	}
+  // TODO: What?
 	// Handle any Go template values.
-	return app.interps(filename, string(html)), nil
+  return string(html), nil
 }
 
 // article() takes the already-generated HTML and returns
 // the text wrapped in an "<article>" tag.
 // You can optionally include an id tag with it.
 func (app *App) article(body []byte, params ...string) string {
-	// interps runs custom Go template functions like ftime
-	html := app.interps(app.Page.filePath, string(body))
+  // xxx List is valid here 
+  // app.Print("app.article() List is %v", app.Page.FrontMatter.List)
+  html := string(body)
+  // xxx It's note in the source. 
+  // app.Print("app.article() html is %v", html)
 	if len(params) < 1 {
 		// Optional ID tag was not supplied
 		html = wrapTag("<"+"article"+">", html, true)
@@ -488,7 +592,6 @@ func (app *App) publishStylesheet(source string, dest string) error {
 	if err != nil {
 		return ErrCode("1027", app.Page.Theme.filename+" specifies a file named "+filepath.Base(source)+", which can't be found")
 	}
-	//xxx
 	// Keep list of stylesheets that got published
 	app.Page.stylesheets = append(app.Page.stylesheets, dest)
 	return nil
@@ -603,3 +706,90 @@ func (app *App) insertScript(dir string) (string, error) {
 	}
 	return script, nil
 }
+
+// XXX EXPERIMENT 2
+// TODO: FAILEd
+func (app *App) bodyFrontMatter(filename string, frontMatter bool) ([]byte, error) {
+	var buf bytes.Buffer
+	// Read file into a byte slice.
+	b := util.FileToBytes(filename)
+
+	if err := app.parser.Convert(b, &buf, parser.WithContext(app.parserCtx)); err != nil {
+		//return buf.Bytes(), ErrCode("0920", err.Error())
+		return b, ErrCode("0920", err.Error())
+	}
+	// Obtain the parsed front matter as a raw
+	// interface, because of course meta doesn't
+  // know it's a FrontMatter struct
+  //  TODO: Definitely doing this wrong. See https://github.com/yuin/goldmark-meta/blob/master/meta_test.go
+
+  if frontMatter {
+    app.Page.frontMatterRaw = meta.Get(app.parserCtx)
+    // Convert the FrontMatter map produced by Goldmark into
+    // the Page.FrontMatter struct.
+    // xxx
+    app.frontMatterRawToStruct()
+    app.Page.FrontMatter.List = app.Page.frontMatterRaw["List"]
+  }
+  // Execute Go templates
+	 s := app.interps(filename, string(b))
+   app.Print("bodyFrontMatter: s is %v\n", s)
+  /*
+  app.Print("mdToHTML2()")
+  app.Print("\tFrontMatter: %+v", app.Page.FrontMatter)
+  app.Print("\tfrontMatterRaw: %+v", app.Page.frontMatterRaw)
+  app.Print("\tapp.Page.frontMatterRaw[List]: %+v", app.Page.frontMatterRaw["List"])
+  app.Print("\tapp.Page.FrontMatter.List: %+v", app.Page.FrontMatter.List)
+*/
+	/// xxx return buf.Bytes(), nil
+	return []byte(s), nil
+} // bodyFrontMatter
+
+
+// XXX EXPERIMENT 3
+
+func (app *App) f1(filename string, frontMatter bool) ([]byte, error) {
+	// Read file into a byte slice.
+	b := util.FileToBytes(filename)
+  //app.Print("MdFileToHTML2: s is %v", s)
+	// Convert Markdown source to HTML
+	return app.f2(filename, b, frontMatter)
+}
+
+func (app *App) f2(filename string, source []byte, frontMatter bool) ([]byte, error) {
+	var buf bytes.Buffer
+	if err := app.parser.Convert(source, &buf, parser.WithContext(app.parserCtx)); err != nil {
+		return buf.Bytes(), ErrCode("0920", err.Error())
+	}
+  //app.Print("%v\n", (buf.String()))
+	// Obtain the parsed front matter as a raw
+	// interface, because of course meta doesn't
+  // know it's a FrontMatter struct
+  //  TODO: Definitely doing this wrong. See https://github.com/yuin/goldmark-meta/blob/master/meta_test.go
+
+  if frontMatter {
+    app.Page.frontMatterRaw = meta.Get(app.parserCtx)
+    // Convert the FrontMatter map produced by Goldmark into
+    // the Page.FrontMatter struct.
+    // xxx
+    app.frontMatterRawToStruct()
+    app.Page.FrontMatter.List = app.Page.frontMatterRaw["List"]
+  }
+  // Execute Go templates
+  //app.Print("\nList:\n%v\n", app.Page.FrontMatter.List)
+  p := app.interps(filename, buf.String())
+	//s = app.interps(filename, string(source))
+  //app.Print(p)
+  //return p, nil
+  return []byte(p), nil
+  /*
+  app.Print("mdToHTML2()")
+  app.Print("\tFrontMatter: %+v", app.Page.FrontMatter)
+  app.Print("\tfrontMatterRaw: %+v", app.Page.frontMatterRaw)
+  app.Print("\tapp.Page.frontMatterRaw[List]: %+v", app.Page.frontMatterRaw["List"])
+  app.Print("\tapp.Page.FrontMatter.List: %+v", app.Page.FrontMatter.List)
+*/
+} // f2
+
+
+
