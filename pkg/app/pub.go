@@ -61,7 +61,10 @@ func (app *App) publishMarkdownFile(filename string) error {
   // as the footer and header, will be parsed later in App.layoutEl()
 	// TODO: Handle error properly & and document error code
 	// xxx
-	if body, err = app.convertMarkdownFrontMatter(filename, true); err != nil {
+  // Template functions work right. FrontMatter doesn't work.
+	//if body, err = app.convertMarkdownFrontMatter(filename, true); err != nil {
+	//if body, err = app.convertMarkdownFrontMatter(filename, true); err != nil {
+	if body, err = app.f1(filename, true); err != nil {
     return err
   }
 	// Theme has been named in Page.FrontMatter so load it.
@@ -363,6 +366,10 @@ func (app *App) layoutEl(l layoutElement) (string, error) {
   // TODO: code smell
 	if isMarkdownFile(filename) {
 		//if html, err = app.MdFileToHTML2(filename, false); err != nil { // Convert this page element to a byte slice of HTML. Execute Go template if any
+    // xxx
+    app.Print("skipping %v", filename)
+    return string(html), nil
+
 		if html, err = app.convertMarkdownFrontMatter(filename, false); err != nil { // Convert this page element to a byte slice of HTML. Execute Go template if any
 			return "", ErrCode("0925", filename)
 		} else {
@@ -601,19 +608,74 @@ func (app *App) insertScript(dir string) (string, error) {
 	return script, nil
 }
 
+// xxx 
+// Convert named markdown file to HTML.
+func (app *App) f2(filename string) ([]byte, error) {
+	// Read file into a byte slice.
+	source := util.FileToBytes(filename)
+	var converted bytes.Buffer
+  // Convert Markdown to HTML.
+  // 
+	if err := app.parser.Convert(source, &converted, parser.WithContext(app.parserCtx)); err != nil {
+		return converted.Bytes(), ErrCode("0920", err.Error())
+	}
+  return converted.Bytes(), nil
+}// f2()
+
+// Obtain front matter
+func (app *App) f3() {
+    app.Page.frontMatterRaw = meta.Get(app.parserCtx)
+    // Convert the FrontMatter map produced by Goldmark into
+    // the Page.FrontMatter struct.
+    app.frontMatterRawToStruct()
+}
+func (app *App) f1(filename string, frontMatter bool) ([]byte, error) {
+  // Convert source file filename to Markdown and 
+  // return as byte slice.
+  app.Print("f1(%v,%v)", filename, frontMatter)
+  b, _ := app.f2(filename)
+  // Obtain front matter
+  if (frontMatter) {
+    app.f3()
+    app.Print("\nFrontMatter\t\t\tfrontMatterRaw\n%v\t%v", app.Page.FrontMatter, app.Page.frontMatterRaw)
+  }
+  // Convert that source to a string
+  s := string(b)
+  app.Print("f2() converted file to byte slice (shown as string): %v\n", s)
+  //expanded := app.interps(filename, s)
+
+  // Fails
+  expanded := app.execute(filename, string(b), app.funcs) 
+
+  // Fails
+  //return app.execute(filename, input, app.funcs)
+
+  app.Print(expanded)
+  // Both of these yield the & error
+  return []byte(expanded), nil
+  // return b, nil
+  //return b, nil
+}
+
 // convertMarkdownFrontMatter() takes the Markdown file filename, 
 // converts it to HTML (and parses the front matter if frontMatter is true),
 // executes any embedded Go templates, and returns a byte slice.
 // TODO: It's ungainly and poorly written.
 func (app *App) convertMarkdownFrontMatter(filename string, frontMatter bool) ([]byte, error) {
 	// Read file into a byte slice.
-	b := util.FileToBytes(filename)
+	source := util.FileToBytes(filename)
 	var HTML bytes.Buffer
   // Convert Markdown to HTML
-	if err := app.parser.Convert(b, &HTML, parser.WithContext(app.parserCtx)); err != nil {
+	if err := app.parser.Convert(source, &HTML, parser.WithContext(app.parserCtx)); err != nil {
 		return HTML.Bytes(), ErrCode("0920", err.Error())
 	}
-  s := HTML.String()
+  //app.Print("convertMarkdownFrontMatter(): source is %+v\n", string(source))
+  //app.Print("convertMarkdownFrontMatter(): HTML is %+v\n", string(HTML.String()))
+
+  //s := HTML.String()
+  s := string(source)
+  //app.Print("convertMarkdownFrontMatter(): %v = \n\n", s)
+  
 	// If requested, obtain the parsed front matter as a raw
 	// interface. Convert to a FrontMatter struct.
   //  TODO: Definitely doing this wrong. See https://github.com/yuin/goldmark-meta/blob/master/meta_test.go
@@ -624,8 +686,12 @@ func (app *App) convertMarkdownFrontMatter(filename string, frontMatter bool) ([
     app.frontMatterRawToStruct()
     app.Page.FrontMatter.List = app.Page.frontMatterRaw["List"]
   }
+  //app.Print("convertMarkdownFrontMatter(): %v = \n\n", s)
+  app.Print("convertMarkdownFrontMatter(): FrontMatter = %v = \n\n", app.Page.FrontMatter)
   // Execute Go templates
   p := app.interps(filename, s)
+  // this causes the parse error, whereas s works but doesn't convert the Markdown
+  // p = app.interps(filename, HTML.String())
   return []byte(p), nil
 } // convertMarkdownFrontMatter
 
