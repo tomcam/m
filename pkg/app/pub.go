@@ -54,13 +54,13 @@ func (app *App) publishMarkdownFile(filename string) error {
 	target := replaceExtension(filename, "html")
 	target = filepath.Join(app.Site.publishPath, rel, filepath.Base(target))
 
-	var body []byte
-	body = fileToBuf(filename)
+	var b []byte
+	b = fileToBuf(filename)
 	// Convert Markdown file to a byte slice of HTML
 	// The body contains the text of a file, for example, 'foo.md', and
 	// the contents of its front matter. Other page layout elements, such
 	// as the footer and header, will be parsed later in App.layoutEl()
-	if body, err = app.mdYAMLToHTML(body); err != nil {
+	if b, err = app.mdYAMLToHTML(b); err != nil {
     // TODO: Real error code
 		return err
 	}
@@ -68,18 +68,17 @@ func (app *App) publishMarkdownFile(filename string) error {
 	// Get YAML front matter and copy to app.Page.FrontMatter
   app.frontMatterRawToStruct()
 
-  var b string
-	if b, err = app.doTemplateFuncs(filename, string(body)); err != nil {
+  var body string
+	if body, err = app.doTemplateFuncs(filename, string(b)); err != nil {
     // TODO: Real error code
 	  return err
 	}
 
-  //fmt.Printf("body: %v\n", string(body))
-  fmt.Printf("body: %v\n", string(b))
   fmt.Printf("app.metaData: %v\n", app.metaData)
   fmt.Printf("app.Page.FrontMatter: %+v\n", app.Page.FrontMatter)
-  fmt.Printf("app.Page.FrontMatter.Theme: %v\n\n", app.Page.FrontMatter.Theme)
-  fmt.Printf("app.Page.FrontMatter.List: %v\n\n", app.Page.FrontMatter.List)
+  fmt.Printf("app.Page.FrontMatter.Theme: %v\n", app.Page.FrontMatter.Theme)
+  fmt.Printf("app.Page.FrontMatter.List: %+v\n", app.Page.FrontMatter.List)
+  fmt.Printf("app.Site: %+v\n", app.Site)
 
 	// Theme has been named in Page.FrontMatter so load it.
 	if err = app.loadTheme(); err != nil {
@@ -135,8 +134,7 @@ func (app *App) publishMarkdownFile(filename string) error {
 		"<script>document.querySelector('body').classList.remove('no-js');</script>" +
 		header +
 		nav +
-		//app.article(body, "article") +
-		app.article([]byte(b), "article") +
+		app.article([]byte(body), "article") +
 		sidebar +
 		footer +
 		closeScripts +
@@ -377,7 +375,7 @@ func (app *App) layoutEl(l layoutElement) (string, error) {
 	}
 
 	var err error
-	if html, err = app.mdFileToHTML(filename); err != nil {
+	if html, err = app.mdYAMLFileToHTML(filename); err != nil {
 		return "", err
 	} else {
 		return string(html), nil
@@ -389,8 +387,6 @@ func (app *App) layoutEl(l layoutElement) (string, error) {
 // You can optionally include an id tag with it.
 func (app *App) article(body []byte, params ...string) string {
 	html := string(body)
-	// xxx It's note in the source.
-	// app.Print("app.article() html is %v", html)
 	if len(params) < 1 {
 		// Optional ID tag was not supplied
 		html = wrapTag("<"+"article"+">", html, true)
