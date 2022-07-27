@@ -134,7 +134,8 @@ func (app *App) publishMarkdownFile(filename string) error {
 		"<script>document.querySelector('body').classList.remove('no-js');</script>" +
 		header +
 		nav +
-		app.article([]byte(body), "article") +
+		//app.article([]byte(body), "article") +
+		app.article(body, "article") +
 		sidebar +
 		footer +
 		closeScripts +
@@ -385,8 +386,8 @@ func (app *App) layoutEl(l layoutElement) (string, error) {
 // article() takes the already-generated HTML and returns
 // the text wrapped in an "<article>" tag.
 // You can optionally include an id tag with it.
-func (app *App) article(body []byte, params ...string) string {
-	html := string(body)
+func (app *App) article(body string, params ...string) string {
+	html := body
 	if len(params) < 1 {
 		// Optional ID tag was not supplied
 		html = wrapTag("<"+"article"+">", html, true)
