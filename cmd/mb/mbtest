@@ -13,17 +13,18 @@ cp site.yaml $DIR/.mb
 cp eastside-emerald-64x64.png $DIR
 # Create an array of filenames
 declare -a themes=(
-	'wide'
+	#'wide'
 	'pillar'
   #'ridge'
-  'chill'
-  'future'
-  'genuine'
-  'scribble'
+  #'chill'
+  #'future'
+#  'newscheck'
+  #'genuine'
+  #'scribble'
   #'debut'
 	#'debut/gallery'
-  'simplify'
-  'tradesman'
+  #'simplify'
+  #'tradesman'
 	)
 rawthemes=$themes
 #
@@ -95,7 +96,6 @@ Mode: ${mode}
 * Theme is **${theme}**. According to frontmatter it's **{{ .Page.FrontMatter.Theme }}**
 * Sidebar **${sidebar}**. According to frontmatter it's **{{ .Page.FrontMatter.Sidebar }}** 
 * Mode should be **${mode}**
-{{ toc }}
 {{ inc "common|mdemo.md" }}
 
 [Home](./index.html)

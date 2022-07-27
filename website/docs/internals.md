@@ -1,7 +1,24 @@
 # Internals: How Metabuzz builds, starts, and runs
 
-## Things to remember
-- See cfgBool() as a way to obtain configuration file/environemnt/etc value
+## Markdown tricks for documentation
+
+```
+{{- /*  
+        This won't appear in HTML
+
+*/ -}}
+```
+
+{{- /*  IMPORTANT: No need to change any of                
+
+*/ -}}
+
+- Full path to current Markdown source file is app.Page.filePath.
+Just the filename is at app.Page.fileBaseName 
+- I tink app.src is source code for the current page body 
+- Current directory is at app.Page.dir
+- Theme filename: app.Page.Theme.filename, and I think justw the base
+name is at app.Page.Theme.Name. I think
 
 ## Conventions
 * Should probably name functions something like this
@@ -39,30 +56,46 @@ Older version:
 	}
 
 ```
-### Looping through themes
+### Looping through themes: OUTDATED?
 
 	for level := 0; level < len(app.Page.Theme.levels); level++ {
     theme := app.Page.themes[level]
   }
 
 ## Publishing a project
-* Starts with build(path), where path is the name of a directory (which is assumed but not expected to contain a valid project)
-  - It changes to the directory specified by path
-  - It reads the site config file
-  - It calls tree.go getProjectTree(), which returns a list of all files on the site (actually that list is discarded) and therefore
+### `build() in `build.go`: 
+  - Starts with build(path), where path is the name of a directory (which is assumed but not expected to contain a valid project)
+  - Changes to the directory specified by path
+  - Reads the site config file
+  - Calls tree.go getProjectTree(), which returns a list of all files on the site (actually that list is discarded) and therefore
     Site.webPages, which is map[string]WebPage, isn't used.
     + getProjectTree calls tree.go visit(), which does things like discard directories that start with a dot or are on the site exclusion list.
       It also builds up a list of directories  in  App.Site.dirs via calls to the poorly named setMdOption() function 
-  - It deletes the publish directory
-  - It reads the site configuration file
-  - It calls buildPublishDirs(), which uses app.Site.dirs to reconstruct the directory tree
+  - Deletes the publish directory
+  - Reads the site configuration file
+  - Calls buildPublishDirs(), which uses app.Site.dirs to reconstruct the directory tree
+  - Changes to each directory in the tree and reads all filenames of that list 
+  - For each file in that list, if it's a Markdown file, calls
+`app.publishMarkdownFile()`, explained in the next section. If not that file is simply copied out to the
+publish directory with the `app.publish()` call in pub.go. May be an image, an existing HTML file, whatever
+### pub.go
+* `app.publish()` in `pub.go`: Copies file to publish directory with no
+interpretation. That's used for everytihng except Markdown files and excluded files, which don't get published at all. Excluded files are those 
+in the ExcludedAssetExtensions list. I don't think this version of Metabuzz lets you exclude individual files.
+* `app.publishMarkdownFile()` in `pub.go` gets called for each source file.
+  
+* Don't know where this goes
+  - pub.go's mdFileToHTML converts file to byte buffer, then calls interps
+to interpret Go template variables, and finally calls mdToHTML
+  - mdToHTML actually converts the Markdown source file from Markdown to HTML, and it calls into Goldmark's met.Get() to read the front matter
+
 * I need to understand
   - when the site config file is read compared to newGoldmark(), which isn't
 picking up thie highlight style
 
 ## Utilities
-* errdoc 1234 creates a help file for error code 1234. Must be 4 digits.
-* mbtest deletes and recreates the directory .theme-test, and populates
+* `errdoc 1234` creates a help file for error code 1234. Must be 4 digits.
+* `./mbtest1` from within the main `mb` development directory deletes and recreates the directory .theme-test, and populates
 it with automatically generated pages to test themes visually
 * mbtodo brings up the todo list
 * ffs searches through theme css files

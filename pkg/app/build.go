@@ -1,38 +1,17 @@
 package app
 
 import (
-	//"text/transform"
-	"bytes"
-	//"fmt"
-	//"github.com/tomcam/m/pkg/default"
-	//toc "github.com/abhinav/goldmark-toc"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark-highlighting"
 	"github.com/yuin/goldmark-meta"
-	"github.com/yuin/goldmark/ast"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/renderer"
 	"github.com/yuin/goldmark/renderer/html"
-	"github.com/yuin/goldmark/text"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 )
-
-// mdToHTML converts a Markdown source file in a byte
-// slice to HTML.
-func (app *App) mdToHTML(source []byte) ([]byte, error) {
-	//app.src = source
-	var buf bytes.Buffer
-	if err := app.parser.Convert(source, &buf, parser.WithContext(app.parserCtx)); err != nil {
-		return buf.Bytes(), ErrCode("0920", err.Error())
-	}
-	// Obtain the parsed front matter as a raw
-	// interface
-	app.Page.frontMatterRaw = meta.Get(app.parserCtx)
-	return buf.Bytes(), nil
-}
 
 // build() is what it's all about!
 // It converts the project to HTML files.
@@ -46,12 +25,12 @@ func (app *App) build(path string) error {
 	var err error
 	app.Debug("\tbuild(%v)", path)
 	// Change to specified directory.
-	// Update app.Site.path and build all related directories
 	if err := app.changeWorkingDir(path); err != nil {
 		app.Debug("\t\tUnable to change to directory (%v)", path)
 		return ErrCode("1107", path)
 	}
 
+	// Update app.Site.path and build all related directories
 	if !isProject(app.Site.path) {
 		return ErrCode("1002", path)
 	}
@@ -142,12 +121,11 @@ func (app *App) build(path string) error {
 
 // newGoldmark returns the a goldmark object with a parser and renderer.
 func (app *App) newGoldmark() goldmark.Markdown {
-
 	exts := []goldmark.Extender{
 
 		// YAML support
 		meta.Meta,
-		// Support GitHub tables
+		// Support GitHub tables & other extensions
 		extension.Table,
 		extension.GFM,
 		extension.DefinitionList,
@@ -171,11 +149,4 @@ func (app *App) newGoldmark() goldmark.Markdown {
 		goldmark.WithParserOptions(parserOpts...),
 		goldmark.WithRendererOptions(renderOpts...),
 	)
-}
-
-func (a *App) markdownAST(input []byte) ast.Node {
-	ctx := parser.NewContext()
-	p := a.newGoldmark().Parser()
-	return p.Parse(text.NewReader(input), parser.WithContext(ctx))
-	//return p.Parse(text.NewReader(input), parser.WithContext(ap.parserCtx))
 }

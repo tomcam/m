@@ -49,7 +49,17 @@ func setField(obj interface{}, name string, value interface{}) error {
 	return nil
 }
 
-// setFieldMust() is identical to setField but strips the
+//	for k, v := range app.Page.frontMatterRaw {
+//xx		setFieldMust(&app.Page.FrontMatter, k, v)
+
+// setField writes a value in a struct (well, interface)
+// but returns an error if there is no field by
+// that name in the struct, or if it's read only.
+// Based on https://stackoverflow.com/a/26746461
+
+// setFieldMust() writes a value from obj with the field named
+// name, to the field by that same name in the interface named value.
+// It is identical to setField but strips the
 // error checking.
 // Use in cases like frontMatterRawtoStruct()
 // where the structure type is known in advance.

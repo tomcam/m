@@ -67,6 +67,15 @@ Footer: {File: footer.md, HTML:}
 Language: en
 
 ## Priority 1: Showstoppers--required for the next release
+* Can't print YAML data anymore, like this:
+```
+---
+List: { 'foo' : 'barino' }
+---
+You know what's coming? {{ .Page.FrontMatter.List }}
+
+```
+
 * error 1027: Erorr message should include the name of the theme configuration file and the name of the missing file. It's the output you get if youare missing say reset.css, it's been specified in the theme file, and you use --verbose on the command line. Actually it's displaying a completely different message, complete with extraneous blank lines:
 ```
 Error building File specified in theme configuration file is missing: /Users/tom/code/m/cmd/mb/foo/.mb/themes/hero/home/reset.css (error code mbz1027)
@@ -220,7 +229,37 @@ You can do a header like this, which gives you an optional logo
 * Pillar-based themes: Just change bg for a dramatic difference. 
 Same with w-based themes.
 * To change the root text (rem) size, 
+
 ## Priority 2: Desired but not required for the next release
+
+* Add error code to exit so I cvan do something like this in a bash script
+  mb build
+  if [ $? -eq 0 ] then
+    echo "build failed"
+    exit 1
+  fi
+  
+* At least in pillar, the following generates a table of
+  contents with unwanted bullet characters in levels 2 onwward.
+  ---
+  {{ toc }}
+
+  # Welcome to foo
+  hello, world.
+
+  ## FrontMatter 
+
+  You know what's coming? {{ .Page.FrontMatter.List }}
+  Theme is: {{ .Page.FrontMatter.Theme }}
+
+  Sidebar is: {{ .Page.FrontMatter.Sidebar }}
+
+  Mode is: {{ .Page.FrontMatter.Mode }}
+
+  ### Built-in functions
+  Time is: {{ ftime }}
+  ```
+
 * Error message for error code 1027 (triggered when a stylesheet from the theme config file can't be found) produces extra newlines
 * Rework comments according to [godoc](https://go.dev/blog/godoc) rules
 * Fix naming conventions. Anything that generates a file should be called create. new should be used to allocate new data objects.

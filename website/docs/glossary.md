@@ -73,6 +73,11 @@ Markdown, markup, and [CommonMark](#commonmark).
 
 Technically speaking HTML is also a markup language(https://en.wikipedia.org/wiki/Markup_language) but in the context of Metabuzz the term normally refers to Markdown.
 
+## .mb directory
+
+Each Metabuzz project contains a directory called `.mb` at root level. It's hidden on most operating systems solely to make it easier 
+to write without distractions: if you reveal that directory there's no change in operation.
+
 ## Metabuzz Theme Framework
 
 

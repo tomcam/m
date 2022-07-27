@@ -27,16 +27,16 @@ func cfgBool(option string) bool {
 // for example, i won't copy a file onto itself.
 // Not that that happened to me, of course.
 func Copy(src, dest string) error {
-  //fmt.Printf("Copy %v to %v\n", src, dest)
+	//fmt.Printf("Copy %v to %v\n", src, dest)
 	if src == dest {
 		// Someone done screwed up
 		return ErrCode("0221", src)
 	}
 
-  if dest == "" {
-    // No destination file specified
-    return ErrCode("1014", src)
-  }
+	if dest == "" {
+		// No destination file specified
+		return ErrCode("1014", src)
+	}
 	sourceFileStat, err := os.Stat(src)
 	if err != nil {
 		// TODO: document error code and add to errors.go
@@ -54,7 +54,7 @@ func Copy(src, dest string) error {
 	}
 	destination, err := os.Create(dest)
 	if err != nil {
-		return ErrCode("0209", dest +  " from " + src)
+		return ErrCode("0209", dest+" from "+src)
 	}
 	defer destination.Close()
 	_, err = io.Copy(destination, source)

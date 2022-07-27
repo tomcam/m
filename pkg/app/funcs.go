@@ -4,6 +4,9 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/tomcam/m/pkg/mdext"
+	"github.com/yuin/goldmark/ast"
+	"github.com/yuin/goldmark/parser"
+	"github.com/yuin/goldmark/text"
 	"html/template"
 	"io/ioutil"
 	"os"
@@ -216,6 +219,13 @@ func (a *App) generateTOC(level int) []mdext.TOCEntry {
 		a.QuitError(ErrCode("0926", err.Error()))
 	}
 	return tocs
+}
+
+// markdownAST returns the goldmark AST for the input.
+func (a *App) markdownAST(input []byte) ast.Node {
+	ctx := parser.NewContext()
+	p := a.newGoldmark().Parser()
+	return p.Parse(text.NewReader(input), parser.WithContext(ctx))
 }
 
 // toc generates a table of contents and includes all headers with a level less

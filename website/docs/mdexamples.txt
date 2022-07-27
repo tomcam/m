@@ -1,5 +1,20 @@
-Semi-successful header
 
+How to address
+```
+---
+List: { 'h' : 'hi' }
+---
+{{ .Page.FrontMatter.List.h }}
+{{"{{"}} .Page.FrontMatter.List.h {{"}}"}}
+```
+
+
+
+Markdown comment:
+{{- /*  This text will not appear in generated HTML
+*/ -}}
+
+Semi-successful header
 {{- if .Site.Company.HeaderLogo -}}
 * ![Logo]({{ .Site.Company.HeaderLogo }})
 {{- end }}

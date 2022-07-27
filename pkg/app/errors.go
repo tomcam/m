@@ -154,7 +154,7 @@ var errMsgs = map[string]string{
 	"0901": "Unable to allocate Site object",
 	"0902": "Error creating new site file",
 	"0915": "Error copying theme to site", // filename
-	"0917": "Problem parsing template",    // filename
+	"0917": "Problem parsing",             // filename
 	"0920": "Error generating Markdown",
 	"0921": "Unable to build project", // filename
 	"0922": "No project found at",     // message
@@ -184,7 +184,7 @@ var errMsgs = map[string]string{
 	"1004": "Trying to publish nonexistent stylesheet",
 	"1005": "No publish directory specified for",
 	"1013": "Please specify a site name",
-  "1014": "No destination file specified when copying", // source file to copy
+	"1014": "No destination file specified when copying", // source file to copy
 
 	// TODO: Get rid of the line below
 	// Old errors stopped at 1023
@@ -385,10 +385,10 @@ func add(key string, previous string, extra ...string) error {
 // constraint, for example, fulfilling an interface method
 // that doesn't support this practice.
 func (a *App) QuitError(e error) {
-  // Precede error message with name of file
-  if a.Page.filePath != "" {
-    fmt.Print(a.Page.filePath + ": ")
-  }
+	// Precede error message with name of file
+	if a.Page.filePath != "" {
+		fmt.Print(a.Page.filePath + ": ")
+	}
 	// Error message from an earlier error return needs to be seen.
 	displayError(e)
 	if e == nil {

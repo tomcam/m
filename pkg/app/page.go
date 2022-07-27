@@ -13,7 +13,9 @@ type Page struct {
 	// Directory location of this page
 	dir string
 
-	// TODO: Marshal in front matter as a real struct
+	// frontMatterRaw is passed to the Goldmark metadata reader.
+	// Its fields are later converted into the FrontMatter struct
+	// by copying them one by one.
 	frontMatterRaw map[string]interface{}
 	FrontMatter    FrontMatter
 
@@ -24,8 +26,8 @@ type Page struct {
 	// or "debut/gallery/item", include them all here.
 	themes []Theme
 
-  // Base filename of Markdown source. See also filePath
-  fileBaseName string
+	// Base filename of Markdown source. See also filePath
+	fileBaseName string
 
 	// Fully qualified filename of this source file
 	filePath string

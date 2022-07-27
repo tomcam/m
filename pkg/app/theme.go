@@ -225,17 +225,8 @@ func (app *App) loadThemeLevel(source string, dest string, level int) error {
 	app.Debug("\t\t\tloadThemeLevel(%v, %v, %v)", source, dest, level)
 	// See if this theme has already been published.
 	if !dirExists(source) {
-    // Using only the base filename doesn't work if
-		//return ErrCode("1028", app.Page.filePath)
-		 return ErrCode("1028", filepath.Base(source)+ " (expected in " + source + ")" )
-    // you're building from another directory
-		// return ErrCode("1028", filepath.Base(source) )
-		//return ErrCode("1028", filepath.Base(source) + " in "+app.Page.filePath)
-		// return ErrCode("1028", filepath.Base(source))
-		//return ErrCode("1028", filepath.Base(source) + " in "+app.Page.fileBaseName)
-    // xxx
+		return ErrCode("1028", filepath.Base(source)+" (expected in "+source+")")
 	}
-
 
 	if err := app.loadThemeConfig(source); err != nil {
 		return ErrCode("PREVIOUS", err.Error())
@@ -319,8 +310,6 @@ func (app *App) loadTheme() error {
 // themePublishDir() returns the name of the directory
 // needed to publish style sheets for the theme
 func (app *App) themePublishDir(theme string) string {
-	//return filepath.Join(app.Site.cssPublishPath, defaults.ThemesDir, app.Page.FrontMatter.Theme)
-	//return filepath.Join(app.Site.publishPath, defaults.ThemesDir, app.Page.FrontMatter.Theme)
 	return filepath.Join(app.Site.publishPath, defaults.ThemesDir, theme)
 }
 
@@ -339,8 +328,6 @@ func (app *App) getMode(stylesheet string) string {
 	}
 	return stylesheet
 }
-
-// xxx
 
 // loadThemeConfig reads the theme's config file, so
 // if the theme is named "debut" that file would be

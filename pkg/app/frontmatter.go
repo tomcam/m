@@ -1,8 +1,9 @@
 package app
 
 import (
-	//"fmt"
+  //"fmt"
 	"reflect"
+	"strings"
 )
 
 type FrontMatter struct {
@@ -38,7 +39,6 @@ type FrontMatter struct {
 
 	// User data--MUST REMAIN AT END
 	List interface{} `yaml:"List"`
-
 }
 
 // frontMatterToString generates the front matter
@@ -80,4 +80,43 @@ func frontMatterToString(f FrontMatter) string {
 	//fmt.Printf("\tfrontMatterToString results: %#v\n", frontMatter)
 
 	return frontMatter
+}
+
+// frontMatterMust() obtains the value of a requested key from the front matter.
+// It's  called frontMatterMust() because it doesn't
+// return an error if, for example, the requested
+// doesn't exist, or doesn't have a definition.
+// TODO: Perf? Get as []byte?
+func (app *App) frontMatterMust(key string) string {
+	// If the key exists, return its value.
+	// This also works
+	return structFieldByNameStrMust(app.Page.FrontMatter, key)
+}
+
+// frontMatterMustLower() obtains the value of a
+// requested key from the front matter, then
+// forces the return value to lowercase.
+// The Must means it doesn't return an error
+// if the key doesn't exist. It simply returns
+// an empty string.
+func (app *App) frontMatterMustLower(key string) string {
+	// If the key exists, return its value.
+	return strings.ToLower(app.frontMatterMust(key))
+}
+
+// frontMatterRawToStruct() takes the generic map of front
+// matter produced by Goldmark's YAML parser
+// and copies it to the FrontMatter struct.
+// The *Must functions are used because its structure
+// is known so why check for errors.
+// I'll probably regret this.
+func (app *App) frontMatterRawToStruct() {
+	//for k, v := range app.Page.frontMatterRaw {
+	for k, v := range app.metaData {
+    //fmt.Printf("%v\t%v\n", k, v)
+		setFieldMust(&app.Page.FrontMatter, k, v)
+	}
+	//app.Page.FrontMatter.List = app.Page.frontMatterRaw["List"]
+	app.Page.FrontMatter.List = app.metaData["List"]
+
 }

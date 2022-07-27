@@ -3,6 +3,7 @@ package app
 import (
 	"bytes"
 	"text/template"
+	//"html/template"
 )
 
 // Resolve template variables
@@ -13,16 +14,16 @@ import (
 // source file parsing errors that occur.
 // Skips if frontmatter.Templates is set to "off"
 func (app *App) interps(filename string, input string) string {
+	// TODO: Restore FrontMatter.Templates
 	//if strings.ToLower(app.Page.FrontMatter.Templates) != "off" {
-	if !app.Page.FrontMatter.Templates {
-		return app.execute(filename, input, app.funcs)
-	}
-	return input
+	return app.execute(filename, input, app.funcs)
+	//return input
 }
 
 // execute() parses a Go template, then executes it against HTML/template source.
 // Returns a string containing the result.
 func (a *App) execute(templateName string, tpl string, funcMap template.FuncMap) string {
+	a.Print("execute(%v, %v)\n", templateName, tpl)
 	var t *template.Template
 	var err error
 	if t, err = template.New(templateName).Funcs(funcMap).Parse(tpl); err != nil {
