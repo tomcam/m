@@ -1,4 +1,6 @@
 
+
+
 How to address
 ```
 ---
@@ -11,6 +13,8 @@ List: { 'h' : 'hi' }
 
 
 Markdown comment:
+
+// This version withoiut trim marks must not have space after double brace delimiters {{/* it has a comment */}}
 {{- /*  This text will not appear in generated HTML
 */ -}}
 

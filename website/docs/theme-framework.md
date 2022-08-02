@@ -1,5 +1,10 @@
 # Metabuzz Theme Framework 
 
+## TODO: Not even close to finished
+Each HTML file Metabuzz generates is assembled from one or more of the following standard [HTML layout elements](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Document_and_website_structure#html_layout_elements_in_more_detail): `<header>`, `<nav>`, `<aside>`, `<article>`, and `<footer>`.  They're generated using elements described in the *theme configuration file*, 
+
+
+
 * Is the `background` grey?
 
 ## How code is displayed (inline code and code fences)

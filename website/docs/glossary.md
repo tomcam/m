@@ -33,7 +33,7 @@ subdirectory. It contains information that applies to all projects you create wi
 The structure of a  
 [complete HTML document](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Document_and_website_structure#HTML_layout_elements_in_more_detail) 
 is based on these tags: `<header>`, `<nav>`, `<aside>`, `<article>`, and `<footer>`. They are also known as *layout elements*.
-Metabuzz takes their corresponding tags from the [theme file](#theme-file)
+Metabuzz takes their corresponding tags from the [theme configuration file](#theme-configuration-file)
 and uses those rules to generate the contents of each tag.
 They are also known as layout elements. Metabuzz takes their corresponding tags from the theme TOML file and uses those rules to generate the contents of each tag.
 
@@ -145,13 +145,7 @@ The [template language](template-language.html) doesn't refer to themes, which i
 
 Every Metabuzz site has a [theme](themes.md), which is a collection of stylesheets, text, and graphic images structured in a particular way. A theme has its own folder, which is used as the name of the theme, and a confguration file listing what files comprise the theme. If you haven't specified a theme in your [site file](#site-configuration-file) or page [front matter](#front-matter) then the theme named `wide` is used.
 
-A theme is assembled from components described in its [theme file](#theme-file).
+A theme is assembled from components described in its [theme configuration file](#theme-configuration-file).
 
 
-## Theme file
-
-Each HTML file Metabuzz generates is assembled from one or more of the following HTML layout elements: `<header>`, `<nav>`, `<aside>`, `<article>`, and `<footer>`.
-
-The theme YAML file directs how files are generated for each tag. For example, the `<header>` tag is generated from a source listed under `Header:` and the `<aside>` tag (normally called a sidebar) is generated from a source listed under `Sidebar:`.
-
-
+## Theme configuration file
