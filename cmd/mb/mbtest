@@ -13,10 +13,10 @@ cp site.yaml $DIR/.mb
 cp eastside-emerald-64x64.png $DIR
 # Create an array of filenames
 declare -a themes=(
-	#'wide'
+	'wide'
 	'pillar'
   #'ridge'
-  #'chill'
+  'chill'
   #'future'
 #  'newscheck'
   #'genuine'
@@ -90,13 +90,16 @@ cat <<-EOM > $DIR/$FILENAME.md
 Theme: ${rawthemes[$i]}
 Sidebar: ${sidebar}
 Mode: ${mode}
+List: { common: 'common|mdemo.md', timeFormat: 'January' }
 ---
 # About Metabuzz
 
 * Theme is **${theme}**. According to frontmatter it's **{{ .Page.FrontMatter.Theme }}**
 * Sidebar **${sidebar}**. According to frontmatter it's **{{ .Page.FrontMatter.Sidebar }}** 
 * Mode should be **${mode}**
-{{ inc "common|mdemo.md" }}
+* Month is: **{{ ftime .Page.FrontMatter.List.timeFormat }}**
+
+{{ inc .Page.FrontMatter.List.common }}
 
 [Home](./index.html)
 
