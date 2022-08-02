@@ -116,7 +116,5 @@ func (app *App) frontMatterRawToStruct() {
     //fmt.Printf("%v\t%v\n", k, v)
 		setFieldMust(&app.Page.FrontMatter, k, v)
 	}
-	//app.Page.FrontMatter.List = app.Page.frontMatterRaw["List"]
-	app.Page.FrontMatter.List = app.metaData["List"]
-
+  app.Debug("frontMatterRawToStruct() app.Page.FrontMatter: %+v",app.Page.FrontMatter)
 }

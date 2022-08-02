@@ -204,6 +204,7 @@ func (a *App) addTemplateFunctions() {
 		"hostname": a.hostname,
 		"inc":      a.inc,
 		"path":     a.path,
+    "quote":    a.quote,
 		"scode":    a.scode,
 		"toc":      a.toc,
 	}
@@ -309,3 +310,10 @@ loop:
 	b.WriteString(closeTag)
 	return i
 }
+
+// quote
+func (app *App) quote(param string) string {
+	return param
+}
+
+

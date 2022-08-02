@@ -483,8 +483,7 @@ func (app *App) readSiteConfig() error {
 		return err
 	}
 	app.Site.configLoaded = true
-	app.Debug("readSiteConfig(%v): Site is %#v", app.Site.Filename, app.Site)
-
+  app.Debug("ReadSiteConfig(%s\n%s)", app.Site.Filename, prettyPrintStruct(app.Site))
 	return nil
 }
 

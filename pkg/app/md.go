@@ -23,9 +23,49 @@ func (app *App) mdYAMLFileToHTML(filename string) ([]byte, error) {
 	return app.mdYAMLToHTML(source)
 }
 
+// mdFiletoTemplatedHTMLString converts a Markdown document
+// to HTML. Executes any templates.
+// Returns a string containing the HTML source.
+func (app *App) mdFileToTemplatedHTMLString(filename string) (string, error) {
+	source := fileToBuf(filename)
+  var b []byte
+  var err error
+  if b, err  = app.mdToHTML(source); err != nil {
+   // TODO: Real error code
+	  return "",err
+  }
+  var s string
+	if s, err = app.doTemplateFuncs(filename, string(b)); err != nil {
+    // TODO: Real error code
+	  return "",err
+  }
+  return s, nil
+}
+
+// mdYAMLFiletoTemplatedHTMLString converts a Markdown document
+// to HTML. Executes any templates.
+// Returns a string containing the HTML source.
+func (app *App) mdYAMLFileToTemplatedHTMLString(filename string) (string, error) {
+	source := fileToBuf(filename)
+  var b []byte
+  var err error
+  if b, err  = app.mdYAMLToHTML(source); err != nil {
+   // TODO: Real error code
+	  return "",err
+  }
+  var s string
+	if s, err = app.doTemplateFuncs(filename, string(b)); err != nil {
+    // TODO: Real error code
+	  return "",err
+  }
+  return s, nil
+}
+
+
 
 // mdYAMLtoHTML converts a Markdown document with optional
 // YAML front matter to HTML. YAML is written to app.metaData
+// and it populates app.Page.FrontMatter.
 // Returns a byte slice containing the HTML source.
 // Pre: parser.NewContext() has already been called on app.parserCtx
 func (app *App) mdYAMLToHTML(source []byte) ([]byte, error) {
@@ -36,6 +76,8 @@ func (app *App) mdYAMLToHTML(source []byte) ([]byte, error) {
 	}
 	// Obtain YAML front matter from document.
 	app.metaData = meta.Get(app.mdParserCtx)
+  // Copy populated fields to app.Page.FrontMatter
+  app.frontMatterRawToStruct()
 	return buf.Bytes(), nil
 }
 
@@ -80,7 +122,7 @@ func (app *App) doTemplate(templateName string, source string) (string, error) {
 		return "", err
 	}
 	buf := new(bytes.Buffer)
-	err = tmpl.Execute(buf, app.metaData)
+	err = tmpl.Execute(buf, app)
 
 	if err != nil {
 		return "", err
@@ -92,9 +134,11 @@ func (app *App) doTemplate(templateName string, source string) (string, error) {
 // doTemplateFuncs takes HTML in source, expects parsed front
 // matter in app.metaData, and executes Go templates
 // against the source. It also handles user-defined
-// functions, expected in funcMap
+// functions, expected in app.funcs
+// templateName is expected to be the filename of the Markdown source file
 // Returns a string containing the HTML with the
 // template values embedded.
+// TODO: Refactor to call doTemplate()?
 func (app *App) doTemplateFuncs(templateName string, source string) (string, error) {
 	if templateName == "" {
 		templateName = "Metabuzz"
@@ -102,13 +146,14 @@ func (app *App) doTemplateFuncs(templateName string, source string) (string, err
 	var tmpl *template.Template
 	var err error
 	if tmpl, err = template.New(templateName).Funcs(app.funcs).Parse(source); err != nil {
-		// TODO: Function should return error
+		// TODO: Function should return proper error code
 		return "", err
 	}
 	buf := new(bytes.Buffer)
-	err = tmpl.ExecuteTemplate(buf, templateName, app.metaData)
+	err = tmpl.ExecuteTemplate(buf, templateName, app)
 
 	if err != nil {
+		// TODO: Function should return proper error code
 		return "", err
 	}
 	return buf.String(), nil

@@ -4,8 +4,12 @@ import (
 	"fmt"
 	"github.com/rodaine/table"
 	"github.com/spf13/viper"
+	"gopkg.in/yaml.v3"
+	"github.com/tomcam/m/pkg/default"
 	//"github.com/tomcam/m/pkg/default"
 	//"os"
+	"io/ioutil"
+	"path/filepath"
 	"strings"
 )
 
@@ -13,6 +17,47 @@ import (
 func (app *App) ShowFrontMatter() {
 	fmt.Println("FRONT MATTER")
 	fmt.Printf("%#v\n", app.Page.frontMatterRaw)
+}
+
+
+// getSiteFile() reads the site file from the specified directory
+// and returns in a Site variable. (If no directory is specified
+// it assumes the current one). This is different from
+// readSiteConfig() because it does not overwrite app.Site.
+// TODO: Replace code in ShowInfo() with this
+// TODO: Test case for current directory, ".", and none specified
+func (app *App) getSiteFile(pathname string) (Site, error) {
+	if pathname == "" || pathname == "." {
+		pathname = currDir()
+	}
+  var err error
+  app.Debug("getSiteFile(%v)", pathname)
+	if err := app.changeWorkingDir(pathname); err != nil {
+		return Site{}, ErrCode("1015", pathname)
+	}
+  app.Debug("\tSeeing if %s is a project", pathname)
+	if !isProject(pathname) {
+		app.QuitError(ErrCode("0922", pathname))
+	}
+	// Compute full pathname of the site file.
+  // TODO: Generalzie this and replace in app.go?
+  cfgPath := filepath.Join(pathname, defaults.CfgDir)
+  filename := filepath.Join(cfgPath, defaults.SiteConfigFilename)
+  app.Debug("\tTrying to read in %v", filename)
+  var b []byte
+	if b, err = ioutil.ReadFile(filename); err != nil {
+		// TODO: Handle error properly & and document error code
+		return Site{}, ErrCode("PREVIOUS", err.Error(), filename)
+	}
+
+  app.Print("\tSuccessfully read site file %v", filename)
+  var s Site
+	err = yaml.Unmarshal(b, &s)
+	if err != nil {
+		// TODO: Handle error properly & and document error code
+		return Site{}, err
+	}
+  return s, nil
 }
 
 // ShowInfo() displays debug information about the app and site.

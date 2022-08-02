@@ -60,7 +60,7 @@ func (app *App) addCommands() {
 		TOP LEVEL COMMAND: info
 		*****************************************************/
 
-		cmdInfo = &cobra.Command{
+		CmdInfo = &cobra.Command{
 			Use:   "info",
 			Short: "Get information about this project",
 			Long:  "Get information about this project",
@@ -76,6 +76,37 @@ func (app *App) addCommands() {
 				}
 			},
 		}
+
+		/*****************************************************
+		    Subcommand: info site
+		*****************************************************/
+
+		CmdInfoSite = &cobra.Command{
+			Use:   "site",
+			Short: "site",
+			Long: `TODO`,
+      /// xxx
+			Run: func(cmd *cobra.Command, args []string) {
+				var pathname string
+				//var err error
+				// See if the user specfied a directory name.
+				if len(args) > 0 {
+					pathname = args[0]
+				}
+        var site Site
+        var err error
+        // TODO: doesn't work at all
+        if site, err = app.getSiteFile(pathname); err != nil {
+          // TODO: Test
+		      app.QuitError(ErrCode("PREVIOUS", err.Error()))
+        }
+        app.Print("Site info for %s:\n%s)", pathname, prettyPrintStruct(site))
+
+			},
+		}
+
+
+
 
 		/*****************************************************
 		TOP LEVEL COMMAND: build
@@ -142,7 +173,7 @@ create theme based on an existing one.
 				if len(args) > 0 {
 					pathname = args[0]
 				} else {
-					// Them more likely case: it's build all by
+					// The more likely case: it's build all by
 					// itself, so go through the whole directory
 					// tree and build as a complete site.
 					pathname = promptString("Name of site to create?")
@@ -308,13 +339,14 @@ create theme based on an existing one.
 	/*****************************************************
 	  AddCommand()
 		*****************************************************/
-	app.RootCmd.AddCommand(CmdNew)
 	app.RootCmd.AddCommand(cmdKitchenSink)
 	app.RootCmd.AddCommand(cmdInterview)
+	app.RootCmd.AddCommand(CmdInfo)
+    CmdInfo.AddCommand(CmdInfoSite)
+	app.RootCmd.AddCommand(CmdNew)
 	CmdNew.AddCommand(CmdNewSite)
 	CmdNew.AddCommand(CmdNewTheme)
 	CmdNew.AddCommand(CmdNewPost)
 	CmdNew.AddCommand(CmdNewCollection)
-	app.RootCmd.AddCommand(cmdInfo)
 	app.RootCmd.AddCommand(cmdBuild)
 }

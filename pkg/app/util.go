@@ -2,6 +2,7 @@ package app
 
 import (
 	"bufio"
+  "encoding/json"
 	"fmt"
 	"github.com/plus3it/gorecurcopy"
 	"github.com/spf13/viper"
@@ -619,4 +620,11 @@ func CreateIfNotExists(dir string, perm os.FileMode) error {
 	}
 
 	return nil
+}
+
+// prettyPrintStruct takes any struct and returns a 
+// string showing members and their values with proper indentation.
+func prettyPrintStruct (st interface{}) string {
+  b, _ := json.MarshalIndent(st, "", "\t")
+  return(fmt.Sprint(string(b)))
 }

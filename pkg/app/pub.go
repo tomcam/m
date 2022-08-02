@@ -1,12 +1,7 @@
 package app
 
 import (
-	//"bytes"
 	"github.com/tomcam/m/pkg/default"
-	//"github.com/tomcam/m/pkg/util"
-	//"github.com/yuin/goldmark-meta"
-	//"github.com/yuin/goldmark/parser"
-  "fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -65,20 +60,25 @@ func (app *App) publishMarkdownFile(filename string) error {
 		return err
 	}
   // xxx
-	// Get YAML front matter and copy to app.Page.FrontMatter
-  app.frontMatterRawToStruct()
-
+  app.Print("publishMarkdownFile(%s) app.Page.FrontMatter: %s\n", filename, prettyPrintStruct(app.Page.FrontMatter))
+  app.Print("\tapp.Page: %v\n",prettyPrintStruct(app.Page))
   var body string
 	if body, err = app.doTemplateFuncs(filename, string(b)); err != nil {
     // TODO: Real error code
 	  return err
 	}
-
-  fmt.Printf("app.metaData: %v\n", app.metaData)
-  fmt.Printf("app.Page.FrontMatter: %+v\n", app.Page.FrontMatter)
-  fmt.Printf("app.Page.FrontMatter.Theme: %v\n", app.Page.FrontMatter.Theme)
-  fmt.Printf("app.Page.FrontMatter.List: %+v\n", app.Page.FrontMatter.List)
-  fmt.Printf("app.Site: %+v\n", app.Site)
+  
+  /*
+  if body, err = app.mdYAMLFileToTemplatedHTMLString(filename); err != nil {
+    // TODO: Real error code
+    return err
+  }
+  */
+  // fmt.Printf("app.metaData: %v\n", app.metaData)
+  app.Debug("\t\tapp.Page.FrontMatter here: %v\n", prettyPrintStruct(app.Page.FrontMatter))
+  // fmt.Printf("app.Page.FrontMatter.Theme: %v\n", app.Page.FrontMatter.Theme)
+  // fmt.Printf("app.Page.FrontMatter.List: %+v\n", app.Page.FrontMatter.List)
+  // fmt.Printf("app.Site: %+v\n", app.Site)
 
 	// Theme has been named in Page.FrontMatter so load it.
 	if err = app.loadTheme(); err != nil {
@@ -170,7 +170,7 @@ func (app *App) normalizeStylesheetList() {
 	app.Debug("\t\t\tnormalizeStylesheetList()")
 	for level := 0; level < len(app.Page.Theme.levels); level++ {
 		theme := app.Page.themes[level]
-		app.Debug("\t\t\t\t%#v", app.Page.themes[level])
+		app.Debug("\t\t\t\t%s", prettyPrintStruct(app.Page.themes[level]))
 		responsive := false
 		darkMode := app.darkMode()
 		if darkMode {
@@ -352,10 +352,10 @@ func (app *App) layoutElement(tag string) (string, error) {
 // TODO: Probably want to return a byte slice
 func (app *App) layoutEl(l layoutElement) (string, error) {
 	app.Debug("\t\t\tlayoutEl(%#v)", l)
-	var html []byte
+	var html string
 	// Inline HTML is top priority
 	if l.HTML != "" {
-		html = []byte(l.HTML)
+		return l.HTML, nil
 	}
 
 	// No inline HTML. Get filename.
@@ -376,16 +376,19 @@ func (app *App) layoutEl(l layoutElement) (string, error) {
 	}
 
 	var err error
-	if html, err = app.mdYAMLFileToHTML(filename); err != nil {
+  // TODO: This seems to work the same as mdYAMLFileToTemplatedHTMLString
+  // so the latter may just be slowing things down
+  //if html, err = app.mdFileToTemplatedHTMLString(filename); err != nil {
+  if html, err = app.mdYAMLFileToTemplatedHTMLString(filename); err != nil {
+    // TODO: Return proper error code
 		return "", err
-	} else {
-		return string(html), nil
-	}
+	} 
+  return html, nil
 }
 
 // article() takes the already-generated HTML and returns
 // the text wrapped in an "<article>" tag.
-// You can optionally include an id tag with it.
+// You can optionally include a id text with it.
 func (app *App) article(body string, params ...string) string {
 	html := body
 	if len(params) < 1 {
@@ -399,6 +402,10 @@ func (app *App) article(body string, params ...string) string {
 	return html
 }
 
+// header generates a navbar from whatever was specified in the
+// Header portion of a theme configuration file, unless
+// it's not specified or the user wants it omitted using the
+// Supress configuration option.
 func (app *App) header() (string, error) {
 	// If this feature isn't supported by the
 	// Metabuzz Theme Framework, don't bother.
@@ -408,6 +415,10 @@ func (app *App) header() (string, error) {
 	return app.layoutElementToHTML("header")
 }
 
+// nav generates a navbar from whatever was specified in the
+// Nav portion of a theme configuration file, unless
+// it's not specified or the user wants it omitted using the
+// Supress configuration option.
 func (app *App) nav() (string, error) {
 	// If this feature isn't supported by the
 	// Metabuzz Theme Framework, don't bother.
@@ -417,6 +428,10 @@ func (app *App) nav() (string, error) {
 	return app.layoutElementToHTML("nav")
 }
 
+// sidebar generates a sidebar from whatever was specified in the
+// Sidebar portion of a theme configuration file, unless
+// it's not specified or the user wants it omitted using the
+// Supress configuration option.
 func (app *App) sidebar() (string, error) {
 	// If this feature isn't supported by the
 	// Metabuzz Theme Framework, don't bother.
@@ -426,6 +441,10 @@ func (app *App) sidebar() (string, error) {
 	return (app.layoutElementToHTML("sidebar"))
 }
 
+// footer generates a footer from whatever was specified in the
+// Footer portion of a theme configuration file, unless
+// it's not specified or the user wants it omitted using the
+// Supress configuration option.
 func (app *App) footer() (string, error) {
 	// If this feature isn't supported by the
 	// Metabuzz Theme Framework, don't bother.
@@ -474,7 +493,7 @@ func (app *App) sidebarType() string {
 // configuration file to the publish directory used for
 // stylesheets.
 func (app *App) publishStylesheet(source string, dest string) error {
-	app.Debug("\t\t\t\tpublishStylesheet(%v, %v)", source, dest)
+	app.Debug("\t\t\t\t\tpublishStylesheet(%v, %v)", source, dest)
 	if source == dest {
 		return ErrCode("0217", source)
 	}

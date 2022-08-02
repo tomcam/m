@@ -185,6 +185,7 @@ var errMsgs = map[string]string{
 	"1005": "No publish directory specified for",
 	"1013": "Please specify a site name",
 	"1014": "No destination file specified when copying", // source file to copy
+  "1015": "Can't find the site",            // filename
 
 	// TODO: Get rid of the line below
 	// Old errors stopped at 1023
@@ -222,6 +223,7 @@ var errMsgs = map[string]string{
 	"1113": "Can't change to site directory to create new post at",                     // directory name
 	"1114": "Can't change to site directory to create new post at",                     // directory name
 	"1115": ":author permalink variable specified but no author has been specified in", // collection
+	//"1116": "Can't change to site directory",
 
 	// 1200 - Syntax error!
 	"1204": "Unknown dot value in Go template function ", //

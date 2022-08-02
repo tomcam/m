@@ -51,7 +51,6 @@ type App struct {
 
 	// YAML front matter
 	metaData map[string]interface{}
-
 } // type Application
 
 type Flags struct {
