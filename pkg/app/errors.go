@@ -60,7 +60,7 @@ import (
 //	0700	- Error reading directory
 //	0800	- Can't determine the name of something
 //	0900	- Problem generating something
-//  0950 - Something's already there
+//  0950  - Something's already there
 //	1000	- Something's missing that should be there
 //	1100	- Problem changing to a directory
 //  1200  - Syntax error!
@@ -234,6 +234,7 @@ var errMsgs = map[string]string{
 	///"1208": "Your path must start with a normal directory name, for example, `blog` or `news`, but it starts with the permalink variable", // Permalink variable
 	"1208": "Path to collection starts with", // custom message
 	"1209": "Starter file",                   // has Unknown permalink variable
+  "1210": "Error parsing template",
 
 	// 1300 -  Error writing to file
 	"1301": "Unable to update site file with collection", // Collection name

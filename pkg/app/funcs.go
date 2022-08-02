@@ -100,9 +100,6 @@ So it might look like :
 */
 func (app *App) inc(filename string) template.HTML {
 
-	// Read the HTML file into a byte slice.
-	var input []byte
-	var err error
 	if filename == "" {
 		return template.HTML("")
 	}
@@ -128,14 +125,12 @@ func (app *App) inc(filename string) template.HTML {
 		app.QuitError(ErrCode("0120", filename))
 	}
 
-	input, err = ioutil.ReadFile(filename)
-	if err != nil {
-		// TODO: return an error instead
-		app.QuitError(ErrCode("0121", filename))
-	}
+	// Found the file. Read, convert to HTML, and apply the template to it.
+  var s string
+  if s, _ = app.mdFileToTemplatedHTMLString(filename); err != nil
+    app.QuitError(ErrCode("1200", filename))
+  }
 
-	// Apply the template to it.
-	s := app.execute(filename, string(input), app.funcs)
 	return template.HTML(s)
 }
 
