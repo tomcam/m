@@ -60,21 +60,12 @@ func (app *App) publishMarkdownFile(filename string) error {
 		return err
 	}
   // xxx
-  app.Print("publishMarkdownFile(%s) app.Page.FrontMatter: %s\n", filename, prettyPrintStruct(app.Page.FrontMatter))
-  app.Print("\tapp.Page: %v\n",prettyPrintStruct(app.Page))
   var body string
 	if body, err = app.doTemplateFuncs(filename, string(b)); err != nil {
     // TODO: Real error code
 	  return err
 	}
-  
-  /*
-  if body, err = app.mdYAMLFileToTemplatedHTMLString(filename); err != nil {
-    // TODO: Real error code
-    return err
-  }
-  */
-  // fmt.Printf("app.metaData: %v\n", app.metaData)
+
   app.Debug("\t\tapp.Page.FrontMatter here: %v\n", prettyPrintStruct(app.Page.FrontMatter))
   // fmt.Printf("app.Page.FrontMatter.Theme: %v\n", app.Page.FrontMatter.Theme)
   // fmt.Printf("app.Page.FrontMatter.List: %+v\n", app.Page.FrontMatter.List)
@@ -85,7 +76,6 @@ func (app *App) publishMarkdownFile(filename string) error {
 		// TODO: Handle error properly & and document error code
 		return err
 	}
-	//app.Print("after loadTheme(): %+v", app.Page.FrontMatter.List)
 
 	// Copy out stylesheets, graphics, and other assets
 	// required for this page.

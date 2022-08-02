@@ -23,11 +23,10 @@ func (app *App) interps(filename string, input string) string {
 // execute() parses a Go template, then executes it against HTML/template source.
 // Returns a string containing the result.
 func (a *App) execute(templateName string, tpl string, funcMap template.FuncMap) string {
-	a.Print("execute(%v, %v)\n", templateName, tpl)
 	var t *template.Template
 	var err error
 	if t, err = template.New(templateName).Funcs(funcMap).Parse(tpl); err != nil {
-		// TODO: Function should return error
+		// TODO: Handle error properly & and document error code
 		a.QuitError(ErrCode("0917", err.Error()))
 	}
 	var b bytes.Buffer
