@@ -1,5 +1,4 @@
-/* by jschaf */
-package texts
+package  app
 
 import "testing"
 

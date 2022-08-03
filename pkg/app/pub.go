@@ -24,6 +24,7 @@ func (app *App) publish(filename string) error {
 
 func (app *App) publishMarkdownFile(filename string) error {
 	app.Page = Page{}
+  //app.Page.FrontMatter = FrontMatter{}
 	app.Debug("\tpublishMarkdownFile(%#v)", filename)
 	// Figure out this file's relative position in the output
 	// directory true. For example:
@@ -49,24 +50,18 @@ func (app *App) publishMarkdownFile(filename string) error {
 	target := replaceExtension(filename, "html")
 	target = filepath.Join(app.Site.publishPath, rel, filepath.Base(target))
 
-	var b []byte
-	b = fileToBuf(filename)
 	// Convert Markdown file to a byte slice of HTML
 	// The body contains the text of a file, for example, 'foo.md', and
 	// the contents of its front matter. Other page layout elements, such
 	// as the footer and header, will be parsed later in App.layoutEl()
-	if b, err = app.mdYAMLToHTML(b); err != nil {
-    // TODO: Real error code
-		return err
-	}
-  // xxx
   var body string
-	if body, err = app.doTemplateFuncs(filename, string(b)); err != nil {
+  if body, err = app.mdYAMLFileToTemplatedHTMLString(filename); err != nil {
     // TODO: Real error code
 	  return err
 	}
 
-  app.Debug("\t\tapp.Page.FrontMatter here: %v\n", prettyPrintStruct(app.Page.FrontMatter))
+   app.Debug("\t\tapp.Page.FrontMatter here: %v\n", prettyPrintStruct(app.Page.FrontMatter))
+   app.Print("\t\tapp.Page.FrontMatter here: %v\n", prettyPrintStruct(app.Page.FrontMatter))
   // fmt.Printf("app.Page.FrontMatter.Theme: %v\n", app.Page.FrontMatter.Theme)
   // fmt.Printf("app.Page.FrontMatter.List: %+v\n", app.Page.FrontMatter.List)
   // fmt.Printf("app.Site: %+v\n", app.Site)
@@ -114,6 +109,7 @@ func (app *App) publishMarkdownFile(filename string) error {
 		"<head>" + "\n" +
 		app.titleTag() +
 		app.metatags() +
+    // TODO: Doesn't work
 		// Avoid flash of unstyled content (FOUT)
 		"<style>.no-js {visibility: visible;}</style>" +
 		h + "\n" +

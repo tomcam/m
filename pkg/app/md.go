@@ -23,7 +23,7 @@ func (app *App) mdYAMLFileToHTML(filename string) ([]byte, error) {
 	return app.mdYAMLToHTML(source)
 }
 
-// mdFiletoTemplatedHTMLString converts a Markdown document
+// mdFileToTemplatedHTMLString converts a Markdown document
 // to HTML. Executes any templates.
 // Returns a string containing the HTML source.
 func (app *App) mdFileToTemplatedHTMLString(filename string) (string, error) {
@@ -71,6 +71,36 @@ func (app *App) mdFileToTemplatedFuncsHTMLString(filename string, funcs map[stri
 	return buf.String(), nil
 }
 
+// mdYAMLFiletoTemplatedFuncsHTMLString converts a Markdown document
+// to HTML. Executes any templates using the funcmap specified in funcs.
+// Returns a string containing the HTML source.
+// xxx
+func (app *App)mdYAMLFileToTemplatedFuncsHTMLString(filename string, funcs map[string]interface{}) (string, error) {
+  var s string
+  var err error
+  if s, err  = app.mdYAMLFileToTemplatedHTMLString(filename); err != nil {
+   // TODO: Real error code
+	  return "",err
+  }
+	var tmpl *template.Template
+
+  // TODO: Refactor
+	if tmpl, err = template.New(filename).Funcs(funcs).Parse(s); err != nil {
+		// TODO: Function should return proper error code
+		return "", err
+	}
+	buf := new(bytes.Buffer)
+	err = tmpl.ExecuteTemplate(buf, filename, app)
+
+
+	if err != nil {
+		// TODO: Function should return proper error code
+		return "", err
+	}
+	return buf.String(), nil
+}
+
+
 
 // mdYAMLFiletoTemplatedHTMLString converts a Markdown document
 // to HTML. Executes any templates.
@@ -108,6 +138,7 @@ func (app *App) mdYAMLToHTML(source []byte) ([]byte, error) {
 	app.metaData = meta.Get(app.mdParserCtx)
   // Copy populated fields to app.Page.FrontMatter
   app.frontMatterRawToStruct()
+  app.Print("mdYAMLToHTML(): %#v", app.Page.FrontMatter)
 	return buf.Bytes(), nil
 }
 

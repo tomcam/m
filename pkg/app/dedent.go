@@ -1,5 +1,5 @@
-// Package texts contains utilities for working with string text.
-package texts
+// Utilities for working with string text.
+package app
 
 import (
 	"bytes"

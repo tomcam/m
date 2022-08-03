@@ -159,18 +159,12 @@ func (app *App) path() string {
 
 
 */
-//func (app *App) scode(params map[string]string) template.HTML {
 func (app *App) scode(params map[interface{}]interface{}) template.HTML {
 	f, ok := params["filename"]
 	if !ok {
 		return template.HTML("filename missing")
 	}
-  //filename := string(f)
   filename := fmt.Sprint(f)
-  // TODO: Fix this now that app.execute() is gone
-	//var input []byte
-  // TODO: Fix this now that app.execute() is gone
-	//var err error
   // TODO: Needs real error code
 	if len(params) < 1 {
 		return ("ERROR0")
@@ -182,27 +176,19 @@ func (app *App) scode(params map[interface{}]interface{}) template.HTML {
 
 	// Find that file in the shortcode file directory
 	filename = filepath.Join(app.Site.sCodePath, filename)
-  app.Print("Searching for file %v", filename)
 
 	if !fileExists(filename) {
+    // TODO: document
 		app.QuitError(ErrCode("0122", filename))
 	}
 
-  /*
-	input, err = ioutil.ReadFile(filename)
-	if err != nil {
-		app.QuitError(ErrCode("0123", filename))
-	}
-  */
-
-	// Apply the template to it.
+ 	// Apply the template to it.
 	// The one function missing from fewerFuncs is shortcode() itself.
 	// s := app.execute(filename, string(input), app.fewerFuncs)
   // TODO: Fix this now that app.execute() is gone
-  app.Print("Replace the missing app.execute()")
   var s string
   var err error
-  if s, err = app.mdFileToTemplatedFuncsHTMLString(filename, app.fewerFuncs); err != nil {
+  if s, err = app.mdYAMLFileToTemplatedFuncsHTMLString(filename, app.fewerFuncs); err != nil {
     // TODO: Replace error code!
     app.Print("REPLACE error code")
     app.QuitError(ErrCode(err.Error(), filename))
@@ -338,6 +324,60 @@ loop:
 	}
 	b.WriteString(closeTag)
 	return i
+}
+
+// Stolen from https://stackoverflow.com/questions/13422578/in-go-how-to-get-a-slice-of-values-from-a-map
+func Values[M ~map[K]V, K comparable, V any](m M) []V {
+    r := make([]V, 0, len(m))
+    for _, v := range m {
+        r = append(r, v)
+    }
+    return r
+}
+//func (app *App) m(params map[interface{}]interface{}) template.HTML {
+func (app *App) m(params map[interface{}]interface{}) template.HTML {
+   v := Values(params)
+   return template.HTML(v('filename'))
+
+  /*
+	f, ok := params["filename"]
+	if !ok {
+		return template.HTML("filename missing")
+	}
+  filename := fmt.Sprint(f)
+  */
+  // TODO: Needs real error code
+	if len(params) < 1 {
+		return ("ERROR0")
+	}
+	// If no extension specified assume HTML
+	if filepath.Ext(filename) == "" {
+		filename = replaceExtension(filename, "html")
+	}
+
+	// Find that file in the shortcode file directory
+	filename = filepath.Join(app.Site.sCodePath, filename)
+
+	if !fileExists(filename) {
+    // TODO: document
+		app.QuitError(ErrCode("0122", filename))
+	}
+
+ 	// Apply the template to it.
+	// The one function missing from fewerFuncs is shortcode() itself.
+	// s := app.execute(filename, string(input), app.fewerFuncs)
+  // TODO: Fix this now that app.execute() is gone
+  var s string
+  var err error
+  if s, err = app.mdYAMLFileToTemplatedFuncsHTMLString(filename, app.fewerFuncs); err != nil {
+    // TODO: Replace error code!
+    app.Print("REPLACE error code")
+    app.QuitError(ErrCode(err.Error(), filename))
+  }
+  app.Print("scode(%s) has contents: %s", filename, s)
+
+
+	return template.HTML(s)
 }
 
 

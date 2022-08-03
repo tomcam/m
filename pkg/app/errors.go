@@ -84,6 +84,7 @@ var errMsgs = map[string]string{
 	"0115": "Unable to find starter file",                          // filename
 	"0116": "Error reading site configuration file",                // filename
 	"0117": "Error unmarshalling YAML for site configuration file", // filename
+  "0122": "Unable to find scode file", // filename
 	// Old errors stopped at 0131
 	// TODO: Get rid of the line below
 	// https://github.com/tomcam/mb/blob/master/pkg/errs/errors.go
