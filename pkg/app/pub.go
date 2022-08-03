@@ -366,9 +366,6 @@ func (app *App) layoutEl(l layoutElement) (string, error) {
 	}
 
 	var err error
-  // TODO: This seems to work the same as mdYAMLFileToTemplatedHTMLString
-  // so the latter may just be slowing things down
-  //if html, err = app.mdFileToTemplatedHTMLString(filename); err != nil {
   if html, err = app.mdYAMLFileToTemplatedHTMLString(filename); err != nil {
     // TODO: Return proper error code
 		return "", err
@@ -396,6 +393,7 @@ func (app *App) article(body string, params ...string) string {
 // Header portion of a theme configuration file, unless
 // it's not specified or the user wants it omitted using the
 // Supress configuration option.
+// TODO: Tests for all versions of Suppress
 func (app *App) header() (string, error) {
 	// If this feature isn't supported by the
 	// Metabuzz Theme Framework, don't bother.

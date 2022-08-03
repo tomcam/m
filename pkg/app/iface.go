@@ -49,9 +49,6 @@ func setField(obj interface{}, name string, value interface{}) error {
 	return nil
 }
 
-//	for k, v := range app.Page.frontMatterRaw {
-//xx		setFieldMust(&app.Page.FrontMatter, k, v)
-
 // setField writes a value in a struct (well, interface)
 // but returns an error if there is no field by
 // that name in the struct, or if it's read only.
@@ -94,12 +91,6 @@ func structFieldByNameStrMust(obj interface{}, field string) string {
 	if v.Kind() != reflect.Struct {
 		return ""
 	}
-	/*
-		kind := v.FieldByName(field).Kind()
-		if kind != reflect.String {
-			return ""
-		}
-	*/
 	return (fmt.Sprint(v.FieldByName(field)))
 }
 

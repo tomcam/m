@@ -44,7 +44,7 @@ func (app *App) dirNames(params ...string) []string {
 
 // files() obtains a slice of filenames in the specified
 // directory, using a wildcard specified in suffix.
-// Example: {{ files "." "*.jpg" }}
+// Example: TODO:
 // TODO:
 // 1. Consider security issues
 // 2. Handle insufficent input
@@ -60,6 +60,7 @@ func (a *App) files(dir, suffix string) []string {
 // ftime() returns the current, local, formatted time.
 // Can pass in a formatting string
 // https://golang.org/pkg/time/#Time.Format
+// Example: TODO:
 func (a *App) ftime(param ...string) string {
 	var ref = "Mon Jan 2 15:04:05 -0700 MST 2006"
 	var format string
@@ -75,6 +76,7 @@ func (a *App) ftime(param ...string) string {
 
 // hostname() returns the name of the machine
 // this code is running on
+// Example: TODO:
 func (a *App) hostname() string {
 	hostname, err := os.Hostname()
 	if err != nil {
@@ -95,7 +97,8 @@ It can be one of:
 
 So it might look like :
 
-  inc "articles|kitchen.md"
+  // Example: TODO:
+  inc 
 
 */
 func (app *App) inc(filename string) template.HTML {
@@ -127,7 +130,8 @@ func (app *App) inc(filename string) template.HTML {
 
 	// Found the file. Read, convert to HTML, and apply the template to it.
   var s string
-  if s, _ = app.mdFileToTemplatedHTMLString(filename); err != nil
+  var err error
+  if s, err = app.mdFileToTemplatedHTMLString(filename); err != nil {
     app.QuitError(ErrCode("1200", filename))
   }
 
@@ -147,26 +151,30 @@ func (app *App) path() string {
 // only thing that works with Javascript is youtube.html
 /*
    Example:
-   ====
-   [List]
-   youtube = { filename="youtube.html", id = "dQw4w9WgXcQ" }
-   ===
+   --- 
+   List: { youtube: { filename: 'youtube.html', id: "dQw4w9WgXcQ" } }
+   --- 
    ## Youtube?
    {{ scode .FrontMatter.List.youtube }}
 
 
 */
-func (app *App) scode(params map[string]interface{}) template.HTML {
-	filename, ok := params["filename"].(string)
+//func (app *App) scode(params map[string]string) template.HTML {
+func (app *App) scode(params map[interface{}]interface{}) template.HTML {
+	f, ok := params["filename"]
 	if !ok {
 		return template.HTML("filename missing")
 	}
-	var input []byte
-	var err error
+  //filename := string(f)
+  filename := fmt.Sprint(f)
+  // TODO: Fix this now that app.execute() is gone
+	//var input []byte
+  // TODO: Fix this now that app.execute() is gone
+	//var err error
+  // TODO: Needs real error code
 	if len(params) < 1 {
 		return ("ERROR0")
 	}
-
 	// If no extension specified assume HTML
 	if filepath.Ext(filename) == "" {
 		filename = replaceExtension(filename, "html")
@@ -174,22 +182,48 @@ func (app *App) scode(params map[string]interface{}) template.HTML {
 
 	// Find that file in the shortcode file directory
 	filename = filepath.Join(app.Site.sCodePath, filename)
+  app.Print("Searching for file %v", filename)
 
 	if !fileExists(filename) {
 		app.QuitError(ErrCode("0122", filename))
 	}
 
+  /*
 	input, err = ioutil.ReadFile(filename)
 	if err != nil {
 		app.QuitError(ErrCode("0123", filename))
 	}
+  */
 
 	// Apply the template to it.
 	// The one function missing from fewerFuncs is shortcode() itself.
-	s := app.execute(filename, string(input), app.fewerFuncs)
+	// s := app.execute(filename, string(input), app.fewerFuncs)
+  // TODO: Fix this now that app.execute() is gone
+  app.Print("Replace the missing app.execute()")
+  var s string
+  var err error
+  if s, err = app.mdFileToTemplatedFuncsHTMLString(filename, app.fewerFuncs); err != nil {
+    // TODO: Replace error code!
+    app.Print("REPLACE error code")
+    app.QuitError(ErrCode(err.Error(), filename))
+  }
+  app.Print("scode(%s) has contents: %s", filename, s)
+
+
 	return template.HTML(s)
 }
 
+/*
+func (app *App) scode(params ...string) template.HTML {
+
+	if len(params) < 1 {
+	  return template.HTML("")
+  }
+  id := params[0]
+  app.Print("id: %v", id)
+	return template.HTML(id)
+}
+*/
 func (a *App) addTemplateFunctions() {
 	a.funcs = template.FuncMap{
 		"article":  a.articlefunc,
@@ -199,7 +233,6 @@ func (a *App) addTemplateFunctions() {
 		"hostname": a.hostname,
 		"inc":      a.inc,
 		"path":     a.path,
-    "quote":    a.quote,
 		"scode":    a.scode,
 		"toc":      a.toc,
 	}
@@ -207,6 +240,7 @@ func (a *App) addTemplateFunctions() {
 
 // generateTOC reads the Markdown source and returns a slice of TOC entries
 // corresponding to each header less than or equal to level.
+// TODO: Untested
 func (a *App) generateTOC(level int) []mdext.TOCEntry {
 	node := a.markdownAST(a.src)
 	tocs, err := mdext.ExtractTOCs(a.newGoldmark().Renderer(), node, a.src, level)
@@ -304,11 +338,6 @@ loop:
 	}
 	b.WriteString(closeTag)
 	return i
-}
-
-// quote
-func (app *App) quote(param string) string {
-	return param
 }
 
 

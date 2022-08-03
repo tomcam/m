@@ -225,6 +225,10 @@ func (app *App) setPaths() {
 	app.Site.Filename = filepath.Join(app.cfgPath,
 		defaults.SiteConfigFilename)
 
+	// Compute full pathname of the scode directory.
+	app.Site.sCodePath = filepath.Join(app.cfgPath,
+		defaults.SCodePath)
+
 	// Compute the publish directory  (aka WWW directory)
 	app.Site.publishPath = filepath.Join(app.cfgPath,
 		defaults.DefaultPublishPath)
@@ -240,6 +244,7 @@ func (app *App) setPaths() {
 	// maybe generate more dirs, maybe refactor it.
 	app.Site.cssPublishPath = filepath.Join(app.Site.assetPath,
 		defaults.DefaultPublishCssPath)
+    // xxx
 
 	// Compute the directory location for image files
 	app.Site.imagePath = filepath.Join(app.Site.assetPath,
